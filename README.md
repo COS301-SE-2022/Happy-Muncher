@@ -1,1 +1,1 @@
-ReadMe
+The Happy Muncher App is a useful food budgeting and management app.  It can be essential for students who are transitioning to living on their own or users who are extremely busy with work or managing a home or large family. There are many things to consider when you become responsible for your own, or someone else's, food provision, such as price/spending, wastage and making healthy food choices.
