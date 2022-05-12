@@ -275,7 +275,7 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Amount Remaining"), Text(rem3)]),
+            children: [const Text("Amount Remaining"), Text("R " + rem3)]),
         const SizedBox(height: 10),
       ]));
 
