@@ -54,7 +54,7 @@ I’m a third-year computer science student who really enjoys problem solving an
 ### [Ponalo Notwane](https://github.com/Ponalo-ss)
 <a href="https://www.linkedin.com/in/ponalo-notwane-424b4318b/" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
->
->A final year computer science student at UP, who was bitten by the code bug a few years ago and became more and more engulfed in the world of problem solving. With special interests in Databases and Cryptography.
+
+A final year computer science student at UP, who was bitten by the code bug a few years ago and became more and more engulfed in the world of problem solving. With special interests in Databases and Cryptography.
 
 ![github stats](https://github-readme-stats.vercel.app/api?username=Ponalo-ss&theme=slateorange)
