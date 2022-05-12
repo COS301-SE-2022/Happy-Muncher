@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 16,
             ),
-                        SizedBox(
+            SizedBox(
               width: 200,
               height: 50,
               child: RaisedButton(
