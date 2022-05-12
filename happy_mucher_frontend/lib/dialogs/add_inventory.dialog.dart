@@ -29,6 +29,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
+              key: const Key('inventoryDialogNameField'),
               controller: nameController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -40,6 +41,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
+              key: const Key('inventoryDialogQuantityField'),
               controller: quantityContoller,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
@@ -65,6 +67,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                   ),
                 ),
                 IconButton(
+                  key: const Key('inventoryDialogCalendarPickButton'),
                   onPressed: () async {
                     final chosenDate = await showDatePicker(
                       context: context,
@@ -91,6 +94,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
       ),
       actions: [
         TextButton(
+          key: const Key('inventoryDialogAddButton'),
           onPressed: () {
             final name = nameController.text;
             final quantity = quantityContoller.text;
