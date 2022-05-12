@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => grocerylist()));
                 },
-                color: Colors.blue,
+                color: Colors.green,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => inventory()));
                 },
-                color: Colors.blue,
+                color: Colors.green,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => budget()));
                 },
-                color: Colors.blue,
+                color: Colors.green,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
