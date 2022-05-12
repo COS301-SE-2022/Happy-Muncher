@@ -47,43 +47,43 @@ class MyMonthState extends State<Month> {
         title: Text('${widget.month}'),
       ),
 
-      // body: ListView(
-      //   padding: const EdgeInsets.all(32),
-      //   children: <Widget>[
-      //     Text('Enter Your budget for ' + '${widget.month}',
-      //         style: TextStyle(height: 1.2)),
-      //     enterBudget(),
-      //     MaterialButton(
-      //       onPressed: () {
-      //         setState(() {
-      //           input = budgetController.text;
-      //           bud = double.parse(input);
-      //           bud = bud / 4;
-      //           budget = bud.toString();
-      //           totRem = 0;
-      //           totSpent = 0;
-      //           rem1 = budget;
-      //           rem2 = budget;
-      //           rem3 = budget;
-      //           rem4 = budget;
-      //         });
-      //       },
-      //       color: Colors.green,
-      //       child:
-      //           const Text("Set Budget", style: TextStyle(color: Colors.white)),
-      //     ),
-      //     const SizedBox(height: 24),
-      //     WeekOne(),
-      //     const SizedBox(height: 24),
-      //     WeekTwo(),
-      //     const SizedBox(height: 24),
-      //     WeekThree(),
-      //     const SizedBox(height: 24),
-      //     WeekFour(),
-      //     const SizedBox(height: 32),
-      //     Totals()
-      //   ],
-      // ),
+      body: ListView(
+        padding: const EdgeInsets.all(32),
+        children: <Widget>[
+          Text('Enter Your budget for ' + '${widget.month}',
+              style: TextStyle(height: 1.2)),
+          enterBudget(),
+          MaterialButton(
+            onPressed: () {
+              setState(() {
+                input = budgetController.text;
+                bud = double.parse(input);
+                bud = bud / 4;
+                budget = bud.toString();
+                totRem = 0;
+                totSpent = 0;
+                rem1 = budget;
+                rem2 = budget;
+                rem3 = budget;
+                rem4 = budget;
+              });
+            },
+            color: Colors.green,
+            child:
+                const Text("Set Budget", style: TextStyle(color: Colors.white)),
+          ),
+          // const SizedBox(height: 24),
+          // WeekOne(),
+          // const SizedBox(height: 24),
+          // WeekTwo(),
+          // const SizedBox(height: 24),
+          // WeekThree(),
+          // const SizedBox(height: 24),
+          // WeekFour(),
+          // const SizedBox(height: 32),
+          // Totals()
+        ],
+      ),
 
     );
   }
