@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'month.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Budget());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Budget extends StatelessWidget {
+  const Budget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
