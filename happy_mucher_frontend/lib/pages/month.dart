@@ -74,8 +74,8 @@ class MyMonthState extends State<Month> {
           ),
           const SizedBox(height: 24),
           WeekOne(),
-          // const SizedBox(height: 24),
-          // WeekTwo(),
+          const SizedBox(height: 24),
+          WeekTwo(),
           // const SizedBox(height: 24),
           // WeekThree(),
           // const SizedBox(height: 24),
@@ -160,63 +160,63 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
       ]));
 
-  // Widget WeekTwo() => Container(
-  //         child: Column(children: [
-  //       Container(
-  //         child: Container(
-  //           width: 600.0,
-  //           height: 42.0,
-  //           decoration: const BoxDecoration(
-  //             color: Colors.green,
-  //           ),
-  //           child: const Center(
-  //             child: Text(
-  //               'Week 2',
-  //               style: TextStyle(
-  //                 fontFamily: 'Arial',
-  //                 fontSize: 18,
-  //                 color: Colors.white,
-  //                 height: 1,
-  //               ),
-  //               textAlign: TextAlign.left,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       const SizedBox(height: 10),
-  //       Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [const Text("Budget"), Text("R" + budget)]),
-  //       const SizedBox(height: 10),
-  //       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //         const Text("Amount Spent"),
-  //         Flexible(
-  //             child: TextField(
-  //           textAlign: TextAlign.right,
-  //           controller: spentTwoController,
-  //           decoration: const InputDecoration(
-  //             hintText: 'R 0',
-  //           ),
-  //           keyboardType: TextInputType.number,
-  //           textInputAction: TextInputAction.done,
-  //           onSubmitted: (value) {
-  //             setState(() {
-  //               spent2 = spentTwoController.text;
-  //               double left = double.parse(spent2);
-  //               totSpent += double.parse(spent2);
-  //               left = bud - left;
-  //               rem2 = left.toString();
-  //               totRem += left;
-  //             });
-  //           },
-  //         ))
-  //       ]),
-  //       const SizedBox(height: 10),
-  //       Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [const Text("Amount Remaining"), Text("R " + rem2)]),
-  //       const SizedBox(height: 10),
-  //     ]));
+  Widget WeekTwo() => Container(
+          child: Column(children: [
+        Container(
+          child: Container(
+            width: 600.0,
+            height: 42.0,
+            decoration: const BoxDecoration(
+              color: Colors.green,
+            ),
+            child: const Center(
+              child: Text(
+                'Week 2',
+                style: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 18,
+                  color: Colors.white,
+                  height: 1,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+        ),
+        // const SizedBox(height: 10),
+        // Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [const Text("Budget"), Text("R" + budget)]),
+        // const SizedBox(height: 10),
+        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        //   const Text("Amount Spent"),
+        //   Flexible(
+        //       child: TextField(
+        //     textAlign: TextAlign.right,
+        //     controller: spentTwoController,
+        //     decoration: const InputDecoration(
+        //       hintText: 'R 0',
+        //     ),
+        //     keyboardType: TextInputType.number,
+        //     textInputAction: TextInputAction.done,
+        //     onSubmitted: (value) {
+        //       setState(() {
+        //         spent2 = spentTwoController.text;
+        //         double left = double.parse(spent2);
+        //         totSpent += double.parse(spent2);
+        //         left = bud - left;
+        //         rem2 = left.toString();
+        //         totRem += left;
+        //       });
+        //     },
+        //   ))
+        // ]),
+        // const SizedBox(height: 10),
+        // Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [const Text("Amount Remaining"), Text("R " + rem2)]),
+        // const SizedBox(height: 10),
+      ]));
 
   // Widget WeekThree() => Container(
   //         child: Column(children: [
