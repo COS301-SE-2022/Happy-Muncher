@@ -183,39 +183,39 @@ class MyMonthState extends State<Month> {
             ),
           ),
         ),
-        // const SizedBox(height: 10),
-        // Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [const Text("Budget"), Text("R" + budget)]),
-        // const SizedBox(height: 10),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        //   const Text("Amount Spent"),
-        //   Flexible(
-        //       child: TextField(
-        //     textAlign: TextAlign.right,
-        //     controller: spentTwoController,
-        //     decoration: const InputDecoration(
-        //       hintText: 'R 0',
-        //     ),
-        //     keyboardType: TextInputType.number,
-        //     textInputAction: TextInputAction.done,
-        //     onSubmitted: (value) {
-        //       setState(() {
-        //         spent2 = spentTwoController.text;
-        //         double left = double.parse(spent2);
-        //         totSpent += double.parse(spent2);
-        //         left = bud - left;
-        //         rem2 = left.toString();
-        //         totRem += left;
-        //       });
-        //     },
-        //   ))
-        // ]),
-        // const SizedBox(height: 10),
-        // Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [const Text("Amount Remaining"), Text("R " + rem2)]),
-        // const SizedBox(height: 10),
+        const SizedBox(height: 10),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [const Text("Budget"), Text("R" + budget)]),
+        const SizedBox(height: 10),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          const Text("Amount Spent"),
+          Flexible(
+              child: TextField(
+            textAlign: TextAlign.right,
+            controller: spentTwoController,
+            decoration: const InputDecoration(
+              hintText: 'R 0',
+            ),
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            onSubmitted: (value) {
+              setState(() {
+                spent2 = spentTwoController.text;
+                double left = double.parse(spent2);
+                totSpent += double.parse(spent2);
+                left = bud - left;
+                rem2 = left.toString();
+                totRem += left;
+              });
+            },
+          ))
+        ]),
+        const SizedBox(height: 10),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [const Text("Amount Remaining"), Text("R " + rem2)]),
+        const SizedBox(height: 10),
       ]));
 
   // Widget WeekThree() => Container(
