@@ -358,16 +358,16 @@ class MyMonthState extends State<Month> {
           ),
         ),
         const SizedBox(height: 10),
-        // Container(
-        //   padding: const EdgeInsets.all(8),
-        //   decoration: const BoxDecoration(
-        //       border: Border(
-        //     bottom: BorderSide(color: Colors.grey, width: 3),
-        //   )),
-        //   child: Align(
-        //       alignment: Alignment.centerLeft,
-        //       child: Text("Total Amount Remaining:  " + totRem.toString())),
-        // ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+              border: Border(
+            bottom: BorderSide(color: Colors.grey, width: 3),
+          )),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Total Amount Remaining:  " + totRem.toString())),
+        ),
         // const SizedBox(height: 10),
         // Container(
         //   padding: const EdgeInsets.all(8),
