@@ -27,7 +27,7 @@ class BackgroundPainter extends CustomPainter {
           ..color = Colors.orange.shade400
           ..style = PaintingStyle.fill,
         linePaint = Paint()
-          ..color = Colors.orange[300]
+          ..color = Color.fromARGB(255, 31, 173, 13)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 4;
 
