@@ -218,63 +218,63 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
       ]));
 
-  // Widget WeekThree() => Container(
-  //         child: Column(children: [
-  //       Container(
-  //         child: Container(
-  //           width: 600.0,
-  //           height: 42.0,
-  //           decoration: const BoxDecoration(
-  //             color: Colors.green,
-  //           ),
-  //           child: const Center(
-  //             child: Text(
-  //               'Week 3',
-  //               style: TextStyle(
-  //                 fontFamily: 'Arial',
-  //                 fontSize: 18,
-  //                 color: Colors.white,
-  //                 height: 1,
-  //               ),
-  //               textAlign: TextAlign.left,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       const SizedBox(height: 10),
-  //       Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [const Text("Budget"), Text("R" + budget)]),
-  //       const SizedBox(height: 10),
-  //       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //         const Text("Amount Spent"),
-  //         Flexible(
-  //             child: TextField(
-  //           textAlign: TextAlign.right,
-  //           controller: spentThreeController,
-  //           decoration: const InputDecoration(
-  //             hintText: 'R 0',
-  //           ),
-  //           keyboardType: TextInputType.number,
-  //           textInputAction: TextInputAction.done,
-  //           onSubmitted: (value) {
-  //             setState(() {
-  //               spent3 = spentThreeController.text;
-  //               double left = double.parse(spent3);
-  //               totSpent += double.parse(spent3);
-  //               left = bud - left;
-  //               rem3 = left.toString();
-  //               totRem += left;
-  //             });
-  //           },
-  //         ))
-  //       ]),
-  //       const SizedBox(height: 10),
-  //       Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [const Text("Amount Remaining"), Text(rem3)]),
-  //       const SizedBox(height: 10),
-  //     ]));
+  Widget WeekThree() => Container(
+          child: Column(children: [
+        Container(
+          child: Container(
+            width: 600.0,
+            height: 42.0,
+            decoration: const BoxDecoration(
+              color: Colors.green,
+            ),
+            child: const Center(
+              child: Text(
+                'Week 3',
+                style: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 18,
+                  color: Colors.white,
+                  height: 1,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+        ),
+        // const SizedBox(height: 10),
+        // Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [const Text("Budget"), Text("R" + budget)]),
+        // const SizedBox(height: 10),
+        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        //   const Text("Amount Spent"),
+        //   Flexible(
+        //       child: TextField(
+        //     textAlign: TextAlign.right,
+        //     controller: spentThreeController,
+        //     decoration: const InputDecoration(
+        //       hintText: 'R 0',
+        //     ),
+        //     keyboardType: TextInputType.number,
+        //     textInputAction: TextInputAction.done,
+        //     onSubmitted: (value) {
+        //       setState(() {
+        //         spent3 = spentThreeController.text;
+        //         double left = double.parse(spent3);
+        //         totSpent += double.parse(spent3);
+        //         left = bud - left;
+        //         rem3 = left.toString();
+        //         totRem += left;
+        //       });
+        //     },
+        //   ))
+        // ]),
+        // const SizedBox(height: 10),
+        // Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [const Text("Amount Remaining"), Text(rem3)]),
+        // const SizedBox(height: 10),
+      ]));
 
   // Widget WeekFour() => Container(
   //         child: Column(children: [
