@@ -80,8 +80,8 @@ class MyMonthState extends State<Month> {
           WeekThree(),
           const SizedBox(height: 24),
           WeekFour(),
-          // const SizedBox(height: 32),
-          // Totals()
+          const SizedBox(height: 32),
+          Totals()
         ],
       ),
 
@@ -334,50 +334,50 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
       ]));
 
-  // Widget Totals() => Container(
-  //         child: Column(children: [
-  //       Container(
-  //         child: Container(
-  //           width: 600.0,
-  //           height: 42.0,
-  //           decoration: const BoxDecoration(
-  //             color: Colors.green,
-  //           ),
-  //           child: const Center(
-  //             child: Text(
-  //               'Totals',
-  //               style: TextStyle(
-  //                 //fontFamily: 'Arial',
-  //                 fontSize: 18,
-  //                 color: Colors.white,
-  //                 height: 1,
-  //               ),
-  //               textAlign: TextAlign.left,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       const SizedBox(height: 10),
-  //       Container(
-  //         padding: const EdgeInsets.all(8),
-  //         decoration: const BoxDecoration(
-  //             border: Border(
-  //           bottom: BorderSide(color: Colors.grey, width: 3),
-  //         )),
-  //         child: Align(
-  //             alignment: Alignment.centerLeft,
-  //             child: Text("Total Amount Remaining:  " + totRem.toString())),
-  //       ),
-  //       const SizedBox(height: 10),
-  //       Container(
-  //         padding: const EdgeInsets.all(8),
-  //         decoration: const BoxDecoration(
-  //             border: Border(
-  //           bottom: BorderSide(color: Colors.grey, width: 3),
-  //         )),
-  //         child: Align(
-  //             alignment: Alignment.centerLeft,
-  //             child: Text("Total Amount Spent:  " + totSpent.toString())),
-  //       ),
-  //     ]));
+  Widget Totals() => Container(
+          child: Column(children: [
+        Container(
+          child: Container(
+            width: 600.0,
+            height: 42.0,
+            decoration: const BoxDecoration(
+              color: Colors.green,
+            ),
+            child: const Center(
+              child: Text(
+                'Totals',
+                style: TextStyle(
+                  //fontFamily: 'Arial',
+                  fontSize: 18,
+                  color: Colors.white,
+                  height: 1,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        // Container(
+        //   padding: const EdgeInsets.all(8),
+        //   decoration: const BoxDecoration(
+        //       border: Border(
+        //     bottom: BorderSide(color: Colors.grey, width: 3),
+        //   )),
+        //   child: Align(
+        //       alignment: Alignment.centerLeft,
+        //       child: Text("Total Amount Remaining:  " + totRem.toString())),
+        // ),
+        // const SizedBox(height: 10),
+        // Container(
+        //   padding: const EdgeInsets.all(8),
+        //   decoration: const BoxDecoration(
+        //       border: Border(
+        //     bottom: BorderSide(color: Colors.grey, width: 3),
+        //   )),
+        //   child: Align(
+        //       alignment: Alignment.centerLeft,
+        //       child: Text("Total Amount Spent:  " + totSpent.toString())),
+        // ),
+      ]));
 }
