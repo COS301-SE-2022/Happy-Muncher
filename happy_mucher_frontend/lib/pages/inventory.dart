@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
+import 'package:happy_muncher/dialogs/add_inventory.dialog.dart';
 import 'package:intl/intl.dart';
 
 class IventoryPage extends StatefulWidget {

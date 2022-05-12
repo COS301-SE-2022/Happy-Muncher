@@ -1,4 +1,4 @@
-name: happy_mucher_frontend
+name: happy_muncher
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -34,7 +34,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  intl: ^0.17.0
+
+  firebase_auth: ^0.18.3
+  google_sign_in: ^4.5.6
+  provider: ^4.1.1
+  font_awesome_flutter: ^8.10.0
 
 dev_dependencies:
   flutter_test:
