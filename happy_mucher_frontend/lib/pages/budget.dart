@@ -76,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //April
             ElevatedButton(
+              key: Key("apr"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "April 2020"),
@@ -86,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //May
             ElevatedButton(
+              key: Key("may"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "May 2020"),
@@ -96,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //June
             ElevatedButton(
+              key: Key("jun"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "June 2020"),
@@ -106,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //July
             ElevatedButton(
+              key: Key("jul"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "July 2020"),
@@ -116,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //August
             ElevatedButton(
+              key: Key("aug"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "August 2020"),
@@ -126,6 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //September
             ElevatedButton(
+              key: Key("sept"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "September 2020"),
@@ -136,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //October
             ElevatedButton(
+              key: Key("oct"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "October 2020"),
@@ -146,6 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //November
             ElevatedButton(
+              key: Key("nov"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "November 2020"),
@@ -156,6 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //December
             ElevatedButton(
+              key: Key("dec"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "December 2020"),
