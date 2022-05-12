@@ -45,7 +45,6 @@ class MyMonthState extends State<Month> {
         // the App.build method, and use it to set our appbar title.
         title: Text('${widget.month}'),
       ),
-
       body: ListView(
         padding: const EdgeInsets.all(32),
         children: <Widget>[
@@ -53,6 +52,7 @@ class MyMonthState extends State<Month> {
               style: TextStyle(height: 1.2)),
           enterBudget(),
           MaterialButton(
+            key: Key("setBudget"),
             onPressed: () {
               setState(() {
                 input = budgetController.text;
@@ -60,7 +60,7 @@ class MyMonthState extends State<Month> {
                 totRem = bud;
                 bud = bud / 4;
                 budget = bud.toString();
-                
+
                 totSpent = 0;
                 rem1 = budget;
                 rem2 = budget;
@@ -84,11 +84,11 @@ class MyMonthState extends State<Month> {
           Totals()
         ],
       ),
-
     );
   }
 
   Widget enterBudget() => TextField(
+        key: Key("enterBudget"),
         controller: budgetController,
         decoration: const InputDecoration(
           hintText: 'R',
@@ -133,6 +133,7 @@ class MyMonthState extends State<Month> {
           const Text("Amount Spent"),
           Flexible(
               child: TextField(
+            key: Key("spent1"),
             textAlign: TextAlign.right,
             controller: spentOneController,
             decoration: const InputDecoration(
@@ -143,12 +144,11 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent1 = spentOneController.text;
-                totRem = double.parse(spent1);
+                totRem -= double.parse(spent1);
                 double left = double.parse(spent1);
                 totSpent += double.parse(spent1);
                 left = bud - left;
                 rem1 = left.toString();
-                
               });
             },
           ))
@@ -184,7 +184,7 @@ class MyMonthState extends State<Month> {
             ),
           ),
         ),
-         const SizedBox(height: 10),
+        const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [const Text("Budget"), Text("R" + budget)]),
@@ -193,6 +193,7 @@ class MyMonthState extends State<Month> {
           const Text("Amount Spent"),
           Flexible(
               child: TextField(
+            key: Key("spent2"),
             textAlign: TextAlign.right,
             controller: spentTwoController,
             decoration: const InputDecoration(
@@ -203,7 +204,7 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent2 = spentTwoController.text;
-                totRem = double.parse(spent2);
+                totRem -= double.parse(spent2);
                 double left = double.parse(spent2);
                 totSpent += double.parse(spent2);
                 left = bud - left;
@@ -251,6 +252,7 @@ class MyMonthState extends State<Month> {
           const Text("Amount Spent"),
           Flexible(
               child: TextField(
+            key: Key("spent3"),
             textAlign: TextAlign.right,
             controller: spentThreeController,
             decoration: const InputDecoration(
@@ -261,12 +263,11 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent3 = spentThreeController.text;
-                totRem = double.parse(spent3);
+                totRem -= double.parse(spent3);
                 double left = double.parse(spent3);
                 totSpent += double.parse(spent3);
                 left = bud - left;
                 rem3 = left.toString();
-                
               });
             },
           ))
@@ -310,6 +311,7 @@ class MyMonthState extends State<Month> {
           const Text("Amount Spent"),
           Flexible(
               child: TextField(
+            key: Key("spent4"),
             textAlign: TextAlign.right,
             controller: spentFourController,
             decoration: const InputDecoration(
@@ -320,7 +322,7 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent4 = spentFourController.text;
-                totRem = double.parse(spent4);
+                totRem -= double.parse(spent4);
                 double left = double.parse(spent4);
                 totSpent += double.parse(spent4);
                 left = bud - left;
@@ -337,7 +339,8 @@ class MyMonthState extends State<Month> {
       ]));
 
   Widget Totals() => Container(
-          child: Column(children: [
+      key: Key("totals"),
+      child: Column(children: [
         Container(
           child: Container(
             width: 600.0,
@@ -359,8 +362,9 @@ class MyMonthState extends State<Month> {
             ),
           ),
         ),
-             const SizedBox(height: 10),
+        const SizedBox(height: 10),
         Container(
+          key: Key("totSpent"),
           padding: const EdgeInsets.all(8),
           decoration: const BoxDecoration(
               border: Border(
@@ -381,6 +385,5 @@ class MyMonthState extends State<Month> {
               alignment: Alignment.centerLeft,
               child: Text("Total Amount Remaining:  " + totRem.toString())),
         ),
-   
       ]));
 }
