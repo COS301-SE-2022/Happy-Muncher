@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:happy_muncher/pages/homepage.dart';
 import 'package:happy_muncher/pages/signin.dart';
 
 Future main() async {
@@ -18,6 +19,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: title,
         theme: ThemeData(primarySwatch: Colors.deepOrange),
-        home: SignIn(),
+        home: MyHomePage(),
       );
 }
