@@ -100,25 +100,25 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text("June 2020"),
             ),
 
-            // //July
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.of(context).push(MaterialPageRoute(
-            //       builder: (context) => const Month(month: "July 2020"),
-            //     ));
-            //   },
-            //   child: const Text("July 2020"),
-            // ),
+            //July
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const Month(month: "July 2020"),
+                ));
+              },
+              child: const Text("July 2020"),
+            ),
 
-            // //August
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.of(context).push(MaterialPageRoute(
-            //       builder: (context) => const Month(month: "August 2020"),
-            //     ));
-            //   },
-            //   child: const Text("August 2020"),
-            // ),
+            //August
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const Month(month: "August 2020"),
+                ));
+              },
+              child: const Text("August 2020"),
+            ),
 
             // //September
             // ElevatedButton(
