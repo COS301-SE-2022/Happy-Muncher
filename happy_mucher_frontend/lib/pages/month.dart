@@ -327,11 +327,11 @@ class MyMonthState extends State<Month> {
             },
           ))
         ]),
-        // const SizedBox(height: 10),
-        // Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [const Text("Amount Remaining"), Text(rem4)]),
-        // const SizedBox(height: 10),
+        const SizedBox(height: 10),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [const Text("Amount Remaining"), Text(rem4)]),
+        const SizedBox(height: 10),
       ]));
 
   // Widget Totals() => Container(
