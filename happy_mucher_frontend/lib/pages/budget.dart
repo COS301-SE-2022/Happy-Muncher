@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'month.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Budget());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Budget extends StatelessWidget {
+  const Budget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +39,11 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: ListView(
+          key: Key("months"),
           children: <Widget>[
             //Jan
             ElevatedButton(
+              key: Key("jan"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "January 2020"),
@@ -52,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //Feb
             ElevatedButton(
+              key: Key("feb"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "February 2020"),
@@ -62,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //March
             ElevatedButton(
+              key: Key("mar"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Month(month: "March 2020"),
