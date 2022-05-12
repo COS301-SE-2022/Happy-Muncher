@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
-                  "Button 2",
+                  "View Inventory",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
