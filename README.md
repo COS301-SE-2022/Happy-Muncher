@@ -11,27 +11,37 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 ## Project Board
 [CodeBlooded Project Board](https://github.com/COS301-SE-2022/Happy-Muncher/projects/1)
 ## Team Members
-### [Juwairiah Carrim (Team Lead)](git hub profile link)
+### [Juwairiah Carrim (Team Lead)](https://github.com/juwiCarrim)
 <a href="https://www.linkedin.com/in/c//" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
-Description
+Description.
 
-### [Kajal Bhoola](git hub profile link)
+![github stats](https://github-readme-stats.vercel.app/api?username=juwiCarrim&theme=slateorange)
+
+### [Kajal Bhoola](https://github.com/Kajal022)
 <a href="https://www.linkedin.com/in/c//" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
-Description
+Description.
+
+![github stats](https://github-readme-stats.vercel.app/api?username=Kajal022&theme=slateorange)
 
 ### [Dylan/Chen-Huan Ku](https://github.com/Chen-HuanKu)
 <a href="https://www.linkedin.com/in/chen-huan-ku-9226a3151//" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
-Currently a 3rd year computer science student at the University of Pretoria. I have been coding since grade 8 and have enjoyed it ever since.I excel at problem solving and I have experience with Java, C++, HTML, CSS, JS, PHP and GraphQL
+Currently a 3rd year computer science student at the University of Pretoria. I have been coding since grade 8 and have enjoyed it ever since.I excel at problem solving and I have experience with Java, C++, HTML, CSS, JS, PHP and GraphQL.
 
-### [Mohamed Nizhar Aboobaker](git hub profile link)
+![github stats](https://github-readme-stats.vercel.app/api?username=Chen-HuanKu&theme=slateorange)
+
+### [Mohamed Nizhar Aboobaker](https://github.com/NYZCoder)
 <a href="https://www.linkedin.com/in///" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
-Description
+Description.
 
-### [Ponalo Notwane](git hub profile link)
+![github stats](https://github-readme-stats.vercel.app/api?username=NYZCoder&theme=slateorange)
+
+### [Ponalo Notwane](https://github.com/Ponalo-ss)
 <a href="https://www.linkedin.com/in///" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
-Description
+Description.
+
+![github stats](https://github-readme-stats.vercel.app/api?username=Ponalo-ss&theme=slateorange)
