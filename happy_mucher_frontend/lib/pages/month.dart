@@ -304,29 +304,29 @@ class MyMonthState extends State<Month> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [const Text("Budget"), Text("R" + budget)]),
         const SizedBox(height: 10),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        //   const Text("Amount Spent"),
-        //   Flexible(
-        //       child: TextField(
-        //     textAlign: TextAlign.right,
-        //     controller: spentFourController,
-        //     decoration: const InputDecoration(
-        //       hintText: 'R 0',
-        //     ),
-        //     keyboardType: TextInputType.number,
-        //     textInputAction: TextInputAction.done,
-        //     onSubmitted: (value) {
-        //       setState(() {
-        //         spent4 = spentFourController.text;
-        //         double left = double.parse(spent4);
-        //         totSpent += double.parse(spent4);
-        //         left = bud - left;
-        //         rem4 = left.toString();
-        //         totRem += left;
-        //       });
-        //     },
-        //   ))
-        // ]),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          const Text("Amount Spent"),
+          Flexible(
+              child: TextField(
+            textAlign: TextAlign.right,
+            controller: spentFourController,
+            decoration: const InputDecoration(
+              hintText: 'R 0',
+            ),
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            onSubmitted: (value) {
+              setState(() {
+                spent4 = spentFourController.text;
+                double left = double.parse(spent4);
+                totSpent += double.parse(spent4);
+                left = bud - left;
+                rem4 = left.toString();
+                totRem += left;
+              });
+            },
+          ))
+        ]),
         // const SizedBox(height: 10),
         // Row(
         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
