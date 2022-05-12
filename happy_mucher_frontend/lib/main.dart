@@ -76,6 +76,47 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
               ),
             ),
+            TextButton(
+              onPressed: () {
+                //forgot password screen
+              },
+              child: const Text(
+                'Forgot Password',
+              ),
+            ),
+            Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: ElevatedButton(
+                  child: const Text('Login'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => MyHomePage(),
+                      ),
+                    );
+                  },
+                )),
+            Row(
+              children: <Widget>[
+                const Text('Does not have account?'),
+                TextButton(
+                  child: const Text(
+                    'Sign in',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    //signup screen
+                  },
+                )
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            Row(
+              children: <Widget>[
+                const Text('Sign in with google'),
+              ],
+            )
           ],
         ));
   }
