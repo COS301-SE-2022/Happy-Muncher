@@ -241,11 +241,11 @@ class MyMonthState extends State<Month> {
             ),
           ),
         ),
-        // const SizedBox(height: 10),
-        // Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [const Text("Budget"), Text("R" + budget)]),
-        // const SizedBox(height: 10),
+        const SizedBox(height: 10),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [const Text("Budget"), Text("R" + budget)]),
+        const SizedBox(height: 10),
         // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         //   const Text("Amount Spent"),
         //   Flexible(
