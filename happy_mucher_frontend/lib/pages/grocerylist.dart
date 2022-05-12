@@ -84,7 +84,7 @@ class GroceryListItem {
   });
 }
 
-//STRUCTURE
+
 //SCAFFOLD
 //  APPBAR
 //    ICON + TEXT
