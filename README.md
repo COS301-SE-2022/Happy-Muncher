@@ -15,7 +15,7 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 <a href="https://www.linkedin.com/in/juwairiah-carrim-1b858323a/" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
 
->Description.
+I’m a third-year computer science student who really enjoys problem solving and finding creative approaches to solve problems. I also consider this to be one of my skills.  I am a perfectionist and I believe this will greatly contribute to providing good quality software.
 
 ![github stats](https://github-readme-stats.vercel.app/api?username=juwiCarrim&theme=slateorange)
 
