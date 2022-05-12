@@ -22,10 +22,10 @@ class SignUpWidget extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 20),
               width: 175,
               child: Text(
-                'Welcome Back To Happy Muncher',
+                'Happy Muncher!',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 30,
+                  fontSize: 50,
                   fontWeight: FontWeight.bold,
                 ),
               ),
