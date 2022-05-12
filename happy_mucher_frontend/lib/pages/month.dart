@@ -58,9 +58,10 @@ class MyMonthState extends State<Month> {
               setState(() {
                 input = budgetController.text;
                 bud = double.parse(input);
+                totRem = bud;
                 bud = bud / 4;
                 budget = bud.toString();
-                totRem = 0;
+                
                 totSpent = 0;
                 rem1 = budget;
                 rem2 = budget;
@@ -143,11 +144,12 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent1 = spentOneController.text;
+                totRem = double.parse(spent1);
                 double left = double.parse(spent1);
                 totSpent += double.parse(spent1);
                 left = bud - left;
                 rem1 = left.toString();
-                totRem += left;
+                
               });
             },
           ))
@@ -202,11 +204,11 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent2 = spentTwoController.text;
+                totRem = double.parse(spent2);
                 double left = double.parse(spent2);
                 totSpent += double.parse(spent2);
                 left = bud - left;
                 rem2 = left.toString();
-                totRem += left;
               });
             },
           ))
@@ -260,11 +262,12 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent3 = spentThreeController.text;
+                totRem = double.parse(spent3);
                 double left = double.parse(spent3);
                 totSpent += double.parse(spent3);
                 left = bud - left;
                 rem3 = left.toString();
-                totRem += left;
+                
               });
             },
           ))
@@ -318,11 +321,11 @@ class MyMonthState extends State<Month> {
             onSubmitted: (value) {
               setState(() {
                 spent4 = spentFourController.text;
+                totRem = double.parse(spent4);
                 double left = double.parse(spent4);
                 totSpent += double.parse(spent4);
                 left = bud - left;
                 rem4 = left.toString();
-                totRem += left;
               });
             },
           ))
