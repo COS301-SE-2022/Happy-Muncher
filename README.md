@@ -25,7 +25,7 @@ I’m a third-year computer science student who really enjoys problem solving an
 <a href="https://www.linkedin.com/in/kajal-bhoola-408b47204/" target="blank">
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
 
->I am a third year computer science student. I enjoy both front-end and back-end developed. I am a hard worker who likes taking on challenges and learning new things.
+>I am a third year computer science student. I enjoy both front-end and back-end development. I am a hard worker who likes taking on challenges and learning new things.
 
 ![github stats](https://github-readme-stats.vercel.app/api?username=Kajal022&theme=slateorange)
 
