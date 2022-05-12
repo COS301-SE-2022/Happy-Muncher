@@ -116,6 +116,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: <Widget>[
                 const Text('Sign in with google'),
               ],
+              mainAxisAlignment: MainAxisAlignment.center,
             )
           ],
         ));
