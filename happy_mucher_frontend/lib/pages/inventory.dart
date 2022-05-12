@@ -27,6 +27,7 @@ class _IventoryPageState extends State<IventoryPage> {
         children: [
           Expanded(
             child: ListView.builder(
+              key: const Key('Inventory_ListView'),
               itemCount: inventoryList.length,
               itemBuilder: (context, index) {
                 final item = inventoryList[index];
@@ -44,6 +45,7 @@ class _IventoryPageState extends State<IventoryPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: IconButton(
+                  key: const Key('addToInventoryButton'),
                   onPressed: () async {
                     final returnedItem = await addInventoryDialog(context);
                     if (returnedItem != null) {
@@ -76,9 +78,25 @@ class _IventoryPageState extends State<IventoryPage> {
   }
 }
 
+//STRUCTURE
+//SCAFFOLD
+//  APPBAR
+//    ICON + TEXT
+//  COLUMN
+//    EXPANDED (TO FILL UP SCREEN)
+//      LISTVIEW (LIST OF TILES)
+//       LIST TILE (LIST THAT CONTAINS INFO)
+//         TEXT + TEXT
+//    ROW (BOTTOM 2 BUTTONS)
+//      PADDING
+//        ICONBUTTON
+//      PADDING
+//        ICONBUTTON
+
+//CLASS OF THE RETURNED LIST ITEM
 class IventoryItem {
-  final int quantity;
   final String itemName;
+  final int quantity;
   final DateTime expirationDate;
 
   IventoryItem({
