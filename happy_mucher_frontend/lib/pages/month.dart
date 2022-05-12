@@ -72,8 +72,8 @@ class MyMonthState extends State<Month> {
             child:
                 const Text("Set Budget", style: TextStyle(color: Colors.white)),
           ),
-          // const SizedBox(height: 24),
-          // WeekOne(),
+          const SizedBox(height: 24),
+          WeekOne(),
           // const SizedBox(height: 24),
           // WeekTwo(),
           // const SizedBox(height: 24),
@@ -88,77 +88,77 @@ class MyMonthState extends State<Month> {
     );
   }
 
-  // Widget enterBudget() => TextField(
-  //       // controller: budgetController,
-  //       // decoration: const InputDecoration(
-  //       //   hintText: 'R',
-  //       //   labelText: 'Budget',
-  //       //   prefixIcon: Icon(Icons.money),
-  //       //   border: OutlineInputBorder(),
-  //       // ),
-  //       // keyboardType: TextInputType.number,
-  //       // textInputAction: TextInputAction.done,
-  //       // // autofocus: true,
-  //     );
+  Widget enterBudget() => TextField(
+        controller: budgetController,
+        decoration: const InputDecoration(
+          hintText: 'R',
+          labelText: 'Budget',
+          prefixIcon: Icon(Icons.money),
+          border: OutlineInputBorder(),
+        ),
+        keyboardType: TextInputType.number,
+        textInputAction: TextInputAction.done,
+        // autofocus: true,
+      );
 
-  // Widget WeekOne() => Container(
-  //         child: Column(children: [
-  //       Container(
-  //         child: Container(
-  //           width: 600.0,
-  //           height: 42.0,
-  //           decoration: const BoxDecoration(
-  //             color: Colors.green,
-  //           ),
-  //           child: const Center(
-  //             child: Text(
-  //               'Week 1',
-  //               style: TextStyle(
-  //                 fontFamily: 'Arial',
-  //                 fontSize: 18,
-  //                 color: Colors.white,
-  //                 height: 1,
-  //               ),
-  //               textAlign: TextAlign.left,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       const SizedBox(height: 10),
-  //       Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [const Text("Budget"), Text("R " + budget)]),
-  //       const SizedBox(height: 10),
-  //       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-  //         const Text("Amount Spent"),
-  //         Flexible(
-  //             child: TextField(
-  //           textAlign: TextAlign.right,
-  //           controller: spentOneController,
-  //           decoration: const InputDecoration(
-  //             hintText: 'R 0',
-  //           ),
-  //           keyboardType: TextInputType.number,
-  //           textInputAction: TextInputAction.done,
-  //           onSubmitted: (value) {
-  //             setState(() {
-  //               spent1 = spentOneController.text;
-  //               double left = double.parse(spent1);
-  //               totSpent += double.parse(spent1);
-  //               left = bud - left;
-  //               rem1 = left.toString();
-  //               totRem += left;
-  //             });
-  //           },
-  //         ))
-  //       ]),
-  //       const SizedBox(height: 10),
-  //       Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [const Text("Amount Remaining"), Text("R " + rem1)]),
-  //       const SizedBox(height: 10),
-  //       const SizedBox(height: 10),
-  //     ]));
+  Widget WeekOne() => Container(
+          child: Column(children: [
+        Container(
+          child: Container(
+            width: 600.0,
+            height: 42.0,
+            decoration: const BoxDecoration(
+              color: Colors.green,
+            ),
+            child: const Center(
+              child: Text(
+                'Week 1',
+                style: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 18,
+                  color: Colors.white,
+                  height: 1,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [const Text("Budget"), Text("R " + budget)]),
+        const SizedBox(height: 10),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          const Text("Amount Spent"),
+          Flexible(
+              child: TextField(
+            textAlign: TextAlign.right,
+            controller: spentOneController,
+            decoration: const InputDecoration(
+              hintText: 'R 0',
+            ),
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            onSubmitted: (value) {
+              setState(() {
+                spent1 = spentOneController.text;
+                double left = double.parse(spent1);
+                totSpent += double.parse(spent1);
+                left = bud - left;
+                rem1 = left.toString();
+                totRem += left;
+              });
+            },
+          ))
+        ]),
+        const SizedBox(height: 10),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [const Text("Amount Remaining"), Text("R " + rem1)]),
+        const SizedBox(height: 10),
+        const SizedBox(height: 10),
+      ]));
 
   // Widget WeekTwo() => Container(
   //         child: Column(children: [
