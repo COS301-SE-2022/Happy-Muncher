@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'grocerylist.dart';
 import 'inventory.dart';
-//import 'grocerylist.dart';
+import 'budget.dart';
 
 void main() {
   runApp(MyApp());
@@ -86,7 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: RaisedButton(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
                 onPressed: () {
-                  print("RaisedButton");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => budget()));
                 },
                 color: Colors.blue,
                 shape: RoundedRectangleBorder(
