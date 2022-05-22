@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'grocerylist.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
+import 'package:happy_mucher_frontend/pages/budget.dart';
+import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
@@ -42,14 +44,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: RaisedButton(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
                 onPressed: () {
-                //   Navigator.push(context,
-                //       MaterialPageRoute(builder: (context) => grocerylist()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GroceryListPage()));
                 },
-                color: Colors.blue,
+                color: Colors.green,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
-                  "Button 1",
+                  "View Grocery List",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -63,13 +67,14 @@ class _MyHomePageState extends State<MyHomePage> {
               child: RaisedButton(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
                 onPressed: () {
-                  print("RaisedButton");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => IventoryPage()));
                 },
-                color: Colors.blue,
+                color: Colors.green,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
-                  "Button 2",
+                  "View Inventory",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -83,13 +88,14 @@ class _MyHomePageState extends State<MyHomePage> {
               child: RaisedButton(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
                 onPressed: () {
-                  print("RaisedButton");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Budget()));
                 },
-                color: Colors.blue,
+                color: Colors.green,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
-                  "Button 3",
+                  "Create Your Budget",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
