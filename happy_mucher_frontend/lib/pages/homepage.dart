@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 
 void main() {
   runApp(MyApp());
@@ -96,6 +97,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
                   "Create Your Budget",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              width: 200,
+              height: 50,
+              child: RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MealPage()));
+                },
+                color: Colors.green,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Text(
+                  "Plan a meal",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
