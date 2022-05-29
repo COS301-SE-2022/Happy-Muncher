@@ -33,6 +33,7 @@ class MyMonthState extends State<Month> {
   final spentThreeController = TextEditingController();
   String spent3 = "0.0";
   String rem3 = "0";
+  bool editThree = false;
 
   //variables for week 4
   final spentFourController = TextEditingController();
@@ -281,31 +282,45 @@ class MyMonthState extends State<Month> {
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Text("Amount Spent"),
           Flexible(
-              child: TextField(
-            key: Key("spent3"),
-            textAlign: TextAlign.right,
-            controller: spentThreeController,
-            decoration: const InputDecoration(
-              hintText: 'R 0',
-            ),
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            onSubmitted: (value) {
-              setState(() {
-                spent3 = spentThreeController.text;
-                totRem -= double.parse(spent3);
-                double left = double.parse(spent3);
-                totSpent += double.parse(spent3);
-                left = bud - left;
-                rem3 = left.toString();
-              });
-            },
-          ))
+              child: !editThree
+                  ? Text('R' + spent3)
+                  : TextField(
+                      key: Key("spent3"),
+                      textAlign: TextAlign.right,
+                      controller: spentThreeController,
+                      decoration: const InputDecoration(
+                        hintText: 'R 0',
+                      ),
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (value) {
+                        setState(() {
+                          spent3 = spentThreeController.text;
+                          totRem -= double.parse(spent3);
+                          double left = double.parse(spent3);
+                          totSpent += double.parse(spent3);
+                          left = bud - left;
+                          rem3 = left.toString();
+                          editThree = false;
+                        });
+                      },
+                    ))
         ]),
         const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [const Text("Amount Remaining"), Text("R " + rem3)]),
+        IconButton(
+          alignment: Alignment.bottomRight,
+          //color: Colors.green,
+          //hoverColor: Colors.green,
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            setState(() => {
+                  editThree = true,
+                });
+          },
+        ),
         const SizedBox(height: 10),
       ]));
 
