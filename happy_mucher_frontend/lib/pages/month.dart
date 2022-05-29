@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'grocerylist.dart';
+import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, required this.month}) : super(key: key);
@@ -446,4 +448,7 @@ class MyMonthState extends State<Month> {
               child: Text("Total Amount Remaining:  " + totRem.toString())),
         ),
       ]));
+  // groceryListTotal() {
+  //   List<GroceryListItem> gl = GroceryListPage.inventoryList;
+  // }
 }
