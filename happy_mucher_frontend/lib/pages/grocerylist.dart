@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
+import 'package:happy_mucher_frontend/pages/month.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -68,7 +69,18 @@ class _GroceryListPageState extends State<GroceryListPage> {
             ],
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              int price = 0;
+              List<GroceryListItem> gl = [];
+              inventoryList.forEach((element) {
+                if (element.value == true) {
+                  price += element.Price;
+                }
+              });
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Month(price: price),
+              ));
+            },
             child: const Text("Finish Shopping"),
           )
         ],
