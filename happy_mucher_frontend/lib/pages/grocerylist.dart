@@ -71,6 +71,14 @@ class _GroceryListPageState extends State<GroceryListPage> {
       ),
     );
   }
+
+//Total for budget
+  TotEstimate() {
+    int total = 0;
+    inventoryList.forEach((element) {
+      total = total + element.Price;
+    });
+  }
 }
 
 class GroceryListItem {
