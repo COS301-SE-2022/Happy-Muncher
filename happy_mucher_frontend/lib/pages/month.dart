@@ -3,13 +3,26 @@ import 'grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 
 class Month extends StatefulWidget {
-  const Month({Key? key, required this.month}) : super(key: key);
+  const Month({Key? key, required this.month, this.price = 0})
+      : super(key: key);
   final String month;
+  final int price;
   @override
   State<Month> createState() => MyMonthState();
 }
 
 class MyMonthState extends State<Month> {
+  // int groceryListTotal() {
+  //   List<GroceryListItem> gl = GroceryListPage.inventoryList;
+
+  //   int total = 0;
+  //   gl.forEach((element) {
+  //     total = total + element.Price;
+  //   });
+  //   return total;
+  // }
+
+  //int tot = groceryListTotal();
   //static const IconData money = IconData(0xe3f8, fontFamily: 'MaterialIcons');
   final budgetController = TextEditingController();
 
@@ -87,7 +100,8 @@ class MyMonthState extends State<Month> {
           const SizedBox(height: 24),
           WeekFour(),
           const SizedBox(height: 32),
-          Totals()
+          Totals(),
+          Est()
         ],
       ),
     );
@@ -448,7 +462,21 @@ class MyMonthState extends State<Month> {
               child: Text("Total Amount Remaining:  " + totRem.toString())),
         ),
       ]));
-  // groceryListTotal() {
-  //   List<GroceryListItem> gl = GroceryListPage.inventoryList;
-  // }
+
+  // Widget EstTotal()=> ElevatedButton(
+  //   onPressed: (){
+  //     groceryListTotal();
+  //   },
+  //   child: Text("compare"),) ;
+  int total = 0;
+  Widget Est() => ElevatedButton(
+        onPressed: () {
+          List<GroceryListItem> gl = GroceryListPage.inventoryList;
+
+          gl.forEach((element) {
+            total = total + element.Price;
+          });
+        },
+        child: new Text("Compare Grocery List"),
+      );
 }

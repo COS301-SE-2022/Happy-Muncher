@@ -3,7 +3,7 @@ import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
-
+  static List<GroceryListItem> inventoryList = [];
   @override
   State<GroceryListPage> createState() => _GroceryListPageState();
 }
@@ -66,6 +66,10 @@ class _GroceryListPageState extends State<GroceryListPage> {
                 ),
               ),
             ],
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text("Finish Shopping"),
           )
         ],
       ),
