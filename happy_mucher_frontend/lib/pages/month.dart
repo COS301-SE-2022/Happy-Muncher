@@ -163,6 +163,8 @@ class MyMonthState extends State<Month> {
             children: [const Text("Amount Remaining"), Text("R " + rem1)]),
         IconButton(
           alignment: Alignment.bottomRight,
+          //color: Colors.green,
+          //hoverColor: Colors.green,
           icon: Icon(Icons.edit),
           onPressed: () {
             setState(() => {
