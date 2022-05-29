@@ -30,6 +30,9 @@ class MyMonthState extends State<Month> {
   String budget = "";
   double totRem = 0;
   double totSpent = 0;
+  double totBudget = 0;
+
+  String compMessage = "";
 
   //variables for week 1
   final spentOneController = TextEditingController();
@@ -75,6 +78,7 @@ class MyMonthState extends State<Month> {
               setState(() {
                 input = budgetController.text;
                 bud = double.parse(input);
+                totBudget = bud;
                 totRem = bud;
                 bud = bud / 4;
                 budget = bud.toString();
@@ -464,19 +468,38 @@ class MyMonthState extends State<Month> {
       ]));
 
   Widget EstTotal() => ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          String message = "";
+          double comp = 0;
+          comp += widget.price;
+          compMessage = " Your total is " + comp.toString() + ". ";
+          if (comp < totBudget) {
+            message = "Your Grocery List is within budget. ";
+            comp = totBudget - comp;
+            message += "You will have R " +
+                comp.toString() +
+                " remaining after shopping.";
+          } else {
+            comp = comp - totBudget;
+            message = "You are " + comp.toString() + " over budget.";
+          }
+          setState(() {
+            compMessage += message;
+          });
+        },
         child: Text("compare"),
       );
 
-  Widget Comparison() => RichText(
-        text: TextSpan(
-          text: 'Hello ',
-          style: DefaultTextStyle.of(context).style,
-          children: const <TextSpan>[
-            TextSpan(
-                text: 'bold', style: TextStyle(fontWeight: FontWeight.bold)),
-            TextSpan(text: ' world!'),
-          ],
+  Widget Comparison() => Text.rich(
+        TextSpan(
+          text: compMessage, // default text style
+          // children: <TextSpan>[
+          //   TextSpan(
+          //       text: ' beautiful ',
+          //       style: TextStyle(fontStyle: FontStyle.italic)),
+          //   TextSpan(
+          //       text: 'world', style: TextStyle(fontWeight: FontWeight.bold)),
+          // ],
         ),
       );
   int total = 0;

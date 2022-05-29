@@ -73,15 +73,13 @@ class _GroceryListPageState extends State<GroceryListPage> {
               int price = 0;
               List<GroceryListItem> gl = [];
               inventoryList.forEach((element) {
-                if (element.value == true) {
-                  price += element.Price;
-                }
+                price += element.Price;
               });
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => Month(price: price),
               ));
             },
-            child: const Text("Finish Shopping"),
+            child: const Text("To Budget"),
           )
         ],
       ),
