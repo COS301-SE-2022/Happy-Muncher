@@ -39,6 +39,7 @@ class MyMonthState extends State<Month> {
   final spentFourController = TextEditingController();
   String spent4 = "0.0";
   String rem4 = "0";
+  bool editFour = false;
 
   @override
   Widget build(BuildContext context) {
@@ -355,31 +356,45 @@ class MyMonthState extends State<Month> {
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Text("Amount Spent"),
           Flexible(
-              child: TextField(
-            key: Key("spent4"),
-            textAlign: TextAlign.right,
-            controller: spentFourController,
-            decoration: const InputDecoration(
-              hintText: 'R 0',
-            ),
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            onSubmitted: (value) {
-              setState(() {
-                spent4 = spentFourController.text;
-                totRem -= double.parse(spent4);
-                double left = double.parse(spent4);
-                totSpent += double.parse(spent4);
-                left = bud - left;
-                rem4 = left.toString();
-              });
-            },
-          ))
+              child: !editFour
+                  ? Text('R' + spent4)
+                  : TextField(
+                      key: Key("spent4"),
+                      textAlign: TextAlign.right,
+                      controller: spentFourController,
+                      decoration: const InputDecoration(
+                        hintText: 'R 0',
+                      ),
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (value) {
+                        setState(() {
+                          spent4 = spentFourController.text;
+                          totRem -= double.parse(spent4);
+                          double left = double.parse(spent4);
+                          totSpent += double.parse(spent4);
+                          left = bud - left;
+                          rem4 = left.toString();
+                          editFour = false;
+                        });
+                      },
+                    ))
         ]),
         const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [const Text("Amount Remaining"), Text(rem4)]),
+        IconButton(
+          alignment: Alignment.bottomRight,
+          //color: Colors.green,
+          //hoverColor: Colors.green,
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            setState(() => {
+                  editFour = true,
+                });
+          },
+        ),
         const SizedBox(height: 10),
       ]));
 
