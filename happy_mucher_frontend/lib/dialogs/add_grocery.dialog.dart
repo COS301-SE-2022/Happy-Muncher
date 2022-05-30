@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:intl/intl.dart';
 
 Future<GroceryItemParams?> addGroceryDialog(BuildContext context,
     {GroceryListItem? editingItem}) {
@@ -63,7 +64,7 @@ class _GroceryDialogState extends State<_GroceryDialog> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
-                label: Text('price'),
+                label: Text('Price'),
               ),
             ),
           ),
