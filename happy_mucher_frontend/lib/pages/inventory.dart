@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:intl/intl.dart';
 
@@ -31,15 +32,43 @@ class _IventoryPageState extends State<IventoryPage> {
               itemCount: inventoryList.length,
               itemBuilder: (context, index) {
                 final item = inventoryList[index];
-                return Dismissible(
+                return Slidable(
                   key: Key(item.itemName),
-                  direction: DismissDirection.startToEnd,
-                  onDismissed: (direction) {
-                    setState(() {
-                      inventoryList.removeAt(index);
-                    });
-                  },
-                  background: Container(color: Colors.red),
+                  startActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (context) {
+                          setState(() {
+                            inventoryList.removeAt(index);
+                          });
+                        },
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: 'Delete',
+                      ),
+                      SlidableAction(
+                        onPressed: (context) async {
+                          final returnedItem = await addInventoryDialog(context,
+                              editingItem: item);
+                          setState(() {
+                            if (returnedItem != null) {
+                              setState(() {
+                                item.itemName = returnedItem.name;
+                                item.quantity = returnedItem.quantity;
+                                item.expirationDate = returnedItem.date;
+                              });
+                            }
+                          });
+                        },
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        icon: Icons.edit,
+                        label: 'Edit',
+                      )
+                    ],
+                  ),
                   child: ListTile(
                     title: Text('${item.quantity} x ${item.itemName}'),
                     trailing: Text(dateFormat.format(item.expirationDate)),
@@ -104,9 +133,9 @@ class _IventoryPageState extends State<IventoryPage> {
 
 //CLASS OF THE RETURNED LIST ITEM
 class IventoryItem {
-  final String itemName;
-  final int quantity;
-  final DateTime expirationDate;
+  String itemName;
+  int quantity;
+  DateTime expirationDate;
 
   IventoryItem({
     required this.quantity,
