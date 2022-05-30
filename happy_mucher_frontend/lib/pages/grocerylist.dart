@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 
 class GroceryListPage extends StatefulWidget {
@@ -12,6 +13,10 @@ class _GroceryListPageState extends State<GroceryListPage> {
   var checkedValue = false;
 
   List<GroceryListItem> inventoryList = [];
+
+  get groceryList => null;
+
+  get value => null;
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +36,55 @@ class _GroceryListPageState extends State<GroceryListPage> {
               itemBuilder: (context, index) {
                 final item = inventoryList[index];
 
-                return CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: item.value,
-                  onChanged: (checkedValue) =>
-                      setState(() => item.value = checkedValue!),
-                  title: Text(item.itemName),
-                  secondary: Text('R${item.Price}'),
+                return Slidable(
+                  key: Key(item.itemName),
+                  startActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (context) {
+                          setState(() {
+                            groceryList.removeAt(index);
+                          });
+                        },
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: 'Delete',
+                      ),
+                      SlidableAction(
+                        onPressed: (context) async {
+                          final returnedItem = await addGroceryDialog(context,
+                              editingItem: item);
+                          if (returnedItem != null) {
+                            setState(() {
+                              groceryList.removeAt(index);
+
+                              groceryList.insert(
+                                  index,
+                                  GroceryListItem(
+                                    Price: returnedItem.price,
+                                    itemName: returnedItem.name,
+                                    value: value,
+                                  ));
+                            });
+                          }
+                        },
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        icon: Icons.edit,
+                        label: 'Edit',
+                      )
+                    ],
+                  ),
+                  child: CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: item.value,
+                    onChanged: (checkedValue) =>
+                        setState(() => item.value = checkedValue!),
+                    title: Text(item.itemName),
+                    secondary: Text('R${item.Price}'),
+                  ),
                 );
               },
             ),
@@ -71,19 +118,11 @@ class _GroceryListPageState extends State<GroceryListPage> {
       ),
     );
   }
-
-//Total for budget
-  TotEstimate() {
-    int total = 0;
-    inventoryList.forEach((element) {
-      total = total + element.Price;
-    });
-  }
 }
 
 class GroceryListItem {
-  String itemName;
-  int Price;
+  final String itemName;
+  final int Price;
   bool value;
   GroceryListItem({
     required this.Price,
@@ -92,7 +131,7 @@ class GroceryListItem {
   });
 }
 
-//STRUCTURE
+
 //SCAFFOLD
 //  APPBAR
 //    ICON + TEXT
@@ -107,4 +146,4 @@ class GroceryListItem {
 //      PADDING
 //        ICONBUTTON
 
-//CLASS OF THE RETURNED LIST ITEM
+
