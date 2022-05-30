@@ -39,6 +39,7 @@ class _IventoryPageState extends State<IventoryPage> {
                       inventoryList.removeAt(index);
                     });
                   },
+                  background: Container(color: Colors.red),
                   child: ListTile(
                     title: Text('${item.quantity} x ${item.itemName}'),
                     trailing: Text(dateFormat.format(item.expirationDate)),
