@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:intl/intl.dart';
 
-Future<InventoryItemParams?> addInventoryDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const _InventoryDialog());
+Future<InventoryItemParams?> addInventoryDialog(BuildContext context,
+    {IventoryItem? editingItem}) {
+  return showDialog(
+      context: context,
+      builder: (_) => _InventoryDialog(
+            inventoryEditingItem: editingItem,
+          ));
 }
 
 class _InventoryDialog extends StatefulWidget {
-  const _InventoryDialog({Key? key}) : super(key: key);
+  final IventoryItem? inventoryEditingItem;
+  const _InventoryDialog({Key? key, this.inventoryEditingItem})
+      : super(key: key);
 
   @override
   State<_InventoryDialog> createState() => _InventoryDialogState();
@@ -19,6 +27,18 @@ class _InventoryDialogState extends State<_InventoryDialog> {
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
+
+  @override
+  void initState() {
+    super.initState();
+    final editingItem = widget.inventoryEditingItem;
+    if (editingItem != null) {
+      nameController.text = editingItem.itemName;
+      quantityContoller.text = '${editingItem.quantity}';
+      dateFieldController.text = dateFormat.format(editingItem.expirationDate);
+      expirationDate = editingItem.expirationDate;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +132,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
               );
             }
           },
-          child: const Text('Add'),
+          child: const Text('Enter'),
         )
       ],
     );
