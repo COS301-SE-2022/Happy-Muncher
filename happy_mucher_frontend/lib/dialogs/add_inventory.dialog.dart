@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<InventoryItemParams?> addInventoryDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const _InventoryDialog());
@@ -14,8 +15,10 @@ class _InventoryDialog extends StatefulWidget {
 
 class _InventoryDialogState extends State<_InventoryDialog> {
   final nameController = TextEditingController();
-  final quantityContoller = TextEditingController();
+  final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
+  final CollectionReference _products =
+      FirebaseFirestore.instance.collection('Inventory');
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
@@ -42,9 +45,9 @@ class _InventoryDialogState extends State<_InventoryDialog> {
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
               key: const Key('inventoryDialogQuantityField'),
-              controller: quantityContoller,
+              controller: quantityController,
               keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+                  const TextInputType.numberWithOptions(decimal: false),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
@@ -95,21 +98,21 @@ class _InventoryDialogState extends State<_InventoryDialog> {
       actions: [
         TextButton(
           key: const Key('inventoryDialogAddButton'),
-          onPressed: () {
-            final name = nameController.text;
-            final quantity = quantityContoller.text;
-            final quantityInt = int.tryParse(quantity);
-            final date = expirationDate;
+          onPressed: () async {
+            final String name = nameController.text;
+            final double? quantity = double.tryParse(quantityController.text);
+            final String expD = dateFieldController.text;
+            if (quantity != null) {
+              await _products.add({
+                "expirationDate": expD,
+                "itemName": name,
+                "quantity": quantity
+              });
 
-            if (date != null && quantityInt != null) {
-              Navigator.pop(
-                context,
-                InventoryItemParams(
-                  quantity: quantityInt,
-                  name: name,
-                  date: date,
-                ),
-              );
+              nameController.text = '';
+              quantityController.text = '';
+              dateFieldController.text = '';
+              Navigator.of(context).pop();
             }
           },
           child: const Text('Add'),
