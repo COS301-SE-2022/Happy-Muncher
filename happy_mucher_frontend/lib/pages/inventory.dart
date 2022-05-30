@@ -52,15 +52,19 @@ class _IventoryPageState extends State<IventoryPage> {
                         onPressed: (context) async {
                           final returnedItem = await addInventoryDialog(context,
                               editingItem: item);
-                          setState(() {
-                            if (returnedItem != null) {
-                              setState(() {
-                                item.itemName = returnedItem.name;
-                                item.quantity = returnedItem.quantity;
-                                item.expirationDate = returnedItem.date;
-                              });
-                            }
-                          });
+                          if (returnedItem != null) {
+                            setState(() {
+                              inventoryList.removeAt(index);
+
+                              inventoryList.insert(
+                                  index,
+                                  IventoryItem(
+                                    quantity: returnedItem.quantity,
+                                    itemName: returnedItem.name,
+                                    expirationDate: returnedItem.date,
+                                  ));
+                            });
+                          }
                         },
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
@@ -133,9 +137,9 @@ class _IventoryPageState extends State<IventoryPage> {
 
 //CLASS OF THE RETURNED LIST ITEM
 class IventoryItem {
-  String itemName;
-  int quantity;
-  DateTime expirationDate;
+  final String itemName;
+  final int quantity;
+  final DateTime expirationDate;
 
   IventoryItem({
     required this.quantity,
