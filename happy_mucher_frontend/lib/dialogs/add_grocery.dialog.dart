@@ -3,11 +3,18 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 
 Future<GroceryItemParams?> addGroceryDialog(BuildContext context,
     {GroceryListItem? editingItem}) {
-  return showDialog(context: context, builder: (_) => const _GroceryDialog());
+  return showDialog(
+      context: context,
+      builder: (_) => _GroceryDialog(
+            groceryEditingItem: editingItem,
+          ));
 }
 
 class _GroceryDialog extends StatefulWidget {
-  const _GroceryDialog({Key? key}) : super(key: key);
+  const _GroceryDialog({Key? key, GroceryListItem? groceryEditingItem})
+      : super(key: key);
+
+  get groceryEditingItem => null;
 
   @override
   State<_GroceryDialog> createState() => _GroceryDialogState();
@@ -17,6 +24,16 @@ class _GroceryDialogState extends State<_GroceryDialog> {
   final nameController = TextEditingController();
   final priceContoller = TextEditingController();
   final dateFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final editingItem = widget.groceryEditingItem;
+    if (editingItem != null) {
+      nameController.text = editingItem.itemName;
+      priceContoller.text = 'R${editingItem.Price}';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
