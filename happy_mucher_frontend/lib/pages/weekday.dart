@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, required this.month}) : super(key: key);
@@ -52,7 +53,13 @@ class MyMonthState extends State<Month> {
             ),
           ),
         ),
+        const SizedBox(height: 10),
+        Text("French Toast"),
+        const SizedBox(height: 10),
+        Text("Ingredients:"),
+        Text("Bread, Eggs, Paprika, oil,sauce"),
       ]));
+
   Widget Lunch() => Container(
           child: Column(children: [
         Container(
@@ -76,6 +83,11 @@ class MyMonthState extends State<Month> {
             ),
           ),
         ),
+        const SizedBox(height: 10),
+        Text("Burger"),
+        const SizedBox(height: 10),
+        Text("Ingredients:"),
+        Text("Buns, Patty, lettuce, tomato,sauce"),
       ]));
   Widget Dinner() => Container(
           child: Column(children: [
@@ -100,5 +112,10 @@ class MyMonthState extends State<Month> {
             ),
           ),
         ),
+        const SizedBox(height: 10),
+        Text("Burritto"),
+        const SizedBox(height: 10),
+        Text("Ingredients:"),
+        Text("Tortilla, Meat, sauce"),
       ]));
 }
