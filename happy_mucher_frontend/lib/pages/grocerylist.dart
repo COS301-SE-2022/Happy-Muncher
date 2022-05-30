@@ -101,7 +101,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                     final returnedItem = await addGroceryDialog(context);
                     if (returnedItem != null) {
                       setState(() {
-                        inventoryList.add(GroceryListItem(
+                        groceryList.add(GroceryListItem(
                           itemName: returnedItem.name,
                           Price: returnedItem.price,
                           value: false,
