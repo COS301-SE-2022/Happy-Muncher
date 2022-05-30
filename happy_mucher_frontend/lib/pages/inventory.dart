@@ -31,10 +31,18 @@ class _IventoryPageState extends State<IventoryPage> {
               itemCount: inventoryList.length,
               itemBuilder: (context, index) {
                 final item = inventoryList[index];
-
-                return ListTile(
-                  title: Text('${item.quantity} x ${item.itemName}'),
-                  trailing: Text(dateFormat.format(item.expirationDate)),
+                return Dismissible(
+                  key: Key(item.itemName),
+                  direction: DismissDirection.startToEnd,
+                  onDismissed: (direction) {
+                    setState(() {
+                      inventoryList.removeAt(index);
+                    });
+                  },
+                  child: ListTile(
+                    title: Text('${item.quantity} x ${item.itemName}'),
+                    trailing: Text(dateFormat.format(item.expirationDate)),
+                  ),
                 );
               },
             ),
