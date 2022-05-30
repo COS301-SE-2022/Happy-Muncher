@@ -82,8 +82,8 @@ class _GroceryListPageState extends State<GroceryListPage> {
 }
 
 class GroceryListItem {
-  final String itemName;
-  final int Price;
+  String itemName;
+  int Price;
   bool value;
   GroceryListItem({
     required this.Price,
