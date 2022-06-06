@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,39 +35,44 @@ class _IventoryPageState extends State<IventoryPage> {
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[index];
-                  return Card(
-                    margin: const EdgeInsets.all(10),
-                    child: ListTile(
-                      title: Text(documentSnapshot['itemName'] +
-                          ' ' +
-                          documentSnapshot['quantity'].toString()),
-                      subtitle:
-                          Text(documentSnapshot['expirationDate'].toString()),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => IventoryDialog(
-                                          documentSnapshot:
-                                              documentSnapshot))), //update
-                            ),
-                            IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  _products.doc(documentSnapshot.id).delete();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'You have successfully deleted a product')));
-                                }),
-                          ],
+                  return Slidable(
+                    key: Key(documentSnapshot['itemName']),
+                    startActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) {
+                            setState(() {
+                              _products.doc(documentSnapshot.id).delete();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'You have successfully deleted a product')));
+                            });
+                          },
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
                         ),
-                      ),
+                        SlidableAction(
+                          onPressed: (context) {
+                            showUpdateDialog(context, documentSnapshot);
+                          },
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          icon: Icons.edit,
+                          label: 'Edit',
+                        )
+                      ],
+                    ),
+                    child: ListTile(
+                      title: Text(documentSnapshot['quantity'].toString() +
+                          ' \u{00D7} ' +
+                          documentSnapshot['itemName'] +
+                          ' '),
+                      trailing:
+                          Text(documentSnapshot['expirationDate'].toString()),
                     ),
                   );
                 },
@@ -103,4 +109,3 @@ class _IventoryPageState extends State<IventoryPage> {
 //        ICONBUTTON
 
 //CLASS OF THE RETURNED LIST ITEM
-
