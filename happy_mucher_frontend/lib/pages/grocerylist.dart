@@ -69,13 +69,15 @@ class GroceryListPageState extends State<GroceryListPage> {
                       ],
                     ),
                     child: CheckboxListTile(
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(documentSnapshot['name']),
-                      value: false,
-                      subtitle: Text(documentSnapshot['price'].toString()),
-                      onChanged: (checkedValue) =>
-                          setState(() => checkedValue!),
-                    ),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        title: Text(documentSnapshot['name']),
+                        value: documentSnapshot['bought'],
+                        subtitle: Text(documentSnapshot['price'].toString()),
+                        onChanged: (context) {
+                          _products
+                              .doc(documentSnapshot.id)
+                              .update({'bought': !documentSnapshot['bought']});
+                        }),
                   );
                 },
               );
