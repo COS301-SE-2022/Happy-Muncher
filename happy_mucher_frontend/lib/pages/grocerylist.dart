@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,37 +36,45 @@ class GroceryListPageState extends State<GroceryListPage> {
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[index];
-                  final item = documentSnapshot['name'];
-                  return CheckboxListTile(
-                    controlAffinity: ListTileControlAffinity.leading,
-                    title: Text(documentSnapshot['name']),
-                    value: false,
-                    subtitle: Text(documentSnapshot['price'].toString()),
-                    onChanged: (checkedValue) => setState(() => checkedValue!),
-                    secondary: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => GLDialog(
-                                        documentSnapshot:
-                                            documentSnapshot))), //update
-                          ),
-                          IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                _products.doc(documentSnapshot.id).delete();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'You have successfully deleted a grocery list item')));
-                              }),
-                        ],
-                      ),
+                  return Slidable(
+                    key: Key(documentSnapshot['name']),
+                    startActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) {
+                            setState(() {
+                              _products.doc(documentSnapshot.id).delete();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'You have successfully deleted a grocery list item')));
+                            });
+                          },
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        ),
+                        SlidableAction(
+                          onPressed: (context) {
+                            showUpdateDialogGroceryList(
+                                context, documentSnapshot);
+                          },
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          icon: Icons.edit,
+                          label: 'Edit',
+                        )
+                      ],
+                    ),
+                    child: CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      title: Text(documentSnapshot['name']),
+                      value: false,
+                      subtitle: Text(documentSnapshot['price'].toString()),
+                      onChanged: (checkedValue) =>
+                          setState(() => checkedValue!),
                     ),
                   );
                 },
@@ -77,7 +86,6 @@ class GroceryListPageState extends State<GroceryListPage> {
             );
           },
         ),
-// Add new product
         floatingActionButton: FloatingActionButton(
           onPressed: () => addGLDialog(context),
           child: const Icon(Icons.add),
@@ -102,4 +110,3 @@ class GroceryListPageState extends State<GroceryListPage> {
 //        ICONBUTTON
 
 //CLASS OF THE RETURNED LIST ITEM
-
