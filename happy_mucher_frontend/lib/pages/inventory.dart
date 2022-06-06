@@ -24,7 +24,8 @@ class _IventoryPageState extends State<IventoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text('Inventory')),
+          title: const Text('Inventory'),
+          centerTitle: true,
         ),
         body: StreamBuilder(
           stream: _products.snapshots(),
