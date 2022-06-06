@@ -25,7 +25,8 @@ class GroceryListPageState extends State<GroceryListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text('Grocery List')),
+          title: const Text('Grocery List'),
+          centerTitle: true,
         ),
         body: StreamBuilder(
           stream: _products.snapshots(),
