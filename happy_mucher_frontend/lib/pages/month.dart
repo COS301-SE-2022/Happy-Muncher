@@ -62,6 +62,9 @@ class MyMonthState extends State<Month> {
 
   @override
   Widget build(BuildContext context) {
+    // setState(() {
+    //   totSpent = widget.glSpent.toDouble();
+    // });
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -79,14 +82,22 @@ class MyMonthState extends State<Month> {
             onPressed: () {
               setState(() {
                 input = budgetController.text;
-                bud = double.parse(input);
+                if (input.length > 0) {
+                  bud = double.parse(input);
+                } else
+                  () {
+                    bud = 0;
+                  };
+
                 totBudget = bud;
                 totRem = bud;
+
                 bud = bud / 4;
                 budget = bud.toString();
 
                 //totSpent = 0;
                 totSpent += widget.glSpent.toDouble();
+                totRem -= totSpent;
                 rem1 = budget;
                 rem2 = budget;
                 rem3 = budget;
@@ -495,19 +506,6 @@ class MyMonthState extends State<Month> {
         child: Text("compare"),
       );
 
-  // Widget Comparison() => Text.rich(
-  //       TextSpan(
-  //         text: compMessage, // default text style
-  //         // children: <TextSpan>[
-  //         //   TextSpan(
-  //         //       text: ' beautiful ',
-  //         //       style: TextStyle(fontStyle: FontStyle.italic)),
-  //         //   TextSpan(
-  //         //       text: 'world', style: TextStyle(fontWeight: FontWeight.bold)),
-  //         // ],
-  //       ),
-  //     );
-  // int total = 0;
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
