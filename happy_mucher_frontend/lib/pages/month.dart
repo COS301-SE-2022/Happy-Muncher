@@ -108,7 +108,8 @@ class MyMonthState extends State<Month> {
           const SizedBox(height: 32),
           Totals(),
           EstTotal(),
-          Comparison()
+          //Comparison(),
+          //showAlertDialog(context)
         ],
       ),
     );
@@ -489,21 +490,48 @@ class MyMonthState extends State<Month> {
           setState(() {
             compMessage += message;
           });
+          showAlertDialog(context);
         },
         child: Text("compare"),
       );
 
-  Widget Comparison() => Text.rich(
-        TextSpan(
-          text: compMessage, // default text style
-          // children: <TextSpan>[
-          //   TextSpan(
-          //       text: ' beautiful ',
-          //       style: TextStyle(fontStyle: FontStyle.italic)),
-          //   TextSpan(
-          //       text: 'world', style: TextStyle(fontWeight: FontWeight.bold)),
-          // ],
-        ),
-      );
-  int total = 0;
+  // Widget Comparison() => Text.rich(
+  //       TextSpan(
+  //         text: compMessage, // default text style
+  //         // children: <TextSpan>[
+  //         //   TextSpan(
+  //         //       text: ' beautiful ',
+  //         //       style: TextStyle(fontStyle: FontStyle.italic)),
+  //         //   TextSpan(
+  //         //       text: 'world', style: TextStyle(fontWeight: FontWeight.bold)),
+  //         // ],
+  //       ),
+  //     );
+  // int total = 0;
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Compare Grocery List to Budget"),
+      content: Text(compMessage),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }
