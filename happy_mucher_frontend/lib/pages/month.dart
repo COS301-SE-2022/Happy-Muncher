@@ -3,9 +3,11 @@ import 'grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 
 class Month extends StatefulWidget {
-  const Month({Key? key, this.month = "", this.price = 0}) : super(key: key);
+  const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
+      : super(key: key);
   final String month;
-  final int price;
+  final int price; //total Gl price estimate
+  final int glSpent; //GL amount spent after shopping
   @override
   State<Month> createState() => MyMonthState();
 }
@@ -83,7 +85,8 @@ class MyMonthState extends State<Month> {
                 bud = bud / 4;
                 budget = bud.toString();
 
-                totSpent = 0;
+                //totSpent = 0;
+                totSpent += widget.glSpent.toDouble();
                 rem1 = budget;
                 rem2 = budget;
                 rem3 = budget;
@@ -472,7 +475,7 @@ class MyMonthState extends State<Month> {
           String message = "";
           double comp = 0;
           comp += widget.price;
-          compMessage = " Your total is " + comp.toString() + ". ";
+          compMessage = " Your estimated total is R " + comp.toString() + ". ";
           if (comp < totBudget) {
             message = "Your Grocery List is within budget. ";
             comp = totBudget - comp;

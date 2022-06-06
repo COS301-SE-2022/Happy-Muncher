@@ -70,17 +70,34 @@ class _GroceryListPageState extends State<GroceryListPage> {
           ),
           ElevatedButton(
             onPressed: () {
+              int tot = 0;
               int price = 0;
               List<GroceryListItem> gl = [];
               inventoryList.forEach((element) {
+                if (element.value == true) {
+                  tot += element.Price;
+                }
                 price += element.Price;
               });
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Month(price: price),
+                builder: (context) => Month(price: price, glSpent: tot),
               ));
             },
-            child: const Text("To Budget"),
-          )
+            child: const Text("Finish Shopping"),
+          ),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     int price = 0;
+          //     List<GroceryListItem> gl = [];
+          //     inventoryList.forEach((element) {
+          //       price += element.Price;
+          //     });
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //       builder: (context) => Month(price: price),
+          //     ));
+          //   },
+          //   child: const Text("To Budget"),
+          // )
         ],
       ),
     );
