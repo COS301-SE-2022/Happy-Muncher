@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:happy_mucher_frontend/pages/grocerylist.dart';
-import 'package:intl/intl.dart';
 
-Future<GroceryItemParams?> addGroceryDialog(BuildContext context,
-    {GroceryListItem? editingItem}) {
-  return showDialog(
-      context: context,
-      builder: (_) => _GroceryDialog(
-            groceryEditingItem: editingItem,
-          ));
+Future<GroceryItemParams?> addGroceryDialog(BuildContext context) {
+  return showDialog(context: context, builder: (_) => const _GroceryDialog());
 }
 
 class _GroceryDialog extends StatefulWidget {
-  const _GroceryDialog({Key? key, GroceryListItem? groceryEditingItem})
-      : super(key: key);
-
-  get groceryEditingItem => null;
+  const _GroceryDialog({Key? key}) : super(key: key);
 
   @override
   State<_GroceryDialog> createState() => _GroceryDialogState();
@@ -25,16 +15,6 @@ class _GroceryDialogState extends State<_GroceryDialog> {
   final nameController = TextEditingController();
   final priceContoller = TextEditingController();
   final dateFieldController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    final editingItem = widget.groceryEditingItem;
-    if (editingItem != null) {
-      nameController.text = editingItem.itemName;
-      priceContoller.text = 'R${editingItem.Price}';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +44,7 @@ class _GroceryDialogState extends State<_GroceryDialog> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
-                label: Text('Price'),
+                label: Text('price'),
               ),
             ),
           ),
