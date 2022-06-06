@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
-import 'package:intl/intl.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -14,10 +12,6 @@ class _GroceryListPageState extends State<GroceryListPage> {
   var checkedValue = false;
 
   List<GroceryListItem> inventoryList = [];
-
-  get groceryList => null;
-
-  get value => null;
 
   @override
   Widget build(BuildContext context) {
@@ -37,55 +31,13 @@ class _GroceryListPageState extends State<GroceryListPage> {
               itemBuilder: (context, index) {
                 final item = inventoryList[index];
 
-                return Slidable(
-                  key: Key(item.itemName),
-                  startActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (context) {
-                          setState(() {
-                            groceryList.removeAt(index);
-                          });
-                        },
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: 'Delete',
-                      ),
-                      SlidableAction(
-                        onPressed: (context) async {
-                          final returnedItem = await addGroceryDialog(context,
-                              editingItem: item);
-                          if (returnedItem != null) {
-                            setState(() {
-                              groceryList.removeAt(index);
-
-                              groceryList.insert(
-                                  index,
-                                  GroceryListItem(
-                                    Price: returnedItem.price,
-                                    itemName: returnedItem.name,
-                                    value: value,
-                                  ));
-                            });
-                          }
-                        },
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        icon: Icons.edit,
-                        label: 'Edit',
-                      )
-                    ],
-                  ),
-                  child: CheckboxListTile(
-                    controlAffinity: ListTileControlAffinity.leading,
-                    value: item.value,
-                    onChanged: (checkedValue) =>
-                        setState(() => item.value = checkedValue!),
-                    title: Text(item.itemName),
-                    secondary: Text('R${item.Price}'),
-                  ),
+                return CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: item.value,
+                  onChanged: (checkedValue) =>
+                      setState(() => item.value = checkedValue!),
+                  title: Text(item.itemName),
+                  secondary: Text('R${item.Price}'),
                 );
               },
             ),
@@ -101,7 +53,7 @@ class _GroceryListPageState extends State<GroceryListPage> {
                     final returnedItem = await addGroceryDialog(context);
                     if (returnedItem != null) {
                       setState(() {
-                        groceryList.add(GroceryListItem(
+                        inventoryList.add(GroceryListItem(
                           itemName: returnedItem.name,
                           Price: returnedItem.price,
                           value: false,
@@ -132,7 +84,7 @@ class GroceryListItem {
   });
 }
 
-
+//STRUCTURE
 //SCAFFOLD
 //  APPBAR
 //    ICON + TEXT
@@ -147,4 +99,4 @@ class GroceryListItem {
 //      PADDING
 //        ICONBUTTON
 
-
+//CLASS OF THE RETURNED LIST ITEM
