@@ -39,9 +39,10 @@ class GroceryListPageState extends State<GroceryListPage> {
                   return CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
                     title: Text(documentSnapshot['name']),
-                    value: false,
+                    value: item.value,
                     subtitle: Text(documentSnapshot['price'].toString()),
-                    onChanged: (checkedValue) => setState(() => checkedValue!),
+                    onChanged: (checkedValue) =>
+                        setState(() => item.value = checkedValue!),
                     secondary: SizedBox(
                       width: 100,
                       child: Row(
