@@ -2,29 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<GroceryItemParams?> addGLDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const _GLDialog());
-}
-
-class _GLDialog extends StatefulWidget {
-  const _GLDialog({Key? key}) : super(key: key);
+class GLDialog extends StatefulWidget {
+  final DocumentSnapshot documentSnapshot;
+  const GLDialog({Key? key, required this.documentSnapshot}) : super(key: key);
 
   @override
-  State<_GLDialog> createState() => GLDialogState();
+  State<GLDialog> createState() {
+    return _UpdateGLPageState(documentSnapshot);
+  }
 }
 
-class GLDialogState extends State<_GLDialog> {
+class _UpdateGLPageState extends State<GLDialog> {
+  // text fields' controllers
+  // text fields' controllers
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final dateFieldController = TextEditingController();
+
   final CollectionReference _items =
       FirebaseFirestore.instance.collection('GroceryList');
 
-  static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
+  DocumentSnapshot documentSnapshot;
+  _UpdateGLPageState(this.documentSnapshot);
 
   @override
   Widget build(BuildContext context) {
+    if (documentSnapshot != null) {
+      nameController.text = documentSnapshot['name'];
+      priceController.text = documentSnapshot['price'].toString();
+    }
+
     return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -32,19 +40,19 @@ class GLDialogState extends State<_GLDialog> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
-              key: const Key('groceryListDialogNameField'),
+              key: const Key('GroceryDialogNameField'),
               controller: nameController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
-                label: Text('name'),
+                label: Text('Name'),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
-              key: const Key('groceryListDialogPriceField'),
+              key: const Key('GrocerDialogPriceField'),
               controller: priceController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: false),
@@ -59,36 +67,38 @@ class GLDialogState extends State<_GLDialog> {
       ),
       actions: [
         TextButton(
-          key: const Key('groceryListDialogAddButton'),
+          key: const Key('GroceryListDialogAddButton'),
           onPressed: () async {
             final name = nameController.text;
             final price = priceController.text;
             final priceInt = int.tryParse(price);
             const valueFalse = false;
             if (priceInt != null) {
-              await _items.add({"name": name, "price": price});
+              await _items
+                  .doc(documentSnapshot.id)
+                  .update({"name": name, "price": price});
 
               nameController.text = '';
               priceController.text = '';
-
+              dateFieldController.text = '';
               Navigator.of(context).pop();
             }
           },
-          child: const Text('Add'),
+          child: const Text('Update'),
         )
       ],
     );
   }
 }
 
-class GroceryItemParams {
+class InventoryItemParams {
   final String name;
-  final int price;
-  final bool value;
+  final int quantity;
+  final DateTime date;
 
-  GroceryItemParams({
-    required this.price,
+  InventoryItemParams({
+    required this.quantity,
     required this.name,
-    required this.value,
+    required this.date,
   });
 }

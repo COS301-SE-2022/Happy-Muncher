@@ -1,90 +1,92 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
+import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
 
   @override
-  State<GroceryListPage> createState() => _GroceryListPageState();
+  State<GroceryListPage> createState() => GroceryListPageState();
 }
 
-class _GroceryListPageState extends State<GroceryListPage> {
-  var checkedValue = false;
+class GroceryListPageState extends State<GroceryListPage> {
+  // text fields' controllers
+  // text fields' controllers
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _expController = TextEditingController();
 
-  List<GroceryListItem> inventoryList = [];
+  final CollectionReference _products =
+      FirebaseFirestore.instance.collection('GroceryList');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.fastfood),
-        title: const Text(
-          'Grocery List',
+        appBar: AppBar(
+          title: const Center(child: Text('Grocery List')),
         ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              key: const Key('Grocery_ListView'),
-              itemCount: inventoryList.length,
-              itemBuilder: (context, index) {
-                final item = inventoryList[index];
+        body: StreamBuilder(
+          stream: _products.snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+            if (streamSnapshot.hasData) {
+              return ListView.builder(
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[index];
+                  final item = documentSnapshot['name'];
+                  return CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(documentSnapshot['name']),
+                    value: false,
+                    subtitle: Text(documentSnapshot['price'].toString()),
+                    onChanged: (checkedValue) => setState(() => checkedValue!),
+                    secondary: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => GLDialog(
+                                        documentSnapshot:
+                                            documentSnapshot))), //update
+                          ),
+                          IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                _products.doc(documentSnapshot.id).delete();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'You have successfully deleted a grocery list item')));
+                              }),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
 
-                return CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: item.value,
-                  onChanged: (checkedValue) =>
-                      setState(() => item.value = checkedValue!),
-                  title: Text(item.itemName),
-                  secondary: Text('R${item.Price}'),
-                );
-              },
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: IconButton(
-                  key: const Key('addToGroceryListButton'),
-                  onPressed: () async {
-                    final returnedItem = await addGroceryDialog(context);
-                    if (returnedItem != null) {
-                      setState(() {
-                        inventoryList.add(GroceryListItem(
-                          itemName: returnedItem.name,
-                          Price: returnedItem.price,
-                          value: false,
-                        ));
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.add_circle),
-                  iconSize: 64.0,
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+// Add new product
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => addGLDialog(context),
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 }
 
-class GroceryListItem {
-  final String itemName;
-  final int Price;
-  bool value;
-  GroceryListItem({
-    required this.Price,
-    required this.itemName,
-    required this.value,
-  });
-}
-
-
+//STRUCTURE
 //SCAFFOLD
 //  APPBAR
 //    ICON + TEXT
