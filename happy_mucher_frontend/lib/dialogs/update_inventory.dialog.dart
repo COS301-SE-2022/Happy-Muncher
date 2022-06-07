@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+Future<void> showUpdateDialog(BuildContext context, DocumentSnapshot document) {
+  return showDialog(
+    context: context,
+    builder: (_) => IventoryDialog(documentSnapshot: document),
+  );
+}
+
 class IventoryDialog extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;
   const IventoryDialog({Key? key, required this.documentSnapshot})
