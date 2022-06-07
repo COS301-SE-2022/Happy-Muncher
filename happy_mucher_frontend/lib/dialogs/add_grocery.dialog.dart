@@ -66,7 +66,8 @@ class GLDialogState extends State<_GLDialog> {
             final priceInt = int.tryParse(price);
             const valueFalse = false;
             if (priceInt != null) {
-              await _items.add({"name": name, "price": price});
+              await _items
+                  .add({"name": name, "price": price, "bought": valueFalse});
 
               nameController.text = '';
               priceController.text = '';

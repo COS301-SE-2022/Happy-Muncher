@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+Future<void> showUpdateDialogGroceryList(
+    BuildContext context, DocumentSnapshot document) {
+  return showDialog(
+    context: context,
+    builder: (_) => GLDialog(documentSnapshot: document),
+  );
+}
+
 class GLDialog extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;
   const GLDialog({Key? key, required this.documentSnapshot}) : super(key: key);
