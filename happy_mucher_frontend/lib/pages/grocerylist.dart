@@ -36,13 +36,13 @@ class GroceryListPageState extends State<GroceryListPage> {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[index];
                   final item = documentSnapshot['name'];
+
                   return CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
                     title: Text(documentSnapshot['name']),
-                    value: item.value,
+                    value: false,
                     subtitle: Text(documentSnapshot['price'].toString()),
-                    onChanged: (checkedValue) =>
-                        setState(() => item.value = checkedValue!),
+                    onChanged: (checkedValue) => setState(() => checkedValue!),
                     secondary: SizedBox(
                       width: 100,
                       child: Row(
