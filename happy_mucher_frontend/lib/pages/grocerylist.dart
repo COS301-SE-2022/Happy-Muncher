@@ -101,5 +101,4 @@ class GroceryListPageState extends State<GroceryListPage> {
 //      PADDING
 //        ICONBUTTON
 
-//CLASS OF THE RETURNED LIST ITEM
 
