@@ -21,6 +21,9 @@ class GroceryListPageState extends State<GroceryListPage> {
   final CollectionReference _products =
       FirebaseFirestore.instance.collection('GroceryList');
 
+  final CollectionReference _inventory =
+      FirebaseFirestore.instance.collection('Inventory');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,11 +76,29 @@ class GroceryListPageState extends State<GroceryListPage> {
                         controlAffinity: ListTileControlAffinity.leading,
                         title: Text(documentSnapshot['name']),
                         value: documentSnapshot['bought'],
-                        subtitle: Text(documentSnapshot['price'].toString()),
-                        onChanged: (context) {
+                        subtitle:
+                            Text('R' + documentSnapshot['price'].toString()),
+                        onChanged: (newValue) {
                           _products
                               .doc(documentSnapshot.id)
                               .update({'bought': !documentSnapshot['bought']});
+
+                          var checkVal = documentSnapshot['bought'];
+                          var itemName = documentSnapshot['name'];
+                          if (checkVal == false) {
+                            //checks previous value if it is changing from false to true that means its being bought
+                            _inventory.add(
+                              {
+                                "itemName": itemName,
+                                "quantity": 1,
+                                "expirationDate": ""
+                              },
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Please go to the inventory page to edit the quantity and expiration date')));
+                          }
                         }),
                   );
                 },
