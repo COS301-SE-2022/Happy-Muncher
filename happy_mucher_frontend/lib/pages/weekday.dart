@@ -9,6 +9,18 @@ class Month extends StatefulWidget {
 
 class MyMonthState extends State<Month> {
   @override
+  final breakfastController = TextEditingController();
+  String meal1 = "0.0";
+  bool editOne = false;
+
+  final lunchController = TextEditingController();
+  String meal2 = "0.0";
+  bool editTwo = false;
+
+  final supperController = TextEditingController();
+  String meal3 = "0.0";
+  bool editThree = false;
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -53,10 +65,41 @@ class MyMonthState extends State<Month> {
           ),
         ),
         const SizedBox(height: 10),
-        Text("French Toast"),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Flexible(
+              child: !editOne
+                  ? Text(meal1)
+                  : TextField(
+                      key: Key("meal1"),
+                      textAlign: TextAlign.center,
+                      controller: breakfastController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your meal',
+                      ),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (value) {
+                        setState(() {
+                          meal1 = breakfastController.text;
+                          editOne = false;
+                        });
+                      },
+                    )),
+        ]),
         const SizedBox(height: 10),
-        Text("Ingredients:"),
-        Text("Bread, Eggs, Paprika, oil,sauce"),
+        IconButton(
+          alignment: Alignment.bottomRight,
+          //color: Colors.green,
+          //hoverColor: Colors.green,
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            setState(() => {
+                  editOne = true,
+                });
+          },
+        ),
+        const SizedBox(height: 10),
+        const SizedBox(height: 10),
       ]));
 
   Widget Lunch() => Container(
