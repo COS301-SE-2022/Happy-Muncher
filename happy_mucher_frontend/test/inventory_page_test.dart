@@ -149,6 +149,65 @@ void main() {
           expect(itemListTile, findsNothing);
         },
       );
+
+      testWidgets(
+        'Testing editing',
+        (WidgetTester tester) async {
+          await firestore.collection('Inventory').add({
+            "itemName": 'juice',
+            "quantity": 1,
+            "expirationDate": DateTime.now().toString(),
+          });
+
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final itemListTile = find.byType(ListTile);
+
+          await tester.drag(itemListTile, const Offset(200, 0));
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final editButton = find.byType(SlidableAction).last;
+          await tester.tap(editButton);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final dialogReturnName =
+              find.byKey(const Key('inventoryDialogNameField'));
+          expect(dialogReturnName, findsOneWidget);
+
+          final dialogReturnQuantity =
+              find.byKey(const Key('inventoryDialogQuantityField'));
+          expect(dialogReturnQuantity, findsOneWidget);
+
+          final dialogReturnDate =
+              find.byKey(const Key('inventoryDialogCalendarPickButton'));
+          expect(dialogReturnDate, findsOneWidget);
+
+          await tester.enterText(dialogReturnName, 'Apples');
+          await tester.enterText(dialogReturnQuantity, '10');
+
+          await tester.tap(dialogReturnDate);
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+          await tester.tap(find.text('OK'));
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final dialogReturnButton =
+              find.byKey(const Key('inventoryDialogAddButton'));
+          expect(dialogReturnButton, findsOneWidget);
+
+          await tester.tap(dialogReturnButton);
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final inventoryList = find.byKey(const Key('Inventory_ListView'));
+          expect(inventoryList, findsOneWidget);
+          final listTiles = find.byType(ListTile);
+          expect(listTiles, findsOneWidget);
+        },
+      );
     },
   );
 }
