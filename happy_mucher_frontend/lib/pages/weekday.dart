@@ -48,7 +48,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.pink,
+              color: Colors.blue,
             ),
             child: const Center(
               child: Text(
@@ -110,7 +110,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.pink,
+              color: Colors.blue,
             ),
             child: const Center(
               child: Text(
@@ -172,7 +172,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.pink,
+              color: Colors.blue,
             ),
             child: const Center(
               child: Text(
