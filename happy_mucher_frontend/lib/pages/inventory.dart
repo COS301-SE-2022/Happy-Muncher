@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,8 +19,9 @@ class _IventoryPageState extends State<IventoryPage> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
 
-  final CollectionReference _products =
-      FirebaseFirestore.instance.collection('Inventory');
+  final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _products => firestore.collection('Inventory');
   @override
   Widget build(BuildContext context) {
     return Scaffold(

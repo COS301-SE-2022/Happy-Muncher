@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,8 +18,10 @@ class GLDialogState extends State<_GLDialog> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final dateFieldController = TextEditingController();
-  final CollectionReference _items =
-      FirebaseFirestore.instance.collection('GroceryList');
+
+  final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _items => firestore.collection('GroceryList');
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;

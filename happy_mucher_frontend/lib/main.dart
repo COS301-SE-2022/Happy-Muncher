@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
 //import 'package:happy_muncher/widget/background_painter.dart';
 import 'package:happy_mucher_frontend/sign_up_widget.dart';
@@ -15,14 +16,14 @@ Future main() async {
   final firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
 
-  runApp(MyApp(firestore: firestore, firebaseAuth: firebaseAuth));
+  GetIt.I.registerSingleton(firestore);
+  GetIt.I.registerSingleton(firebaseAuth);
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final FirebaseFirestore firestore;
-  final FirebaseAuth firebaseAuth;
-  const MyApp({Key? key, required this.firestore, required this.firebaseAuth})
-      : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   static const String _title = 'Happy Muncher';
 
