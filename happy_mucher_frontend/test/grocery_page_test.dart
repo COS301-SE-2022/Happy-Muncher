@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -103,6 +104,32 @@ void main() {
           expect(inventoryList, findsOneWidget);
           final listTiles = find.byType(CheckboxListTile);
           expect(listTiles, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'Testing deleting',
+        (WidgetTester tester) async {
+          await firestore
+              .collection('GroceryList')
+              .add({"name": 'bread', "price": '3', "bought": false});
+
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final itemListTile = find.byType(ListTile);
+
+          await tester.drag(itemListTile, const Offset(200, 0));
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final deleteButton = find.byType(SlidableAction).first;
+          await tester.tap(deleteButton);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          expect(itemListTile, findsNothing);
         },
       );
     },
