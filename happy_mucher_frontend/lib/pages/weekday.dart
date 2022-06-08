@@ -10,14 +10,14 @@ class Month extends StatefulWidget {
 class MyMonthState extends State<Month> {
   @override
   final breakfastController = TextEditingController();
-  String meal1 = "Enter your meal";
+  String meal1 = "Enter your breakfast";
   bool editOne = false;
 
   final lunchController = TextEditingController();
-  String meal2 = "";
+  String meal2 = "Enter your lunch";
   bool editTwo = false;
 
-  final supperController = TextEditingController();
+  final dinnerController = TextEditingController();
   String meal3 = "";
   bool editThree = false;
 
