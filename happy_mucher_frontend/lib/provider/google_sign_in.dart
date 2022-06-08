@@ -1,15 +1,10 @@
-// @dart=2.9
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
-  bool _isSigningIn;
-
-  GoogleSignInProvider() {
-    _isSigningIn = false;
-  }
+  bool _isSigningIn = false;
 
   bool get isSigningIn => _isSigningIn;
 

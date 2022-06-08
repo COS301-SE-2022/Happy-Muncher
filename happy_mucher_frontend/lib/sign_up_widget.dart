@@ -1,4 +1,3 @@
-// @dart=2.9
 import 'package:flutter/material.dart';
 //import 'package:happy_mucher_frontend/widget/background_painter.dart';
 import 'package:happy_mucher_frontend/google_signup_button_widget.dart';
