@@ -10,15 +10,15 @@ class Month extends StatefulWidget {
 class MyMonthState extends State<Month> {
   @override
   final breakfastController = TextEditingController();
-  String meal1 = "0.0";
+  String meal1 = "Enter your meal";
   bool editOne = false;
 
   final lunchController = TextEditingController();
-  String meal2 = "0.0";
+  String meal2 = "";
   bool editTwo = false;
 
   final supperController = TextEditingController();
-  String meal3 = "0.0";
+  String meal3 = "";
   bool editThree = false;
 
   Widget build(BuildContext context) {
@@ -126,11 +126,43 @@ class MyMonthState extends State<Month> {
           ),
         ),
         const SizedBox(height: 10),
-        Text("Burger"),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Flexible(
+              child: !editTwo
+                  ? Text(meal2)
+                  : TextField(
+                      key: Key("meal2"),
+                      textAlign: TextAlign.center,
+                      controller: lunchController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your meal',
+                      ),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (value) {
+                        setState(() {
+                          meal2 = lunchController.text;
+                          editTwo = false;
+                        });
+                      },
+                    )),
+        ]),
         const SizedBox(height: 10),
-        Text("Ingredients:"),
-        Text("Buns, Patty, lettuce, tomato,sauce"),
+        IconButton(
+          alignment: Alignment.bottomRight,
+          //color: Colors.green,
+          //hoverColor: Colors.green,
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            setState(() => {
+                  editTwo = true,
+                });
+          },
+        ),
+        const SizedBox(height: 10),
+        const SizedBox(height: 10),
       ]));
+
   Widget Dinner() => Container(
           child: Column(children: [
         Container(
