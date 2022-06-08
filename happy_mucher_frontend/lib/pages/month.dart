@@ -95,9 +95,41 @@ class MyMonthState extends State<Month> {
                 totSpent += widget.glSpent.toDouble();
                 totRem -= totSpent;
                 rem1 = mybudget;
+                //update DB for week 1
+                _budget
+                    .doc(widget.month)
+                    .collection('Week1')
+                    .doc('Week1')
+                    .update({
+                  'budget': double.parse(rem1),
+                });
                 rem2 = mybudget;
+                //update DB for week 2
+                _budget
+                    .doc(widget.month)
+                    .collection('Week2')
+                    .doc('Week2')
+                    .update({
+                  'budget': double.parse(rem2),
+                });
                 rem3 = mybudget;
+                //update DB for week 3
+                _budget
+                    .doc(widget.month)
+                    .collection('Week3')
+                    .doc('Week3')
+                    .update({
+                  'budget': double.parse(rem3),
+                });
                 rem4 = mybudget;
+                //update DB for week 4
+                _budget
+                    .doc(widget.month)
+                    .collection('Week4')
+                    .doc('Week4')
+                    .update({
+                  'budget': double.parse(rem4),
+                });
               });
             },
             color: Colors.green,
@@ -122,11 +154,11 @@ class MyMonthState extends State<Month> {
     );
   }
 
-  Widget enterBudget() => TextField(
+  Widget enterBudget() => TextFormField(
         key: Key("enterBudget"),
         controller: budgetController,
         decoration: const InputDecoration(
-          hintText: 'R',
+          hintText: ('R '),
           labelText: 'Budget',
           prefixIcon: Icon(Icons.money),
           border: OutlineInputBorder(),
@@ -168,7 +200,7 @@ class MyMonthState extends State<Month> {
           const Text("Amount Spent"),
           Flexible(
               child: !editOne
-                  ? Text('R' + spent1)
+                  ? Text('R')
                   : TextField(
                       key: Key("spent1"),
                       textAlign: TextAlign.right,
@@ -186,6 +218,14 @@ class MyMonthState extends State<Month> {
                           totSpent += double.parse(spent1);
                           left = bud - left;
                           rem1 = left.toString();
+                          _budget
+                              .doc(widget.month)
+                              .collection('Week1')
+                              .doc('Week1')
+                              .update({
+                            'amount spent': double.parse(spent1),
+                            'amount remaining': rem1
+                          });
                           editOne = false;
                         });
                       },
@@ -260,6 +300,14 @@ class MyMonthState extends State<Month> {
                           totSpent += double.parse(spent2);
                           left = bud - left;
                           rem2 = left.toString();
+                          _budget
+                              .doc(widget.month)
+                              .collection('Week2')
+                              .doc('Week2')
+                              .update({
+                            'amount spent': double.parse(spent2),
+                            'amount remaining': rem2
+                          });
                           editTwo = false;
                         });
                       },
@@ -333,6 +381,14 @@ class MyMonthState extends State<Month> {
                           totSpent += double.parse(spent3);
                           left = bud - left;
                           rem3 = left.toString();
+                          _budget
+                              .doc(widget.month)
+                              .collection('Week3')
+                              .doc('Week3')
+                              .update({
+                            'amount spent': double.parse(spent3),
+                            'amount remaining': rem3
+                          });
                           editThree = false;
                         });
                       },
@@ -406,6 +462,14 @@ class MyMonthState extends State<Month> {
                           totSpent += double.parse(spent4);
                           left = bud - left;
                           rem4 = left.toString();
+                          _budget
+                              .doc(widget.month)
+                              .collection('Week4')
+                              .doc('Week4')
+                              .update({
+                            'amount spent': double.parse(spent4),
+                            'amount remaining': rem4
+                          });
                           editFour = false;
                         });
                       },
