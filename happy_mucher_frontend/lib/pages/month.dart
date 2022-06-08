@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'grocerylist.dart';
-import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:get_it/get_it.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
@@ -13,23 +13,11 @@ class Month extends StatefulWidget {
 }
 
 class MyMonthState extends State<Month> {
-  // int groceryListTotal() {
-  //   List<GroceryListItem> gl = GroceryListPage.inventoryList;
-
-  //   int total = 0;
-  //   gl.forEach((element) {
-  //     total = total + element.Price;
-  //   });
-  //   return total;
-  // }
-
-  //int tot = groceryListTotal();
-  //static const IconData money = IconData(0xe3f8, fontFamily: 'MaterialIcons');
   final budgetController = TextEditingController();
 
   double bud = 0;
   String input = "0";
-  String budget = "";
+  String mybudget = "";
   double totRem = 0;
   double totSpent = 0;
   double totBudget = 0;
@@ -59,7 +47,11 @@ class MyMonthState extends State<Month> {
   String spent4 = "0.0";
   String rem4 = "0";
   bool editFour = false;
-  
+
+  final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _budget => firestore.collection('Budget');
+  //get current month
+  //DocumentReference get _currentMonth => _budget.doc(widget.month);
   @override
   Widget build(BuildContext context) {
     // setState(() {
@@ -79,7 +71,7 @@ class MyMonthState extends State<Month> {
           enterBudget(),
           MaterialButton(
             key: Key("setBudget"),
-            onPressed: () {
+            onPressed: () async {
               setState(() {
                 input = budgetController.text;
                 if (input.length > 0) {
@@ -90,18 +82,22 @@ class MyMonthState extends State<Month> {
                   };
 
                 totBudget = bud;
+                if (totBudget != null) {
+                  _budget.doc(widget.month).update({'budget': totBudget});
+                }
+
                 totRem = bud;
 
                 bud = bud / 4;
-                budget = bud.toString();
+                mybudget = bud.toString();
 
                 //totSpent = 0;
                 totSpent += widget.glSpent.toDouble();
                 totRem -= totSpent;
-                rem1 = budget;
-                rem2 = budget;
-                rem3 = budget;
-                rem4 = budget;
+                rem1 = mybudget;
+                rem2 = mybudget;
+                rem3 = mybudget;
+                rem4 = mybudget;
               });
             },
             color: Colors.green,
@@ -166,7 +162,7 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R " + budget)]),
+            children: [const Text("Budget"), Text("R " + mybudget)]),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Text("Amount Spent"),
@@ -240,7 +236,7 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R" + budget)]),
+            children: [const Text("Budget"), Text("R" + mybudget)]),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Text("Amount Spent"),
@@ -313,7 +309,7 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R" + budget)]),
+            children: [const Text("Budget"), Text("R" + mybudget)]),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Text("Amount Spent"),
@@ -386,7 +382,7 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R" + budget)]),
+            children: [const Text("Budget"), Text("R" + mybudget)]),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Text("Amount Spent"),
