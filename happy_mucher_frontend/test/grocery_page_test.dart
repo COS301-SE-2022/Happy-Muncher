@@ -38,6 +38,29 @@ void main() {
       );
 
       testWidgets(
+        'Testing page filling from database',
+        (WidgetTester tester) async {
+          await firestore
+              .collection('GroceryList')
+              .add({"name": 'juice', "price": '1', "bought": false});
+          await firestore
+              .collection('GroceryList')
+              .add({"name": 'apples', "price": '2', "bought": false});
+          await firestore
+              .collection('GroceryList')
+              .add({"name": 'bread', "price": '3', "bought": false});
+
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final listviews = find.byType(ListTile);
+
+          expect(listviews, findsNWidgets(3));
+        },
+      );
+
+      testWidgets(
         'Testing if an item is added after entering on dialog box',
         (WidgetTester tester) async {
           //test to see if the adding functionality works
