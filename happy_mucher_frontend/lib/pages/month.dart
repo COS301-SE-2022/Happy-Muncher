@@ -14,7 +14,6 @@ class Month extends StatefulWidget {
 
 class MyMonthState extends State<Month> {
   final budgetController = TextEditingController();
-
   double bud = 0;
   String input = "0";
   String mybudget = "";
@@ -29,6 +28,17 @@ class MyMonthState extends State<Month> {
   String spent1 = "0.0";
   String rem1 = "0";
   bool editOne = false;
+
+  setSpent() async {
+    var _collection = FirebaseFirestore.instance.collection('Budget');
+    var snapshot =
+        await _budget.doc(widget.month).collection('Week1').doc('Week1').get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data()!;
+      spent1 = data['amount spent'].toString();
+      //spent1 = "rands";
+    }
+  }
 
   //variables for week 2
   final spentTwoController = TextEditingController();
@@ -57,6 +67,8 @@ class MyMonthState extends State<Month> {
     // setState(() {
     //   totSpent = widget.glSpent.toDouble();
     // });
+    setSpent();
+    print("set");
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -69,9 +81,10 @@ class MyMonthState extends State<Month> {
           Text('Enter Your budget for ' + '${widget.month}',
               style: TextStyle(height: 1.2)),
           enterBudget(),
+          // setSpent(),
           MaterialButton(
             key: Key("setBudget"),
-            onPressed: () async {
+            onPressed: () {
               setState(() {
                 input = budgetController.text;
                 if (input.length > 0) {
@@ -197,10 +210,10 @@ class MyMonthState extends State<Month> {
             children: [const Text("Budget"), Text("R " + mybudget)]),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Text("Amount Spent"),
+          Text("Amount Spent"),
           Flexible(
               child: !editOne
-                  ? Text('R')
+                  ? Text('R' + spent1)
                   : TextField(
                       key: Key("spent1"),
                       textAlign: TextAlign.right,
@@ -216,6 +229,8 @@ class MyMonthState extends State<Month> {
                           totRem -= double.parse(spent1);
                           double left = double.parse(spent1);
                           totSpent += double.parse(spent1);
+                          setSpent();
+                          print("set");
                           left = bud - left;
                           rem1 = left.toString();
                           _budget
@@ -226,6 +241,7 @@ class MyMonthState extends State<Month> {
                             'amount spent': double.parse(spent1),
                             'amount remaining': rem1
                           });
+
                           editOne = false;
                         });
                       },
