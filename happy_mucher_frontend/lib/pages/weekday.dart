@@ -153,7 +153,8 @@ class MyMonthState extends State<Month> {
           alignment: Alignment.bottomRight,
           //color: Colors.green,
           //hoverColor: Colors.green,
-          icon: Icon(Icons.edit),
+          icon: Icon(Icons.add_circle),
+          iconSize: 44.0,
           onPressed: () {
             setState(() => {
                   editTwo = true,
