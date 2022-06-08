@@ -18,7 +18,7 @@ class MyMonthState extends State<Month> {
   bool editTwo = false;
 
   final dinnerController = TextEditingController();
-  String meal3 = "";
+  String meal3 = "Enter your dinner";
   bool editThree = false;
 
   Widget build(BuildContext context) {
@@ -187,9 +187,40 @@ class MyMonthState extends State<Month> {
           ),
         ),
         const SizedBox(height: 10),
-        Text("Burritto"),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Flexible(
+              child: !editThree
+                  ? Text(meal3)
+                  : TextField(
+                      key: Key("meal3"),
+                      textAlign: TextAlign.center,
+                      controller: dinnerController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your meal',
+                      ),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (value) {
+                        setState(() {
+                          meal3 = dinnerController.text;
+                          editThree = false;
+                        });
+                      },
+                    )),
+        ]),
         const SizedBox(height: 10),
-        Text("Ingredients:"),
-        Text("Tortilla, Meat, sauce"),
+        IconButton(
+          alignment: Alignment.bottomRight,
+          //color: Colors.green,
+          //hoverColor: Colors.green,
+          icon: Icon(Icons.edit),
+          onPressed: () {
+            setState(() => {
+                  editThree = true,
+                });
+          },
+        ),
+        const SizedBox(height: 10),
+        const SizedBox(height: 10),
       ]));
 }
