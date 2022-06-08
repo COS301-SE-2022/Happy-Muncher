@@ -1,16 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 
 void main() {
   group(
     'Added testing for grocery list',
     () {
+      final firestore = FakeFirebaseFirestore();
+      GetIt.I.registerSingleton<FirebaseFirestore>(firestore);
       const testApp = MaterialApp(
         home: Scaffold(
           body: GroceryListPage(),
         ),
       );
+
+      setUp(() async {
+        final query = await firestore.collection('GroceryList').get();
+        final futures = query.docs.map((e) {
+          return firestore.collection('GroceryList').doc(e.id).delete();
+        });
+        return await Future.wait(futures);
+      });
       testWidgets(
         'Testing if page is empty on start up',
         (WidgetTester tester) async {
@@ -20,10 +33,7 @@ void main() {
           await tester.pumpWidget(testApp);
 
           final inventoryList = find.byKey(const Key('Grocery_ListView'));
-          expect(inventoryList, findsOneWidget);
-
-          final listTiles = find.byType(ListTile);
-          expect(listTiles, findsNothing);
+          expect(inventoryList, findsNothing);
         },
       );
 
