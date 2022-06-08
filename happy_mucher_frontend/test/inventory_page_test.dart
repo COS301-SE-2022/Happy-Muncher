@@ -121,6 +121,34 @@ void main() {
           expect(listTiles, findsOneWidget);
         },
       );
+
+      testWidgets(
+        'Testing deleting',
+        (WidgetTester tester) async {
+          await firestore.collection('Inventory').add({
+            "itemName": 'juice',
+            "quantity": 1,
+            "expirationDate": DateTime.now().toString(),
+          });
+
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final itemListTile = find.byType(ListTile);
+
+          await tester.drag(itemListTile, const Offset(200, 0));
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final deleteButton = find.byType(SlidableAction).first;
+          await tester.tap(deleteButton);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          expect(itemListTile, findsNothing);
+        },
+      );
     },
   );
 }
