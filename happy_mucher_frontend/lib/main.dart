@@ -1,5 +1,4 @@
-// @dart=2.9
-//
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,17 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  final firestore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
+
+  runApp(MyApp(firestore: firestore, firebaseAuth: firebaseAuth));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
+  const MyApp({Key? key, required this.firestore, required this.firebaseAuth})
+      : super(key: key);
 
   static const String _title = 'Happy Muncher';
 
@@ -35,7 +40,7 @@ class MyApp extends StatelessWidget {
 
 //
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key key}) : super(key: key);
+  const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();

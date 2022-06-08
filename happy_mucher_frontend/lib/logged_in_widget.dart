@@ -1,4 +1,3 @@
-// @dart=2.9
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
@@ -23,16 +22,16 @@ class LoggedInWidget extends StatelessWidget {
           SizedBox(height: 8),
           CircleAvatar(
             maxRadius: 25,
-            backgroundImage: NetworkImage(user.photoURL),
+            backgroundImage: NetworkImage(user!.photoURL!),
           ),
           SizedBox(height: 8),
           Text(
-            'Name: ' + user.displayName,
+            'Name: ${user.displayName}',
             style: TextStyle(color: Colors.white),
           ),
           SizedBox(height: 8),
           Text(
-            'Email: ' + user.email,
+            'Email: ${user.email}',
             style: TextStyle(color: Colors.white),
           ),
           SizedBox(height: 8),
