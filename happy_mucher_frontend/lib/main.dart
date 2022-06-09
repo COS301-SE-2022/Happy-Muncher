@@ -20,6 +20,7 @@ Future main() async {
   final firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
 
+
   GetIt.I.registerSingleton(firestore);
   GetIt.I.registerSingleton(firebaseAuth);
 
