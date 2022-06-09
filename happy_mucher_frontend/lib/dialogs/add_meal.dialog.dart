@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<InventoryItemParams?> addInventoryDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const _InventoryDialog());
+Future<MealItemParams?> addMealDialog(BuildContext context) {
+  return showDialog(context: context, builder: (_) => const _MealDialog());
 }
 
-class _InventoryDialog extends StatefulWidget {
-  const _InventoryDialog({Key? key}) : super(key: key);
+class _MealDialog extends StatefulWidget {
+  const _MealDialog({Key? key}) : super(key: key);
 
   @override
-  State<_InventoryDialog> createState() => _InventoryDialogState();
+  State<_MealDialog> createState() => _MealDialogState();
 }
 
-class _InventoryDialogState extends State<_InventoryDialog> {
+class _MealDialogState extends State<_MealDialog> {
   final nameController = TextEditingController();
-  final quantityController = TextEditingController();
+  final quantityContoller = TextEditingController();
   final dateFieldController = TextEditingController();
-
-  final FirebaseFirestore firestore = GetIt.I.get();
-
-  CollectionReference get _products => firestore.collection('Inventory');
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
@@ -35,26 +29,12 @@ class _InventoryDialogState extends State<_InventoryDialog> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
-              key: const Key('inventoryDialogNameField'),
+              key: const Key('MealDialogNameField'),
               controller: nameController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
                 label: Text('Name'),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: TextField(
-              key: const Key('inventoryDialogQuantityField'),
-              controller: quantityController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: false),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                isDense: true,
-                label: Text('Quantity'),
               ),
             ),
           ),
@@ -73,7 +53,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                   ),
                 ),
                 IconButton(
-                  key: const Key('inventoryDialogCalendarPickButton'),
+                  key: const Key('MealDialogCalendarPickButton'),
                   onPressed: () async {
                     final chosenDate = await showDatePicker(
                       context: context,
@@ -100,22 +80,19 @@ class _InventoryDialogState extends State<_InventoryDialog> {
       ),
       actions: [
         TextButton(
-          key: const Key('inventoryDialogAddButton'),
-          onPressed: () async {
-            final String name = nameController.text;
-            final double? quantity = double.tryParse(quantityController.text);
-            final String expD = dateFieldController.text;
-            if (quantity != null) {
-              await _products.add({
-                "expirationDate": expD,
-                "itemName": name,
-                "quantity": quantity
-              });
+          key: const Key('MealDialogAddButton'),
+          onPressed: () {
+            final name = nameController.text;
+            final date = expirationDate;
 
-              nameController.text = '';
-              quantityController.text = '';
-              dateFieldController.text = '';
-              Navigator.of(context).pop();
+            if (date != null) {
+              Navigator.pop(
+                context,
+                MealItemParams(
+                  name: name,
+                  date: date,
+                ),
+              );
             }
           },
           child: const Text('Add'),
@@ -125,13 +102,11 @@ class _InventoryDialogState extends State<_InventoryDialog> {
   }
 }
 
-class InventoryItemParams {
+class MealItemParams {
   final String name;
-  final int quantity;
   final DateTime date;
 
-  InventoryItemParams({
-    required this.quantity,
+  MealItemParams({
     required this.name,
     required this.date,
   });

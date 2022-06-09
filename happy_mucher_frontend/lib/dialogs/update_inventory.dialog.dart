@@ -3,18 +3,27 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<InventoryItemParams?> addInventoryDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const _InventoryDialog());
+Future<void> showUpdateDialog(BuildContext context, DocumentSnapshot document) {
+  return showDialog(
+    context: context,
+    builder: (_) => IventoryDialog(documentSnapshot: document),
+  );
 }
 
-class _InventoryDialog extends StatefulWidget {
-  const _InventoryDialog({Key? key}) : super(key: key);
+class IventoryDialog extends StatefulWidget {
+  final DocumentSnapshot documentSnapshot;
+  const IventoryDialog({Key? key, required this.documentSnapshot})
+      : super(key: key);
 
   @override
-  State<_InventoryDialog> createState() => _InventoryDialogState();
+  State<IventoryDialog> createState() {
+    return _UpdateIventoryPageState(documentSnapshot);
+  }
 }
 
-class _InventoryDialogState extends State<_InventoryDialog> {
+class _UpdateIventoryPageState extends State<IventoryDialog> {
+  // text fields' controllers
+  // text fields' controllers
   final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
@@ -25,9 +34,19 @@ class _InventoryDialogState extends State<_InventoryDialog> {
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
+  DocumentSnapshot documentSnapshot;
+  _UpdateIventoryPageState(this.documentSnapshot);
 
   @override
   Widget build(BuildContext context) {
+    if (documentSnapshot != null) {
+      nameController.text = documentSnapshot['itemName'];
+      quantityController.text = documentSnapshot['quantity'].toString();
+
+      dateFieldController.text = documentSnapshot['expirationDate'];
+      dateFieldController.text.toString();
+    }
+
     return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -103,10 +122,11 @@ class _InventoryDialogState extends State<_InventoryDialog> {
           key: const Key('inventoryDialogAddButton'),
           onPressed: () async {
             final String name = nameController.text;
-            final double? quantity = double.tryParse(quantityController.text);
+            final num? quantity = num.tryParse(quantityController.text);
             final String expD = dateFieldController.text;
+
             if (quantity != null) {
-              await _products.add({
+              await _products.doc(documentSnapshot.id).update({
                 "expirationDate": expD,
                 "itemName": name,
                 "quantity": quantity
@@ -118,7 +138,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
               Navigator.of(context).pop();
             }
           },
-          child: const Text('Add'),
+          child: const Text('Update'),
         )
       ],
     );
