@@ -11,9 +11,9 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 ## System Requirement Specification
 [SRS Document DEMO 1](https://drive.google.com/file/d/1cj38yS1u46nPYsl6bdmmLr3X9dtbMNRl/view?usp=sharing)
 
-[SRS Document DEMO 2](https://drive.google.com/file/d/1YFDkelCUVaHnaCqa4YK2TMixYq0FU9Pc/view?usp=sharing)
+[SRS Document DEMO 2](https://drive.google.com/file/d/1VKqbD6iUybg-Qb4P_Eu_0QOKMFPFCW6p/view?usp=sharing)
 ## Architecture Requirements Document
-[Architecture Requirements Document DEMO 2]()
+[Architecture Requirements Document DEMO 2](https://drive.google.com/file/d/1brHfv6RnfkvYVkmhGgPHpmi61FbnPSoK/view?usp=sharing)
 ## Coding standards Document
 [Coding standards Document DEMO 2](https://drive.google.com/file/d/1YFDkelCUVaHnaCqa4YK2TMixYq0FU9Pc/view?usp=sharing)
 ## User Manual
