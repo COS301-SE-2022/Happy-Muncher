@@ -71,7 +71,7 @@ class MyMonthState extends State<Month> {
   Future<void> setSpent() async {
     // Get docs from collection reference
     //QuerySnapshot querySnapshot = await _budget.get();
-    FirebaseFirestore.instance
+    firestore
         .collection('Budget')
         .doc(widget.month)
         .collection('Week1')
@@ -83,7 +83,7 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    FirebaseFirestore.instance
+    firestore
         .collection('Budget')
         .doc(widget.month)
         .collection('Week2')
@@ -95,7 +95,7 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    FirebaseFirestore.instance
+    firestore
         .collection('Budget')
         .doc(widget.month)
         .collection('Week3')
@@ -107,7 +107,7 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    FirebaseFirestore.instance
+    firestore
         .collection('Budget')
         .doc(widget.month)
         .collection('Week4')
