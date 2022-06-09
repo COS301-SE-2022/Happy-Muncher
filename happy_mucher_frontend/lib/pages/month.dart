@@ -781,7 +781,7 @@ class MyMonthState extends State<Month> {
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
       },
     );
 
