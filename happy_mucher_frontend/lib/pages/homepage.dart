@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -34,6 +37,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('HAPPY MUNCHER'),
+        actions: <Widget>[
+          FlatButton(
+            child: Row(
+              children: <Widget>[Text('Logout'), Icon(Icons.logout)],
+            ),
+            textColor: Colors.white,
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+            },
+          )
+        ],
       ),
       body: Center(
         child: Column(
