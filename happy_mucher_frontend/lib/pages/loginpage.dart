@@ -1,4 +1,3 @@
-// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,14 +36,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState.validate()) {
+    if (!_formKey.currentState!.validate()) {
       return;
     }
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
 
     try {
       await Provider.of<Authentication>(context, listen: false)
-          .logIn(_authData['email'], _authData['password']);
+          .logIn(_authData['email']!, _authData['password']!);
       Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
     } catch (error) {
       var errorMessage = 'Authentication Failed. Please try again later.';
@@ -105,13 +104,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value.isEmpty || !value.contains('@')) {
+                          if (value!.isEmpty || !value.contains('@')) {
                             return 'invalid email';
                           }
                           return null;
                         },
                         onSaved: (value) {
-                          _authData['email'] = value;
+                          _authData['email'] = value!;
                         },
                       ),
 
@@ -121,13 +120,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
                         validator: (value) {
-                          if (value.isEmpty || value.length <= 5) {
+                          if (value!.isEmpty || value.length <= 5) {
                             return 'invalid password';
                           }
                           return null;
                         },
                         onSaved: (value) {
-                          _authData['password'] = value;
+                          _authData['password'] = value!;
                         },
                       ),
                       SizedBox(
@@ -216,7 +215,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> signup(BuildContext context) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount.authentication;
@@ -226,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Getting users credential
       UserCredential result = await auth.signInWithCredential(authCredential);
-      User user = result.user;
+      User user = result.user!;
 
       if (result != null) {
         Navigator.pushReplacement(
