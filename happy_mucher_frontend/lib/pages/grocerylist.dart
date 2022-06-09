@@ -89,9 +89,5 @@ class GroceryListItem {
 //  APPBAR
 //    ICON + TEXT
 //  COLUMN
-//    EXPANDED (TO FILL UP SCREEN)
-//      LISTVIEW (LIST OF TILES)
-//       LIST TILE (LIST THAT CONTAINS INFO)
-//         TEXT + TEXT
-// 
+//  
 
