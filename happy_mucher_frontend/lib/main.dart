@@ -7,6 +7,7 @@ import 'pages/loginpage.dart';
 import 'pages/signuppage.dart';
 import 'models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
+//import 'package:dcdg/dcdg.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
