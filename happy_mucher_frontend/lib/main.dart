@@ -1,12 +1,29 @@
-// @dart=2.9
-//
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
+//import 'package:happy_muncher/widget/background_painter.dart';
+import 'package:happy_mucher_frontend/sign_up_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 
-void main() => runApp(const MyApp());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  final firestore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
+
+  GetIt.I.registerSingleton(firestore);
+  GetIt.I.registerSingleton(firebaseAuth);
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   static const String _title = 'Happy Muncher';
 
@@ -22,8 +39,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key key}) : super(key: key);
+  const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
@@ -87,7 +105,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             ),
             Container(
                 height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: const EdgeInsets.all(10),
                 child: ElevatedButton(
                   child: const Text('Login'),
                   onPressed: () {
@@ -113,13 +131,44 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ],
               mainAxisAlignment: MainAxisAlignment.center,
             ),
-            Row(
-              children: <Widget>[
-                const Text('Sign in with google'),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            )
+            /*Flexible(
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                height: 300,
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: buildSignUp(),
+              ),
+            ),*/
           ],
         ));
   }
+
+  /* Widget buildSignUp() => Scaffold(
+        body: ChangeNotifierProvider(
+          create: (context) => GoogleSignInProvider(),
+          child: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              final provider = Provider.of<GoogleSignInProvider>(context);
+
+              if (provider.isSigningIn) {
+                return buildLoading();
+              } else if (snapshot.hasData) {
+                return MyHomePage();
+              } else {
+                return SignUpWidget();
+              }
+            },
+          ),
+        ),
+      );
+
+  Widget buildLoading() => Stack(
+        fit: StackFit.expand,
+        children: [
+          //CustomPaint(painter: BackgroundPainter()),
+          Center(child: CircularProgressIndicator()),
+        ],
+      );*/
 }

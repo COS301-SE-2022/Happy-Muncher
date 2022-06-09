@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
-import 'package:intl/intl.dart';
+import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -10,71 +13,87 @@ class IventoryPage extends StatefulWidget {
 }
 
 class _IventoryPageState extends State<IventoryPage> {
-  static final dateFormat = DateFormat('yyyy-MM-dd');
+  // text fields' controllers
+  // text fields' controllers
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _expController = TextEditingController();
 
-  List<IventoryItem> inventoryList = [];
+  final FirebaseFirestore firestore = GetIt.I.get();
 
+  CollectionReference get _products => firestore.collection('Inventory');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.fastfood),
-        title: const Text(
-          'Inventory',
+        appBar: AppBar(
+          title: const Text('Inventory'),
+          centerTitle: true,
         ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              key: const Key('Inventory_ListView'),
-              itemCount: inventoryList.length,
-              itemBuilder: (context, index) {
-                final item = inventoryList[index];
-
-                return ListTile(
-                  title: Text('${item.quantity} x ${item.itemName}'),
-                  trailing: Text(dateFormat.format(item.expirationDate)),
-                );
-              },
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: IconButton(
-                  key: const Key('addToInventoryButton'),
-                  onPressed: () async {
-                    final returnedItem = await addInventoryDialog(context);
-                    if (returnedItem != null) {
-                      setState(() {
-                        inventoryList.add(IventoryItem(
-                          quantity: returnedItem.quantity,
-                          itemName: returnedItem.name,
-                          expirationDate: returnedItem.date,
-                        ));
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.add_circle),
-                  iconSize: 64.0,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.photo_camera),
-                  iconSize: 64.0,
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+        body: StreamBuilder(
+          stream: _products.snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+            if (streamSnapshot.hasData) {
+              return ListView.builder(
+                key: const Key('Inventory_ListView'),
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[index];
+                  return Slidable(
+                    key: Key(documentSnapshot['itemName']),
+                    startActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) {
+                            setState(() {
+                              _products.doc(documentSnapshot.id).delete();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'You have successfully deleted a product')));
+                            });
+                          },
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        ),
+                        SlidableAction(
+                          onPressed: (context) {
+                            showUpdateDialog(context, documentSnapshot);
+                          },
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          icon: Icons.edit,
+                          label: 'Edit',
+                        )
+                      ],
+                    ),
+                    child: ListTile(
+                      title: Text(documentSnapshot['quantity'].toString() +
+                          ' \u{00D7} ' +
+                          documentSnapshot['itemName'] +
+                          ' '),
+                      trailing:
+                          Text(documentSnapshot['expirationDate'].toString()),
+                    ),
+                  );
+                },
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+// Add new product
+        floatingActionButton: FloatingActionButton(
+          key: const Key('addToInventoryButton'),
+          onPressed: () => addInventoryDialog(context),
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 }
 
@@ -94,14 +113,3 @@ class _IventoryPageState extends State<IventoryPage> {
 //        ICONBUTTON
 
 //CLASS OF THE RETURNED LIST ITEM
-class IventoryItem {
-  final String itemName;
-  final int quantity;
-  final DateTime expirationDate;
-
-  IventoryItem({
-    required this.quantity,
-    required this.itemName,
-    required this.expirationDate,
-  });
-}
