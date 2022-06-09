@@ -3,6 +3,8 @@ import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
+import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -62,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                           builder: (context) => GroceryListPage()));
                 },
-                color: Colors.green,
+                color: Colors.blue,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
@@ -83,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => IventoryPage()));
                 },
-                color: Colors.green,
+                color: Colors.blue,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
@@ -104,11 +106,32 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Budget()));
                 },
-                color: Colors.green,
+                color: Colors.blue,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
                   "Create Your Budget",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              width: 200,
+              height: 50,
+              child: RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MealPage()));
+                },
+                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Text(
+                  "Plan a meal",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
