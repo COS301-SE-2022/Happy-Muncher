@@ -34,6 +34,7 @@ class _IventoryPageState extends State<IventoryPage> {
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
             if (streamSnapshot.hasData) {
               return ListView.builder(
+                key: const Key('Inventory_ListView'),
                 itemCount: streamSnapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
@@ -81,7 +82,6 @@ class _IventoryPageState extends State<IventoryPage> {
                 },
               );
             }
-
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -89,6 +89,7 @@ class _IventoryPageState extends State<IventoryPage> {
         ),
 // Add new product
         floatingActionButton: FloatingActionButton(
+          key: const Key('addToInventoryButton'),
           onPressed: () => addInventoryDialog(context),
           child: const Icon(Icons.add),
         ),

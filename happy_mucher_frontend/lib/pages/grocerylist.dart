@@ -37,6 +37,7 @@ class GroceryListPageState extends State<GroceryListPage> {
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
             if (streamSnapshot.hasData) {
               return ListView.builder(
+                key: const Key('Grocery_ListView'),
                 itemCount: streamSnapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
@@ -112,6 +113,7 @@ class GroceryListPageState extends State<GroceryListPage> {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          key: const Key('addToGroceryListButton'),
           onPressed: () => addGLDialog(context),
           child: const Icon(Icons.add),
         ),
