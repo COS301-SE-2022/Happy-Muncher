@@ -8,7 +8,7 @@ import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
 import 'package:happy_mucher_frontend/sign_up_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
-import 'package:dcdg/dcdg.dart';
+//import 'package:dcdg/dcdg.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

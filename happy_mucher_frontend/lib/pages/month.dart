@@ -166,6 +166,30 @@ class MyMonthState extends State<Month> {
             //hoverColor: Colors.green,
             icon: Icon(Icons.refresh),
             onPressed: () {
+              totSpent = 0;
+              setSpent();
+              print('spent set');
+              totSpent += double.parse(spent1) +
+                  double.parse(spent2) +
+                  double.parse(spent3) +
+                  double.parse(spent4);
+
+              double update = 0;
+
+              _groceryList.get().then((QuerySnapshot qs) {
+                qs.docs.forEach((doc) {
+                  if (doc["bought"] == true) {
+                    bought.add(doc["price"]);
+                  }
+                });
+                //print("bought");
+              });
+              bought.forEach((element) {
+                update += double.parse(element);
+              });
+              //print("got update");
+              //print(update);
+              totSpent += update;
               setState(() => {});
             },
           ),
@@ -179,7 +203,7 @@ class MyMonthState extends State<Month> {
             key: Key("setBudget"),
             onPressed: () {
               setState(() {
-                totSpent = 0;
+                //totSpent = 0;
                 input = budgetController.text;
                 if (input.length > 0) {
                   bud = double.parse(input);
@@ -200,32 +224,11 @@ class MyMonthState extends State<Month> {
 
                 //totSpent = 0;
                 //totSpent += widget.glSpent.toDouble();
-                setSpent();
-                print('spent set');
-                totSpent += double.parse(spent1) +
-                    double.parse(spent2) +
-                    double.parse(spent3) +
-                    double.parse(spent4);
 
-                double update = 0;
-
-                _groceryList.get().then((QuerySnapshot qs) {
-                  qs.docs.forEach((doc) {
-                    if (doc["bought"] == true) {
-                      bought.add(doc["price"]);
-                    }
-                  });
-                  //print("bought");
-                });
-                bought.forEach((element) {
-                  update += double.parse(element);
-                });
-                //print("got update");
-                //print(update);
-                totSpent += update;
                 //print("spent update");
                 // print(totSpent);
                 totRem -= totSpent;
+                print("rem");
                 rem1 = mybudget;
                 updateSpent = double.parse(rem1);
                 updateSpent -= double.parse(spent1);
