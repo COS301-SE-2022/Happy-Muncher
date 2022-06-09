@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/loginpage.dart';
@@ -13,6 +15,12 @@ import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  final firestore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
+
+  GetIt.I.registerSingleton(firestore);
+  GetIt.I.registerSingleton(firebaseAuth);
 
   runApp(MyApp());
 }

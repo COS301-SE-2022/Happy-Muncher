@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -27,8 +28,9 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
   final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
 
-  final CollectionReference _products =
-      FirebaseFirestore.instance.collection('Inventory');
+  final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _products => firestore.collection('Inventory');
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;

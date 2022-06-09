@@ -91,14 +91,14 @@ packages:
       name: fake_async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.0"
-  file:
-    dependency: transitive
+    version: "1.2.0"
+  fake_cloud_firestore:
+    dependency: "direct main"
     description:
-      name: file
+      name: fake_cloud_firestore
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.2"
+    version: "1.2.2"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -182,11 +182,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "10.1.0"
-  fuchsia_remote_debug_protocol:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.2.0"
   google_sign_in:
     dependency: "direct main"
     description:
@@ -222,13 +224,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.1+3"
-  http:
-    dependency: "direct main"
-    description:
-      name: http
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.13.4"
   http_parser:
     dependency: transitive
     description:
@@ -236,11 +231,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
-  integration_test:
-    dependency: "direct dev"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   intl:
     dependency: "direct main"
     description:
@@ -311,13 +301,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  process:
-    dependency: transitive
-    description:
-      name: process
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.2.4"
   provider:
     dependency: "direct main"
     description:
@@ -332,6 +315,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.27.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -415,5 +405,5 @@ packages:
     source: hosted
     version: "3.0.0"
 sdks:
-  dart: ">=2.17.0-206.0.dev <3.0.0"
+  dart: ">=2.16.2 <3.0.0"
   flutter: ">=2.8.0"

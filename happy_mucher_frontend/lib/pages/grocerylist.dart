@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,11 +19,11 @@ class GroceryListPageState extends State<GroceryListPage> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
 
-  final CollectionReference _products =
-      FirebaseFirestore.instance.collection('GroceryList');
+  final FirebaseFirestore firestore = GetIt.I.get();
 
-  final CollectionReference _inventory =
-      FirebaseFirestore.instance.collection('Inventory');
+  CollectionReference get _products => firestore.collection('GroceryList');
+
+  CollectionReference get _inventory => firestore.collection('Inventory');
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class GroceryListPageState extends State<GroceryListPage> {
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
             if (streamSnapshot.hasData) {
               return ListView.builder(
+                key: const Key('Grocery_ListView'),
                 itemCount: streamSnapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
@@ -111,6 +113,7 @@ class GroceryListPageState extends State<GroceryListPage> {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          key: const Key('addToGroceryListButton'),
           onPressed: () => addGLDialog(context),
           child: const Icon(Icons.add),
         ),
