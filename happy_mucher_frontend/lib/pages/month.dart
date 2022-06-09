@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
+import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
@@ -29,17 +32,6 @@ class MyMonthState extends State<Month> {
   String rem1 = "0";
   bool editOne = false;
 
-  setSpent() async {
-    var _collection = FirebaseFirestore.instance.collection('Budget');
-    var snapshot =
-        await _budget.doc(widget.month).collection('Week1').doc('Week1').get();
-    if (snapshot.exists) {
-      Map<String, dynamic> data = snapshot.data()!;
-      spent1 = data['amount spent'].toString();
-      //spent1 = "rands";
-    }
-  }
-
   //variables for week 2
   final spentTwoController = TextEditingController();
   String spent2 = "0.0";
@@ -60,15 +52,105 @@ class MyMonthState extends State<Month> {
 
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _budget => firestore.collection('Budget');
+  CollectionReference get _groceryList => firestore.collection('GroceryList');
+
+  // setSpent() async {
+  //   //var _collection = FirebaseFirestore.instance.collection('Budget');
+  //   var snapshot =
+  //       await _budget.doc(widget.month).collection('Week1').doc('Week1').get();
+  //   if (snapshot.exists) {
+  //     Map<String, dynamic> data = snapshot.data()!;
+  //     spent1 = data['amount spent'].toString();
+  //     print(spent1);
+  //   }
+  // }
+
+  List<String> bought = [];
+  List<String> estimate = [];
+
+  Future<void> setSpent() async {
+    // Get docs from collection reference
+    //QuerySnapshot querySnapshot = await _budget.get();
+    FirebaseFirestore.instance
+        .collection('Budget')
+        .doc(widget.month)
+        .collection('Week1')
+        .get()
+        .then((QuerySnapshot qs) {
+      qs.docs.forEach((doc) {
+        spent1 = doc["amount spent"].toString();
+        print(doc["amount spent"]);
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('Budget')
+        .doc(widget.month)
+        .collection('Week2')
+        .get()
+        .then((QuerySnapshot qs) {
+      qs.docs.forEach((doc) {
+        spent2 = doc["amount spent"].toString();
+        print(doc["amount spent"]);
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('Budget')
+        .doc(widget.month)
+        .collection('Week3')
+        .get()
+        .then((QuerySnapshot qs) {
+      qs.docs.forEach((doc) {
+        spent3 = doc["amount spent"].toString();
+        print(doc["amount spent"]);
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('Budget')
+        .doc(widget.month)
+        .collection('Week4')
+        .get()
+        .then((QuerySnapshot qs) {
+      qs.docs.forEach((doc) {
+        spent4 = doc["amount spent"].toString();
+        print(doc["amount spent"]);
+      });
+    });
+  }
+
+  ///figure out how to display info on page startup
+  @override
+  void initState() {
+    super.initState();
+
+    setSpent();
+    print("set");
+  }
+
   //get current month
   //DocumentReference get _currentMonth => _budget.doc(widget.month);
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   totSpent = widget.glSpent.toDouble();
+    //print("total spent" + totSpent.toString());
+    //getsp();
+    // FirebaseFirestore.instance
+    //     .collection('Budget')
+    //     .doc(widget.month)
+    //     .collection('Week2')
+    //     .get()
+    //     .then((QuerySnapshot qs) {
+    //   qs.docs.forEach((doc) {
+    //     print("Here");S
+    //     //spent1 = doc["amount spent"].toString();
+    //     print(doc["amount spent"]);
+    //     print("done");
+    //   });
     // });
     setSpent();
-    print("set");
+    setState(() {});
+    print("calling");
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -78,14 +160,26 @@ class MyMonthState extends State<Month> {
       body: ListView(
         padding: const EdgeInsets.all(32),
         children: <Widget>[
+          IconButton(
+            alignment: Alignment.topCenter,
+            //color: Colors.green,
+            //hoverColor: Colors.green,
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              setState(() => {});
+            },
+          ),
           Text('Enter Your budget for ' + '${widget.month}',
               style: TextStyle(height: 1.2)),
-          enterBudget(),
+
           // setSpent(),
+
+          enterBudget(),
           MaterialButton(
             key: Key("setBudget"),
             onPressed: () {
               setState(() {
+                totSpent = 0;
                 input = budgetController.text;
                 if (input.length > 0) {
                   bud = double.parse(input);
@@ -98,50 +192,94 @@ class MyMonthState extends State<Month> {
                 if (totBudget != null) {
                   _budget.doc(widget.month).update({'budget': totBudget});
                 }
-
+                double updateSpent = 0;
                 totRem = bud;
 
                 bud = bud / 4;
                 mybudget = bud.toString();
 
                 //totSpent = 0;
-                totSpent += widget.glSpent.toDouble();
+                //totSpent += widget.glSpent.toDouble();
+                setSpent();
+                print('spent set');
+                totSpent += double.parse(spent1) +
+                    double.parse(spent2) +
+                    double.parse(spent3) +
+                    double.parse(spent4);
+
+                double update = 0;
+
+                _groceryList.get().then((QuerySnapshot qs) {
+                  qs.docs.forEach((doc) {
+                    if (doc["bought"] == true) {
+                      bought.add(doc["price"]);
+                    }
+                  });
+                  //print("bought");
+                });
+                bought.forEach((element) {
+                  update += double.parse(element);
+                });
+                //print("got update");
+                //print(update);
+                totSpent += update;
+                //print("spent update");
+                // print(totSpent);
                 totRem -= totSpent;
                 rem1 = mybudget;
+                updateSpent = double.parse(rem1);
+                updateSpent -= double.parse(spent1);
+                rem1 = updateSpent.toString();
+                // print("rem1");
+                // print(rem1);
                 //update DB for week 1
                 _budget
                     .doc(widget.month)
                     .collection('Week1')
                     .doc('Week1')
                     .update({
-                  'budget': double.parse(rem1),
+                  'budget': double.parse(mybudget),
+                  'amount remaining': double.parse(rem1),
                 });
+
                 rem2 = mybudget;
+                updateSpent = double.parse(rem2);
+                updateSpent -= double.parse(spent2);
+                rem2 = updateSpent.toString();
                 //update DB for week 2
                 _budget
                     .doc(widget.month)
                     .collection('Week2')
                     .doc('Week2')
                     .update({
-                  'budget': double.parse(rem2),
+                  'budget': double.parse(mybudget),
+                  'amount remaining': double.parse(rem2),
                 });
                 rem3 = mybudget;
+                updateSpent = double.parse(rem3);
+                updateSpent -= double.parse(spent3);
+                rem3 = updateSpent.toString();
                 //update DB for week 3
                 _budget
                     .doc(widget.month)
                     .collection('Week3')
                     .doc('Week3')
                     .update({
-                  'budget': double.parse(rem3),
+                  'budget': double.parse(mybudget),
+                  'amount remaining': double.parse(rem3),
                 });
                 rem4 = mybudget;
+                updateSpent = double.parse(rem4);
+                updateSpent -= double.parse(spent4);
+                rem4 = updateSpent.toString();
                 //update DB for week 4
                 _budget
                     .doc(widget.month)
                     .collection('Week4')
                     .doc('Week4')
                     .update({
-                  'budget': double.parse(rem4),
+                  'budget': double.parse(mybudget),
+                  'amount remaining': double.parse(rem4),
                 });
               });
             },
@@ -229,7 +367,7 @@ class MyMonthState extends State<Month> {
                           totRem -= double.parse(spent1);
                           double left = double.parse(spent1);
                           totSpent += double.parse(spent1);
-                          setSpent();
+                          //setSpent();
                           print("set");
                           left = bud - left;
                           rem1 = left.toString();
@@ -557,12 +695,65 @@ class MyMonthState extends State<Month> {
               child: Text("Total Amount Remaining:  " + totRem.toString())),
         ),
       ]));
+  // Future<void> getData() async {
+  //   // Get docs from collection reference
+  //   QuerySnapshot querySnapshot = await _groceryList.get();
+  //   FirebaseFirestore.instance
+  //       .collection('GroceryList')
+  //       .get()
+  //       .then((QuerySnapshot qs) {
+  //     qs.docs.forEach((doc) {
+  //       if (doc["bought"] == true) {
+  //         bought.add(doc["price"]);
+  //       }
+  //       estimate.add(doc["price"]);
+  //       print("bought");
+  //       print(bought);
+  //       print("estimate");
+  //       print(estimate);
+  //     });
+  //   });
+  // }
+  getGL() {
+    // bought.clear();
+    //estimate.clear();
+    //QuerySnapshot querySnapshot = await _budget.get();
+  }
 
+  double est = 0;
+  double update = 0;
   Widget EstTotal() => ElevatedButton(
         onPressed: () {
+          //getGL();
+          FirebaseFirestore.instance
+              .collection('GroceryList')
+              .get()
+              .then((QuerySnapshot qs) {
+            qs.docs.forEach((doc) {
+              // if (doc["bought"] == true) {
+              //   bought.add(doc["price"]);
+              // }
+              estimate.add(doc["price"]);
+            });
+            // print("bought");
+            // print(bought);
+            print("estimate");
+            print(estimate);
+          });
+          print("getGL called");
+          print(estimate);
+          if (estimate.isEmpty) {
+            print("values not set");
+          }
+          estimate.forEach((element) {
+            est += double.parse(element);
+            print("got estimates");
+            print(est);
+          });
+
           String message = "";
           double comp = 0;
-          comp += widget.price;
+          comp += est;
           compMessage = " Your estimated total is R " + comp.toString() + ". ";
           if (comp < totBudget) {
             message = "Your Grocery List is within budget. ";
@@ -579,7 +770,7 @@ class MyMonthState extends State<Month> {
           });
           showAlertDialog(context);
         },
-        child: Text("compare"),
+        child: Text("Compare to Grocery List"),
       );
 
   showAlertDialog(BuildContext context) {
