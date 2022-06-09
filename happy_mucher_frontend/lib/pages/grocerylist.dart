@@ -93,10 +93,5 @@ class GroceryListItem {
 //      LISTVIEW (LIST OF TILES)
 //       LIST TILE (LIST THAT CONTAINS INFO)
 //         TEXT + TEXT
-//    ROW (BOTTOM 2 BUTTONS)
-//      PADDING
-//        ICONBUTTON
-//      PADDING
-//        ICONBUTTON
-
+// 
 
