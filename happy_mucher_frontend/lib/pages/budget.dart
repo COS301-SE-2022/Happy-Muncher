@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'month.dart';
 
-void main() {
-  runApp(const Budget());
-}
+// void main() {
+//   runApp(const Budget());
+// }
 
 class Budget extends StatelessWidget {
   const Budget({Key? key}) : super(key: key);
@@ -46,10 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("jan"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "January 2020"),
+                  builder: (context) => const Month(month: "January"),
                 ));
               },
-              child: const Text("January 2020"),
+              child: const Text("January "),
             ),
 
             //Feb
@@ -57,10 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("feb"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "February 2020"),
+                  builder: (context) => const Month(month: "February"),
                 ));
               },
-              child: const Text("February 2020"),
+              child: const Text("February "),
             ),
 
             //March
@@ -68,10 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("mar"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "March 2020"),
+                  builder: (context) => const Month(month: "March"),
                 ));
               },
-              child: const Text("March 2020"),
+              child: const Text("March "),
             ),
 
             //April
@@ -79,10 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("apr"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "April 2020"),
+                  builder: (context) => const Month(month: "April"),
                 ));
               },
-              child: const Text("April 2020"),
+              child: const Text("April "),
             ),
 
             //May
@@ -90,10 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("may"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "May 2020"),
+                  builder: (context) => const Month(month: "May"),
                 ));
               },
-              child: const Text("May 2020"),
+              child: const Text("May "),
             ),
 
             //June
@@ -101,10 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("jun"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "June 2020"),
+                  builder: (context) => const Month(month: "June"),
                 ));
               },
-              child: const Text("June 2020"),
+              child: const Text("June "),
             ),
 
             //July
@@ -112,10 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("jul"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "July 2020"),
+                  builder: (context) => const Month(month: "July"),
                 ));
               },
-              child: const Text("July 2020"),
+              child: const Text("July "),
             ),
 
             //August
@@ -123,10 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("aug"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "August 2020"),
+                  builder: (context) => const Month(month: "August"),
                 ));
               },
-              child: const Text("August 2020"),
+              child: const Text("August "),
             ),
 
             //September
@@ -134,10 +134,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("sept"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "September 2020"),
+                  builder: (context) => const Month(month: "September"),
                 ));
               },
-              child: const Text("September 2020"),
+              child: const Text("September "),
             ),
 
             //October
@@ -145,10 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("oct"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "October 2020"),
+                  builder: (context) => const Month(month: "October"),
                 ));
               },
-              child: const Text("October 2020"),
+              child: const Text("October "),
             ),
 
             //November
@@ -156,10 +156,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("nov"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "November 2020"),
+                  builder: (context) => const Month(month: "November"),
                 ));
               },
-              child: const Text("November 2020"),
+              child: const Text("November "),
             ),
 
             //December
@@ -167,10 +167,10 @@ class _MyHomePageState extends State<MyHomePage> {
               key: Key("dec"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "December 2020"),
+                  builder: (context) => const Month(month: "December"),
                 ));
               },
-              child: const Text("December 2020"),
+              child: const Text("December "),
             ),
           ],
         ));
