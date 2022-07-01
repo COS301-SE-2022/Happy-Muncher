@@ -162,6 +162,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.blue,
                         textColor: Colors.white,
                       ),
+                      ElevatedButton(
+                          child: Text('Home'),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyHomePage()));
+                          }),
                       //SizedBox(height: 30, width: 80),
                       /*Container(
                         height: 30.0,
