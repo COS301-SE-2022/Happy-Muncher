@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import 'pages/loginpage.dart';
 import 'pages/signuppage.dart';
+import 'pages/profile.dart';
+
 import 'models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 
@@ -43,7 +45,8 @@ class MyApp extends StatelessWidget {
         routes: {
           SignupScreen.routeName: (ctx) => SignupScreen(),
           LoginScreen.routeName: (ctx) => LoginScreen(),
-          MyHomePage.routeName: (ctx) => MyHomePage()
+          MyHomePage.routeName: (ctx) => MyHomePage(),
+          Profile.routeName: (ctx) => Profile()
         },
       ),
     );
