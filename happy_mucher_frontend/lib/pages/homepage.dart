@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:happy_mucher_frontend/pages/profile.dart';
+import 'package:happy_mucher_frontend/pages/changepassword.dart';
+import 'package:happy_mucher_frontend/pages/navbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,6 +17,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,12 +49,14 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[Text('Logout'), Icon(Icons.logout)],
             ),
             textColor: Colors.white,
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+            onPressed: () async => {
+              await FirebaseAuth.instance.signOut(),
+              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName)
             },
-          )
+          ),
         ],
       ),
+      drawer: NavBar(),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
