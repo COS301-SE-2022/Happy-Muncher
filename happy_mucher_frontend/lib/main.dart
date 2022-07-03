@@ -9,6 +9,7 @@ import 'pages/profile.dart';
 
 import 'models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
+//import 'package:dcdg/dcdg.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,6 +21,7 @@ Future main() async {
 
   final firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
+
 
   GetIt.I.registerSingleton(firestore);
   GetIt.I.registerSingleton(firebaseAuth);
