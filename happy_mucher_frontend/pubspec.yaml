@@ -44,6 +44,7 @@ dependencies:
   fake_cloud_firestore: ^1.2.2
   get_it: ^7.2.0
   dcdg: ^4.0.1
+  settings_ui: ^2.0.2
 
 dev_dependencies:
   integration_test:
