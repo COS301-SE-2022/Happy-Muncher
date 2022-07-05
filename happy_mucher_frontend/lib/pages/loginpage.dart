@@ -44,6 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await Provider.of<Authentication>(context, listen: false)
           .logIn(_authData['email']!, _authData['password']!);
+      FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _authData['email']!, password: _authData['password']!);
       Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
     } catch (error) {
       var errorMessage = 'Authentication Failed. Please try again later.';
@@ -162,6 +164,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.blue,
                         textColor: Colors.white,
                       ),
+                      ElevatedButton(
+                          child: Text('Home'),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyHomePage()));
+                          }),
                       //SizedBox(height: 30, width: 80),
                       /*Container(
                         height: 30.0,
