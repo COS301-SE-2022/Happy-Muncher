@@ -5,7 +5,6 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 
-
 void main() {
   runApp(MyApp());
 }
