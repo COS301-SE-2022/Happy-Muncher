@@ -60,11 +60,12 @@ class MyMonthState extends State<Month> {
   List<String> estimate = [];
   List<double> budgetM = [];
   void getDB(context) async {
-    // print("START");
-    //totRem = 0;
     bought = [];
+    //print("");
     totSpent = 0;
     totBudget = 0;
+    //print("START");
+
     var collection = FirebaseFirestore.instance.collection('Budget');
     var docSnapshot = await collection.doc(widget.month).get();
     if (docSnapshot.exists) {
@@ -127,31 +128,47 @@ class MyMonthState extends State<Month> {
         rem4 = doc["amount remaining"].toString();
       });
     });
-    //totSpent = 0;
+    //
     //getDB();
     //print('spent set');
-    totSpent += double.parse(spent1) +
-        double.parse(spent2) +
-        double.parse(spent3) +
-        double.parse(spent4);
-
+    //bought = [];
     double update = 0;
-
-    _groceryList.get().then((QuerySnapshot qs) {
-      qs.docs.forEach((doc) {
-        if (doc["bought"] == true) {
-          bought.add(doc["price"]);
-          //print(doc["price"]);
-          //print(bought);
-        }
+    try {
+      await FirebaseFirestore.instance
+          .collection('GroceryList')
+          .get()
+          .then((QuerySnapshot qs) {
+        qs.docs.forEach((doc) {
+          if (doc["bought"] == true) {
+            bought.add(doc["price"]);
+            //print(doc["price"]);
+          }
+        });
       });
-    });
+      //return bought;
+    } catch (e) {}
+
+    // _groceryList.get().then((QuerySnapshot qs) {
+    //   qs.docs.forEach((doc) {
+    //     if (doc["bought"] == true) {
+    //       bought.add(doc["price"]);
+    //       //print(doc["price"]);
+    //       //print(bought);
+    //     }
+    //   });
+    // });
     bought.forEach((element) {
       update += double.parse(element);
     });
     // print("got update");
     // print(update);
-    totSpent += update;
+    totSpent = 0;
+    totSpent += double.parse(spent1) +
+        double.parse(spent2) +
+        double.parse(spent3) +
+        double.parse(spent4) +
+        update;
+    //print(totSpent);
     // print("totspent");
     // print(totSpent);
     if (mounted) {
@@ -171,6 +188,7 @@ class MyMonthState extends State<Month> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () => getDB(context));
+// WidgetsBinding.instance.addPostFrameCallback((_) => yourFunc(context));
 
     totRem -= totSpent;
     return Scaffold(
@@ -182,18 +200,6 @@ class MyMonthState extends State<Month> {
       body: ListView(
         padding: const EdgeInsets.all(32),
         children: <Widget>[
-          // IconButton(
-          //   alignment: Alignment.topCenter,
-          //   //color: Colors.green,
-          //   //hoverColor: Colors.green,
-          //   icon: Icon(Icons.refresh),
-          //   onPressed: () {},
-          // ),
-
-          // getDB(),
-
-          // enterBudget(),
-          // setBudget(),
           if (budgetSet) setBudget() else viewBudget(),
           const SizedBox(height: 24),
           WeekOne(),
@@ -746,9 +752,6 @@ class MyMonthState extends State<Month> {
               .get()
               .then((QuerySnapshot qs) {
             qs.docs.forEach((doc) {
-              // if (doc["bought"] == true) {
-              //   bought.add(doc["price"]);
-              // }
               estimate.add(doc["price"]);
             });
             print("estimate");
