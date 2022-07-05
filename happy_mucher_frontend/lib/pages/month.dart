@@ -24,6 +24,7 @@ class MyMonthState extends State<Month> {
   double totRem = 0; //total amount remaining for the entire month
   double totSpent = 0; //total amount spent for the entire month
   double totBudget = 0; //total budget for the entire month
+  bool budgetSet = false;
 
   String compMessage = "";
 
@@ -50,7 +51,7 @@ class MyMonthState extends State<Month> {
   String spent4 = "0.0";
   String rem4 = "0";
   bool editFour = false;
-
+  String buttonMsg = "";
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _budget => firestore.collection('Budget');
   CollectionReference get _groceryList => firestore.collection('GroceryList');
@@ -59,7 +60,9 @@ class MyMonthState extends State<Month> {
   List<String> estimate = [];
   List<double> budgetM = [];
   void getDB(context) async {
+    // print("START");
     //totRem = 0;
+    bought = [];
     totSpent = 0;
     totBudget = 0;
     var collection = FirebaseFirestore.instance.collection('Budget');
@@ -68,10 +71,10 @@ class MyMonthState extends State<Month> {
       Map<String, dynamic> data = docSnapshot.data()!;
 
       // You can then retrieve the value from the Map like this:
-      totBudget = data['budget'];
+      totBudget = data['budget'].toDouble();
     }
     totRem = totBudget;
-    print(totBudget);
+    //print(totBudget);
     FirebaseFirestore.instance
         .collection('Budget')
         .doc(widget.month)
@@ -81,6 +84,8 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         spent1 = doc["amount spent"].toString();
         //print(doc["amount spent"]);
+        mybudget = doc["budget"].toString();
+        rem1 = doc["amount remaining"].toString();
       });
     });
 
@@ -92,6 +97,7 @@ class MyMonthState extends State<Month> {
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
         spent2 = doc["amount spent"].toString();
+        rem2 = doc["amount remaining"].toString();
         //print(doc["amount spent"]);
       });
     });
@@ -105,6 +111,7 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         spent3 = doc["amount spent"].toString();
         //print(doc["amount spent"]);
+        rem3 = doc["amount remaining"].toString();
       });
     });
 
@@ -117,9 +124,10 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         spent4 = doc["amount spent"].toString();
         //print(doc["amount spent"]);
+        rem4 = doc["amount remaining"].toString();
       });
     });
-    totSpent = 0;
+    //totSpent = 0;
     //getDB();
     //print('spent set');
     totSpent += double.parse(spent1) +
@@ -133,18 +141,23 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         if (doc["bought"] == true) {
           bought.add(doc["price"]);
+          //print(doc["price"]);
+          //print(bought);
         }
       });
-      //print("bought");
     });
     bought.forEach((element) {
       update += double.parse(element);
     });
-    //print("got update");
-    //print(update);
+    // print("got update");
+    // print(update);
     totSpent += update;
-    //
-    setState(() => {});
+    // print("totspent");
+    // print(totSpent);
+    if (mounted) {
+      setState(() {});
+    }
+    //setState(() => {});
     //return;
   }
 
@@ -158,11 +171,7 @@ class MyMonthState extends State<Month> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () => getDB(context));
-    //WidgetsBinding.instance.addPostFrameCallback((_) => getDB(context));
-    //Timer.run(() => getDB(context));
-    //getDB();
-    //setState(() {});
-    //print("calling");
+
     totRem -= totSpent;
     return Scaffold(
       appBar: AppBar(
@@ -180,23 +189,101 @@ class MyMonthState extends State<Month> {
           //   icon: Icon(Icons.refresh),
           //   onPressed: () {},
           // ),
-          Text('Enter Your budget for ' + '${widget.month}',
-              style: TextStyle(height: 1.2)),
 
           // getDB(),
 
-          enterBudget(),
+          // enterBudget(),
+          // setBudget(),
+          if (budgetSet) setBudget() else viewBudget(),
+          const SizedBox(height: 24),
+          WeekOne(),
+          const SizedBox(height: 24),
+          WeekTwo(),
+          const SizedBox(height: 24),
+          WeekThree(),
+          const SizedBox(height: 24),
+          WeekFour(),
+          const SizedBox(height: 32),
+          Totals(),
+          EstTotal(),
+          //Comparison(),
+          //showAlertDialog(context)
+        ],
+      ),
+    );
+  }
+
+  Widget viewBudget() => Column(
+        children: [
+          Text('Your Budget for ' + '${widget.month}' + ' is: ',
+              style: TextStyle(height: 1.2)),
+          Container(
+            height: 60,
+            width: 100,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+              ),
+              borderRadius: BorderRadius.zero,
+            ),
+            //child: Text('R ' + totBudget.toString()),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.money,
+                  color: Colors.grey,
+                ),
+                Text(
+                  '   R ' + totBudget.toString(),
+                ),
+              ],
+            ),
+            alignment: Alignment.centerLeft,
+          ),
+          MaterialButton(
+            key: Key("editBudget"),
+            onPressed: () {
+              setState(() {
+                budgetSet = true;
+              });
+            },
+            color: Colors.green,
+            child: Text("Edit Budget", style: TextStyle(color: Colors.white)),
+          )
+        ],
+        mainAxisAlignment: MainAxisAlignment.start,
+      );
+
+  Widget setBudget() => Column(
+        children: [
+          Text('Enter Your budget for ' + '${widget.month}',
+              style: TextStyle(height: 1.2)),
+          TextField(
+            key: Key("enterBudget"),
+            controller: budgetController,
+            decoration: const InputDecoration(
+              hintText: ('R '),
+              labelText: 'Budget',
+              prefixIcon: Icon(Icons.money),
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            // autofocus: true,
+          ),
           MaterialButton(
             key: Key("setBudget"),
             onPressed: () {
               setState(() {
                 //totSpent = 0;
+
+                budgetSet = false;
                 input = budgetController.text;
                 if (input.length > 0) {
                   bud = double.parse(input);
                 } else
                   () {
-                    bud = 0;
+                    bud = totBudget;
                   };
 
                 //total budget for entire month = input from enterBudget textfield
@@ -207,19 +294,8 @@ class MyMonthState extends State<Month> {
 
                 double updateSpent = 0;
 
-                //total amount remaining
-                //totRem = bud;
-
                 bud = bud / 4;
                 mybudget = bud.toString();
-
-                //totSpent = 0;
-                //totSpent += widget.glSpent.toDouble();
-
-                //print("spent update");
-                // print(totSpent);
-
-                ///print("rem");
                 rem1 = mybudget;
                 updateSpent = double.parse(rem1);
                 updateSpent -= double.parse(spent1);
@@ -278,39 +354,9 @@ class MyMonthState extends State<Month> {
               });
             },
             color: Colors.green,
-            child:
-                const Text("Set Budget", style: TextStyle(color: Colors.white)),
+            child: Text("Set Budget", style: TextStyle(color: Colors.white)),
           ),
-          const SizedBox(height: 24),
-          WeekOne(),
-          const SizedBox(height: 24),
-          WeekTwo(),
-          const SizedBox(height: 24),
-          WeekThree(),
-          const SizedBox(height: 24),
-          WeekFour(),
-          const SizedBox(height: 32),
-          Totals(),
-          EstTotal(),
-          //Comparison(),
-          //showAlertDialog(context)
         ],
-      ),
-    );
-  }
-
-  Widget enterBudget() => TextFormField(
-        key: Key("enterBudget"),
-        controller: budgetController,
-        decoration: const InputDecoration(
-          hintText: ('R '),
-          labelText: 'Budget',
-          prefixIcon: Icon(Icons.money),
-          border: OutlineInputBorder(),
-        ),
-        keyboardType: TextInputType.number,
-        textInputAction: TextInputAction.done,
-        // autofocus: true,
       );
 
   Widget WeekOne() => Container(
@@ -691,7 +737,7 @@ class MyMonthState extends State<Month> {
       ]));
 
   double est = 0;
-  double update = 0;
+  //double update = 0;
   Widget EstTotal() => ElevatedButton(
         onPressed: () async {
           //getGL();
