@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/changeusername.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
+import 'package:happy_mucher_frontend/pages/settings_page.dart';
 
 class NavBar extends StatelessWidget {
   @override
@@ -46,10 +47,14 @@ class NavBar extends StatelessWidget {
                   }),
           Divider(),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => null,
-          ),
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () async => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettingsPage())),
+                  }),
           Divider(),
           ListTile(
               title: Text('Logout'),
