@@ -14,12 +14,14 @@ class RecipeAPI {
 
     Map data = jsonDecode(resp.body);
     List temp = [];
+    List cals = [];
 
     for (var i in data['feed']) {
-      temp.add(i['content']['details']);
-      //if (i['type'] == "single recipe") temp.add(i['content']['details']);
+      //temp.add(i['content']['details']);
+      if (i['type'] == "single recipe") temp.add(i['content']['details']);
+      //if (i['type'] == "single recipe") cals.add(i['content']['nutrition']);
     }
-
+    //print(temp);
     return Recipe.snapshotRecipes(temp);
   }
 }
