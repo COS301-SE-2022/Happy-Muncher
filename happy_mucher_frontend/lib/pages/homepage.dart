@@ -10,8 +10,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
 import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
