@@ -8,15 +8,17 @@ class Recipe {
 
   factory Recipe.fromJson(dynamic data) {
     try {
-      if (data['name'] != null &&
-          data['images'][0]["hostedLargeUrl"] != null &&
-          data['rating'] != null &&
-          data['totalTime'] != null) {
+      //calories @ [9] ???
+      if (data['details']['name'] != null &&
+          data['details']['images'][0]["hostedLargeUrl"] != null &&
+          data['nutrition']['nutritionEstimates'][1]['value'] != null &&
+          data['details']['totalTime'] != null) {
         return Recipe(
-            name: data["name"] as String,
-            images: data['images'][0]["hostedLargeUrl"] as String,
-            rating: data['rating'] as double,
-            totalTime: data['totalTime'] as String);
+            name: data['details']["name"] as String,
+            images: data['details']['images'][0]["hostedLargeUrl"] as String,
+            rating:
+                data['nutrition']['nutritionEstimates'][1]['value'] as double,
+            totalTime: data['details']['totalTime'] as String);
       } else {}
     } catch (e) {
       print("Error");

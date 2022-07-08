@@ -69,7 +69,7 @@ class RecipeCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.star,
+                        Icons.local_fire_department_outlined,
                         color: Colors.yellow,
                         size: 18,
                       ),
