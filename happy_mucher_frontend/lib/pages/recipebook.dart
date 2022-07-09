@@ -5,8 +5,7 @@ import 'package:happy_mucher_frontend/recipe_card.dart';
 //import 'package:http/http.dart' as http;
 
 class RecipeBook extends StatefulWidget {
-  const RecipeBook({Key? key}) : super(key: key);
-
+  RecipeBook({Key? key}) : super(key: key);
   @override
   State<RecipeBook> createState() => RecipeBookState();
 }
@@ -14,7 +13,6 @@ class RecipeBook extends StatefulWidget {
 class RecipeBookState extends State<RecipeBook> {
   List<Recipe> recipes = [];
   bool loading = true;
-  int len = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -44,10 +42,14 @@ class RecipeBookState extends State<RecipeBook> {
                 itemCount: recipes.length,
                 itemBuilder: (context, index) {
                   return RecipeCard(
-                      title: recipes[index].name,
-                      cookTime: recipes[index].totalTime,
-                      rating: recipes[index].rating.toString(),
-                      thumbnailUrl: recipes[index].images);
+                    title: recipes[index].name,
+                    cookTime: recipes[index].totalTime,
+                    calories: recipes[index].calories,
+                    thumbnailUrl: recipes[index].images,
+                    description: recipes[index].description,
+                    ing: recipes[index].ingredients,
+                    //recipes: recipes,
+                  );
                 }));
   }
 }

@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/models/recipe.dart';
+import 'package:happy_mucher_frontend/pages/individualRecipe.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
-  final String rating;
+  final double calories;
   final String cookTime;
   final String thumbnailUrl;
+  final String description;
+  final List<String> ing;
+  //List<Recipe>? recipes;
   RecipeCard({
     @required this.title = "",
     @required this.cookTime = "",
-    @required this.rating = "",
+    @required this.calories = 0.0,
     @required this.thumbnailUrl = "",
+    @required this.description = "",
+    @required this.ing = const [''],
+    //@required this.recipes,
   });
   @override
   Widget build(BuildContext context) {
@@ -75,7 +83,7 @@ class RecipeCard extends StatelessWidget {
                       ),
                       SizedBox(width: 7),
                       Text(
-                        rating,
+                        calories.toString(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -106,6 +114,32 @@ class RecipeCard extends StatelessWidget {
               ],
             ),
             alignment: Alignment.bottomLeft,
+          ),
+          Align(
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => IndividualRecipe(
+                        name: title,
+                        description: description,
+                        image: thumbnailUrl,
+                        calories: calories,
+                        ingredients: ing,
+                        cookTime: cookTime,
+                      ),
+                    ));
+                  },
+                  icon: Icon(
+                    Icons.navigate_next_rounded,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                )
+              ],
+            ),
+            alignment: Alignment.topLeft,
           ),
         ],
       ),
