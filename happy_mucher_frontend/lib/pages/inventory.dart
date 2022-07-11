@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_picker/image_picker.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class _IventoryPageState extends State<IventoryPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
@@ -109,7 +111,10 @@ class _IventoryPageState extends State<IventoryPage> {
             backgroundColor: Colors.blue,
           ),
           SpeedDialChild(
-            onTap: () {},
+            onTap: () async {
+              final image =
+                  await _picker.pickImage(source: ImageSource.gallery);
+            },
             child: const Icon(
               Icons.collections,
               color: Colors.white,
@@ -117,7 +122,7 @@ class _IventoryPageState extends State<IventoryPage> {
             backgroundColor: Colors.blue,
           ),
           SpeedDialChild(
-            onTap: () {},
+            onTap: () async {},
             child: const Icon(
               Icons.photo_camera,
               color: Colors.white,
