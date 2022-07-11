@@ -61,8 +61,8 @@ class NavBar extends StatelessWidget {
               leading: Icon(Icons.exit_to_app),
               onTap: () async => {
                     await FirebaseAuth.instance.signOut(),
-                    Navigator.of(context)
-                        .pushReplacementNamed(LoginScreen.routeName)
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen())),
                   }),
         ],
       ),
