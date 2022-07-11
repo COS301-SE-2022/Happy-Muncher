@@ -22,10 +22,14 @@ class RecipeBookState extends State<RecipeBook> {
 
   Future<void> getRecipes() async {
     recipes = await RecipeAPI.getRecipe();
-    setState(() {
-      loading = false;
-      // recipes.length? len = recipes.length
-    });
+
+    if (mounted) {
+      setState(() {
+        loading = false;
+        // recipes.length? len = recipes.length
+      });
+    }
+
     //print(recipes);
   }
 
