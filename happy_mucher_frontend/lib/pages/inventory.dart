@@ -100,7 +100,8 @@ class _IventoryPageState extends State<IventoryPage> {
         icon: Icons.add,
         children: [
           SpeedDialChild(
-            onTap: () {},
+            onTap: () => addInventoryDialog(context),
+            key: const Key('addToInventoryButton'),
             child: const Icon(
               Icons.abc,
               color: Colors.white,
