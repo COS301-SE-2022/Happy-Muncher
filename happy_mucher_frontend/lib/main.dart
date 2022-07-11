@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart' as pPrefix;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart'
     as mPrefix;
@@ -23,14 +23,14 @@ Future main() async {
   await mPrefix.Settings.init(cacheProvider: mPrefix.SharePreferenceCache());
   await Firebase.initializeApp();
 
-  final firestore = pPrefix.FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
 
   GetIt.I.registerSingleton(firestore);
   GetIt.I.registerSingleton(firebaseAuth);
 
   runApp(MyApp());
-  MyMain();
+  //runApp(MyMain());
 }
 
 class MyApp extends StatelessWidget {
@@ -42,21 +42,45 @@ class MyApp extends StatelessWidget {
           value: Authentication(),
         )
       ],
-      child: MaterialApp(
+      child: MyMain(),
+      /*child: MaterialApp(
         title: 'Login App',
         theme: ThemeData(
           primaryColor: Colors.blue,
         ),
-        home: LoginScreen(),
-        routes: {
+        home: SettingsPage(),*/
+      /*routes: {
           SignupScreen.routeName: (ctx) => SignupScreen(),
           LoginScreen.routeName: (ctx) => LoginScreen(),
           MyHomePage.routeName: (ctx) => MyHomePage(),
           Profile.routeName: (ctx) => Profile(),
         },
-      ),
+      ),*/
     );
   }
+
+  /*Widget theme(BuildContext context) {
+    return mPrefix.ValueChangeObserver<bool>(
+      cacheKey: SettingsPage.keyDarkMode,
+      defaultValue: true,
+      builder: (_, isDarkMode, __) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        //title: MyMain.title,
+        theme: isDarkMode
+            ? ThemeData.dark().copyWith(
+                primaryColor: Colors.teal,
+                scaffoldBackgroundColor: Color(0xFF170635),
+                canvasColor: Color(0xFF170635),
+                colorScheme:
+                    ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+              )
+            : ThemeData.light().copyWith(
+                colorScheme:
+                    ColorScheme.fromSwatch().copyWith(secondary: Colors.black)),
+        //home: LoginScreen(),
+      ),
+    );
+  }*/
 }
 
 class MyMain extends StatefulWidget {
@@ -85,7 +109,14 @@ class _MyAppState extends State<MyMain> {
             : ThemeData.light().copyWith(
                 colorScheme:
                     ColorScheme.fromSwatch().copyWith(secondary: Colors.black)),
-        home: SettingsPage(),
+        home: LoginScreen(),
+        routes: {
+          SignupScreen.routeName: (ctx) => SignupScreen(),
+          LoginScreen.routeName: (ctx) => LoginScreen(),
+          MyHomePage.routeName: (ctx) => MyHomePage(),
+          Profile.routeName: (ctx) => Profile(),
+          // SettingsPage.routeName: (ctx) => SettingsPage(),
+        },
       ),
     );
   }
