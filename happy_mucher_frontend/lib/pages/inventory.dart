@@ -122,7 +122,9 @@ class _IventoryPageState extends State<IventoryPage> {
             backgroundColor: Colors.blue,
           ),
           SpeedDialChild(
-            onTap: () async {},
+            onTap: () async {
+              final photo = await _picker.pickImage(source: ImageSource.camera);
+            },
             child: const Icon(
               Icons.photo_camera,
               color: Colors.white,
