@@ -44,6 +44,8 @@ dependencies:
   fake_cloud_firestore: ^1.2.2
   get_it: ^7.2.0
   dcdg: ^4.0.1
+  flutter_speed_dial: ^6.0.0
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   integration_test:
