@@ -44,15 +44,18 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await Provider.of<Authentication>(context, listen: false)
           .logIn(_authData['email']!, _authData['password']!);
+      FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _authData['email']!, password: _authData['password']!);
       Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
     } catch (error) {
-      var errorMessage = 'Authentication Failed. Please try again later.';
+      var errorMessage = 'Authentication Failed. Invalid email or password.';
       _showErrorDialog(errorMessage);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
@@ -71,16 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              Colors.lightGreenAccent.shade100,
-              //Colors.white,
-              Colors.blue.shade100,
-
-              //Colors.blue,
-            ])),
-          ),
+          SizedBox(height: size.height * 0.03),
           Center(
             /*child: Card(
               shape: RoundedRectangleBorder(
@@ -88,15 +82,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 */
             child: Container(
-              height: 500,
-              width: 500,
-              padding: EdgeInsets.all(16),
+              margin: EdgeInsets.symmetric(horizontal: 40),
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       //email
+                      SizedBox(height: size.height * 0.03),
                       TextFormField(
                         style: TextStyle(fontSize: 25),
                         decoration: InputDecoration(
@@ -113,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _authData['email'] = value!;
                         },
                       ),
+                      SizedBox(height: size.height * 0.03),
 
                       //password
                       TextFormField(
@@ -129,38 +123,46 @@ class _LoginScreenState extends State<LoginScreen> {
                           _authData['password'] = value!;
                         },
                       ),
-                      SizedBox(
-                        height: 30,
+                      SizedBox(height: size.height * 0.03),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                        child: Text(
+                          "Forgot your password?",
+                          style:
+                              TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
+                        ),
                       ),
+
+                      SizedBox(height: size.height * 0.03),
                       RaisedButton(
-                        child: Text('Submit'),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 50.0,
+                          width: size.width * 0.5,
+                          decoration: new BoxDecoration(
+                              borderRadius: BorderRadius.circular(80.0),
+                              gradient: new LinearGradient(colors: [
+                                Color.fromARGB(255, 255, 136, 34),
+                                Color.fromARGB(255, 255, 177, 41)
+                              ])),
+                          padding: const EdgeInsets.all(0),
+                          child: Text(
+                            'Submit',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
                         onPressed: () {
-                          //signup(context);
                           _submit();
-                          //buildSignUp();
-                          /*ChangeNotifierProvider(
-                            create: (context) => GoogleSignInProvider(),
-                            child: StreamBuilder(
-                              stream: FirebaseAuth.instance.authStateChanges(),
-                              builder: (context, snapshot) {
-                                final provider =
-                                    Provider.of<GoogleSignInProvider>(context);
-                                if (provider.isSigningIn) {
-                                  return buildLoading();
-                                } else if (snapshot.hasData) {
-                                  return MyHomePage();
-                                } else {
-                                  return SignUpWidget();
-                                }
-                              },
-                            ),
-                          );*/
                         },
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(80),
                         ),
                         color: Colors.blue,
                         textColor: Colors.white,
+                        padding: const EdgeInsets.all(0),
                       ),
                       ElevatedButton(
                           child: Text('Home'),
@@ -212,6 +214,40 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: size.height,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child:
+                      Image.asset("assets/images/top1.png", width: size.width),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Image.asset("assets/images/top2.png",
+                      width: size.width, height: 330),
+                ),
+                SizedBox(height: size.height * 0.03),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Image.asset("assets/images/bottom1.png",
+                      width: size.width, height: 300),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Image.asset("assets/images/bottom2.png",
+                      width: size.width),
+                ),
+              ],
             ),
           ),
         ],
