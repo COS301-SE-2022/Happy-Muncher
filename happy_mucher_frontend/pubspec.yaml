@@ -44,8 +44,13 @@ dependencies:
   fake_cloud_firestore: ^1.2.2
   get_it: ^7.2.0
   dcdg: ^4.0.1
+
   settings_ui: ^2.0.2
   flutter_settings_screens: ^0.3.3-null-safety+1
+
+  flutter_speed_dial: ^6.0.0
+  image_picker: ^0.8.5+3
+
 
 dev_dependencies:
   integration_test:
@@ -74,6 +79,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/google_logo.png
+    - assets/images/bottom1.png
+    - assets/images/bottom2.png
+    - assets/images/top1.png
+    - assets/images/top2.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

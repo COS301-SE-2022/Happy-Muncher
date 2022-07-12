@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
@@ -12,7 +13,12 @@ import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
-void main() async {
+
+
+import 'package:happy_mucher_frontend/pages/recipebook.dart';
+
+
+void main() {
   runApp(MyApp());
 }
 
@@ -141,6 +147,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Text(
                   "Plan a meal",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              width: 200,
+              height: 50,
+              child: RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RecipeBook()));
+                },
+                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Text(
+                  "Recipe Book",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
