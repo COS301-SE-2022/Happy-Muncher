@@ -43,44 +43,8 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MyMain(),
-      /*child: MaterialApp(
-        title: 'Login App',
-        theme: ThemeData(
-          primaryColor: Colors.blue,
-        ),
-        home: SettingsPage(),*/
-      /*routes: {
-          SignupScreen.routeName: (ctx) => SignupScreen(),
-          LoginScreen.routeName: (ctx) => LoginScreen(),
-          MyHomePage.routeName: (ctx) => MyHomePage(),
-          Profile.routeName: (ctx) => Profile(),
-        },
-      ),*/
     );
   }
-
-  /*Widget theme(BuildContext context) {
-    return mPrefix.ValueChangeObserver<bool>(
-      cacheKey: SettingsPage.keyDarkMode,
-      defaultValue: true,
-      builder: (_, isDarkMode, __) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        //title: MyMain.title,
-        theme: isDarkMode
-            ? ThemeData.dark().copyWith(
-                primaryColor: Colors.teal,
-                scaffoldBackgroundColor: Color(0xFF170635),
-                canvasColor: Color(0xFF170635),
-                colorScheme:
-                    ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
-              )
-            : ThemeData.light().copyWith(
-                colorScheme:
-                    ColorScheme.fromSwatch().copyWith(secondary: Colors.black)),
-        //home: LoginScreen(),
-      ),
-    );
-  }*/
 }
 
 class MyMain extends StatefulWidget {
@@ -92,6 +56,16 @@ class MyMain extends StatefulWidget {
 class _MyAppState extends State<MyMain> {
   @override
   Widget build(BuildContext context) {
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
+// Define a widget
+    Widget firstWidget;
+
+// Assign widget based on availability of currentUser
+    if (firebaseUser != null) {
+      firstWidget = MyHomePage();
+    } else {
+      firstWidget = LoginScreen();
+    }
     return mPrefix.ValueChangeObserver<bool>(
       cacheKey: SettingsPage.keyDarkMode,
       defaultValue: true,
@@ -109,7 +83,7 @@ class _MyAppState extends State<MyMain> {
             : ThemeData.light().copyWith(
                 colorScheme:
                     ColorScheme.fromSwatch().copyWith(secondary: Colors.black)),
-        home: LoginScreen(),
+        home: firstWidget,
         routes: {
           SignupScreen.routeName: (ctx) => SignupScreen(),
           LoginScreen.routeName: (ctx) => LoginScreen(),
