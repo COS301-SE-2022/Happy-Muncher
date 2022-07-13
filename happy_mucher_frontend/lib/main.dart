@@ -17,6 +17,8 @@ import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +56,19 @@ class MyMain extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyMain> {
+  @override
+  void initState() {
+    super.initState();
+
+    NotificationAPI.init();
+    listenNotifications();
+  }
+
+  void listenNotifications() =>
+      NotificationAPI.onNotifications.stream.listen(onClickedNotification);
+
+  void onClickedNotification(String? payload) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => IventoryPage()));
   @override
   Widget build(BuildContext context) {
     User? firebaseUser = FirebaseAuth.instance.currentUser;
