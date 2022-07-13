@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -100,6 +101,10 @@ class GroceryListPageState extends State<GroceryListPage> {
                                 const SnackBar(
                                     content: Text(
                                         'Please go to the inventory page to edit the quantity and expiration date')));
+                            NotificationAPI.showNotification(
+                                title: 'Happy Muncher',
+                                body: '$itemName has been added to inventory',
+                                payload: 'grocerylist');
                           }
                         }),
                   );
