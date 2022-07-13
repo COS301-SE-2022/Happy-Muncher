@@ -127,6 +127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.4"
   dcdg:
     dependency: "direct main"
     description:
@@ -221,14 +228,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-
-  flutter_settings_screens:
+  flutter_local_notifications:
     dependency: "direct main"
     description:
-      name: flutter_settings_screens
+      name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.3-null-safety+1"
+    version: "9.7.0"
+  flutter_local_notifications_linux:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0+1"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -236,7 +256,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.6"
-
+  flutter_settings_screens:
+    dependency: "direct main"
+    description:
+      name: flutter_settings_screens
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.3-null-safety+1"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -439,7 +465,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
-
   path_provider:
     dependency: transitive
     description:
@@ -496,7 +521,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
-
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0"
   platform:
     dependency: transitive
     description:
@@ -540,7 +571,7 @@ packages:
     source: hosted
     version: "3.1.0"
   rxdart:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
@@ -663,6 +694,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.9"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.0"
   typed_data:
     dependency: transitive
     description:
@@ -712,6 +750,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0+1"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.1.0"
   yaml:
     dependency: transitive
     description:
@@ -720,8 +765,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.17.0-0 <3.0.0"
-
+  dart: ">=2.17.0 <3.0.0"
   flutter: ">=2.8.1"
-
-

@@ -44,6 +44,8 @@ dependencies:
   fake_cloud_firestore: ^1.2.2
   get_it: ^7.2.0
   dcdg: ^4.0.1
+  flutter_local_notifications: ^9.7.0
+  rxdart: ^0.27.4
 
   settings_ui: ^2.0.2
   flutter_settings_screens: ^0.3.3-null-safety+1
