@@ -91,22 +91,13 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                       final String name = nameController.text;
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
+                      int id = UniqueKey().hashCode;
+                      NotificationAPI.setID(id);
                       NotificationAPI.showScheduledNotification(
+                          id: id,
                           title: 'Happy Muncher',
                           body: '$name expires today!',
-                          payload: 'go to inventory',
-                          scheduledDate:
-                              chosenDate.add(Duration(seconds: 5)));
-                      final snackBar = SnackBar(
-                          content: Text(
-                            'scheduled in 2 seconds',
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          backgroundColor: Colors.green);
-                      ScaffoldMessenger.of(context)
-                        ..removeCurrentSnackBar()
-                        ..showSnackBar(snackBar);
-                      print(chosenDate);
+                          scheduledDate: chosenDate);
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
