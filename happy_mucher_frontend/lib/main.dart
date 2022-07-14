@@ -31,7 +31,10 @@ Future main() async {
   GetIt.I.registerSingleton(firestore);
   GetIt.I.registerSingleton(firebaseAuth);
 
-  runApp(MyApp());
+  runApp(MaterialApp(
+    title: "App",
+    home: MyApp(),
+  ));
   //runApp(MyMain());
 }
 
@@ -60,15 +63,15 @@ class _MyAppState extends State<MyMain> {
   void initState() {
     super.initState();
 
-    NotificationAPI.init();
+    NotificationAPI.init(initScheduled: true);
     listenNotifications();
   }
 
   void listenNotifications() =>
       NotificationAPI.onNotifications.stream.listen(onClickedNotification);
 
-  void onClickedNotification(String? payload) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => IventoryPage()));
+  void onClickedNotification(String? payload) => Navigator.push(
+      context, MaterialPageRoute(builder: (context) => LoginScreen()));
   @override
   Widget build(BuildContext context) {
     User? firebaseUser = FirebaseAuth.instance.currentUser;
