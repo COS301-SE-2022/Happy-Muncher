@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_picker/image_picker.dart';
 
 class IventoryPage extends StatefulWidget {
@@ -31,6 +32,31 @@ class _IventoryPageState extends State<IventoryPage> {
       appBar: AppBar(
         title: const Text('Inventory'),
         centerTitle: true,
+        actions: <Widget>[
+          FlatButton(
+            child: Row(
+              children: <Widget>[Text('Notif'), Icon(Icons.logout)],
+            ),
+            textColor: Colors.white,
+            onPressed: () {
+              NotificationAPI.showScheduledNotification(
+                title: 'Happy Muncher',
+                body: 'An item is about to expire',
+                payload: 'go to inventory',
+                scheduledDate: DateTime.now().add(Duration(seconds: 2)),
+              );
+              final snackBar = SnackBar(
+                  content: Text(
+                    'scheduled in 2 seconds',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  backgroundColor: Colors.green);
+              ScaffoldMessenger.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(snackBar);
+            },
+          ),
+        ],
       ),
       body: StreamBuilder(
         stream: _products.snapshots(),
@@ -90,6 +116,7 @@ class _IventoryPageState extends State<IventoryPage> {
           );
         },
       ),
+
 // Add new product
       // floatingActionButton: FloatingActionButton(
       //   key: const Key('addToInventoryButton'),
