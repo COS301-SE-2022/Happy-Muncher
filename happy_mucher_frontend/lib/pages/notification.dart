@@ -19,6 +19,13 @@ class NotificationAPI {
   static Future init({bool initScheduled = false}) async {
     final android = AndroidInitializationSettings('@mipmap/ic_launcher');
     final settings = InitializationSettings(android: android);
+
+    //when app is closed
+    final details = await notifications.getNotificationAppLaunchDetails();
+    if (details != null && details.didNotificationLaunchApp) {
+      onNotifications.add(details.payload);
+    }
+
     await notifications.initialize(settings,
         onSelectNotification: (payload) async {
       onNotifications.add(payload);
@@ -58,4 +65,16 @@ class NotificationAPI {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );
+
+  static void cancel(int id) => notifications.cancel(id);
+
+  static int id = 0;
+
+  static int getID() {
+    return id;
+  }
+
+  static void setID(int ID) {
+    id = ID;
+  }
 }
