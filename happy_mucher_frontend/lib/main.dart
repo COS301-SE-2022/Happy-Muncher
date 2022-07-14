@@ -71,7 +71,7 @@ class _MyAppState extends State<MyMain> {
       NotificationAPI.onNotifications.stream.listen(onClickedNotification);
 
   void onClickedNotification(String? payload) => Navigator.push(
-      context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      context, MaterialPageRoute(builder: (context) => IventoryPage()));
   @override
   Widget build(BuildContext context) {
     User? firebaseUser = FirebaseAuth.instance.currentUser;
