@@ -32,31 +32,6 @@ class _IventoryPageState extends State<IventoryPage> {
       appBar: AppBar(
         title: const Text('Inventory'),
         centerTitle: true,
-        actions: <Widget>[
-          FlatButton(
-            child: Row(
-              children: <Widget>[Text('Notif'), Icon(Icons.logout)],
-            ),
-            textColor: Colors.white,
-            onPressed: () {
-              NotificationAPI.showScheduledNotification(
-                title: 'Happy Muncher',
-                body: 'An item is about to expire',
-                payload: 'go to inventory',
-                scheduledDate: DateTime.now().add(Duration(seconds: 2)),
-              );
-              final snackBar = SnackBar(
-                  content: Text(
-                    'scheduled in 2 seconds',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  backgroundColor: Colors.green);
-              ScaffoldMessenger.of(context)
-                ..removeCurrentSnackBar()
-                ..showSnackBar(snackBar);
-            },
-          ),
-        ],
       ),
       body: StreamBuilder(
         stream: _products.snapshots(),
@@ -82,6 +57,7 @@ class _IventoryPageState extends State<IventoryPage> {
                                     content: Text(
                                         'You have successfully deleted a product')));
                           });
+                          NotificationAPI.cancel(NotificationAPI.getID());
                         },
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
