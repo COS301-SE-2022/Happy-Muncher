@@ -97,13 +97,11 @@ class GroceryListPageState extends State<GroceryListPage> {
                                 "expirationDate": ""
                               },
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Please go to the inventory page to edit the quantity and expiration date')));
+
                             NotificationAPI.showNotification(
                                 title: 'Happy Muncher',
-                                body: '$itemName has been added to inventory',
+                                body:
+                                    '$itemName has been added to inventory. Please go to the inventory page to edit the quantity and expiration date.',
                                 payload: 'grocerylist');
                           }
                         }),
