@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
-import 'package:happy_mucher_frontend/models/tastyInfo.api.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/pages/individualRecipe.dart';
-import 'package:happy_mucher_frontend/pages/tastyRecipeInfo.dart';
 
 class TastyRecipeCard extends StatelessWidget {
   final String name;
