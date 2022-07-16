@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/changepassword.dart';
+import 'package:happy_mucher_frontend/pages/changeprofile.dart';
 import 'package:happy_mucher_frontend/pages/changeusername.dart';
+import 'package:happy_mucher_frontend/pages/homepage.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -37,18 +39,33 @@ class ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final uid = FirebaseAuth.instance.currentUser?.displayName;
-
+    var uid = FirebaseAuth.instance.currentUser?.displayName;
+    var profile = FirebaseAuth.instance.currentUser?.photoURL;
     final email = FirebaseAuth.instance.currentUser?.email;
     final creationTime =
         FirebaseAuth.instance.currentUser?.metadata.creationTime;
-    /*if (uid == null) {
-      uid = FirebaseAuth.instance.currentUser!.uid;
-    }*/
+    if (uid == null) {
+      uid = "User";
+    }
+    if (profile == null) {
+      profile ??=
+          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+    }
     return Scaffold(
       //appBar: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       appBar: AppBar(
         title: Text('Profile'),
+        actions: <Widget>[
+          FlatButton(
+            child: Row(
+              children: <Widget>[Text('Home'), Icon(Icons.home)],
+            ),
+            textColor: Colors.white,
+            onPressed: () async => {
+              Navigator.of(context).pushReplacementNamed(MyHomePage.routeName)
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -56,8 +73,24 @@ class ProfileState extends State<Profile> {
             SizedBox(height: 30),
             CircleAvatar(
               radius: 80,
-              child: Icon(Icons.person),
+              backgroundImage: NetworkImage(profile.toString()),
             ),
+            /*BoxDecoration(
+              color: Colors.grey,
+              /*image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                      'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg')),*/
+            ),*/
+            TextButton.icon(
+                onPressed: () async => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangeProfile()))
+                    },
+                icon: Icon(Icons.edit),
+                label: Text('')),
             SizedBox(height: 60),
             Row(children: [
               Text(
