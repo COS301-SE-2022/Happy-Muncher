@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
+import 'package:happy_mucher_frontend/pages/profile.dart';
 
 class ChangeUsername extends StatefulWidget {
   const ChangeUsername({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
       await currentUser!.updateDisplayName(newUsername);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
+        MaterialPageRoute(builder: (context) => Profile()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
