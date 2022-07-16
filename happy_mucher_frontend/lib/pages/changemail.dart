@@ -26,6 +26,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   }
 
   final currentUser = FirebaseAuth.instance.currentUser;
+
   changeEmail() async {
     try {
       await currentUser!.updateEmail(newEmail);
