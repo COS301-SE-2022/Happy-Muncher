@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class IventoryPage extends StatefulWidget {
@@ -112,8 +114,7 @@ class _IventoryPageState extends State<IventoryPage> {
           ),
           SpeedDialChild(
             onTap: () async {
-              final image =
-                  await _picker.pickImage(source: ImageSource.gallery);
+              captureImageReceipt(ImageSource.gallery);
             },
             child: const Icon(
               Icons.collections,
@@ -123,7 +124,7 @@ class _IventoryPageState extends State<IventoryPage> {
           ),
           SpeedDialChild(
             onTap: () async {
-              final photo = await _picker.pickImage(source: ImageSource.camera);
+              captureImageReceipt(ImageSource.camera);
             },
             child: const Icon(
               Icons.photo_camera,
@@ -134,6 +135,43 @@ class _IventoryPageState extends State<IventoryPage> {
         ],
       ),
     );
+  }
+
+  void captureImageReceipt(ImageSource imageSource) async {
+    final image = await _picker.pickImage(source: imageSource);
+    if (image == null) {
+      return;
+    }
+    final croppedImagePath = await cropImage(image.path);
+    if (croppedImagePath == null) {
+      return;
+    }
+    getRecognisedText(croppedImagePath);
+  }
+
+  Future<String?> cropImage(String path) async {
+    final cropped =
+        await ImageCropper().cropImage(sourcePath: path, uiSettings: [
+      AndroidUiSettings(
+          toolbarTitle: 'Croppper',
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false)
+    ]);
+    return cropped?.path;
+  }
+
+  void getRecognisedText(String path) async {
+    final inputImage = InputImage.fromFilePath(path);
+    final textDetector = GoogleMlKit.vision.textRecognizer();
+    RecognizedText recognizedText = await textDetector.processImage(inputImage);
+    await textDetector.close();
+    var scanText = "";
+    for (TextBlock block in recognizedText.blocks) {
+      for (TextLine line in block.lines) {
+        scanText = scanText + line.text + "\n";
+      }
+    }
+    print(scanText);
   }
 }
 
