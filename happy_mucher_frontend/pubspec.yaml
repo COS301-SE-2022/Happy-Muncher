@@ -46,6 +46,8 @@ dependencies:
   dcdg: ^4.0.1
   flutter_speed_dial: ^6.0.0
   image_picker: ^0.8.5+3
+  google_ml_kit: ^0.11.0
+  image_cropper: ^2.0.3
 
 dev_dependencies:
   integration_test:
