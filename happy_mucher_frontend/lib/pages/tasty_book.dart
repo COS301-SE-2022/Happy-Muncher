@@ -4,17 +4,19 @@ import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/models/tasty.api.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
+import 'package:happy_mucher_frontend/tasty_card.dart';
 //import 'package:http/http.dart' as http;
 
-class RecipeBook extends StatefulWidget {
-  RecipeBook({Key? key}) : super(key: key);
+class TastyBook extends StatefulWidget {
+  TastyBook({Key? key}) : super(key: key);
   @override
-  State<RecipeBook> createState() => RecipeBookState();
+  State<TastyBook> createState() => TastyBookState();
 }
 
-class RecipeBookState extends State<RecipeBook> {
-  List<Recipe> recipes = [];
-  List<tastyRecipe> tr = [];
+class TastyBookState extends State<TastyBook> {
+  List<tastyRecipe> recipes = [];
+
+  //List<tastyRecipe> tr = [];
   bool loading = true;
   @override
   void initState() {
@@ -24,8 +26,8 @@ class RecipeBookState extends State<RecipeBook> {
   }
 
   Future<void> getRecipes() async {
-    recipes = await RecipeAPI.getRecipe();
-    tr = await TastyRecipeAPI.getTastyApi();
+    //recipes = await RecipeAPI.getRecipe();
+    recipes = await TastyRecipeAPI.getTastyApi();
     if (mounted) {
       setState(() {
         loading = false;
@@ -33,7 +35,7 @@ class RecipeBookState extends State<RecipeBook> {
       });
     }
 
-    print(tr);
+    //print(tr);
   }
 
   @override
@@ -48,13 +50,21 @@ class RecipeBookState extends State<RecipeBook> {
             : ListView.builder(
                 itemCount: recipes.length,
                 itemBuilder: (context, index) {
-                  return RecipeCard(
-                    title: recipes[index].name,
-                    cookTime: recipes[index].totalTime,
-                    calories: recipes[index].calories,
-                    thumbnailUrl: recipes[index].images,
+                  return TastyRecipeCard(
+                    name: recipes[index].name,
+                    recipeid: recipes[index].recipeid,
+                    images: recipes[index].images,
+                    totTime: recipes[index].totTime.toString(),
                     description: recipes[index].description,
-                    ing: recipes[index].ingredients,
+                    calories: recipes[index].calories,
+                    ingredients: recipes[index].ingredients,
+                    instructions: recipes[index].instructions,
+                    // title: recipes[index].name,
+                    // cookTime: recipes[index].totalTime,
+                    // calories: recipes[index].calories,
+                    // thumbnailUrl: recipes[index].images,
+                    // description: recipes[index].description,
+                    // ing: recipes[index].ingredients,
                     //recipes: recipes,
                   );
                 }));

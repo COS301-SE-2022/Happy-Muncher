@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
+import 'package:happy_mucher_frontend/models/tastyInfo.api.dart';
+import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/pages/individualRecipe.dart';
+import 'package:happy_mucher_frontend/pages/tastyRecipeInfo.dart';
 
-class RecipeCard extends StatelessWidget {
-  final String title;
-  final double calories;
-  final String cookTime;
-  final String thumbnailUrl;
+class TastyRecipeCard extends StatelessWidget {
+  final String name;
+  final String images;
+  final int recipeid;
+  final String totTime;
   final String description;
-  final List<String> ing;
-  final List<String> steps;
-  final int id;
+  final int calories;
+  final List<String> ingredients;
+  final List<String> instructions;
   //List<Recipe>? recipes;
-  RecipeCard(
-      {@required this.title = "",
-      @required this.cookTime = "",
-      @required this.calories = 0.0,
-      @required this.thumbnailUrl = "",
-      @required this.description = "",
-      @required this.ing = const [''],
-      @required this.steps = const [''],
-      @required this.id = 0
-      //@required this.recipes,
-      });
+  TastyRecipeCard(
+      {this.name = "",
+      this.images = "",
+      this.recipeid = 0,
+      this.totTime = "",
+      this.description = "",
+      this.calories = 0,
+      this.ingredients = const [''],
+      this.instructions = const ['']});
+  //List<tastyRecipe> info = [];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +51,7 @@ class RecipeCard extends StatelessWidget {
             Colors.black.withOpacity(0.35),
             BlendMode.multiply,
           ),
-          image: NetworkImage(thumbnailUrl),
+          image: NetworkImage(images),
           fit: BoxFit.cover,
         ),
       ),
@@ -58,7 +61,7 @@ class RecipeCard extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.0),
               child: Text(
-                title,
+                name,
                 style: TextStyle(fontSize: 19, color: Colors.white),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
@@ -109,7 +112,7 @@ class RecipeCard extends StatelessWidget {
                       ),
                       SizedBox(width: 7),
                       Text(
-                        cookTime,
+                        totTime,
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -124,14 +127,17 @@ class RecipeCard extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
+                    // List<String> ing = [];
+
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => IndividualRecipe(
-                        name: title,
+                        name: name,
                         description: description,
-                        image: thumbnailUrl,
-                        calories: calories,
-                        ingredients: ing,
-                        cookTime: cookTime,
+                        image: images,
+                        //id: recipeid,
+                        ingredients: ingredients,
+                        cookTime: totTime,
+                        instructions: instructions,
                       ),
                     ));
                   },
@@ -150,3 +156,16 @@ class RecipeCard extends StatelessWidget {
     );
   }
 }
+
+//  Future<void> getRecipes() async {
+//     //recipes = await RecipeAPI.getRecipe();
+//     info = await TastyInfoAPI.getTastyApi();
+//     if (mounted) {
+//       setState(() {
+//         loading = false;
+//         // recipes.length? len = recipes.length
+//       });
+//     }
+
+//     //print(tr);
+//   }
