@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/pages/individualRecipe.dart';
+import 'package:get_it/get_it.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:happy_mucher_frontend/dialogs/add_recipe.dialog.dart';
+import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 
 class TastyRecipeCard extends StatelessWidget {
   final String name;
@@ -22,7 +27,9 @@ class TastyRecipeCard extends StatelessWidget {
       this.calories = 0,
       this.ingredients = const [''],
       this.instructions = const ['']});
-  //List<tastyRecipe> info = [];
+
+  final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _meals => firestore.collection('Meal Planner');
 
   @override
   Widget build(BuildContext context) {
@@ -121,49 +128,112 @@ class TastyRecipeCard extends StatelessWidget {
             alignment: Alignment.bottomLeft,
           ),
           Align(
-            child: Row(
+            child: SpeedDial(
+              direction: SpeedDialDirection.down,
+              icon: Icons.more_vert,
+              backgroundColor: Colors.blue,
+              buttonSize: const Size(45.0, 45.0),
               children: [
-                IconButton(
-                  onPressed: () {
-                    // List<String> ing = [];
-
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => IndividualRecipe(
-                        name: name,
-                        description: description,
-                        image: images,
-                        //id: recipeid,
-                        ingredients: ingredients,
-                        cookTime: totTime,
-                        instructions: instructions,
-                      ),
-                    ));
-                  },
-                  icon: Icon(
-                    Icons.navigate_next_rounded,
+                SpeedDialChild(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => IndividualRecipe(
+                      name: name,
+                      description: description,
+                      image: images,
+                      //id: recipeid,
+                      ingredients: ingredients,
+                      cookTime: totTime,
+                      instructions: instructions,
+                    ),
+                  )),
+                  key: const Key('goToInfo'),
+                  child: const Icon(
+                    Icons.info_outline,
                     color: Colors.white,
-                    size: 28,
                   ),
-                )
+                  backgroundColor: Colors.blue,
+                ),
+                SpeedDialChild(
+                  onTap: () => showAlertDialog(context),
+                  key: const Key('addToInventoryButton'),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Colors.blue,
+                ),
               ],
             ),
-            alignment: Alignment.topLeft,
+
+            // Row(
+            //   children: [
+            //     IconButton(
+            //       onPressed: () {
+            //         // List<String> ing = [];
+
+            // Navigator.of(context).push(MaterialPageRoute(
+            //   builder: (context) => IndividualRecipe(
+            //     name: name,
+            //     description: description,
+            //     image: images,
+            //     //id: recipeid,
+            //     ingredients: ingredients,
+            //     cookTime: totTime,
+            //     instructions: instructions,
+            //   ),
+            // ));
+            //       },
+            //       icon: Icon(
+            //         Icons.navigate_next_rounded,
+            //         color: Colors.white,
+            //         size: 28,
+            //       ),
+            //     )
+            //   ],
+            // ),
+            alignment: Alignment.topRight,
           ),
         ],
       ),
     );
   }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget yesButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () async {
+        String ing = "";
+        ing = ingredients.join('\n');
+        _meals.doc('Place Holder').update(
+            {'Name': name, 'Instructions': ing, 'Description': description});
+        Navigator.pop(context);
+        await Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const MealPage(),
+        ));
+      },
+    );
+
+    Widget noButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      //title: Text("Compare Grocery List to Budget"),
+      content: Text("Add " + '"' + name + '"' + " to your Meal Planner?"),
+      actions: [yesButton, noButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }
-
-//  Future<void> getRecipes() async {
-//     //recipes = await RecipeAPI.getRecipe();
-//     info = await TastyInfoAPI.getTastyApi();
-//     if (mounted) {
-//       setState(() {
-//         loading = false;
-//         // recipes.length? len = recipes.length
-//       });
-//     }
-
-//     //print(tr);
-//   }

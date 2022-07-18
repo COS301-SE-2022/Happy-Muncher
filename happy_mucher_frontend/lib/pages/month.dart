@@ -50,6 +50,7 @@ class MyMonthState extends State<Month> {
   String rem4 = "0";
   bool editFour = false;
 
+//get database collection
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _budget => firestore.collection('Budget');
   CollectionReference get _groceryList => firestore.collection('GroceryList');
@@ -71,6 +72,8 @@ class MyMonthState extends State<Month> {
   Future<void> setSpent() async {
     // Get docs from collection reference
     //QuerySnapshot querySnapshot = await _budget.get();
+
+    //get info from database
     firestore
         .collection('Budget')
         .doc(widget.month)
