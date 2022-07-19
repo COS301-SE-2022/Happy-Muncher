@@ -185,11 +185,11 @@ class _MyHomePageState extends State<MyHomePage> {
               fit: BoxFit.cover,
             ),
             Text(
-              'Meal Planner',
+              'MEAL PLANNER',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 24,
+                color: Colors.black,
+                fontSize: 30,
               ),
             )
           ],
@@ -213,11 +213,11 @@ class _MyHomePageState extends State<MyHomePage> {
               fit: BoxFit.cover,
             ),
             Text(
-              'Recipe Book',
+              'RECIPE BOOK',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 24,
+                color: Colors.black,
+                fontSize: 30,
               ),
             )
           ],
