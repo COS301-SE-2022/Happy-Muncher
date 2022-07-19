@@ -21,7 +21,7 @@ class _MealPageState extends State<MealPage> {
               key: Key("mon"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "Monday"),
+                  builder: (context) => const Weekday(day: "Monday"),
                 ));
               },
               child: const Text("Monday"),
@@ -32,7 +32,7 @@ class _MealPageState extends State<MealPage> {
               key: Key("tue"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "Tuesday"),
+                  builder: (context) => const Weekday(day: "Tuesday"),
                 ));
               },
               child: const Text("Tuesday"),
@@ -43,7 +43,7 @@ class _MealPageState extends State<MealPage> {
               key: Key("wed"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "Wednesday"),
+                  builder: (context) => const Weekday(day: "Wednesday"),
                 ));
               },
               child: const Text("Wednesday"),
@@ -54,7 +54,7 @@ class _MealPageState extends State<MealPage> {
               key: Key("thu"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "Thursday"),
+                  builder: (context) => const Weekday(day: "Thursday"),
                 ));
               },
               child: const Text("Thursday"),
@@ -65,7 +65,7 @@ class _MealPageState extends State<MealPage> {
               key: Key("fri"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "Friday"),
+                  builder: (context) => const Weekday(day: "Friday"),
                 ));
               },
               child: const Text("Friday"),
@@ -76,7 +76,7 @@ class _MealPageState extends State<MealPage> {
               key: Key("sat"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "Saturday"),
+                  builder: (context) => const Weekday(day: "Saturday"),
                 ));
               },
               child: const Text("Saturday"),
@@ -87,7 +87,7 @@ class _MealPageState extends State<MealPage> {
               key: Key("sun"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "Sunday"),
+                  builder: (context) => const Weekday(day: "Sunday"),
                 ));
               },
               child: const Text("Sunday"),
