@@ -205,8 +205,17 @@ class TastyRecipeCard extends StatelessWidget {
       onPressed: () async {
         String ing = "";
         ing = ingredients.join('\n');
-        _meals.doc('Place Holder').update(
-            {'Name': name, 'Instructions': ing, 'Description': description});
+        String instruc = "";
+        instruc = instructions.join('\n');
+        _meals.doc('Place Holder').update({
+          'Name': name,
+          'Instructions': instruc,
+          'Description': description,
+          'Calories': calories,
+          'CookTime': totTime,
+          'Image': images,
+          'Ingredients': ing
+        });
         Navigator.pop(context);
         await Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => const MealPage(),
