@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
           alignment: Alignment.center,
           children: [
             Ink.image(
-              image: AssetImage('assets/images/budget.jpg'),
+              image: AssetImage('assets/images/homepage/grocery.jpg'),
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
           alignment: Alignment.center,
           children: [
             Ink.image(
-              image: AssetImage('assets/images/budget.jpg'),
+              image: AssetImage('assets/images/homepage/inventory.jpg'),
               child: InkWell(
                 onTap: () {
                   Navigator.push(context,
@@ -146,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
           alignment: Alignment.center,
           children: [
             Ink.image(
-              image: AssetImage('assets/images/budget.jpg'),
+              image: AssetImage('assets/images/homepage/budget.jpg'),
               child: InkWell(
                 onTap: () {
                   Navigator.push(context,
@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
           alignment: Alignment.center,
           children: [
             Ink.image(
-              image: AssetImage('assets/images/budget.jpg'),
+              image: AssetImage('assets/images/homepage/mealplanner.jpg'),
               child: InkWell(
                 onTap: () {
                   Navigator.push(context,
@@ -202,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
           alignment: Alignment.center,
           children: [
             Ink.image(
-              image: AssetImage('assets/images/budget.jpg'),
+              image: AssetImage('assets/images/homepage/recipe.jpg'),
               child: InkWell(
                 onTap: () {
                   Navigator.push(context,
