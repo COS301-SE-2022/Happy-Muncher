@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
+=======
+import 'grocerylist.dart';
+import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
 
 class Month extends StatefulWidget {
   const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
@@ -16,6 +21,21 @@ class Month extends StatefulWidget {
 }
 
 class MyMonthState extends State<Month> {
+<<<<<<< HEAD
+=======
+  // int groceryListTotal() {
+  //   List<GroceryListItem> gl = GroceryListPage.inventoryList;
+
+  //   int total = 0;
+  //   gl.forEach((element) {
+  //     total = total + element.Price;
+  //   });
+  //   return total;
+  // }
+
+  //int tot = groceryListTotal();
+  //static const IconData money = IconData(0xe3f8, fontFamily: 'MaterialIcons');
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
   final budgetController = TextEditingController();
   double bud = 0;
   String input = "0";
@@ -133,6 +153,7 @@ class MyMonthState extends State<Month> {
   //DocumentReference get _currentMonth => _budget.doc(widget.month);
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     //print("total spent" + totSpent.toString());
     //getsp();
     // FirebaseFirestore.instance
@@ -151,6 +172,11 @@ class MyMonthState extends State<Month> {
     setSpent();
     setState(() {});
     print("calling");
+=======
+    // setState(() {
+    //   totSpent = widget.glSpent.toDouble();
+    // });
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -211,6 +237,7 @@ class MyMonthState extends State<Month> {
                   () {
                     bud = 0;
                   };
+<<<<<<< HEAD
 
                 totBudget = bud;
                 if (totBudget != null) {
@@ -284,6 +311,22 @@ class MyMonthState extends State<Month> {
                   'budget': double.parse(mybudget),
                   'amount remaining': double.parse(rem4),
                 });
+=======
+
+                totBudget = bud;
+                totRem = bud;
+
+                bud = bud / 4;
+                budget = bud.toString();
+
+                //totSpent = 0;
+                totSpent += widget.glSpent.toDouble();
+                totRem -= totSpent;
+                rem1 = budget;
+                rem2 = budget;
+                rem3 = budget;
+                rem4 = budget;
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
               });
             },
             color: Colors.green,
@@ -370,6 +413,7 @@ class MyMonthState extends State<Month> {
                           totRem -= double.parse(spent1);
                           double left = double.parse(spent1);
                           totSpent += double.parse(spent1);
+<<<<<<< HEAD
                           //setSpent();
                           print("set");
                           left = bud - left;
@@ -383,6 +427,10 @@ class MyMonthState extends State<Month> {
                             'amount remaining': rem1
                           });
 
+=======
+                          left = bud - left;
+                          rem1 = left.toString();
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
                           editOne = false;
                         });
                       },
@@ -457,6 +505,7 @@ class MyMonthState extends State<Month> {
                           totSpent += double.parse(spent2);
                           left = bud - left;
                           rem2 = left.toString();
+<<<<<<< HEAD
                           _budget
                               .doc(widget.month)
                               .collection('Week2')
@@ -465,6 +514,8 @@ class MyMonthState extends State<Month> {
                             'amount spent': double.parse(spent2),
                             'amount remaining': rem2
                           });
+=======
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
                           editTwo = false;
                         });
                       },
@@ -538,6 +589,7 @@ class MyMonthState extends State<Month> {
                           totSpent += double.parse(spent3);
                           left = bud - left;
                           rem3 = left.toString();
+<<<<<<< HEAD
                           _budget
                               .doc(widget.month)
                               .collection('Week3')
@@ -546,6 +598,8 @@ class MyMonthState extends State<Month> {
                             'amount spent': double.parse(spent3),
                             'amount remaining': rem3
                           });
+=======
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
                           editThree = false;
                         });
                       },
@@ -619,6 +673,7 @@ class MyMonthState extends State<Month> {
                           totSpent += double.parse(spent4);
                           left = bud - left;
                           rem4 = left.toString();
+<<<<<<< HEAD
                           _budget
                               .doc(widget.month)
                               .collection('Week4')
@@ -627,6 +682,8 @@ class MyMonthState extends State<Month> {
                             'amount spent': double.parse(spent4),
                             'amount remaining': rem4
                           });
+=======
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
                           editFour = false;
                         });
                       },
@@ -698,6 +755,7 @@ class MyMonthState extends State<Month> {
               child: Text("Total Amount Remaining:  " + totRem.toString())),
         ),
       ]));
+<<<<<<< HEAD
   // Future<void> getData() async {
   //   // Get docs from collection reference
   //   QuerySnapshot querySnapshot = await _groceryList.get();
@@ -757,6 +815,14 @@ class MyMonthState extends State<Month> {
           String message = "";
           double comp = 0;
           comp += est;
+=======
+
+  Widget EstTotal() => ElevatedButton(
+        onPressed: () {
+          String message = "";
+          double comp = 0;
+          comp += widget.price;
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
           compMessage = " Your estimated total is R " + comp.toString() + ". ";
           if (comp < totBudget) {
             message = "Your Grocery List is within budget. ";
@@ -773,7 +839,11 @@ class MyMonthState extends State<Month> {
           });
           showAlertDialog(context);
         },
+<<<<<<< HEAD
         child: Text("Compare to Grocery List"),
+=======
+        child: Text("compare"),
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
       );
 
   showAlertDialog(BuildContext context) {
@@ -781,7 +851,11 @@ class MyMonthState extends State<Month> {
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
+<<<<<<< HEAD
         Navigator.of(context, rootNavigator: true).pop();
+=======
+        Navigator.of(context).pop();
+>>>>>>> 7c9e53a64e76cda871eece630e6a9b33d00f933d
       },
     );
 
