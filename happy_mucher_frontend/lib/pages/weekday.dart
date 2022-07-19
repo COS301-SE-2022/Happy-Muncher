@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:happy_mucher_frontend/recipe_card.dart';
+import 'package:happy_mucher_frontend/tasty_card.dart';
 
 class Weekday extends StatefulWidget {
   const Weekday({Key? key, required this.day}) : super(key: key);
@@ -20,38 +20,64 @@ class MyWeekdayState extends State<Weekday> {
   String instr = '';
   List<String> instructions = [];
   List<String> ingredients = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //getMeals();
+    getMeals();
+    print("Description");
+    print(description);
   }
 
-  // Future<void> getMeals() async {
-  //   var collection = FirebaseFirestore.instance.collection('Meal Planner');
-  //   var docSnapshot = await collection
-  //       .doc(widget.day)
-  //       .collection('Breakfast')
-  //       .doc('Recipe')
-  //       .get();
-  //   if (docSnapshot.exists) {
-  //     Map<String, dynamic> data = docSnapshot.data()!;
+  Future<void> getMeals() async {
+    // FirebaseFirestore.instance
+    //     .collection('Meal Planner')
+    //     .doc(widget.day)
+    //     .collection('Breakfast')
+    //     .doc('Recipe')
+    //     .get()
+    //     .then((QuerySnapshot qs) {
+    //   qs.docs.forEach((doc) {
+    //     print("Image");
+    //     image = doc['ImageURL'].toString();
 
-  //     // You can then retrieve the value from the Map like this:
-  //     image = data['Image'];
-  //     ing = data['Ingredients'];
-  //     title = data['Name'];
-  //     cookTime = data['CookTime'];
-  //     description = data['Description'];
-  //     calories = data['Calories'];
-  //     instructions = data['Instructions'];
-  //   }
-  //   ingredients = (ing.split('\n'));
+    //     print(image);
+    //     ing = doc['Ingredients'].toString();
+    //     title = doc['Name'].toString();
+    //     cookTime = doc['CookTime'].toString();
+    //     description = doc['Description'].toString();
+    //     calories = doc['Calories'];
+    //     instr = doc['Instructions'].toString();
+    //   });
+    // });
 
-  //   //print(tr);
-  // }
+    var collection = FirebaseFirestore.instance.collection('Meal Planner');
+    var docSnapshot = await collection
+        .doc(widget.day)
+        .collection('Breakfast')
+        .doc('Recipe')
+        .get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
 
-  @override
+      // You can then retrieve the value from the Map like this:
+
+      image = data['ImageURL'];
+      ing = data['Ingredients'];
+      title = data['Name'];
+      cookTime = data['CookTime'];
+      description = data['Description'];
+      calories = data['Calories'];
+      instr = data['Instructions'];
+      print(image);
+    }
+    ingredients = (ing.split('\n'));
+    instructions = (instr.split('\n'));
+    print(image);
+    //print(tr);
+  }
+
   final breakfastController = TextEditingController();
   String meal1 = "Enter your breakfast";
   bool editOne = false;
@@ -66,8 +92,9 @@ class MyWeekdayState extends State<Weekday> {
 
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _meals => firestore.collection('Meal Planner');
-
+  @override
   Widget build(BuildContext context) {
+    //Future.delayed(Duration.zero, () => getMeals(context));
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.day}'),
@@ -111,13 +138,14 @@ class MyWeekdayState extends State<Weekday> {
           ),
         ),
         const SizedBox(height: 10),
-        RecipeCard(
-          title: title,
-          cookTime: cookTime,
+        TastyRecipeCard(
+          name: title,
+          totTime: cookTime,
           calories: 0,
-          thumbnailUrl: image,
+          images: image,
           description: description,
-          ing: ingredients,
+          ingredients: ingredients,
+          instructions: instructions,
         ),
         // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         //   Flexible(
