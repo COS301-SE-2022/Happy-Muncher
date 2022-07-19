@@ -157,11 +157,11 @@ class _MyHomePageState extends State<MyHomePage> {
               fit: BoxFit.cover,
             ),
             Text(
-              'Budget Planner',
+              'BUDGET PLANNER',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 24,
+                color: Colors.black,
+                fontSize: 30,
               ),
             )
           ],
