@@ -1,13 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/recipe_card.dart';
 
-class Month extends StatefulWidget {
-  const Month({Key? key, required this.month}) : super(key: key);
-  final String month;
+class Weekday extends StatefulWidget {
+  const Weekday({Key? key, required this.day}) : super(key: key);
+  final String day;
   @override
-  State<Month> createState() => MyMonthState();
+  State<Weekday> createState() => MyWeekdayState();
 }
 
-class MyMonthState extends State<Month> {
+class MyWeekdayState extends State<Weekday> {
+  String image = '';
+  String title = '';
+  String cookTime = '';
+  int calories = 0;
+  String description = '';
+  String ing = '';
+  String instr = '';
+  List<String> instructions = [];
+  List<String> ingredients = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //getMeals();
+  }
+
+  // Future<void> getMeals() async {
+  //   var collection = FirebaseFirestore.instance.collection('Meal Planner');
+  //   var docSnapshot = await collection
+  //       .doc(widget.day)
+  //       .collection('Breakfast')
+  //       .doc('Recipe')
+  //       .get();
+  //   if (docSnapshot.exists) {
+  //     Map<String, dynamic> data = docSnapshot.data()!;
+
+  //     // You can then retrieve the value from the Map like this:
+  //     image = data['Image'];
+  //     ing = data['Ingredients'];
+  //     title = data['Name'];
+  //     cookTime = data['CookTime'];
+  //     description = data['Description'];
+  //     calories = data['Calories'];
+  //     instructions = data['Instructions'];
+  //   }
+  //   ingredients = (ing.split('\n'));
+
+  //   //print(tr);
+  // }
+
   @override
   final breakfastController = TextEditingController();
   String meal1 = "Enter your breakfast";
@@ -21,10 +64,13 @@ class MyMonthState extends State<Month> {
   String meal3 = "Enter your dinner";
   bool editThree = false;
 
+  final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _meals => firestore.collection('Meal Planner');
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.month}'),
+        title: Text('${widget.day}'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(32),
@@ -65,27 +111,35 @@ class MyMonthState extends State<Month> {
           ),
         ),
         const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(
-              child: !editOne
-                  ? Text(meal1)
-                  : TextField(
-                      key: Key("meal1"),
-                      textAlign: TextAlign.center,
-                      controller: breakfastController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your meal',
-                      ),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          meal1 = breakfastController.text;
-                          editOne = false;
-                        });
-                      },
-                    )),
-        ]),
+        RecipeCard(
+          title: title,
+          cookTime: cookTime,
+          calories: 0,
+          thumbnailUrl: image,
+          description: description,
+          ing: ingredients,
+        ),
+        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        //   Flexible(
+        //       child: !editOne
+        //           ? Text(meal1)
+        //           : TextField(
+        //               key: Key("meal1"),
+        //               textAlign: TextAlign.center,
+        //               controller: breakfastController,
+        //               decoration: const InputDecoration(
+        //                 hintText: 'Enter your meal',
+        //               ),
+        //               keyboardType: TextInputType.text,
+        //               textInputAction: TextInputAction.done,
+        //               onSubmitted: (value) {
+        //                 setState(() {
+        //                   meal1 = breakfastController.text;
+        //                   editOne = false;
+        //                 });
+        //               },
+        //             )),
+        // ]),
         const SizedBox(height: 10),
         IconButton(
           alignment: Alignment.bottomRight,
@@ -93,7 +147,41 @@ class MyMonthState extends State<Month> {
           //hoverColor: Colors.green,
           icon: Icon(Icons.add_circle),
           iconSize: 44.0,
-          onPressed: () {
+          onPressed: () async {
+            var collection =
+                FirebaseFirestore.instance.collection('Meal Planner');
+            var docSnapshot = await collection.doc('Place Holder').get();
+            if (docSnapshot.exists) {
+              Map<String, dynamic> data = docSnapshot.data()!;
+
+              // You can then retrieve the value from the Map like this:
+              image = data['Image'];
+              ing = data['Ingredients'];
+              title = data['Name'];
+              cookTime = data['CookTime'];
+              description = data['Description'];
+              calories = data['Calories'];
+              instr = data['Instructions'];
+            }
+            ingredients = (ing.split('\n'));
+            instructions = (instr.split('\n'));
+            print(instr);
+            _meals
+                .doc(widget.day)
+                .collection('Breakfast')
+                .doc('Recipe')
+                .update({
+              'Name': title,
+              'Instructions': instr,
+              'Description': description,
+              'Calories': calories,
+              'CookTime': cookTime,
+              'ImageURL': image,
+              'Ingredients': ing,
+            });
+            //print(ingrd[0]); // return ["one"
+            //ingredients.addAll(ing);
+
             setState(() => {
                   editOne = true,
                 });
