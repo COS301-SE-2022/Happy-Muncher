@@ -9,16 +9,20 @@ class RecipeCard extends StatelessWidget {
   final String thumbnailUrl;
   final String description;
   final List<String> ing;
+  final List<String> steps;
+  final int id;
   //List<Recipe>? recipes;
-  RecipeCard({
-    @required this.title = "",
-    @required this.cookTime = "",
-    @required this.calories = 0.0,
-    @required this.thumbnailUrl = "",
-    @required this.description = "",
-    @required this.ing = const [''],
-    //@required this.recipes,
-  });
+  RecipeCard(
+      {@required this.title = "",
+      @required this.cookTime = "",
+      @required this.calories = 0.0,
+      @required this.thumbnailUrl = "",
+      @required this.description = "",
+      @required this.ing = const [''],
+      @required this.steps = const [''],
+      @required this.id = 0
+      //@required this.recipes,
+      });
   @override
   Widget build(BuildContext context) {
     return Container(

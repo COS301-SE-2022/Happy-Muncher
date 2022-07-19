@@ -16,7 +16,8 @@ class IndividualRecipe extends StatefulWidget {
       this.image = '',
       this.calories = 0.0,
       this.ingredients = const [""],
-      this.cookTime = "0"})
+      this.cookTime = "0",
+      this.instructions = const ['']})
       : super(key: key);
   final List<Recipe>? recipe;
   final String description;
@@ -24,6 +25,7 @@ class IndividualRecipe extends StatefulWidget {
   final String image;
   final double calories;
   final List<String> ingredients;
+  final List<String> instructions;
   final String cookTime;
   @override
   State<IndividualRecipe> createState() => IndividualRecipeState();
@@ -31,13 +33,21 @@ class IndividualRecipe extends StatefulWidget {
 
 class IndividualRecipeState extends State<IndividualRecipe> {
   String ing = "";
-
+  String steps = "";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     ing = widget.ingredients.join('\n');
-    print(ing);
+    for (int i = 0; i < widget.instructions.length; i++) {
+      // if (i != widget.instructions.length - 1) {
+      //   int s = i = 1;
+      //   steps += s.toString();
+      // }
+      steps = widget.instructions.join('\n');
+    }
+
+    print(steps);
     //recipes = widget.recipe as List<Recipe>;
     //print(recipes[2].description);
   }
@@ -72,6 +82,12 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Text(ing),
+        const SizedBox(height: 24),
+        Text(
+          "Instructions",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Text(steps),
       ]),
     );
   }

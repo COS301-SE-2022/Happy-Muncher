@@ -13,10 +13,8 @@ import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
-
-
 import 'package:happy_mucher_frontend/pages/recipebook.dart';
-
+import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 
 void main() {
   runApp(MyApp());
@@ -161,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RecipeBook()));
+                      MaterialPageRoute(builder: (context) => TastyBook()));
                 },
                 color: Colors.blue,
                 shape: RoundedRectangleBorder(
