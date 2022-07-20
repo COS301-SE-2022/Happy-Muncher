@@ -42,39 +42,43 @@ class TastyBookState extends State<TastyBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Recipe Book'),
-          centerTitle: true,
-        ),
-        body: 
-      
-        loading
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: recipes.length,
-                itemBuilder: (context, index) {
-                  return TastyRecipeCard(
-                    name: recipes[index].name,
-                    recipeid: recipes[index].recipeid,
-                    images: recipes[index].images,
-                    totTime: recipes[index].totTime.toString(),
-                    description: recipes[index].description,
-                    calories: recipes[index].calories,
-                    ingredients: recipes[index].ingredients,
-                    instructions: recipes[index].instructions,
-                   
-                  );
-                }));
+      appBar: AppBar(
+        title: const Text('Recipe Book'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+          child: Column(
+        children: [
+          SearchBox(),
+          loading
+              ? Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemCount: recipes.length,
+                  itemBuilder: (context, index) {
+                    return TastyRecipeCard(
+                      name: recipes[index].name,
+                      recipeid: recipes[index].recipeid,
+                      images: recipes[index].images,
+                      totTime: recipes[index].totTime.toString(),
+                      description: recipes[index].description,
+                      calories: recipes[index].calories,
+                      ingredients: recipes[index].ingredients,
+                      instructions: recipes[index].instructions,
+                    );
+                  })
+        ],
+      )),
+    );
   }
-  
+
   Widget SearchBox() => SearchWidget(
         hintText: "search by ingredient or keyword",
         text: search,
         onChanged: searchRecipe,
       );
 
-  void searchRecipe(String query) {
-    
-  }
-
+  void searchRecipe(String query) {}
 }
