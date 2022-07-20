@@ -11,6 +11,9 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text('Settings'),
+        ),
         body: SafeArea(
             child: ListView(
           padding: EdgeInsets.all(24),
