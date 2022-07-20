@@ -75,6 +75,7 @@ flutter:
     - assets/images/months/january.jpg
     - assets/images/months/february.jpg
     - assets/images/months/march.jpg
+    - assets/images/months/april.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
