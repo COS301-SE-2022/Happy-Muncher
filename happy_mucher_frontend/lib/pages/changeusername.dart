@@ -4,6 +4,10 @@ import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
 
+Future addUsernameDialog(BuildContext context) {
+  return showDialog(context: context, builder: (_) => const ChangeUsername());
+}
+
 class ChangeUsername extends StatefulWidget {
   const ChangeUsername({Key? key}) : super(key: key);
 
@@ -48,56 +52,56 @@ class _ChangeUsernameState extends State<ChangeUsername> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return AlertDialog(
+      /*appBar: AppBar(
         title: Text('Change Username'),
-      ),
+      ),*/
       key: _formKey,
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: ListView(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: TextFormField(
-                autofocus: false,
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: 'New Username: ',
-                  hintText: 'Enter New Username',
-                  labelStyle: TextStyle(fontSize: 20.0),
-                  border: OutlineInputBorder(),
-                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-                ),
-                controller: newUsernameController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter Username';
-                  }
-                  return null;
-                },
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: EdgeInsets.zero,
+            child: TextFormField(
+              autofocus: false,
+              obscureText: false,
+              decoration: InputDecoration(
+                labelText: 'New Username: ',
+                hintText: 'Enter New Username',
+                labelStyle: TextStyle(fontSize: 20.0),
+                border: OutlineInputBorder(),
+                errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
               ),
+              controller: newUsernameController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please Enter Username';
+                }
+                return null;
+              },
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, otherwise false.
-                /*if (_formKey.currentState!.validate()) {
+          ),
+        ],
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            // Validate returns true if the form is valid, otherwise false.
+            /*if (_formKey.currentState!.validate()) {
                   setState(() {
                     newUsername = newUsernameController.text;
                   });
                   
                 }*/
-                newUsername = newUsernameController.text;
-                changeUsername();
-              },
-              child: Text(
-                'Change Username',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-          ],
+            newUsername = newUsernameController.text;
+            changeUsername();
+          },
+          child: Text(
+            'Change',
+            style: TextStyle(fontSize: 18.0),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
