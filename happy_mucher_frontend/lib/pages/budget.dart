@@ -65,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Ink.image(
               image: AssetImage('assets/images/months/january.jpg'),
-              width: 250,
               child: InkWell(
                 key: Key("jan"),
                 onTap: () {
@@ -75,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               height: 130,
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.cover,
             )
           ],
         ),
@@ -89,7 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Ink.image(
               image: AssetImage('assets/images/months/february.jpg'),
-              width: 300,
               child: InkWell(
                 key: Key("feb"),
                 onTap: () {
@@ -99,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               height: 130,
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.cover,
             )
           ],
         ),
@@ -113,7 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Ink.image(
               image: AssetImage('assets/images/months/march.jpg'),
-              width: 200,
               child: InkWell(
                 key: Key("mar"),
                 onTap: () {
@@ -123,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               height: 130,
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.cover,
             )
           ],
         ),
@@ -137,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Ink.image(
               image: AssetImage('assets/images/months/april.jpg'),
-              width: 180,
               child: InkWell(
                 key: Key("apr"),
                 onTap: () {
@@ -147,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               height: 130,
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.cover,
             )
           ],
         ),
@@ -161,7 +157,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Ink.image(
               image: AssetImage('assets/images/months/may.jpg'),
-              width: 150,
               child: InkWell(
                 key: Key("may"),
                 onTap: () {
@@ -171,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               height: 130,
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.cover,
             )
           ],
         ),
