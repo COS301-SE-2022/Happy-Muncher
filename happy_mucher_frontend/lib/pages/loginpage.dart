@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/forgotpassword.dart';
 import 'package:provider/provider.dart';
 
 import 'signuppage.dart';
@@ -42,10 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey.currentState!.save();
 
     try {
+      print(_authData['email']!);
+      print(_authData['password']!);
       await Provider.of<Authentication>(context, listen: false)
           .logIn(_authData['email']!, _authData['password']!);
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
+
       Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
     } catch (error) {
       var errorMessage = 'Authentication Failed. Invalid email or password.';
@@ -65,10 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
               children: <Widget>[Text('Signup'), Icon(Icons.person_add)],
             ),
             textColor: Colors.white,
-            onPressed: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(SignupScreen.routeName);
-            },
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SignupScreen()),
+            ),
           )
         ],
       ),
@@ -124,15 +127,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       SizedBox(height: size.height * 0.03),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                        child: Text(
-                          "Forgot your password?",
-                          style:
-                              TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            child: Text('Forgot Password?'),
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPassword()),
+                            ),
+                          )
+                        ],
                       ),
 
                       SizedBox(height: size.height * 0.03),
