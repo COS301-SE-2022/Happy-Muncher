@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
+import 'package:happy_mucher_frontend/provider/dark_theme_provider.dart';
+import 'package:provider/provider.dart';
+
 class SettingsPage extends StatelessWidget {
   static const keyDarkMode = 'key-dark-mode';
   static const keyLocation = 'key-location';
   static const keyLanguage = 'key-language';
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
@@ -12,7 +16,7 @@ class SettingsPage extends StatelessWidget {
           padding: EdgeInsets.all(24),
           children: [
             SettingsGroup(title: 'GENERAL', children: <Widget>[
-              buildDarkMode(),
+              buildDarkMode(context),
               buildLanguage(),
               buildLocation(),
             ])
@@ -20,12 +24,21 @@ class SettingsPage extends StatelessWidget {
         )),
       );
 
-  Widget buildDarkMode() => SwitchSettingsTile(
-        settingKey: keyDarkMode,
-        leading: Icon(Icons.dark_mode),
-        title: 'Dark Mode',
-        onChange: (isDarkMode) {/* NOOP */},
-      );
+  Widget buildDarkMode(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    return SwitchSettingsTile(
+      settingKey: keyDarkMode,
+      leading: Icon(
+        Icons.dark_mode,
+        color: Colors.deepPurpleAccent,
+      ),
+      title: 'Dark Mode',
+      onChange: (isDarkMode) {
+        themeChange.darkTheme = isDarkMode;
+        //print(isDarkMode);
+      },
+    );
+  }
 
   Widget buildLanguage() => DropDownSettingsTile(
         title: 'Language',
