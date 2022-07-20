@@ -5,17 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart'
     as mPrefix;
 import 'package:happy_mucher_frontend/pages/settings_page.dart';
-
 import 'pages/loginpage.dart';
 import 'pages/signuppage.dart';
 import 'models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
-//import 'package:dcdg/dcdg.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
-
 import 'package:happy_mucher_frontend/provider/dark_theme_provider.dart';
 import 'package:happy_mucher_frontend/models/styles.dart';
 
@@ -55,10 +50,6 @@ class MyAppState extends State<MyApp> {
         await themeChangeProvider.devFestPreferences.getTheme();
   }
 
-  void checkDarkMode() {
-    print(isDarkMode);
-  }
-
   @override
   Widget build(BuildContext context) {
     User? firebaseUser = FirebaseAuth.instance.currentUser;
@@ -71,7 +62,6 @@ class MyAppState extends State<MyApp> {
     } else {
       firstWidget = LoginScreen();
     }
-    checkDarkMode();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -95,41 +85,6 @@ class MyAppState extends State<MyApp> {
           },
         ),
       ),
-      /*child: MaterialApp(
-        title: 'Login App',
-        theme: ThemeData(primaryColor: Colors.blue),
-        home: LoginScreen(),
-        routes: {
-          SignupScreen.routeName: (ctx) => SignupScreen(),
-          LoginScreen.routeName: (ctx) => LoginScreen(),
-          MyHomePage.routeName: (ctx) => MyHomePage()
-        },
-      ),*/
-
-      /*child: mPrefix.ValueChangeObserver<bool>(
-          cacheKey: SettingsPage.keyDarkMode,
-          defaultValue: false,
-          builder: (_, isDarkMode, __) => MaterialApp(
-                debugShowCheckedModeBanner: true,
-                title: 'Happy Muncher',
-                theme: isDarkMode
-                    ? ThemeData.dark().copyWith(
-                        primaryColor: Colors.teal,
-                        scaffoldBackgroundColor: Colors.black12,
-                        canvasColor: Colors.black12,
-                        colorScheme: ColorScheme.fromSwatch()
-                            .copyWith(secondary: Colors.white),
-                      )
-                    : ThemeData.light().copyWith(
-                        colorScheme: ColorScheme.fromSwatch()
-                            .copyWith(secondary: Colors.black)),
-                home: LoginScreen(),
-                routes: {
-                  SignupScreen.routeName: (ctx) => SignupScreen(),
-                  LoginScreen.routeName: (ctx) => LoginScreen(),
-                  MyHomePage.routeName: (ctx) => MyHomePage()
-                },
-              )),*/
     );
   }
 }
