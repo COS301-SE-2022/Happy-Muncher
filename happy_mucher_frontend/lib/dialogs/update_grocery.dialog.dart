@@ -81,12 +81,11 @@ class _UpdateGLPageState extends State<GLDialog> {
           onPressed: () async {
             final name = nameController.text;
             final price = priceController.text;
-            final priceInt = int.tryParse(price);
-            const valueFalse = false;
-            if (priceInt != null) {
+            final priceDouble = double.tryParse(price);
+            if (priceDouble != null) {
               await _items
                   .doc(documentSnapshot.id)
-                  .update({"name": name, "price": price});
+                  .update({"name": name, "price": priceDouble});
 
               nameController.text = '';
               priceController.text = '';
