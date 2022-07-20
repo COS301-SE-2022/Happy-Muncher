@@ -13,7 +13,10 @@ class _MealPageState extends State<MealPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Meal Planner'),
+        centerTitle: true,
+      ),
       drawer: NavBar(),
       body: SingleChildScrollView(
         child: Column(
@@ -27,6 +30,8 @@ class _MealPageState extends State<MealPage> {
             buildWedcard(),
             const SizedBox(height: 5),
             buildThurcard(),
+            const SizedBox(height: 5),
+            buildFricard(),
           ],
         ),
       ),
@@ -115,6 +120,29 @@ class _MealPageState extends State<MealPage> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const Weekday(day: "Thursday"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
+
+  Widget buildFricard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/mealplanner/friday.jpg'),
+              child: InkWell(
+                key: Key("fri"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Weekday(day: "Friday"),
                   ));
                 },
               ),
