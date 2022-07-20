@@ -45,6 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             const SizedBox(height: 10),
             buildJancard(),
+            const SizedBox(height: 5),
+            buildFebcard(),
           ],
         ));
   }
@@ -62,6 +64,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const Month(month: "January"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
+
+  Widget buildFebcard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/months/february.jpg'),
+              child: InkWell(
+                key: Key("feb"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Month(month: "February"),
                   ));
                 },
               ),
