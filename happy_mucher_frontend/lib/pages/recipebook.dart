@@ -26,7 +26,7 @@ class RecipeBookState extends State<RecipeBook> {
 
   Future<void> getRecipes() async {
     recipes = await RecipeAPI.getRecipe();
-    tr = await TastyRecipeAPI.getTastyApi();
+    // tr = await TastyRecipeAPI.getTastyApi(search);
     if (mounted) {
       setState(() {
         loading = false;
@@ -34,7 +34,7 @@ class RecipeBookState extends State<RecipeBook> {
       });
     }
 
-    print(tr);
+    //print(tr);
   }
 
   @override
