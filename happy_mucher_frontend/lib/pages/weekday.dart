@@ -11,8 +11,10 @@ class Weekday extends StatefulWidget {
 }
 
 class MyWeekdayState extends State<Weekday> {
+  final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _meals => firestore.collection('Meal Planner');
   String image = '';
-  String title = '';
+  String title = 'Add recipe from recipe book';
   String cookTime = '';
   int calories = 0;
   String description = '';
@@ -21,6 +23,8 @@ class MyWeekdayState extends State<Weekday> {
   List<String> instructions = [];
   List<String> ingredients = [];
 
+//breafast controoller
+  bool hasrecipe = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -72,9 +76,14 @@ class MyWeekdayState extends State<Weekday> {
       instr = data['Instructions'];
       print(image);
     }
-    ingredients = (ing.split('\n'));
-    instructions = (instr.split('\n'));
-    print(image);
+    if (mounted) {
+      setState(() {
+        ingredients = (ing.split('\n'));
+        instructions = (instr.split('\n'));
+        print(image);
+      });
+    }
+
     //print(tr);
   }
 
@@ -90,8 +99,6 @@ class MyWeekdayState extends State<Weekday> {
   String meal3 = "Enter your dinner";
   bool editThree = false;
 
-  final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _meals => firestore.collection('Meal Planner');
   @override
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getMeals(context));
@@ -173,7 +180,7 @@ class MyWeekdayState extends State<Weekday> {
           alignment: Alignment.bottomRight,
           //color: Colors.green,
           //hoverColor: Colors.green,
-          icon: Icon(Icons.add_circle),
+          icon: !hasrecipe ? Icon(Icons.add_circle) : Icon(Icons.delete),
           iconSize: 44.0,
           onPressed: () async {
             var collection =
@@ -193,7 +200,7 @@ class MyWeekdayState extends State<Weekday> {
             }
             ingredients = (ing.split('\n'));
             instructions = (instr.split('\n'));
-            print(instr);
+            //print(instr);
             _meals
                 .doc(widget.day)
                 .collection('Breakfast')
@@ -206,6 +213,14 @@ class MyWeekdayState extends State<Weekday> {
               'CookTime': cookTime,
               'ImageURL': image,
               'Ingredients': ing,
+            });
+            hasrecipe = true;
+            _meals
+                .doc(widget.day)
+                .collection('Breakfast')
+                .doc('hasRecipe')
+                .update({
+              'has': hasrecipe,
             });
             //print(ingrd[0]); // return ["one"
             //ingredients.addAll(ing);
