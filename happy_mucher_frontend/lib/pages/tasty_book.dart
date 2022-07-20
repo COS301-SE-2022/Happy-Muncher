@@ -62,13 +62,7 @@ class TastyBookState extends State<TastyBook> {
                     calories: recipes[index].calories,
                     ingredients: recipes[index].ingredients,
                     instructions: recipes[index].instructions,
-                    // title: recipes[index].name,
-                    // cookTime: recipes[index].totalTime,
-                    // calories: recipes[index].calories,
-                    // thumbnailUrl: recipes[index].images,
-                    // description: recipes[index].description,
-                    // ing: recipes[index].ingredients,
-                    //recipes: recipes,
+                   
                   );
                 }));
   }
