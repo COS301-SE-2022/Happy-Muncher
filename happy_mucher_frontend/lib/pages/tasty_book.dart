@@ -28,15 +28,16 @@ class TastyBookState extends State<TastyBook> {
 
   Future<void> getRecipes() async {
     //recipes = await RecipeAPI.getRecipe();
-    recipes = await TastyRecipeAPI.getTastyApi();
+    recipes = await TastyRecipeAPI.getTastyApi(search);
     if (mounted) {
       setState(() {
         loading = false;
+        this.recipes = recipes;
         // recipes.length? len = recipes.length
       });
     }
 
-    //print(tr);
+    //print(recipes[0].keywords);
   }
 
   @override
@@ -80,14 +81,18 @@ class TastyBookState extends State<TastyBook> {
         onChanged: searchRecipe,
       );
 
-  void searchRecipe(String query) {
-    final rec = recipes.where((element) {
-      final nameLower = element.name.toLowerCase();
+  void searchRecipe(String query) async {
+    final rec = await TastyRecipeAPI.getTastyApi(query);
+    // final rec = recipes.where((element) {
+    //   String keys = element.keywords.reduce((value, str) => value + ',' + str);
+    //   final nameLower = element.name.toLowerCase();
+    //   final keyLower = keys.toLowerCase();
+    //   final queryLower = query.toLowerCase();
+    //   print(keys);
 
-      final queryLower = query.toLowerCase();
-
-      return nameLower.contains(queryLower);
-    }).toList();
+    //   return nameLower.contains(queryLower) || keyLower.contains(queryLower);
+    // }).toList();
+    if (!mounted) return;
 
     setState(() {
       this.search = query;
