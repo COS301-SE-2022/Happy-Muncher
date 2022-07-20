@@ -46,7 +46,9 @@ class TastyBookState extends State<TastyBook> {
           title: const Text('Recipe Book'),
           centerTitle: true,
         ),
-        body: loading
+        body: 
+      
+        loading
             ? Center(child: CircularProgressIndicator())
             : ListView.builder(
                 itemCount: recipes.length,
@@ -70,4 +72,15 @@ class TastyBookState extends State<TastyBook> {
                   );
                 }));
   }
+  
+  Widget SearchBox() => SearchWidget(
+        hintText: "search by ingredient or keyword",
+        text: search,
+        onChanged: searchRecipe,
+      );
+
+  void searchRecipe(String query) {
+    
+  }
+
 }
