@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/models/tasty.api.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
+import 'package:happy_mucher_frontend/search_widget.dart';
 //import 'package:http/http.dart' as http;
 
 class TastyBook extends StatefulWidget {
@@ -15,7 +16,7 @@ class TastyBook extends StatefulWidget {
 
 class TastyBookState extends State<TastyBook> {
   List<tastyRecipe> recipes = [];
-
+  String search = "";
   //List<tastyRecipe> tr = [];
   bool loading = true;
   @override
