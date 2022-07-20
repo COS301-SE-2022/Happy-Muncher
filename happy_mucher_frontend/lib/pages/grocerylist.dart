@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
-
+  //static List<GroceryListItem> inventoryList = [];
   @override
   State<GroceryListPage> createState() => GroceryListPageState();
 }

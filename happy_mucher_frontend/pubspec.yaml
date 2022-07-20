@@ -83,6 +83,11 @@ flutter:
     - assets/images/bottom2.png
     - assets/images/top1.png
     - assets/images/top2.png
+    - assets/images/homepage/grocery.jpg
+    - assets/images/homepage/inventory.jpg
+    - assets/images/homepage/budget.jpg
+    - assets/images/homepage/mealplanner.jpg
+    - assets/images/homepage/recipe.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
