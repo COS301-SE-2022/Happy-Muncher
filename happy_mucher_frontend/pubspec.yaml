@@ -88,6 +88,7 @@ flutter:
     - assets/images/homepage/budget.jpg
     - assets/images/homepage/mealplanner.jpg
     - assets/images/homepage/recipe.jpg
+    - assets/images/mealplanner/monday.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
