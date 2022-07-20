@@ -80,5 +80,18 @@ class TastyBookState extends State<TastyBook> {
         onChanged: searchRecipe,
       );
 
-  void searchRecipe(String query) {}
+  void searchRecipe(String query) {
+    final rec = recipes.where((element) {
+      final nameLower = element.name.toLowerCase();
+
+      final queryLower = query.toLowerCase();
+
+      return nameLower.contains(queryLower);
+    }).toList();
+
+    setState(() {
+      this.search = query;
+      this.recipes = rec;
+    });
+  }
 }
