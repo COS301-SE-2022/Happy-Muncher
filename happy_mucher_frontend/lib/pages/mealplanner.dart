@@ -34,6 +34,8 @@ class _MealPageState extends State<MealPage> {
             buildFricard(),
             const SizedBox(height: 5),
             buildSatcard(),
+            const SizedBox(height: 5),
+            buildSuncard(),
           ],
         ),
       ),
@@ -168,6 +170,29 @@ class _MealPageState extends State<MealPage> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const Weekday(day: "Saturday"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
+
+  Widget buildSuncard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/mealplanner/sunday.jpg'),
+              child: InkWell(
+                key: Key("sun"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Weekday(day: "Sunday"),
                   ));
                 },
               ),
