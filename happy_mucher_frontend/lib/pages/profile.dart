@@ -72,7 +72,7 @@ class ProfileState extends State<Profile> {
           children: [
             SizedBox(height: 30),
             CircleAvatar(
-              radius: 80,
+              radius: 100,
               backgroundImage: NetworkImage(profile.toString()),
             ),
             /*BoxDecoration(
@@ -92,47 +92,43 @@ class ProfileState extends State<Profile> {
                 icon: Icon(Icons.edit),
                 label: Text('')),
             SizedBox(height: 60),
-            Row(children: [
-              Text(
-                'Username: $uid',
-                style: TextStyle(fontSize: 18.0),
-              ),
-              TextButton.icon(
-                  onPressed: () async => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChangeUsername()))
-                      },
-                  icon: Icon(Icons.edit),
-                  label: Text(''))
-            ]),
+            Row(
+              children: [
+                Text(
+                  'Username: $uid',
+                  style: TextStyle(fontSize: 25.0),
+                ),
+                TextButton.icon(
+                    onPressed: () => addUsernameDialog(context),
+                    icon: Icon(Icons.edit),
+                    label: Text(''))
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            SizedBox(height: 30),
             Row(
               children: [
                 Text(
                   'Email: $email',
-                  style: TextStyle(fontSize: 18.0),
+                  style: TextStyle(fontSize: 25.0),
                 ),
                 user!.emailVerified
                     ? Text(
-                        'verified',
+                        '  verified',
                         style:
                             TextStyle(fontSize: 18.0, color: Colors.blueGrey),
                       )
                     : TextButton(
                         onPressed: () => {verifyEmail()},
-                        child: Text('Verify Email')),
+                        child: Text('  Verify Email')),
                 TextButton.icon(
-                    onPressed: () async => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChangeEmail()))
-                        },
+                    onPressed: () => addEmailDialog(context),
                     icon: Icon(Icons.edit),
                     label: Text(''))
               ],
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
+            SizedBox(height: 30),
             TextButton.icon(
                 onPressed: () async => {
                       Navigator.push(
@@ -140,7 +136,8 @@ class ProfileState extends State<Profile> {
                           MaterialPageRoute(
                               builder: (context) => ChangePassword()))
                     },
-                label: Text('Change Password'),
+                label:
+                    Text('Change Password', style: TextStyle(fontSize: 25.0)),
                 icon: Icon(Icons.edit)),
           ],
         ),
