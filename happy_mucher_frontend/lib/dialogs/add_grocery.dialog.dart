@@ -16,6 +16,8 @@ class _GroceryDialogState extends State<_GroceryDialog> {
   final priceContoller = TextEditingController();
   final dateFieldController = TextEditingController();
 
+  get _items => null;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -53,18 +55,20 @@ class _GroceryDialogState extends State<_GroceryDialog> {
       actions: [
         TextButton(
           key: const Key('groceryListDialogAddButton'),
-          onPressed: () {
+          onPressed: () async {
             final name = nameController.text;
             final price = priceContoller.text;
             final priceInt = int.tryParse(price);
             const valueFalse = false;
 
             if (priceInt != null) {
-              Navigator.pop(
-                context,
-                GroceryItemParams(
-                    price: priceInt, name: name, value: valueFalse),
-              );
+              await _items
+                  .add({"name": name, "price": price, "value": valueFalse});
+
+              nameController.text = '';
+              priceContoller.text = '';
+
+              Navigator.of(context).pop();
             }
           },
           child: const Text('Add'),
