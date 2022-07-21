@@ -14,6 +14,7 @@ import 'package:happy_mucher_frontend/pages/navbar.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 import 'package:happy_mucher_frontend/pages/recipebook.dart';
+import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 
 void main() {
   runApp(MyApp());
@@ -206,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RecipeBook()));
+                      MaterialPageRoute(builder: (context) => TastyBook()));
                 },
               ),
               height: 180,
