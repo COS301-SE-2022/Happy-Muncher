@@ -59,7 +59,10 @@ class MyMonthState extends State<Month> {
   List<String> bought = [];
   List<String> estimate = [];
   List<double> budgetM = [];
+  //DateTime today = DateTime.now();
+
   void getDB(context) async {
+    //print(today);
     bought = [];
     //print("");
     totSpent = 0;
@@ -414,7 +417,7 @@ class MyMonthState extends State<Month> {
                           double left = double.parse(spent1);
                           totSpent += double.parse(spent1);
                           //getDB();
-                          print("set");
+                          //print("set");
                           left = bud - left;
                           rem1 = left.toString();
                           _budget
@@ -754,18 +757,18 @@ class MyMonthState extends State<Month> {
             qs.docs.forEach((doc) {
               estimate.add(doc["price"]);
             });
-            print("estimate");
-            print(estimate);
+            // print("estimate");
+            // print(estimate);
           });
-          print("getGL called");
-          print(estimate);
+          // print("getGL called");
+          // print(estimate);
           if (estimate.isEmpty) {
-            print("values not set");
+            //print("values not set");
           }
           estimate.forEach((element) {
             est += double.parse(element);
-            print("got estimates");
-            print(est);
+            // print("got estimates");
+            // print(est);
           });
 
           String message = "";

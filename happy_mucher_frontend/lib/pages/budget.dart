@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/monthcard_widget.dart';
 import 'month.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,7 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
           key: Key("months"),
           children: <Widget>[
             const SizedBox(height: 10),
-            buildJancard(),
+            MonthCard(
+                image: 'assets/images/months/january.jpg', month: "January"),
             const SizedBox(height: 5),
             buildFebcard(),
             const SizedBox(height: 5),
