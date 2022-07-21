@@ -7,6 +7,7 @@ class tastyRecipe {
   final String description;
   final List<String> ingredients;
   final List<String> instructions;
+  final List<String> keywords;
   tastyRecipe(
       {this.name = "",
       this.images = "",
@@ -15,6 +16,7 @@ class tastyRecipe {
       this.description = "",
       this.ingredients = const [''],
       this.instructions = const [''],
+      this.keywords = const [''],
       this.calories = 0});
 
   factory tastyRecipe.fromJson(dynamic data) {
@@ -26,6 +28,7 @@ class tastyRecipe {
     String desc = '';
     List<String> steps = [];
     List<String> ing = [];
+    List<String> tags = [];
     int nutrition = 0;
     if (data['name'] != null) {
       nme = data['name'] as String;
@@ -38,10 +41,7 @@ class tastyRecipe {
     }
     if (data['total_time_minutes'] != null) {
       time = data['total_time_minutes'] as int;
-    }
-    else if (data['total_time_minutes'] != null){
-      
-    }
+    } else if (data['total_time_minutes'] != null) {}
     if (data['description'] != null) {
       desc = data['description'] as String;
     }
@@ -49,6 +49,13 @@ class tastyRecipe {
       for (var i in data['instructions']) {
         //print(i['wholeLine']);
         steps.add(i['display_text'] as String);
+        //print(ing);
+      }
+    }
+    if (data['tags'].length > 0) {
+      for (var i in data['tags']) {
+        //print(i['wholeLine']);
+        tags.add(i['display_name'] as String);
         //print(ing);
       }
     }
@@ -60,10 +67,9 @@ class tastyRecipe {
       }
     }
     if (data['nutrition'].length > 0) {
-      if(data['nutrition']['calories'] != null){
-nutrition = data['nutrition']['calories'];
+      if (data['nutrition']['calories'] != null) {
+        nutrition = data['nutrition']['calories'];
       }
-      
     }
 
     return tastyRecipe(
@@ -74,6 +80,7 @@ nutrition = data['nutrition']['calories'];
         description: desc,
         instructions: steps,
         ingredients: ing,
+        keywords: tags,
         calories: nutrition);
   }
   static List<tastyRecipe> snapshotRecipes(List snapshot) {
@@ -85,6 +92,6 @@ nutrition = data['nutrition']['calories'];
 
   @override
   String toString() {
-    return 'Recipe {name: $name, image: $images, recipeId:$recipeid, time: $totTime, calories:$calories ,description: $description, ingredients:$ingredients, instructions:$instructions';
+    return 'Recipe {name: $name, image: $images, recipeId:$recipeid, time: $totTime, calories:$calories ,description: $description, ingredients:$ingredients, instructions:$instructions, keywords: $keywords';
   }
 }

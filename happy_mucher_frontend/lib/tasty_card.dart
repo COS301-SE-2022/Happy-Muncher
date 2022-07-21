@@ -165,32 +165,6 @@ class TastyRecipeCard extends StatelessWidget {
               ],
             ),
 
-            // Row(
-            //   children: [
-            //     IconButton(
-            //       onPressed: () {
-            //         // List<String> ing = [];
-
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => IndividualRecipe(
-            //     name: name,
-            //     description: description,
-            //     image: images,
-            //     //id: recipeid,
-            //     ingredients: ingredients,
-            //     cookTime: totTime,
-            //     instructions: instructions,
-            //   ),
-            // ));
-            //       },
-            //       icon: Icon(
-            //         Icons.navigate_next_rounded,
-            //         color: Colors.white,
-            //         size: 28,
-            //       ),
-            //     )
-            //   ],
-            // ),
             alignment: Alignment.topRight,
           ),
         ],

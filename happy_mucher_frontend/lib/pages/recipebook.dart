@@ -4,6 +4,7 @@ import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/models/tasty.api.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
+import 'package:happy_mucher_frontend/tasty_card.dart';
 //import 'package:http/http.dart' as http;
 
 class RecipeBook extends StatefulWidget {
@@ -25,7 +26,7 @@ class RecipeBookState extends State<RecipeBook> {
 
   Future<void> getRecipes() async {
     recipes = await RecipeAPI.getRecipe();
-    tr = await TastyRecipeAPI.getTastyApi();
+    // tr = await TastyRecipeAPI.getTastyApi(search);
     if (mounted) {
       setState(() {
         loading = false;
@@ -33,7 +34,7 @@ class RecipeBookState extends State<RecipeBook> {
       });
     }
 
-    print(tr);
+    //print(tr);
   }
 
   @override
@@ -48,13 +49,13 @@ class RecipeBookState extends State<RecipeBook> {
             : ListView.builder(
                 itemCount: recipes.length,
                 itemBuilder: (context, index) {
-                  return RecipeCard(
-                    title: recipes[index].name,
-                    cookTime: recipes[index].totalTime,
-                    calories: recipes[index].calories,
-                    thumbnailUrl: recipes[index].images,
+                  return TastyRecipeCard(
+                    name: recipes[index].name,
+                    totTime: recipes[index].totalTime,
+                    calories: recipes[index].calories.toInt(),
+                    images: recipes[index].images,
                     description: recipes[index].description,
-                    ing: recipes[index].ingredients,
+                    ingredients: recipes[index].ingredients,
                     //recipes: recipes,
                   );
                 }));
