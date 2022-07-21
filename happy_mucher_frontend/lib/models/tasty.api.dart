@@ -33,12 +33,17 @@ class TastyRecipeAPI {
       return tastyRecipe.snapshotRecipes(temp).where((element) {
         String keys =
             element.keywords.reduce((value, str) => value + ',' + str);
+        String ings =
+            element.ingredients.reduce((value, str) => value + ',' + str);
         final nameLower = element.name.toLowerCase();
         final keyLower = keys.toLowerCase();
+        final ingredsLower = keys.toLowerCase();
         final queryLower = query.toLowerCase();
         //print(keys);
 
-        return nameLower.contains(queryLower) || keyLower.contains(queryLower);
+        return nameLower.contains(queryLower) ||
+            keyLower.contains(queryLower) ||
+            ingredsLower.contains(queryLower);
       }).toList();
     } else {
       throw Exception();
