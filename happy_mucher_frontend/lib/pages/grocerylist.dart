@@ -193,7 +193,6 @@ class GroceryListPageState extends State<GroceryListPage> {
     //final listOfItems = <ReceiptItem>[];
     final listOfItems = <String>[];
 
-    print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
         if (line.boundingBox.left / image.width * 100 < 10) {
@@ -219,7 +218,6 @@ class GroceryListPageState extends State<GroceryListPage> {
         }
       }
     }
-    print(listOfItems);
     return listOfItems;
   }
 }
