@@ -196,11 +196,23 @@ class GroceryListPageState extends State<GroceryListPage> {
     print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        if (line.boundingBox.left / image.width * 100 < 5) {
+        if (line.boundingBox.left / image.width * 100 < 10) {
           if (line.text.contains('@')) {
+            //multiples at spar
             continue;
           }
           if (line.text.contains("promo")) {
+            //woolworths
+            continue;
+          }
+          if (line.text.contains("**")) {
+            continue;
+          }
+          if (line.text.contains("xtrasave")) {
+            //checkers hyper
+            continue;
+          }
+          if (listOfItems.contains(line.text)) {
             continue;
           }
           listOfItems.add(line.text);
