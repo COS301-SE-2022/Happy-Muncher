@@ -99,15 +99,3 @@ class _UpdateGLPageState extends State<GLDialog> {
     );
   }
 }
-
-class InventoryItemParams {
-  final String name;
-  final int quantity;
-  final DateTime date;
-
-  InventoryItemParams({
-    required this.quantity,
-    required this.name,
-    required this.date,
-  });
-}
