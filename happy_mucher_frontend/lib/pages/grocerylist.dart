@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -80,32 +83,32 @@ class GroceryListPageState extends State<GroceryListPage> {
                     ],
                   ),
                   child: CheckboxListTile(
-                      controlAffinity: ListTileControlAffinity.leading,
-                      title: Text(documentSnapshot['name']),
-                      value: documentSnapshot['bought'],
-                      subtitle:
-                          Text('R' + documentSnapshot['price'].toString()),
-                      onChanged: (newValue) {
-                        _products
-                            .doc(documentSnapshot.id)
-                            .update({'bought': !documentSnapshot['bought']});
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(documentSnapshot['name']),
+                    value: documentSnapshot['bought'],
+                    subtitle: Text('R' + documentSnapshot['price'].toString()),
+                    onChanged: (newValue) {
+                      _products
+                          .doc(documentSnapshot.id)
+                          .update({'bought': !documentSnapshot['bought']});
 
-                        var checkVal = documentSnapshot['bought'];
-                        var itemName = documentSnapshot['name'];
-                        if (checkVal == false) {
-                          //checks previous value if it is changing from false to true that means its being bought
-                          _inventory.add(
-                            {
-                              "itemName": itemName,
-                              "quantity": 1,
-                              "expirationDate": ""
-                            },
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text(
-                                  'Please go to the inventory page to edit the quantity and expiration date')));
-                        }
-                      }),
+                      var checkVal = documentSnapshot['bought'];
+                      var itemName = documentSnapshot['name'];
+                      if (checkVal == false) {
+                        //checks previous value if it is changing from false to true that means its being bought
+                        _inventory.add(
+                          {
+                            "itemName": itemName,
+                            "quantity": 1,
+                            "expirationDate": ""
+                          },
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                'Please go to the inventory page to edit the quantity and expiration date')));
+                      }
+                    },
+                  ),
                 );
               },
             );
@@ -151,12 +154,6 @@ class GroceryListPageState extends State<GroceryListPage> {
         ],
       ),
     );
-    // floatingActionButton: FloatingActionButton(
-    //   key: const Key('addToGroceryListButton'),
-    //   onPressed: () => addGLDialog(context),
-    //   child: const Icon(Icons.add),
-    // ),
-    // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 
   void captureImageReceipt(ImageSource imageSource) async {
@@ -168,7 +165,12 @@ class GroceryListPageState extends State<GroceryListPage> {
     if (croppedImagePath == null) {
       return;
     }
-    getRecognisedText(croppedImagePath);
+    final listOfItemNames = await getRecognisedText(croppedImagePath);
+
+    final futures = listOfItemNames.map((item) {
+      return _products.add({"name": item, "price": 0.0, "bought": false});
+    });
+    await Future.wait(futures);
   }
 
   Future<String?> cropImage(String path) async {
@@ -182,19 +184,39 @@ class GroceryListPageState extends State<GroceryListPage> {
     return cropped?.path;
   }
 
-  void getRecognisedText(String path) async {
+  Future<List<String>> getRecognisedText(String path) async {
+    final image = await decodeImageFromList(File(path).readAsBytesSync());
     final inputImage = InputImage.fromFilePath(path);
     final textDetector = GoogleMlKit.vision.textRecognizer();
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
     await textDetector.close();
-    var scanText = "";
+    //final listOfItems = <ReceiptItem>[];
+    final listOfItems = <String>[];
+
+    print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        scanText = scanText + line.text + "\n";
+        if (line.boundingBox.left / image.width * 100 < 5) {
+          if (line.text.contains('@')) {
+            continue;
+          }
+          if (line.text.contains("promo")) {
+            continue;
+          }
+          listOfItems.add(line.text);
+        }
       }
     }
-    print(scanText);
+    print(listOfItems);
+    return listOfItems;
   }
+}
+
+class ReceiptItem {
+  final String itemName;
+  final double itemPrice;
+
+  ReceiptItem({required this.itemName, required this.itemPrice});
 }
 
 //STRUCTURE
@@ -212,6 +234,4 @@ class GroceryListPageState extends State<GroceryListPage> {
 //      PADDING
 //        ICONBUTTON
 
-
 //CLASS OF THE RETURNED LIST ITEM
-
