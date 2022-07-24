@@ -37,6 +37,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   String ing = "";
   String steps = "";
   String its = '';
+  String donts = '';
 
   List<String> inventory = [];
 
@@ -101,7 +102,6 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         Text(ing),
         ElevatedButton(
             onPressed: () {
-              its = '';
               CompareInventory();
             },
             child: const Text("Compare to Inventory")),
@@ -142,22 +142,24 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     );
   }
 
-  CompareInventory() async {
-    setState(() {
-      its = "";
-      for (int i = 0; i < inventory.length; i++) {
-        for (int j = 0; j < widget.ingredients.length; j++) {
-          if (!items.contains(widget.ingredients[j])) {
-            if (widget.ingredients[j].contains(inventory[i])) {
-              its += "\u2713 " + widget.ingredients[j] + '\n';
-              // items.add(widget.ingredients[j]);
-            }
-            // if (!widget.ingredients[j].contains(inventory[i])) {
-            //   ing += "\u2715 " + widget.ingredients[j] + '\n';
-            // }
-          }
+  CompareInventory() {
+    //its = "";
+    for (int i = 0; i < inventory.length; i++) {
+      for (int j = 0; j < widget.ingredients.length; j++) {
+        if (!items.contains(widget.ingredients[j])) {
+          if (widget.ingredients[j].contains(inventory[i])) {
+            its += "\u2713 " + widget.ingredients[j] + '\n';
+            items.add(widget.ingredients[j]);
+          } 
+          // else {
+          //   donts += "\u2715 " + widget.ingredients[j] + '\n';
+          //   items.add(widget.ingredients[j]);
+          // }
         }
       }
+    }
+
+    setState(() {
       showAlertDialog(context);
     });
 
