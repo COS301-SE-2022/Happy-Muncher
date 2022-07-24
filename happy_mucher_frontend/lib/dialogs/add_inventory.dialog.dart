@@ -96,7 +96,8 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                       NotificationAPI.showScheduledNotification(
                           id: id,
                           title: 'Happy Muncher',
-                          body: '$name expires today!',
+                          body:
+                              '$name expires today! Please add it to your grocery list.',
                           scheduledDate: chosenDate);
                     }
                   },
