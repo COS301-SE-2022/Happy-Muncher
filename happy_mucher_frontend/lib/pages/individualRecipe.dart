@@ -36,17 +36,18 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   String steps = "";
   @override
   void initState() {
-    // TODO: implement initState
+    //
     super.initState();
-    ing = widget.ingredients.join('\n');
-    for (int i = 0; i < widget.instructions.length; i++) {
-     
-      steps = widget.instructions.join('\n');
-    }
 
-    print(steps);
-    //recipes = widget.recipe as List<Recipe>;
-    //print(recipes[2].description);
+    for (int i = 0; i < widget.instructions.length; i++) {
+      int x = i + 1;
+
+      steps += x.toString() + ". " + widget.instructions[i] + '\n\n';
+     
+    }
+    for (int i = 0; i < widget.ingredients.length; i++) {
+      ing += "\u2022  " + widget.ingredients[i] + '\n';
+    }
   }
 
   @override
