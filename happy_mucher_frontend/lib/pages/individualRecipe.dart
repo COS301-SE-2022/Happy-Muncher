@@ -4,6 +4,8 @@ import 'package:happy_mucher_frontend/pages/recipebook.dart';
 import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
+import 'package:get_it/get_it.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //search resource:
 //https://medium.com/@nishkarsh.makhija/implementing-searchable-list-view-in-flutter-using-data-from-network-d3aefffbd964
@@ -34,6 +36,21 @@ class IndividualRecipe extends StatefulWidget {
 class IndividualRecipeState extends State<IndividualRecipe> {
   String ing = "";
   String steps = "";
+
+  List<String> inventory = [];
+  
+   getInventory() {
+    FirebaseFirestore.instance
+        .collection('Inventory')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        // print(doc["itemName"]);
+        inventory.add(doc["itemName"]);
+        //print(inventory);
+      });
+    });
+  }
   @override
   void initState() {
     //
