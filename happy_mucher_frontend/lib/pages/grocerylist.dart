@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -187,7 +187,7 @@ class GroceryListPageState extends State<GroceryListPage> {
   Future<List<String>> getRecognisedText(String path) async {
     final image = await decodeImageFromList(File(path).readAsBytesSync());
     final inputImage = InputImage.fromFilePath(path);
-    final textDetector = GoogleMlKit.vision.textRecognizer();
+    final textDetector = TextRecognizer();
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
     await textDetector.close();
     //final listOfItems = <ReceiptItem>[];
