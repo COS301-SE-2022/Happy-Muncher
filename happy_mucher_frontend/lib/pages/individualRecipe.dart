@@ -40,10 +40,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     super.initState();
     ing = widget.ingredients.join('\n');
     for (int i = 0; i < widget.instructions.length; i++) {
-      // if (i != widget.instructions.length - 1) {
-      //   int s = i = 1;
-      //   steps += s.toString();
-      // }
+     
       steps = widget.instructions.join('\n');
     }
 
