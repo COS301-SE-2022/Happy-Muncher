@@ -36,10 +36,11 @@ class IndividualRecipe extends StatefulWidget {
 class IndividualRecipeState extends State<IndividualRecipe> {
   String ing = "";
   String steps = "";
+  String its = '';
 
   List<String> inventory = [];
-  
-   getInventory() {
+
+  getInventory() {
     FirebaseFirestore.instance
         .collection('Inventory')
         .get()
@@ -51,6 +52,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
       });
     });
   }
+
   @override
   void initState() {
     //
@@ -60,7 +62,6 @@ class IndividualRecipeState extends State<IndividualRecipe> {
       int x = i + 1;
 
       steps += x.toString() + ". " + widget.instructions[i] + '\n\n';
-     
     }
     for (int i = 0; i < widget.ingredients.length; i++) {
       ing += "\u2022  " + widget.ingredients[i] + '\n';
@@ -104,6 +105,33 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         ),
         Text(steps),
       ]),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("Done"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("these items are in your inventory "),
+      content: Text(its),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
