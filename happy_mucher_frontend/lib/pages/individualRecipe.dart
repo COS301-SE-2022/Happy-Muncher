@@ -40,6 +40,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
   List<String> inventory = [];
 
+  List<String> items = [];
   getInventory() {
     FirebaseFirestore.instance
         .collection('Inventory')
@@ -57,7 +58,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   void initState() {
     //
     super.initState();
-
+    getInventory();
     for (int i = 0; i < widget.instructions.length; i++) {
       int x = i + 1;
 
@@ -141,5 +142,30 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     );
   }
 
-  CompareInventory() async {}
+  CompareInventory() async {
+    setState(() {
+      its = "";
+      for (int i = 0; i < inventory.length; i++) {
+        for (int j = 0; j < widget.ingredients.length; j++) {
+          if (!items.contains(widget.ingredients[j])) {
+            if (widget.ingredients[j].contains(inventory[i])) {
+              its += "\u2713 " + widget.ingredients[j] + '\n';
+              // items.add(widget.ingredients[j]);
+            }
+            // if (!widget.ingredients[j].contains(inventory[i])) {
+            //   ing += "\u2715 " + widget.ingredients[j] + '\n';
+            // }
+          }
+        }
+      }
+      showAlertDialog(context);
+    });
+
+    //"\u2705" - green tick
+    //\u2713 - plain tick
+    // 1F5F4  -ballot
+    //\u2715  multiplication x
+
+    print(its);
+  }
 }
