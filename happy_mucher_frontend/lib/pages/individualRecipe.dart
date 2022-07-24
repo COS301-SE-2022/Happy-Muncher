@@ -98,6 +98,12 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Text(ing),
+        ElevatedButton(
+            onPressed: () {
+              its = '';
+              CompareInventory();
+            },
+            child: const Text("Compare to Inventory")),
         const SizedBox(height: 24),
         Text(
           "Instructions",
@@ -134,4 +140,6 @@ class IndividualRecipeState extends State<IndividualRecipe> {
       },
     );
   }
+
+  CompareInventory() async {}
 }
