@@ -15,24 +15,27 @@ class TastyBook extends StatefulWidget {
 }
 
 class TastyBookState extends State<TastyBook> {
-  List<tastyRecipe> recipes = [];
-  String search = "";
+  late List<tastyRecipe> recipes;
+  List<tastyRecipe> temp = [];
+  String query = "";
+  //Timer? debouncer;
   //List<tastyRecipe> tr = [];
   bool loading = true;
   @override
   void initState() {
-    
     super.initState();
     getRecipes();
   }
 
   Future<void> getRecipes() async {
     //recipes = await RecipeAPI.getRecipe();
-    recipes = await TastyRecipeAPI.getTastyApi(search);
+    recipes = await TastyRecipeAPI.getTastyApi(query);
+    temp = List.from(recipes);
     if (mounted) {
       setState(() {
         loading = false;
         this.recipes = recipes;
+        this.temp = temp;
         // recipes.length? len = recipes.length
       });
     }
@@ -77,26 +80,38 @@ class TastyBookState extends State<TastyBook> {
 
   Widget SearchBox() => SearchWidget(
         hintText: "search by ingredient or keyword",
-        text: search,
+        text: query,
         onChanged: searchRecipe,
       );
 
-  void searchRecipe(String query) async {
-    final rec = await TastyRecipeAPI.getTastyApi(query);
-    // final rec = recipes.where((element) {
-    //   String keys = element.keywords.reduce((value, str) => value + ',' + str);
-    //   final nameLower = element.name.toLowerCase();
-    //   final keyLower = keys.toLowerCase();
-    //   final queryLower = query.toLowerCase();
-    //   print(keys);
+  void searchRecipe(String query) {
+    //final rec = await TastyRecipeAPI.getTastyApi(query);
+    print('searching');
+    final recipes = this.temp.where((element) {
+      String keys = element.keywords.reduce((value, str) => value + ',' + str);
+      String ings =
+          element.ingredients.reduce((value, str) => value + ',' + str);
+      final nameLower = element.name.toLowerCase();
+      final keyLower = keys.toLowerCase();
+      final ingredsLower = ings.toLowerCase();
+      final queryLower = query.toLowerCase();
+      //print(ingredsLower);
 
-    //   return nameLower.contains(queryLower) || keyLower.contains(queryLower);
-    // }).toList();
-    if (!mounted) return;
+      return nameLower.contains(queryLower) ||
+          keyLower.contains(queryLower) ||
+          ingredsLower.contains(queryLower);
+    }).toList();
+    //if (!mounted) return;
 
     setState(() {
-      this.search = query;
-      this.recipes = rec;
+      this.query = query;
+      this.recipes = recipes;
     });
   }
+
+  // void Reset() async {
+  //   // recipes = List.from(temp);
+  //   initState();
+  //   //setState(() {});
+  // }
 }
