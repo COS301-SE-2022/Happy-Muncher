@@ -6,6 +6,7 @@ import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 //search resource:
 //https://medium.com/@nishkarsh.makhija/implementing-searchable-list-view-in-flutter-using-data-from-network-d3aefffbd964
@@ -34,6 +35,9 @@ class IndividualRecipe extends StatefulWidget {
 }
 
 class IndividualRecipeState extends State<IndividualRecipe> {
+  final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _glItems => firestore.collection('GroceryList');
   String ing = "";
   String steps = "";
   String its = '';
@@ -42,6 +46,8 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   List<String> inventory = [];
 
   List<String> items = [];
+
+  List<String> gl = [];
   getInventory() {
     FirebaseFirestore.instance
         .collection('Inventory')
@@ -118,8 +124,16 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
-      child: Text("Done"),
+      child: Text("Cancel"),
       onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+
+    Widget glButton = TextButton(
+      child: Text("Add missing ingredients to Grocery List"),
+      onPressed: () {
+        toGL();
         Navigator.of(context, rootNavigator: true).pop();
       },
     );
@@ -130,6 +144,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
       content: Text(its),
       actions: [
         okButton,
+        glButton,
       ],
     );
 
@@ -144,18 +159,23 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
   CompareInventory() {
     //its = "";
-    for (int i = 0; i < inventory.length; i++) {
-      for (int j = 0; j < widget.ingredients.length; j++) {
+    items = [];
+    its = '';
+    donts = '';
+
+    for (int j = 0; j < widget.ingredients.length; j++) {
+      for (int i = 0; i < inventory.length; i++) {
         if (!items.contains(widget.ingredients[j])) {
           if (widget.ingredients[j].contains(inventory[i])) {
             its += "\u2713 " + widget.ingredients[j] + '\n';
             items.add(widget.ingredients[j]);
-          } 
-          // else {
-          //   donts += "\u2715 " + widget.ingredients[j] + '\n';
-          //   items.add(widget.ingredients[j]);
-          // }
+          }
         }
+      }
+      if (!items.contains(widget.ingredients[j])) {
+        //donts.add(widget.ingredients[j]);
+        its += "\u2715 " + widget.ingredients[j] + '\n';
+        gl.add(widget.ingredients[j]);
       }
     }
 
@@ -167,7 +187,11 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     //\u2713 - plain tick
     // 1F5F4  -ballot
     //\u2715  multiplication x
+  }
 
-    print(its);
+  toGL() async {
+    gl.forEach((element) async {
+      await _glItems.add({"name": element, "price": 0, "bought": false});
+    });
   }
 }

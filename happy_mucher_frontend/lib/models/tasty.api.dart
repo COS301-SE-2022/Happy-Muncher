@@ -6,6 +6,7 @@ class TastyRecipeAPI {
   static Future<List<tastyRecipe>> getTastyApi(String query) async {
     //API keys:
     //u20435780: a3e79709c3mshd3559dbe7ea46a2p11b5b5jsnd4fd34ff55d0
+    //juwi: 282369d33bmsh7ef42e05ee4457ep10316fjsna59a1676c1de
     var uri = Uri.https(
         'tasty.p.rapidapi.com', '/recipes/list', {"from": "0", "size": "20"});
     final resp = await http.get(uri, headers: {
