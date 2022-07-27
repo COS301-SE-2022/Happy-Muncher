@@ -51,6 +51,8 @@ dependencies:
 
   flutter_speed_dial: ^6.0.0
   image_picker: ^0.8.5+3
+  cached_network_image: ^3.2.1
+  flutter_bloc: ^8.0.1
 
 
 dev_dependencies:

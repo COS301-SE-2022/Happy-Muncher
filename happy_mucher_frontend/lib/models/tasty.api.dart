@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class TastyRecipeAPI {
-  static Future<List<tastyRecipe>> getTastyApi(String query) async {
+  static Future<List<tastyRecipe>> getTastyApi() async {
     
     //dotenv.env['JUWI_API_KEY'];
     await dotenv.load(fileName: "secrets.env");

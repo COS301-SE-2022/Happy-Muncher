@@ -29,7 +29,7 @@ class TastyBookState extends State<TastyBook> {
 
   Future<void> getRecipes() async {
     //recipes = await RecipeAPI.getRecipe();
-    recipes = await TastyRecipeAPI.getTastyApi(query);
+    recipes = await TastyRecipeAPI.getTastyApi();
     temp = List.from(recipes);
     if (mounted) {
       setState(() {
