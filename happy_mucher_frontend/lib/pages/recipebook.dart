@@ -25,14 +25,13 @@ class RecipeBookState extends State<RecipeBook> {
   }
 
   Future<void> getRecipes() async {
-    recipes = await RecipeAPI.getRecipe();
+    tr = await TastyRecipeAPI.getTastyApi();
     // tr = await TastyRecipeAPI.getTastyApi(search);
-    if (mounted) {
-      setState(() {
-        loading = false;
-        // recipes.length? len = recipes.length
-      });
-    }
+
+    setState(() {
+      loading = false;
+      // recipes.length? len = recipes.length
+    });
 
     //print(tr);
   }
@@ -40,24 +39,16 @@ class RecipeBookState extends State<RecipeBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Recipe Book'),
-          centerTitle: true,
-        ),
-        body: loading
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: recipes.length,
-                itemBuilder: (context, index) {
-                  return TastyRecipeCard(
-                    name: recipes[index].name,
-                    totTime: recipes[index].totalTime,
-                    calories: recipes[index].calories.toInt(),
-                    images: recipes[index].images,
-                    description: recipes[index].description,
-                    ingredients: recipes[index].ingredients,
-                    //recipes: recipes,
-                  );
-                }));
+      // appBar: AppBar(
+      //   title: const Text('Recipe Book'),
+      //   centerTitle: true,
+      // ),
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          :  RecipeCard(
+                  recipes: tr,
+                )
+              
+    );
   }
 }
