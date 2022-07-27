@@ -20,10 +20,18 @@ class GroceryListPageState extends State<GroceryListPage> {
   final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
-
+  int shoppingPrices = 0;
+  int estimatePrices = 0;
   CollectionReference get _products => firestore.collection('GroceryList');
 
   CollectionReference get _inventory => firestore.collection('Inventory');
+  var data;
+  @override
+  void initState() {
+    super.initState();
+    print('init');
+    Totals();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +39,9 @@ class GroceryListPageState extends State<GroceryListPage> {
         appBar: AppBar(
           title: const Text('Grocery List'),
           centerTitle: true,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(),
         ),
         body: StreamBuilder(
           stream: _products.snapshots(),
@@ -118,6 +129,28 @@ class GroceryListPageState extends State<GroceryListPage> {
           child: const Icon(Icons.add),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+  }
+
+  Totals() {
+    FirebaseFirestore.instance
+        .collection('GroceryList')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if ((doc["price"]) != 0) {
+          estimatePrices += int.parse(doc["price"]);
+
+          if ((doc["bought"]) == true) {
+            //print(doc["price"]);
+            shoppingPrices += int.parse(doc["price"]);
+          }
+          print('set');
+        }
+      });
+    });
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 
