@@ -211,6 +211,10 @@ class GroceryListPageState extends State<GroceryListPage> {
             //checkers hyper
             continue;
           }
+          if (line.text.contains("XTRASAVE")) {
+            //checkers hyper
+            continue;
+          }
           if (listOfItems.contains(line.text)) {
             continue;
           }
