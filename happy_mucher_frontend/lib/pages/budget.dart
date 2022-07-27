@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/monthcard_widget.dart';
 import 'month.dart';
-import 'package:get_it/get_it.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 // void main() {
 //   runApp(const Budget());

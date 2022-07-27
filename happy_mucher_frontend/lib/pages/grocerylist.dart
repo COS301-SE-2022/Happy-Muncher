@@ -121,7 +121,7 @@ class GroceryListPageState extends State<GroceryListPage> {
   }
 }
 
-//STRUCTURE
+
 //SCAFFOLD
 //  APPBAR
 //    ICON + TEXT
@@ -135,7 +135,4 @@ class GroceryListPageState extends State<GroceryListPage> {
 //        ICONBUTTON
 //      PADDING
 //        ICONBUTTON
-
-
-//CLASS OF THE RETURNED LIST ITEM
 

@@ -95,7 +95,7 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    FirebaseFirestore.instance
+    firestore
         .collection('Budget')
         .doc(widget.month)
         .collection('Week2')
@@ -108,7 +108,7 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    FirebaseFirestore.instance
+    firestore
         .collection('Budget')
         .doc(widget.month)
         .collection('Week3')
@@ -121,7 +121,7 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    FirebaseFirestore.instance
+    firestore
         .collection('Budget')
         .doc(widget.month)
         .collection('Week4')
