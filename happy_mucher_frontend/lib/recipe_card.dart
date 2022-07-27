@@ -44,7 +44,18 @@ class RecipeCard extends StatelessWidget {
   Widget _postAuthorRow(BuildContext context, int ind) {
     const double avatarDiameter = 44;
     return GestureDetector(
-      //onTap: () => BlocProvider.of<HomeNavigatorCubit>(context).showProfile(),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IndividualRecipe(
+          name: recipes[ind].name,
+          description: recipes[ind].description,
+          image: recipes[ind].images,
+          //id: recipeid,
+          ingredients: recipes[ind].ingredients,
+          cookTime: recipes[ind].totTime.toString(),
+          calories: recipes[ind].calories.toDouble(),
+          instructions: recipes[ind].instructions,
+        ),
+      )),
       child: Row(
         children: [
           Padding(
@@ -69,7 +80,7 @@ class RecipeCard extends StatelessWidget {
             recipes[ind].name,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: 10,
             ),
           )
         ],

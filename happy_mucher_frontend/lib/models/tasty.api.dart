@@ -5,10 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class TastyRecipeAPI {
   static Future<List<tastyRecipe>> getTastyApi() async {
-    
     //dotenv.env['JUWI_API_KEY'];
     await dotenv.load(fileName: "secrets.env");
-    //await dotenv.load();
+
     String key = dotenv.get('JUWI_API_KEY');
 
     var uri = Uri.https(
@@ -19,7 +18,7 @@ class TastyRecipeAPI {
       "useQueryString": 'true'
     });
     //if (resp.statusCode == 200) {
-    Map data = jsonDecode(resp.body);
+    Map data = jsonDecode(utf8.decode(resp.bodyBytes));
     List temp = [];
     //List cals = [];
 
