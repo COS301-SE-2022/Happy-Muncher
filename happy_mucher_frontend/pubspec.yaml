@@ -57,11 +57,12 @@ dependencies:
 
 
 dev_dependencies:
-  integration_test:
+  flutter_driver:
     sdk: flutter
-
   flutter_test:
     sdk: flutter
+  mockito:
+  test:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -114,3 +115,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+dependency_overrides:
+  image_picker_android: 0.8.4+13
