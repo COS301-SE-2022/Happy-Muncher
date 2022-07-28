@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -14,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
-
+  //static List<GroceryListItem> inventoryList = [];
   @override
   State<GroceryListPage> createState() => GroceryListPageState();
 }
@@ -22,23 +21,78 @@ class GroceryListPage extends StatefulWidget {
 class GroceryListPageState extends State<GroceryListPage> {
   // text fields' controllers
   // text fields' controllers
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _quantityController = TextEditingController();
-  final TextEditingController _expController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
 
   final FirebaseFirestore firestore = GetIt.I.get();
-
+  int shoppingPrices = 0;
+  int estimatePrices = 0;
   CollectionReference get _products => firestore.collection('GroceryList');
 
   CollectionReference get _inventory => firestore.collection('Inventory');
 
+  //final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _gltotals => firestore.collection('GL totals');
+  @override
+  void initState() {
+    super.initState();
+    // print('init');
+    // //Totals(context);
+    // print('est');
+    // print(estimatePrices);
+    // print('shopping');
+    // print(shoppingPrices);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () => totals(context));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Grocery List'),
         centerTitle: true,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.orange,
+        child: Row(
+          children: [
+            RichText(
+              text: TextSpan(
+                children: [
+                  const WidgetSpan(
+                    child: Icon(Icons.add, size: 19),
+                  ),
+                  TextSpan(
+                    text:
+                        "Estimated Total: " + estimatePrices.toString() + "\n",
+                    style: const TextStyle(
+                      fontSize: 19,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const WidgetSpan(
+                    child: Icon(Icons.shopping_cart, size: 19),
+                  ),
+                  TextSpan(
+                    text: "Total: " + shoppingPrices.toString(),
+                    style: const TextStyle(
+                      fontSize: 19,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            )
+            // Text(
+
+            //   "\u2713 Estimated Price: " +
+            //       estimatePrices.toString() +
+            //       '\n' +
+            //       "Total: " +
+            //       shoppingPrices.toString(),
+            //   style: TextStyle(fontSize: 19, color: Colors.black),
+            // ),
+          ],
+        ),
       ),
       body: StreamBuilder(
         stream: _products.snapshots(),
@@ -60,9 +114,20 @@ class GroceryListPageState extends State<GroceryListPage> {
                           setState(() {
                             _products.doc(documentSnapshot.id).delete();
                             ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'You have successfully deleted a grocery list item')));
+                              const SnackBar(
+                                content: Text(
+                                  'You have successfully deleted a grocery list item',
+                                ),
+                              ),
+                            );
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'You have successfully deleted a grocery list item',
+                                ),
+                              ),
+                            );
                           });
                         },
                         backgroundColor: Colors.red,
@@ -103,9 +168,13 @@ class GroceryListPageState extends State<GroceryListPage> {
                             "expirationDate": ""
                           },
                         );
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
                             content: Text(
-                                'Please go to the inventory page to edit the quantity and expiration date')));
+                              'Please go to the inventory page to edit the quantity and expiration date',
+                            ),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -224,6 +293,36 @@ class GroceryListPageState extends State<GroceryListPage> {
     }
     return listOfItems;
   }
+
+  void totals(context) {
+    // estimatePrices = 0;
+    // shoppingPrices = 0;
+    int e = 0;
+    int s = 0;
+    FirebaseFirestore.instance
+        .collection('GroceryList')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (final doc in querySnapshot.docs) {
+        if ((doc["price"]) != 0) {
+          e += int.parse(doc["price"]);
+
+          if ((doc["bought"]) == true) {
+            //print(doc["price"]);
+            s += int.parse(doc["price"]);
+          }
+        }
+      }
+      estimatePrices = e;
+      shoppingPrices = s;
+    });
+    _gltotals.doc('Totals').update({
+      'estimated total': estimatePrices,
+      'shopping total': shoppingPrices,
+    });
+
+    setState(() {});
+  }
 }
 
 class ReceiptItem {
@@ -232,20 +331,3 @@ class ReceiptItem {
 
   ReceiptItem({required this.itemName, required this.itemPrice});
 }
-
-//STRUCTURE
-//SCAFFOLD
-//  APPBAR
-//    ICON + TEXT
-//  COLUMN
-//    EXPANDED (TO FILL UP SCREEN)
-//      LISTVIEW (LIST OF TILES)
-//       LIST TILE (LIST THAT CONTAINS INFO)
-//         TEXT + TEXT
-//    ROW (BOTTOM 2 BUTTONS)
-//      PADDING
-//        ICONBUTTON
-//      PADDING
-//        ICONBUTTON
-
-//CLASS OF THE RETURNED LIST ITEM
