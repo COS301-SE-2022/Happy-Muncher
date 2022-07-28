@@ -61,20 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-        actions: <Widget>[
-          FlatButton(
-            child: Row(
-              children: <Widget>[Text('Signup'), Icon(Icons.person_add)],
-            ),
-            textColor: Colors.white,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => SignupScreen()),
-            ),
-          )
-        ],
-      ),
       body: Stack(
         children: <Widget>[
           SizedBox(height: size.height * 0.03),
@@ -132,16 +118,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
-                            child: Text('Forgot Password?'),
-                            onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => ForgotPassword()),
-                            ),
-                          )
+                          // TextButton(
+                          //   child: Text('Forgot Password?'),
+                          //   onPressed: () => Navigator.of(context).push(
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ForgotPassword()),
+                          //   ),
+                          // )
                         ],
                       ),
-
 
                       SizedBox(height: size.height * 0.03),
                       RaisedButton(
@@ -170,15 +155,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         textColor: Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
-                      ElevatedButton(
-                        key: Key('home'),
-                          child: Text('Home'),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyHomePage()));
-                          }),
+                      TextButton(
+                        child: Text('Forgot Password?'),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => ForgotPassword()),
+                        ),
+                      ),
+                      // ElevatedButton(
+                      //     key: Key('home'),
+                      //     child: Text('Home'),
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => MyHomePage()));
+                      //     }),
 
                       //SizedBox(height: 30, width: 80),
                       /*Container(
@@ -193,26 +185,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),*/
 
-                      SizedBox(height: size.height * 0.03),
-                      Container(
-                        alignment: Alignment.center,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                        child: Text(
-                          "Forgot your password?",
-                          style:
-                              TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
-                        ),
-                      ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       //Text("Sign in with Google"),
                       Container(
                         alignment: Alignment.center,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                        child: Text(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 10),
+                        child: const Text(
                           "OR",
                           style:
                               TextStyle(fontSize: 14, color: Color(0XFF2661FA)),
