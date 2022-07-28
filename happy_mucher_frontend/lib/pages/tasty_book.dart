@@ -49,6 +49,7 @@ class TastyBookState extends State<TastyBook> {
       appBar: AppBar(
         title: const Text('Recipe Book'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
       ),
       body: SingleChildScrollView(
           child: Column(
