@@ -16,6 +16,7 @@ class _MealPageState extends State<MealPage> {
       appBar: AppBar(
         title: const Text('Meal Planner'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
       ),
       drawer: NavBar(),
       body: SingleChildScrollView(
@@ -43,27 +44,39 @@ class _MealPageState extends State<MealPage> {
   }
 
   Widget buildMoncard() => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Ink.image(
-              image: AssetImage('assets/images/mealplanner/monday.jpg'),
-              child: InkWell(
-                key: Key("mon"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Weekday(day: "Monday"),
-                  ));
-                },
+      shadowColor: Color.fromARGB(255, 172, 255, 78),
+      elevation: 25,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Stack(alignment: Alignment.center, children: [
+        InkWell(
+            key: Key("mon"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Weekday(day: "Monday"),
+                ),
+              );
+            },
+            child: Container(
+              height: 120,
+              width: 350,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
               ),
-              height: 130,
-              fit: BoxFit.cover,
-            )
-          ],
-        ),
-      );
+              child: const Center(
+                child: Text(
+                  "Monday",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 172, 255, 78),
+                    fontSize: 54,
+                  ),
+                ),
+              ),
+            ))
+      ]));
 
   Widget buildTuecard() => Card(
         clipBehavior: Clip.antiAlias,
