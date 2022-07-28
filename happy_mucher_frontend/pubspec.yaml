@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.4
+  flutter_dotenv: ^5.0.2
 
 
 
@@ -53,7 +54,12 @@ dependencies:
 
   flutter_speed_dial: ^6.0.0
   image_picker: ^0.8.5+3
+<<<<<<< HEAD
+  cached_network_image: ^3.2.1
+  flutter_bloc: ^8.0.1
+=======
   flutter_native_splash: ^2.2.6
+>>>>>>> 9fe08d0265fc18b03116fd1de30d371a2b7092bb
 
 
 dev_dependencies:
@@ -99,6 +105,18 @@ flutter:
     - assets/images/bottom2.png
     - assets/images/top1.png
     - assets/images/top2.png
+    - assets/images/homepage/grocery.jpg
+    - assets/images/homepage/inventory.jpg
+    - assets/images/homepage/budget.jpg
+    - assets/images/homepage/mealplanner.jpg
+    - assets/images/homepage/recipe.jpg
+    - assets/images/mealplanner/monday.jpg
+    - assets/images/mealplanner/tuesday.jpg
+    - assets/images/mealplanner/wednesday.jpg
+    - assets/images/mealplanner/thursday.jpg
+    - assets/images/mealplanner/friday.jpg
+    - assets/images/mealplanner/saturday.jpg
+    - assets/images/mealplanner/sunday.jpg
     - assets/images/splash.png
   #   - images/a_dot_ham.jpeg
 

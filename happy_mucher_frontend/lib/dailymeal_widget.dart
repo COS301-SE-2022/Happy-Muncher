@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
-import 'package:happy_mucher_frontend/dailymeal_widget.dart';
 
-class Weekday extends StatefulWidget {
-  const Weekday({Key? key, required this.day}) : super(key: key);
+class MealWidget extends StatefulWidget {
+  const MealWidget({Key? key, required this.day, required this.meal})
+      : super(key: key);
   final String day;
+  final String meal;
   @override
-  State<Weekday> createState() => MyWeekdayState();
+  State<MealWidget> createState() => MealWidgetState();
 }
 
-class MyWeekdayState extends State<Weekday> {
+class MealWidgetState extends State<MealWidget> {
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _meals => firestore.collection('Meal Planner');
   String image = '';
@@ -23,9 +24,9 @@ class MyWeekdayState extends State<Weekday> {
   String instr = '';
   List<String> instructions = [];
   List<String> ingredients = [];
-
-//breafast controoller
+  //breafast controoller
   bool hasrecipe = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -35,11 +36,16 @@ class MyWeekdayState extends State<Weekday> {
     print(description);
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Meal();
+  }
+
   Future<void> getMeals() async {
     var collection = FirebaseFirestore.instance.collection('Meal Planner');
     var docSnapshot = await collection
         .doc(widget.day)
-        .collection('Breakfast')
+        .collection(widget.meal)
         .doc('Recipe')
         .get();
     if (docSnapshot.exists) {
@@ -59,7 +65,7 @@ class MyWeekdayState extends State<Weekday> {
 
     var docSnapshot2 = await collection
         .doc(widget.day)
-        .collection('Breakfast')
+        .collection(widget.meal)
         .doc('hasRecipe')
         .get();
     if (docSnapshot2.exists) {
@@ -80,42 +86,7 @@ class MyWeekdayState extends State<Weekday> {
     //print(tr);
   }
 
-  final breakfastController = TextEditingController();
-  String meal1 = "Enter your breakfast";
-  bool editOne = false;
-
-  final lunchController = TextEditingController();
-  String meal2 = "Enter your lunch";
-  bool editTwo = false;
-
-  final dinnerController = TextEditingController();
-  String meal3 = "Enter your dinner";
-  bool editThree = false;
-
-  @override
-  Widget build(BuildContext context) {
-    //Future.delayed(Duration.zero, () => getMeals(context));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.day}'),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(32),
-        children: <Widget>[
-          const SizedBox(height: 24),
-          //Breakfast(),
-          MealWidget(day: widget.day, meal: "Breakfast"),
-          const SizedBox(height: 24),
-          MealWidget(day: widget.day, meal: "Lunch"),
-          const SizedBox(height: 24),
-          MealWidget(day: widget.day, meal: "Supper"),
-          const SizedBox(height: 24),
-        ],
-      ),
-    );
-  }
-
-  Widget Breakfast() => Container(
+  Widget Meal() => Container(
           child: Column(children: [
         Container(
           child: Container(
@@ -124,9 +95,9 @@ class MyWeekdayState extends State<Weekday> {
             decoration: const BoxDecoration(
               color: Colors.blue,
             ),
-            child: const Center(
+            child:  Center(
               child: Text(
-                'Breakfast',
+                widget.meal,
                 style: TextStyle(
                   fontFamily: 'Arial',
                   fontSize: 18,
@@ -198,7 +169,7 @@ class MyWeekdayState extends State<Weekday> {
               //print(instr);
               _meals
                   .doc(widget.day)
-                  .collection('Breakfast')
+                  .collection(widget.meal)
                   .doc('Recipe')
                   .update({
                 'Name': title,
@@ -212,7 +183,7 @@ class MyWeekdayState extends State<Weekday> {
               hasrecipe = true;
               _meals
                   .doc(widget.day)
-                  .collection('Breakfast')
+                  .collection(widget.meal)
                   .doc('hasRecipe')
                   .update({
                 'has': hasrecipe,
@@ -221,7 +192,7 @@ class MyWeekdayState extends State<Weekday> {
               //ingredients.addAll(ing);
               getMeals();
               setState(() => {
-                    editOne = true,
+                    //editOne = true,
                   });
             }
             //to remove recipe
@@ -231,7 +202,7 @@ class MyWeekdayState extends State<Weekday> {
               //print(instr);
               _meals
                   .doc(widget.day)
-                  .collection('Breakfast')
+                  .collection(widget.meal)
                   .doc('Recipe')
                   .update({
                 'Name': "add recipe from recipe book",
@@ -245,7 +216,7 @@ class MyWeekdayState extends State<Weekday> {
               hasrecipe = false;
               _meals
                   .doc(widget.day)
-                  .collection('Breakfast')
+                  .collection(widget.meal)
                   .doc('hasRecipe')
                   .update({
                 'has': hasrecipe,
@@ -254,133 +225,9 @@ class MyWeekdayState extends State<Weekday> {
               //ingredients.addAll(ing);
               getMeals();
               setState(() => {
-                    editOne = false,
+                    //editOne = false,
                   });
             }
-          },
-        ),
-        const SizedBox(height: 10),
-        const SizedBox(height: 10),
-      ]));
-
-  Widget Lunch() => Container(
-          child: Column(children: [
-        Container(
-          child: Container(
-            width: 600.0,
-            height: 42.0,
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: const Center(
-              child: Text(
-                'Lunch',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(
-              child: !editTwo
-                  ? Text(meal2)
-                  : TextField(
-                      key: Key("meal2"),
-                      textAlign: TextAlign.center,
-                      controller: lunchController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your meal',
-                      ),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          meal2 = lunchController.text;
-                          editTwo = false;
-                        });
-                      },
-                    )),
-        ]),
-        const SizedBox(height: 10),
-        IconButton(
-          alignment: Alignment.bottomRight,
-          //color: Colors.green,
-          //hoverColor: Colors.green,
-          icon: Icon(Icons.add_circle),
-          iconSize: 44.0,
-          onPressed: () {
-            setState(() => {
-                  editTwo = true,
-                });
-          },
-        ),
-        const SizedBox(height: 10),
-        const SizedBox(height: 10),
-      ]));
-
-  Widget Dinner() => Container(
-          child: Column(children: [
-        Container(
-          child: Container(
-            width: 600.0,
-            height: 42.0,
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: const Center(
-              child: Text(
-                'Dinner',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(
-              child: !editThree
-                  ? Text(meal3)
-                  : TextField(
-                      key: Key("meal3"),
-                      textAlign: TextAlign.center,
-                      controller: dinnerController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your meal',
-                      ),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          meal3 = dinnerController.text;
-                          editThree = false;
-                        });
-                      },
-                    )),
-        ]),
-        const SizedBox(height: 10),
-        IconButton(
-          alignment: Alignment.bottomRight,
-          //color: Colors.green,
-          //hoverColor: Colors.green,
-          icon: Icon(Icons.add_circle),
-          iconSize: 44.0,
-          onPressed: () {
-            setState(() => {
-                  editThree = true,
-                });
           },
         ),
         const SizedBox(height: 10),
