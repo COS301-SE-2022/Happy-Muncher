@@ -103,7 +103,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
           key: const Key('inventoryDialogAddButton'),
           onPressed: () async {
             final String name = nameController.text;
-            final double? quantity = double.tryParse(quantityController.text);
+            final int? quantity = int.tryParse(quantityController.text);
             final String expD = dateFieldController.text;
             if (quantity != null) {
               await _products.add({
