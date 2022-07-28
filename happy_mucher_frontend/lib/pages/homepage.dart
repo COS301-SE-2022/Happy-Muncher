@@ -215,7 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
   Widget buildRecipecard() => Card(
-    key: Key('toRecipeBook'),
+        key: Key('toRecipeBook'),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(
@@ -224,6 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Ink.image(
               image: AssetImage('assets/images/homepage/recipe.jpg'),
               child: InkWell(
+                key: Key('rb'),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => TastyBook()));
