@@ -134,7 +134,7 @@ class TastyRecipeCard extends StatelessWidget {
               key: const Key('dots'),
               direction: SpeedDialDirection.down,
               icon: Icons.more_vert,
-              backgroundColor: Colors.blue,
+              backgroundColor: Color.fromARGB(255, 172, 255, 78),
               buttonSize: const Size(45.0, 45.0),
               children: [
                 SpeedDialChild(
