@@ -277,8 +277,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-<<<<<<< HEAD
-=======
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -286,7 +284,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.6"
->>>>>>> 9fe08d0265fc18b03116fd1de30d371a2b7092bb
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -580,8 +577,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
-<<<<<<< HEAD
-=======
   petitparser:
     dependency: transitive
     description:
@@ -589,7 +584,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.0"
->>>>>>> 9fe08d0265fc18b03116fd1de30d371a2b7092bb
   platform:
     dependency: transitive
     description:
