@@ -39,6 +39,7 @@ class RecipeBookState extends State<RecipeBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('rbPage'),
       // appBar: AppBar(
       //   title: const Text('Recipe Book'),
       //   centerTitle: true,
