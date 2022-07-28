@@ -6,6 +6,10 @@ jobs:
   test_mobile:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: happy_mucher_frontend
+
     steps:
       - uses: actions/checkout@v3
 
