@@ -102,8 +102,10 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         Text(widget.cookTime + " mins"),
         const SizedBox(height: 24),
         Text(
+      
           "Ingredients",
           style: TextStyle(fontWeight: FontWeight.bold),
+              key: Key('ingredients'),
         ),
         Text(ing),
         ElevatedButton(

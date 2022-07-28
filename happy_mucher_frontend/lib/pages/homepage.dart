@@ -215,6 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
   Widget buildRecipecard() => Card(
+    key: Key('toRecipeBook'),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(

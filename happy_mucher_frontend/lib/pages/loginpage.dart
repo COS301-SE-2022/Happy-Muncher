@@ -165,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(0),
                       ),
                       ElevatedButton(
+                        key: Key('home'),
                           child: Text('Home'),
                           onPressed: () {
                             Navigator.push(
