@@ -48,9 +48,9 @@ class GroceryListPageState extends State<GroceryListPage> {
     Future.delayed(Duration.zero, () => totals(context));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Grocery List'),
-        centerTitle: true,
-      ),
+          title: const Text('Grocery List'),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13)),
       bottomNavigationBar: BottomAppBar(
         color: Colors.orange,
         child: Row(
