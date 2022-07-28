@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'navbar.dart';
 import 'weekday.dart';
+import 'package:happy_mucher_frontend/weekcard_widget.dart';
 
 class MealPage extends StatefulWidget {
   const MealPage({Key? key}) : super(key: key);
@@ -13,206 +14,53 @@ class _MealPageState extends State<MealPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meal Planner'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-      ),
-      drawer: NavBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: const Text('Meal Planner'),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13),
+        ),
+        body: ListView(
+          key: Key("day"),
           children: <Widget>[
             const SizedBox(height: 10),
-            buildMoncard(),
+            WeekCard(
+              day: "Monday",
+              inputText: "Monday",
+            ),
             const SizedBox(height: 5),
-            buildTuecard(),
+            WeekCard(
+              day: "Tuesday",
+              inputText: "Tuesday",
+            ),
             const SizedBox(height: 5),
-            buildWedcard(),
+            WeekCard(
+              day: "Wednesday",
+              inputText: "Wednesday",
+            ),
             const SizedBox(height: 5),
-            buildThurcard(),
+            WeekCard(
+              day: "Thursday",
+              inputText: "Thursday",
+            ),
             const SizedBox(height: 5),
-            buildFricard(),
+            WeekCard(
+              day: "Friday",
+              inputText: "Friday",
+            ),
             const SizedBox(height: 5),
-            buildSatcard(),
+            WeekCard(
+              day: "Saturday",
+              inputText: "Saturday",
+            ),
             const SizedBox(height: 5),
-            buildSuncard(),
+            WeekCard(
+              day: "Sunday",
+              inputText: "Sunday",
+            ),
+            const SizedBox(height: 5),
           ],
-        ),
-      ),
-    );
+        ));
   }
-
-  Widget buildMoncard() => Card(
-      shadowColor: Color.fromARGB(255, 172, 255, 78),
-      elevation: 25,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Stack(alignment: Alignment.center, children: [
-        InkWell(
-            key: Key("mon"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Weekday(day: "Monday"),
-                ),
-              );
-            },
-            child: Container(
-              height: 120,
-              width: 350,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: const Center(
-                child: Text(
-                  "Monday",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 172, 255, 78),
-                    fontSize: 54,
-                  ),
-                ),
-              ),
-            ))
-      ]));
-
-  Widget buildTuecard() => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Ink.image(
-              image: AssetImage('assets/images/mealplanner/tuesday.jpg'),
-              child: InkWell(
-                key: Key("tue"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Weekday(day: "Tuesday"),
-                  ));
-                },
-              ),
-              height: 130,
-              fit: BoxFit.cover,
-            )
-          ],
-        ),
-      );
-
-  Widget buildWedcard() => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Ink.image(
-              image: AssetImage('assets/images/mealplanner/wednesday.jpg'),
-              child: InkWell(
-                key: Key("wed"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Weekday(day: "Wednesday"),
-                  ));
-                },
-              ),
-              height: 130,
-              fit: BoxFit.cover,
-            )
-          ],
-        ),
-      );
-
-  Widget buildThurcard() => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Ink.image(
-              image: AssetImage('assets/images/mealplanner/thursday.jpg'),
-              child: InkWell(
-                key: Key("thu"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Weekday(day: "Thursday"),
-                  ));
-                },
-              ),
-              height: 130,
-              fit: BoxFit.cover,
-            )
-          ],
-        ),
-      );
-
-  Widget buildFricard() => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Ink.image(
-              image: AssetImage('assets/images/mealplanner/friday.jpg'),
-              child: InkWell(
-                key: Key("fri"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Weekday(day: "Friday"),
-                  ));
-                },
-              ),
-              height: 130,
-              fit: BoxFit.cover,
-            )
-          ],
-        ),
-      );
-
-  Widget buildSatcard() => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Ink.image(
-              image: AssetImage('assets/images/mealplanner/saturday.jpg'),
-              child: InkWell(
-                key: Key("sat"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Weekday(day: "Saturday"),
-                  ));
-                },
-              ),
-              height: 130,
-              fit: BoxFit.cover,
-            )
-          ],
-        ),
-      );
-
-  Widget buildSuncard() => Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Ink.image(
-              image: AssetImage('assets/images/mealplanner/sunday.jpg'),
-              child: InkWell(
-                key: Key("sun"),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const Weekday(day: "Sunday"),
-                  ));
-                },
-              ),
-              height: 130,
-              fit: BoxFit.cover,
-            )
-          ],
-        ),
-      );
 }
