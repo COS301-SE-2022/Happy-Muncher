@@ -98,8 +98,8 @@ class MyWeekdayState extends State<Weekday> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.day}'),
-        centerTitle: true,
         backgroundColor: Color.fromARGB(255, 252, 95, 13),
+        centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(32),
@@ -123,8 +123,9 @@ class MyWeekdayState extends State<Weekday> {
           child: Container(
             width: 600.0,
             height: 42.0,
-            decoration:
-                const BoxDecoration(color: Color.fromARGB(255, 172, 255, 78)),
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+            ),
             child: const Center(
               child: Text(
                 'Breakfast',
@@ -270,8 +271,9 @@ class MyWeekdayState extends State<Weekday> {
           child: Container(
             width: 600.0,
             height: 42.0,
-            decoration:
-                const BoxDecoration(color: Color.fromARGB(255, 172, 255, 78)),
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+            ),
             child: const Center(
               child: Text(
                 'Lunch',
@@ -331,8 +333,9 @@ class MyWeekdayState extends State<Weekday> {
           child: Container(
             width: 600.0,
             height: 42.0,
-            decoration:
-                const BoxDecoration(color: Color.fromARGB(255, 172, 255, 78)),
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+            ),
             child: const Center(
               child: Text(
                 'Dinner',
