@@ -32,6 +32,9 @@ dependencies:
   http: ^0.13.4
   flutter_dotenv: ^5.0.2
 
+
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -51,8 +54,12 @@ dependencies:
 
   flutter_speed_dial: ^6.0.0
   image_picker: ^0.8.5+3
+<<<<<<< HEAD
   cached_network_image: ^3.2.1
   flutter_bloc: ^8.0.1
+=======
+  flutter_native_splash: ^2.2.6
+>>>>>>> 9fe08d0265fc18b03116fd1de30d371a2b7092bb
 
 
 dev_dependencies:
@@ -62,13 +69,20 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+    
+      
+
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-
+  flutter_native_splash: ^2.2.6
+flutter_native_splash:
+  color: "#FAF9F6"
+  image : assets/images/splash.png
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -82,6 +96,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/google_logo.png
+    - assets/images/months/january.jpg
+    - assets/images/months/february.jpg
+    - assets/images/months/march.jpg
+    - assets/images/months/april.jpg
+    - assets/images/months/may.jpg
     - assets/images/bottom1.png
     - assets/images/bottom2.png
     - assets/images/top1.png
@@ -98,6 +117,7 @@ flutter:
     - assets/images/mealplanner/friday.jpg
     - assets/images/mealplanner/saturday.jpg
     - assets/images/mealplanner/sunday.jpg
+    - assets/images/splash.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
