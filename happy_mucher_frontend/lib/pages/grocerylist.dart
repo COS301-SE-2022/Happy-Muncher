@@ -175,36 +175,60 @@ class GroceryListPageState extends State<GroceryListPage> {
   }
 
   Totals(context) {
-    // estimatePrices = 0;
-    // shoppingPrices = 0;
+    print('totals');
+    //e = 0;
+    Estimates();
+    Shopping();
+    print('done');
+
+    setState(() {
+      //estimatePrices = 0;
+    });
+  }
+
+  Estimates() {
     int e = 0;
-    int s = 0;
     FirebaseFirestore.instance
         .collection('GroceryList')
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         if ((doc["price"]) != 0) {
-          e += int.parse(doc["price"]);
-
-          if ((doc["bought"]) == true) {
-            //print(doc["price"]);
-            s += int.parse(doc["price"]);
-          }
+          String n = doc["price"].toString();
+          e += int.parse(n);
         }
       });
+      print('here');
       estimatePrices = e;
+
+      //return estimatePrices;
+    });
+    print('getting estimates: ' + estimatePrices.toString());
+    if (estimatePrices != null) {
+      _gltotals.doc('Totals').update({'estimated total': estimatePrices});
+    }
+    setState(() {});
+    //estimatePrices = e;
+
+    //return estimatePrices;
+    //print('getting estimates: ' + e.toString());
+  }
+
+  Shopping() {
+    int s = 0;
+    FirebaseFirestore.instance
+        .collection('GroceryList')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if ((doc["bought"]) == true) {
+          String n = doc['price'].toString();
+          s += int.parse(n);
+        }
+      });
+      print('here');
       shoppingPrices = s;
     });
-    if (estimatePrices != null || shoppingPrices != null) {
-      _gltotals.doc('Totals').update({
-        'estimated total': estimatePrices,
-        'shopping total': shoppingPrices
-      });
-     // _gltotals.doc('Totals').update({'shopping total': shoppingPrices});
-    }
-
-    setState(() {});
   }
 }
 //  decoration: BoxDecoration(
