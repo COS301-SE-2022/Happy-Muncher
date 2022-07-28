@@ -109,6 +109,7 @@ flutter:
     - assets/images/mealplanner/saturday.jpg
     - assets/images/mealplanner/sunday.jpg
     - assets/images/splash.png
+    - secrets.env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
