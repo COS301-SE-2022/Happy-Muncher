@@ -12,19 +12,18 @@ void main() {
     final emailField = find.byValueKey('Email');
     final passwordField = find.byValueKey('Password');
     final confirmField = find.byValueKey('Confirm Password');
-    final signInButton = find.byValueKey('Submit');
+    final submitButton = find.byValueKey('Submit');
 
     //home screen
-    /*final signOutButton = find.byValueKey('signOut');
+    final signOutButton = find.byValueKey('signOut');
     final addField = find.byValueKey('addField');
-    final addButton = find.byValueKey('addButton');*/
-
-    /*FlutterDriver driver;
+    final addButton = find.byValueKey('addButton');
+    FlutterDriver? driver;
 
     Future<bool> isPresent(SerializableFinder byValueKey,
         {Duration timeout = const Duration(seconds: 1)}) async {
       try {
-        await driver.waitFor(byValueKey, timeout: timeout);
+        await driver!.waitFor(byValueKey, timeout: timeout);
         return true;
       } catch (exception) {
         return false;
@@ -34,29 +33,29 @@ void main() {
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {
       driver = await FlutterDriver.connect();
-    });*/
+    });
 
     // Close the connection to the driver after the tests have completed.
-    /*tearDownAll(() async {
+    tearDownAll(() async {
       if (driver != null) {
-        driver.close();
+        driver!.close();
       }
     });
 
     test('create account', () async {
       if (await isPresent(signOutButton)) {
-        await driver.tap(signOutButton);
+        await driver!.tap(signOutButton);
       }
 
-      await driver.tap(usernameField);
-      await driver.enterText("u20554240@tuks.co.za");
+      await driver!.tap(emailField);
+      await driver!.enterText("u20554240@tuks.co.za");
 
-      await driver.tap(passwordField);
-      await driver.enterText("123456");
+      await driver!.tap(passwordField);
+      await driver!.enterText("123456");
 
-      await driver.tap(createAccountButton);
-      await driver.waitFor(find.text("Your Todos"));
-    });*/
+      await driver!.tap(submitButton);
+      await driver!.waitFor(find.text("Your Todos"));
+    });
 
     /*test('login', () async {
       if (await isPresent(signOutButton)) {

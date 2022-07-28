@@ -142,5 +142,3 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
-dependency_overrides:
-  image_picker_android: 0.8.4+13
