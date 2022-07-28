@@ -57,21 +57,22 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-        actions: <Widget>[
-          FlatButton(
-            child: Row(
-              children: <Widget>[Text('Signup'), Icon(Icons.person_add)],
-            ),
-            textColor: Colors.white,
-            onPressed: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(SignupScreen.routeName);
-            },
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: Text('Login'),
+      //   backgroundColor: Colors.green,
+      //   actions: <Widget>[
+      //     FlatButton(
+      //       child: Row(
+      //         children: <Widget>[Text('Signup'), Icon(Icons.person_add)],
+      //       ),
+      //       textColor: Colors.white,
+      //       onPressed: () {
+      //         Navigator.of(context)
+      //             .pushReplacementNamed(SignupScreen.routeName);
+      //       },
+      //     )
+      //   ],
+      // ),
       body: Stack(
         children: <Widget>[
           SizedBox(height: size.height * 0.03),
@@ -91,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //email
                       SizedBox(height: size.height * 0.03),
                       TextFormField(
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
                           labelText: 'Email',
                         ),
@@ -110,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       //password
                       TextFormField(
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
                         validator: (value) {
@@ -123,17 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           _authData['password'] = value!;
                         },
                       ),
-                      SizedBox(height: size.height * 0.03),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                        child: Text(
-                          "Forgot your password?",
-                          style:
-                              TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
-                        ),
-                      ),
 
                       SizedBox(height: size.height * 0.03),
                       RaisedButton(
@@ -143,13 +133,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: size.width * 0.5,
                           decoration: new BoxDecoration(
                               borderRadius: BorderRadius.circular(80.0),
-                              gradient: new LinearGradient(colors: [
-                                Color.fromARGB(255, 255, 136, 34),
-                                Color.fromARGB(255, 255, 177, 41)
-                              ])),
+                              color: Color.fromARGB(255, 252, 95, 13)),
                           padding: const EdgeInsets.all(0),
                           child: Text(
-                            'Submit',
+                            'Log In',
                             textAlign: TextAlign.center,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
@@ -172,6 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => MyHomePage()));
                           }),
+
                       //SizedBox(height: 30, width: 80),
                       /*Container(
                         height: 30.0,
@@ -184,23 +172,61 @@ class _LoginScreenState extends State<LoginScreen> {
                           shape: BoxShape.circle,
                         ),
                       ),*/
+
+                      SizedBox(height: size.height * 0.03),
+                      Container(
+                        alignment: Alignment.center,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                        child: Text(
+                          "Forgot your password?",
+                          style:
+                              TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
+                        ),
+                      ),
                       SizedBox(
                         width: 20,
                       ),
                       //Text("Sign in with Google"),
+                      Container(
+                        alignment: Alignment.center,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                        child: Text(
+                          "OR",
+                          style:
+                              TextStyle(fontSize: 14, color: Color(0XFF2661FA)),
+                        ),
+                      ),
+
                       TextButton.icon(
                           onPressed: () {
                             signup(context);
                           },
                           icon: Image.asset(
                             'assets/images/google_logo.png',
-                            height: 50,
-                            width: 50,
+                            height: 30,
+                            width: 30,
                           ),
                           label: Text(
-                            "Sign in with Google",
+                            "Log in with Google",
+                            textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 20),
                           )),
+
+                      SizedBox(height: size.height * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                              onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => SignupScreen()),
+                                  ),
+                              child:
+                                  Text("Don't have an account? Sign up here"))
+                        ],
+                      )
 
                       /*ElevatedButton(
                         onPressed: () {
