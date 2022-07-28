@@ -53,7 +53,7 @@ class GroceryListPageState extends State<GroceryListPage> {
           centerTitle: true,
           backgroundColor: Color.fromARGB(255, 252, 95, 13)),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.orange,
+        color: Color.fromARGB(255, 252, 95, 13),
         child: Row(
           children: [
             RichText(
@@ -197,7 +197,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.abc,
               color: Colors.white,
             ),
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromARGB(255, 172, 255, 78),
           ),
           SpeedDialChild(
             onTap: () async {
@@ -207,7 +207,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.collections,
               color: Colors.white,
             ),
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromARGB(255, 172, 255, 78),
           ),
           SpeedDialChild(
             onTap: () async {
@@ -217,7 +217,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.photo_camera,
               color: Colors.white,
             ),
-            backgroundColor: Colors.blue,
+            backgroundColor: Color.fromARGB(255, 172, 255, 78),
           )
         ],
       ),
