@@ -227,6 +227,8 @@ class MyMonthState extends State<Month> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text('${widget.month}'),
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
       ),
       body: ListView(
         padding: const EdgeInsets.all(32),
@@ -284,7 +286,7 @@ class MyMonthState extends State<Month> {
                 budgetSet = true;
               });
             },
-            color: Colors.green,
+            color: Color.fromARGB(255, 172, 255, 78),
             child: Text("Edit Budget", style: TextStyle(color: Colors.white)),
           )
         ],
@@ -397,7 +399,7 @@ class MyMonthState extends State<Month> {
                 }
               });
             },
-            color: Colors.green,
+            color: Color.fromARGB(255, 172, 255, 78),
             child: Text("Set Budget", style: TextStyle(color: Colors.white)),
           ),
         ],
@@ -410,7 +412,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.green,
+              color: Color.fromARGB(255, 172, 255, 78),
             ),
             child: const Center(
               child: Text(
@@ -504,7 +506,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.green,
+              color: Color.fromARGB(255, 172, 255, 78),
             ),
             child: const Center(
               child: Text(
@@ -595,7 +597,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.green,
+              color: Color.fromARGB(255, 172, 255, 78),
             ),
             child: const Center(
               child: Text(
@@ -686,7 +688,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.green,
+              color: Color.fromARGB(255, 172, 255, 78),
             ),
             child: const Center(
               child: Text(
@@ -778,7 +780,7 @@ class MyMonthState extends State<Month> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.green,
+              color: Color.fromARGB(255, 172, 255, 78),
             ),
             child: const Center(
               child: Text(
@@ -886,6 +888,9 @@ class MyMonthState extends State<Month> {
           });
           showAlertDialog(context);
         },
+        style: ElevatedButton.styleFrom(
+          primary: Color.fromARGB(255, 172, 255, 78),
+        ),
         child: Text("Compare to Grocery List"),
       );
 

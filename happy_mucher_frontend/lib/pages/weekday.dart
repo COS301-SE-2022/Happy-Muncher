@@ -98,6 +98,8 @@ class MyWeekdayState extends State<Weekday> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.day}'),
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
+        centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(32),

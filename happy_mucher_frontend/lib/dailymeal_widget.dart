@@ -93,9 +93,9 @@ class MealWidgetState extends State<MealWidget> {
             width: 600.0,
             height: 42.0,
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: Color.fromARGB(255, 172, 255, 78),
             ),
-            child:  Center(
+            child: Center(
               child: Text(
                 widget.meal,
                 style: TextStyle(
