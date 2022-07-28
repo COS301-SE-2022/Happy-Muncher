@@ -4,6 +4,9 @@ import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
+import 'package:image_picker/image_picker.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -54,6 +57,7 @@ class _IventoryPageState extends State<IventoryPage> {
                                     content: Text(
                                         'You have successfully deleted a product')));
                           });
+                          NotificationAPI.cancel(NotificationAPI.getID());
                         },
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
@@ -88,6 +92,7 @@ class _IventoryPageState extends State<IventoryPage> {
           );
         },
       ),
+
 // Add new product
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 172, 255, 78),

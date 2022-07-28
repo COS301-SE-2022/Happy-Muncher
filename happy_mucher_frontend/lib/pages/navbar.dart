@@ -10,14 +10,18 @@ import 'package:happy_mucher_frontend/pages/settings_page.dart';
 class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final uid = FirebaseAuth.instance.currentUser?.displayName;
-
+    var uid = FirebaseAuth.instance.currentUser?.displayName;
+    var profile = FirebaseAuth.instance.currentUser?.photoURL;
     final email = FirebaseAuth.instance.currentUser?.email;
     final creationTime =
         FirebaseAuth.instance.currentUser?.metadata.creationTime;
-    /*if (uid == null) {
-      uid = FirebaseAuth.instance.currentUser!.uid;
-    }*/
+    if (uid == null) {
+      uid = "User";
+    }
+    if (profile == null) {
+      profile ??=
+          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+    }
     return Drawer(
       child: ListView(
         // Remove padding
@@ -27,15 +31,15 @@ class NavBar extends StatelessWidget {
             accountName: Text(uid.toString()),
             accountEmail: Text(email.toString()),
             currentAccountPicture: CircleAvatar(
-              child: Icon(Icons.person),
+              backgroundImage: NetworkImage(profile.toString()),
               backgroundColor: Colors.white,
             ),
             decoration: BoxDecoration(
               color: Colors.grey,
               /*image: DecorationImage(
+                  opacity: 0.3,
                   fit: BoxFit.fill,
-                  image: NetworkImage(
-                      'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg')),*/
+                  image: NetworkImage(profile.toString())),*/
             ),
           ),
           ListTile(
