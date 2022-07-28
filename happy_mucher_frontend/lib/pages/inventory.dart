@@ -4,8 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:image_picker/image_picker.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -20,7 +18,6 @@ class _IventoryPageState extends State<IventoryPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
@@ -91,48 +88,12 @@ class _IventoryPageState extends State<IventoryPage> {
         },
       ),
 // Add new product
-      // floatingActionButton: FloatingActionButton(
-      //   key: const Key('addToInventoryButton'),
-      //   onPressed: () => addInventoryDialog(context),
-      //   child: const Icon(Icons.add),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
-      floatingActionButton: SpeedDial(
-        icon: Icons.add,
-        children: [
-          SpeedDialChild(
-            onTap: () => addInventoryDialog(context),
-            key: const Key('addToInventoryButton'),
-            child: const Icon(
-              Icons.abc,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-          ),
-          SpeedDialChild(
-            onTap: () async {
-              final image =
-                  await _picker.pickImage(source: ImageSource.gallery);
-            },
-            child: const Icon(
-              Icons.collections,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-          ),
-          SpeedDialChild(
-            onTap: () async {
-              final photo = await _picker.pickImage(source: ImageSource.camera);
-            },
-            child: const Icon(
-              Icons.photo_camera,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-          )
-        ],
+      floatingActionButton: FloatingActionButton(
+        key: const Key('addToInventoryButton'),
+        onPressed: () => addInventoryDialog(context),
+        child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -32,9 +32,6 @@ dependencies:
   http: ^0.13.4
   flutter_dotenv: ^5.0.2
 
-
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -43,7 +40,7 @@ dependencies:
   google_sign_in: ^5.3.3
   provider: ^6.0.3
   font_awesome_flutter: ^10.1.0
-  cloud_firestore: ^3.1.17
+  cloud_firestore: 3.3.0
   flutter_slidable: ^1.3.0
   fake_cloud_firestore: ^1.2.2
   get_it: ^7.2.0
@@ -54,13 +51,12 @@ dependencies:
 
   flutter_speed_dial: ^6.0.0
   image_picker: ^0.8.5+3
-<<<<<<< HEAD
+  image_cropper: ^2.0.3
+  image: ^3.1.3
+  google_mlkit_text_recognition: ^0.3.0
   cached_network_image: ^3.2.1
   flutter_bloc: ^8.0.1
-=======
   flutter_native_splash: ^2.2.6
->>>>>>> 9fe08d0265fc18b03116fd1de30d371a2b7092bb
-
 
 dev_dependencies:
   integration_test:
@@ -69,20 +65,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-    
-      
-
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  flutter_native_splash: ^2.2.6
 flutter_native_splash:
   color: "#FAF9F6"
-  image : assets/images/splash.png
+  image: assets/images/splash.png
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
