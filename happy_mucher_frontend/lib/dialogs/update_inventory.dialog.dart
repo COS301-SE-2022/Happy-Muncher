@@ -113,11 +113,11 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
                       int id = UniqueKey().hashCode;
                       NotificationAPI.setID(id);
 
-                      NotificationAPI.showScheduledNotification(
+                      /*NotificationAPI.showScheduledNotification(
                           id: id,
                           title: 'Happy Muncher',
                           body: '$name expires today!',
-                          scheduledDate: chosenDate);
+                          scheduledDate: chosenDate);*/
                     }
                   },
                   icon: const Icon(Icons.calendar_month),

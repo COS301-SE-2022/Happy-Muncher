@@ -93,12 +93,12 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                       expirationDate = chosenDate;
                       int id = UniqueKey().hashCode;
                       NotificationAPI.setID(id);
-                      NotificationAPI.showScheduledNotification(
+                      /*NotificationAPI.showScheduledNotification(
                           id: id,
                           title: 'Happy Muncher',
                           body:
                               '$name expires today! Please add it to your grocery list.',
-                          scheduledDate: chosenDate);
+                          scheduledDate: chosenDate);*/
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
