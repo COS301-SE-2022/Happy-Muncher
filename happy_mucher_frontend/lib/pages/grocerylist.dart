@@ -188,11 +188,12 @@ class GroceryListPageState extends State<GroceryListPage> {
         },
       ),
       floatingActionButton: SpeedDial(
+        key: const Key('speed_dial_button'),
         icon: Icons.add,
         children: [
           SpeedDialChild(
             onTap: () => addGLDialog(context),
-            key: const Key('addToInventoryButton'),
+            key: const Key('addToInventoryButtonText'),
             child: const Icon(
               Icons.abc,
               color: Colors.white,
@@ -200,6 +201,7 @@ class GroceryListPageState extends State<GroceryListPage> {
             backgroundColor: Color.fromARGB(255, 172, 255, 78),
           ),
           SpeedDialChild(
+            key: const Key('addToInventoryButtonGallery'),
             onTap: () async {
               captureImageReceipt(ImageSource.gallery);
             },
@@ -210,6 +212,7 @@ class GroceryListPageState extends State<GroceryListPage> {
             backgroundColor: Color.fromARGB(255, 172, 255, 78),
           ),
           SpeedDialChild(
+            key: const Key('addToInventoryButtonCamera'),
             onTap: () async {
               captureImageReceipt(ImageSource.camera);
             },
@@ -298,10 +301,7 @@ class GroceryListPageState extends State<GroceryListPage> {
     // shoppingPrices = 0;
     int e = 0;
     int s = 0;
-    FirebaseFirestore.instance
-        .collection('GroceryList')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
+    _products.get().then((QuerySnapshot querySnapshot) {
       for (final doc in querySnapshot.docs) {
         if ((doc["price"]) != 0) {
           e += int.parse(doc["price"]);

@@ -20,6 +20,7 @@ void main() {
 
       setUp(() async {
         final query = await firestore.collection('GroceryList').get();
+        await firestore.collection('GL totals').doc('Totals').set({});
         final futures = query.docs.map((e) {
           return firestore.collection('GroceryList').doc(e.id).delete();
         });
@@ -28,157 +29,175 @@ void main() {
       testWidgets(
         'Testing if page is empty on start up',
         (WidgetTester tester) async {
+          await tester.runAsync(() async {
+            await tester.pumpWidget(testApp);
+
+            final inventoryList = find.byKey(const Key('Grocery_ListView'));
+            expect(inventoryList, findsNothing);
+          });
           //test to see if the list is empty on initial start up
           //runs the app and checks the list to see if it has 0 list tile widgets
           //success if finds 0 widgets
-          await tester.pumpWidget(testApp);
-
-          final inventoryList = find.byKey(const Key('Grocery_ListView'));
-          expect(inventoryList, findsNothing);
         },
       );
 
       testWidgets(
         'Testing page filling from database',
         (WidgetTester tester) async {
-          await firestore
-              .collection('GroceryList')
-              .add({"name": 'juice', "price": '1', "bought": false});
-          await firestore
-              .collection('GroceryList')
-              .add({"name": 'apples', "price": '2', "bought": false});
-          await firestore
-              .collection('GroceryList')
-              .add({"name": 'bread', "price": '3', "bought": false});
+          await tester.runAsync(
+            () async {
+              await firestore
+                  .collection('GroceryList')
+                  .add({"name": 'juice', "price": '1', "bought": false});
+              await firestore
+                  .collection('GroceryList')
+                  .add({"name": 'apples', "price": '2', "bought": false});
+              await firestore
+                  .collection('GroceryList')
+                  .add({"name": 'bread', "price": '3', "bought": false});
 
-          await tester.pumpWidget(testApp);
+              await tester.pumpWidget(testApp);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+              await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final listviews = find.byType(ListTile);
+              final listviews = find.byType(ListTile);
 
-          expect(listviews, findsNWidgets(3));
+              expect(listviews, findsNWidgets(3));
+            },
+          );
         },
       );
 
       testWidgets(
         'Testing if an item is added after entering on dialog box',
         (WidgetTester tester) async {
-          //test to see if the adding functionality works
-          //adds the object ['apples', '10']
-          await tester.pumpWidget(testApp);
+          await tester.runAsync(() async {
+            //test to see if the adding functionality works
+            //adds the object ['apples', '10']
+            await tester.pumpWidget(testApp);
 
-          //finds the add button so that it can be pressed to open dialog
-          final dialogEnterButton =
-              find.byKey(const Key('addToGroceryListButton'));
-          expect(dialogEnterButton, findsOneWidget);
+            final speedDialButton = find.byKey(const Key('speed_dial_button'));
+            expect(speedDialButton, findsOneWidget);
 
-          await tester.tap(dialogEnterButton);
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.tap(speedDialButton);
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          //finds all buttons on the dialog page
-          //then adds text to the text fields and selects current date
-          //then clicks OK
-          //then checks if the list contains a list tile
-          final dialogReturnName =
-              find.byKey(const Key('groceryListDialogNameField'));
-          expect(dialogReturnName, findsOneWidget);
+            //finds the add button so that it can be pressed to open dialog
+            final dialogEnterButton =
+                find.byKey(const Key('addToInventoryButtonText'));
+            expect(dialogEnterButton, findsOneWidget);
 
-          final dialogReturnQuantity =
-              find.byKey(const Key('groceryListDialogPriceField'));
-          expect(dialogReturnQuantity, findsOneWidget);
+            await tester.tap(dialogEnterButton);
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          await tester.enterText(dialogReturnName, 'Apples');
-          await tester.enterText(dialogReturnQuantity, '10');
+            //finds all buttons on the dialog page
+            //then adds text to the text fields and selects current date
+            //then clicks OK
+            //then checks if the list contains a list tile
+            final dialogReturnName =
+                find.byKey(const Key('groceryListDialogNameField'));
+            expect(dialogReturnName, findsOneWidget);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            final dialogReturnQuantity =
+                find.byKey(const Key('groceryListDialogPriceField'));
+            expect(dialogReturnQuantity, findsOneWidget);
 
-          final dialogReturnButton =
-              find.byKey(const Key('groceryListDialogAddButton'));
-          expect(dialogReturnButton, findsOneWidget);
+            await tester.enterText(dialogReturnName, 'Apples');
+            await tester.enterText(dialogReturnQuantity, '10');
 
-          await tester.tap(dialogReturnButton);
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final inventoryList = find.byKey(const Key('Grocery_ListView'));
-          expect(inventoryList, findsOneWidget);
-          final listTiles = find.byType(CheckboxListTile);
-          expect(listTiles, findsOneWidget);
+            final dialogReturnButton =
+                find.byKey(const Key('groceryListDialogAddButton'));
+            expect(dialogReturnButton, findsOneWidget);
+
+            await tester.tap(dialogReturnButton);
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+            final inventoryList = find.byKey(const Key('Grocery_ListView'));
+            expect(inventoryList, findsOneWidget);
+            final listTiles = find.byType(CheckboxListTile);
+            expect(listTiles, findsOneWidget);
+          });
         },
       );
 
       testWidgets(
         'Testing deleting',
         (WidgetTester tester) async {
-          await firestore
-              .collection('GroceryList')
-              .add({"name": 'bread', "price": '3', "bought": false});
+          await tester.runAsync(() async {
+            await firestore
+                .collection('GroceryList')
+                .add({"name": 'bread', "price": '3', "bought": false});
 
-          await tester.pumpWidget(testApp);
+            await tester.pumpWidget(testApp);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final itemListTile = find.byType(ListTile);
+            final itemListTile = find.byType(ListTile);
 
-          await tester.drag(itemListTile, const Offset(200, 0));
+            await tester.drag(itemListTile, const Offset(200, 0));
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final deleteButton = find.byType(SlidableAction).first;
-          await tester.tap(deleteButton);
+            final deleteButton = find.byType(SlidableAction).first;
+            await tester.tap(deleteButton);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          expect(itemListTile, findsNothing);
+            expect(itemListTile, findsNothing);
+          });
         },
       );
 
       testWidgets(
         'Testing editing',
         (WidgetTester tester) async {
-          await firestore
-              .collection('GroceryList')
-              .add({"name": 'bread', "price": '3', "bought": false});
+          await tester.runAsync(() async {
+            await firestore
+                .collection('GroceryList')
+                .add({"name": 'bread', "price": '3', "bought": false});
 
-          await tester.pumpWidget(testApp);
+            await tester.pumpWidget(testApp);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final itemListTile = find.byType(ListTile);
+            final itemListTile = find.byType(ListTile);
 
-          await tester.drag(itemListTile, const Offset(200, 0));
+            await tester.drag(itemListTile, const Offset(200, 0));
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final editButton = find.byType(SlidableAction).last;
-          await tester.tap(editButton);
+            final editButton = find.byType(SlidableAction).last;
+            await tester.tap(editButton);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final dialogReturnName =
-              find.byKey(const Key('GroceryDialogNameField'));
-          expect(dialogReturnName, findsOneWidget);
+            final dialogReturnName =
+                find.byKey(const Key('GroceryDialogNameField'));
+            expect(dialogReturnName, findsOneWidget);
 
-          final dialogReturnQuantity =
-              find.byKey(const Key('GrocerDialogPriceField'));
-          expect(dialogReturnQuantity, findsOneWidget);
+            final dialogReturnQuantity =
+                find.byKey(const Key('GrocerDialogPriceField'));
+            expect(dialogReturnQuantity, findsOneWidget);
 
-          await tester.enterText(dialogReturnName, 'Apples');
-          await tester.enterText(dialogReturnQuantity, '10');
+            await tester.enterText(dialogReturnName, 'Apples');
+            await tester.enterText(dialogReturnQuantity, '10');
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final dialogReturnButton =
-              find.byKey(const Key('GroceryListDialogAddButton'));
-          expect(dialogReturnButton, findsOneWidget);
+            final dialogReturnButton =
+                find.byKey(const Key('GroceryListDialogAddButton'));
+            expect(dialogReturnButton, findsOneWidget);
 
-          await tester.tap(dialogReturnButton);
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+            await tester.tap(dialogReturnButton);
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final inventoryList = find.byKey(const Key('Grocery_ListView'));
-          expect(inventoryList, findsOneWidget);
-          final listTiles = find.byType(CheckboxListTile);
-          expect(listTiles, findsOneWidget);
+            final inventoryList = find.byKey(const Key('Grocery_ListView'));
+            expect(inventoryList, findsOneWidget);
+            final listTiles = find.byType(CheckboxListTile);
+            expect(listTiles, findsOneWidget);
+          });
         },
       );
     },
