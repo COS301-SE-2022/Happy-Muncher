@@ -105,15 +105,20 @@ class ProfileState extends State<Profile> {
               ],
               mainAxisAlignment: MainAxisAlignment.center,
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 40),
             Row(
               children: [
                 Text(
-                  'Email: $email',
+                  'Email:' + '$email',
                   style: TextStyle(fontSize: 25.0),
                 ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            Row(
+              children: [
                 user!.emailVerified
-                    ? Text(
+                    ? const Text(
                         '  verified',
                         style:
                             TextStyle(fontSize: 18.0, color: Colors.blueGrey),
