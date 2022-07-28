@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
-
+  //static List<GroceryListItem> inventoryList = [];
   @override
   State<GroceryListPage> createState() => GroceryListPageState();
 }
@@ -20,17 +23,69 @@ class GroceryListPageState extends State<GroceryListPage> {
   final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
-
+  int shoppingPrices = 0;
+  int estimatePrices = 0;
   CollectionReference get _products => firestore.collection('GroceryList');
 
   CollectionReference get _inventory => firestore.collection('Inventory');
 
+  //final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _gltotals => firestore.collection('GL totals');
+  var data;
+  @override
+  void initState() {
+    super.initState();
+    // print('init');
+    // //Totals(context);
+    // print('est');
+    // print(estimatePrices);
+    // print('shopping');
+    // print(shoppingPrices);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () => Totals(context));
     return Scaffold(
         appBar: AppBar(
           title: const Text('Grocery List'),
           centerTitle: true,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.orange,
+          child: Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(Icons.add, size: 19),
+                    ),
+                    TextSpan(
+                        text: "Estimated Total: " +
+                            estimatePrices.toString() +
+                            "\n",
+                        style: TextStyle(fontSize: 19, color: Colors.black)),
+                    WidgetSpan(
+                      child: Icon(Icons.shopping_cart, size: 19),
+                    ),
+                    TextSpan(
+                        text: "Total: " + shoppingPrices.toString(),
+                        style: TextStyle(fontSize: 19, color: Colors.black)),
+                  ],
+                ),
+              )
+              // Text(
+
+              //   "\u2713 Estimated Price: " +
+              //       estimatePrices.toString() +
+              //       '\n' +
+              //       "Total: " +
+              //       shoppingPrices.toString(),
+              //   style: TextStyle(fontSize: 19, color: Colors.black),
+              // ),
+            ],
+          ),
         ),
         body: StreamBuilder(
           stream: _products.snapshots(),
@@ -71,7 +126,7 @@ class GroceryListPageState extends State<GroceryListPage> {
                           foregroundColor: Colors.white,
                           icon: Icons.edit,
                           label: 'Edit',
-                        )
+                        ),
                       ],
                     ),
                     child: CheckboxListTile(
@@ -96,10 +151,12 @@ class GroceryListPageState extends State<GroceryListPage> {
                                 "expirationDate": ""
                               },
                             );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Please go to the inventory page to edit the quantity and expiration date')));
+
+                            NotificationAPI.showNotification(
+                                title: 'Happy Muncher',
+                                body:
+                                    '$itemName has been added to inventory. Please go to the inventory page to edit the quantity and expiration date.',
+                                payload: 'grocerylist');
                           }
                         }),
                   );
@@ -119,9 +176,71 @@ class GroceryListPageState extends State<GroceryListPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
+
+  Totals(context) {
+    print('totals');
+    //e = 0;
+    Estimates();
+    Shopping();
+    print('done');
+
+    setState(() {
+      //estimatePrices = 0;
+    });
+  }
+
+  Estimates() {
+    int e = 0;
+    FirebaseFirestore.instance
+        .collection('GroceryList')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if ((doc["price"]) != 0) {
+          String n = doc["price"].toString();
+          e += int.parse(n);
+        }
+      });
+      print('here');
+      estimatePrices = e;
+
+      //return estimatePrices;
+    });
+    print('getting estimates: ' + estimatePrices.toString());
+    if (estimatePrices != null) {
+      _gltotals.doc('Totals').update({'estimated total': estimatePrices});
+    }
+    setState(() {});
+    //estimatePrices = e;
+
+    //return estimatePrices;
+    //print('getting estimates: ' + e.toString());
+  }
+
+  Shopping() {
+    int s = 0;
+    FirebaseFirestore.instance
+        .collection('GroceryList')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if ((doc["bought"]) == true) {
+          String n = doc['price'].toString();
+          s += int.parse(n);
+        }
+      });
+      print('here');
+      shoppingPrices = s;
+    });
+  }
 }
-
-
+//  decoration: BoxDecoration(
+//           border: Border(
+//             top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
+//             bottom: BorderSide(width: 16.0, color: Colors.lightBlue.shade900),
+//           ),
+//           color: Colors.white,
+//         ),
 //SCAFFOLD
 //  APPBAR
 //    ICON + TEXT
@@ -135,4 +254,3 @@ class GroceryListPageState extends State<GroceryListPage> {
 //        ICONBUTTON
 //      PADDING
 //        ICONBUTTON
-

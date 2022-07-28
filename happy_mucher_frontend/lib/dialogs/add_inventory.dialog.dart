@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
 
 Future<InventoryItemParams?> addInventoryDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const _InventoryDialog());
@@ -87,8 +88,17 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                     );
 
                     if (chosenDate != null) {
+                      final String name = nameController.text;
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
+                      int id = UniqueKey().hashCode;
+                      NotificationAPI.setID(id);
+                      /*NotificationAPI.showScheduledNotification(
+                          id: id,
+                          title: 'Happy Muncher',
+                          body:
+                              '$name expires today! Please add it to your grocery list.',
+                          scheduledDate: chosenDate);*/
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
@@ -103,7 +113,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
           key: const Key('inventoryDialogAddButton'),
           onPressed: () async {
             final String name = nameController.text;
-            final double? quantity = double.tryParse(quantityController.text);
+            final int? quantity = int.tryParse(quantityController.text);
             final String expD = dateFieldController.text;
             if (quantity != null) {
               await _products.add({

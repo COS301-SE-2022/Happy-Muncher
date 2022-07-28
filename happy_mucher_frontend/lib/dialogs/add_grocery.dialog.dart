@@ -66,11 +66,10 @@ class GLDialogState extends State<_GLDialog> {
           onPressed: () async {
             final name = nameController.text;
             final price = priceController.text;
-            final priceInt = int.tryParse(price);
-            const valueFalse = false;
-            if (priceInt != null) {
+            final priceDouble = double.tryParse(price);
+            if (priceDouble != null) {
               await _items
-                  .add({"name": name, "price": price, "bought": valueFalse});
+                  .add({"name": name, "price": priceDouble, "bought": false});
 
               nameController.text = '';
               priceController.text = '';
@@ -87,7 +86,7 @@ class GLDialogState extends State<_GLDialog> {
 
 class GroceryItemParams {
   final String name;
-  final int price;
+  final double price;
   final bool value;
 
   GroceryItemParams({
