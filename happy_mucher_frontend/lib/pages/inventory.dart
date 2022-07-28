@@ -28,6 +28,7 @@ class _IventoryPageState extends State<IventoryPage> {
       appBar: AppBar(
         title: const Text('Inventory'),
         centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
       ),
       body: StreamBuilder(
         stream: _products.snapshots(),
@@ -89,6 +90,7 @@ class _IventoryPageState extends State<IventoryPage> {
       ),
 // Add new product
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 172, 255, 78),
         key: const Key('addToInventoryButton'),
         onPressed: () => addInventoryDialog(context),
         child: const Icon(Icons.add),
