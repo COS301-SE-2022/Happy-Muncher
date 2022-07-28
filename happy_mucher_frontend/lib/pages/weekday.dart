@@ -1,14 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/tasty_card.dart';
+import 'package:happy_mucher_frontend/dailymeal_widget.dart';
 
-class Month extends StatefulWidget {
-  const Month({Key? key, required this.month}) : super(key: key);
-  final String month;
+class Weekday extends StatefulWidget {
+  const Weekday({Key? key, required this.day}) : super(key: key);
+  final String day;
   @override
-  State<Month> createState() => MyMonthState();
+  State<Weekday> createState() => MyWeekdayState();
 }
 
-class MyMonthState extends State<Month> {
+class MyWeekdayState extends State<Weekday> {
+  final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _meals => firestore.collection('Meal Planner');
+  String image = '';
+  String title = 'Add recipe from recipe book';
+  String cookTime = '';
+  int calories = 0;
+  String description = '';
+  String ing = '';
+  String instr = '';
+  List<String> instructions = [];
+  List<String> ingredients = [];
+
+//breafast controoller
+  bool hasrecipe = false;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMeals();
+    print("Description");
+    print(description);
+  }
+
+  Future<void> getMeals() async {
+    var collection = FirebaseFirestore.instance.collection('Meal Planner');
+    var docSnapshot = await collection
+        .doc(widget.day)
+        .collection('Breakfast')
+        .doc('Recipe')
+        .get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+
+      // You can then retrieve the value from the Map like this:
+
+      image = data['ImageURL'];
+      ing = data['Ingredients'];
+      title = data['Name'];
+      cookTime = data['CookTime'];
+      description = data['Description'];
+      calories = data['Calories'];
+      instr = data['Instructions'];
+      print(image);
+    }
+
+    var docSnapshot2 = await collection
+        .doc(widget.day)
+        .collection('Breakfast')
+        .doc('hasRecipe')
+        .get();
+    if (docSnapshot2.exists) {
+      Map<String, dynamic> data = docSnapshot2.data()!;
+
+      // You can then retrieve the value from the Map like this:
+
+      hasrecipe = data['has'];
+    }
+    if (mounted) {
+      setState(() {
+        ingredients = (ing.split('\n'));
+        instructions = (instr.split('\n'));
+        print(image);
+      });
+    }
+
+    //print(tr);
+  }
+
   final breakfastController = TextEditingController();
   String meal1 = "Enter your breakfast";
   bool editOne = false;
@@ -21,20 +92,23 @@ class MyMonthState extends State<Month> {
   String meal3 = "Enter your dinner";
   bool editThree = false;
 
+  @override
   Widget build(BuildContext context) {
+    //Future.delayed(Duration.zero, () => getMeals(context));
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.month}'),
+        title: Text('${widget.day}'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(32),
         children: <Widget>[
           const SizedBox(height: 24),
-          Breakfast(),
+          //Breakfast(),
+          MealWidget(day: widget.day, meal: "Breakfast"),
           const SizedBox(height: 24),
-          Lunch(),
+          MealWidget(day: widget.day, meal: "Lunch"),
           const SizedBox(height: 24),
-          Dinner(),
+          MealWidget(day: widget.day, meal: "Supper"),
           const SizedBox(height: 24),
         ],
       ),
@@ -65,38 +139,124 @@ class MyMonthState extends State<Month> {
           ),
         ),
         const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Flexible(
-              child: !editOne
-                  ? Text(meal1)
-                  : TextField(
-                      key: Key("meal1"),
-                      textAlign: TextAlign.center,
-                      controller: breakfastController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your meal',
-                      ),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          meal1 = breakfastController.text;
-                          editOne = false;
-                        });
-                      },
-                    )),
-        ]),
+        TastyRecipeCard(
+          name: title,
+          totTime: cookTime,
+          calories: 0,
+          images: image,
+          description: description,
+          ingredients: ingredients,
+          instructions: instructions,
+        ),
+        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        //   Flexible(
+        //       child: !editOne
+        //           ? Text(meal1)
+        //           : TextField(
+        //               key: Key("meal1"),
+        //               textAlign: TextAlign.center,
+        //               controller: breakfastController,
+        //               decoration: const InputDecoration(
+        //                 hintText: 'Enter your meal',
+        //               ),
+        //               keyboardType: TextInputType.text,
+        //               textInputAction: TextInputAction.done,
+        //               onSubmitted: (value) {
+        //                 setState(() {
+        //                   meal1 = breakfastController.text;
+        //                   editOne = false;
+        //                 });
+        //               },
+        //             )),
+        // ]),
         const SizedBox(height: 10),
         IconButton(
           alignment: Alignment.bottomRight,
           //color: Colors.green,
           //hoverColor: Colors.green,
-          icon: Icon(Icons.add_circle),
+          icon: !hasrecipe ? Icon(Icons.add_circle) : Icon(Icons.delete),
           iconSize: 44.0,
-          onPressed: () {
-            setState(() => {
-                  editOne = true,
-                });
+          onPressed: () async {
+            if (hasrecipe == false) {
+              var collection =
+                  FirebaseFirestore.instance.collection('Meal Planner');
+              var docSnapshot = await collection.doc('Place Holder').get();
+              if (docSnapshot.exists) {
+                Map<String, dynamic> data = docSnapshot.data()!;
+
+                // You can then retrieve the value from the Map like this:
+                image = data['Image'];
+                ing = data['Ingredients'];
+                title = data['Name'];
+                cookTime = data['CookTime'];
+                description = data['Description'];
+                calories = data['Calories'];
+                instr = data['Instructions'];
+              }
+              ingredients = (ing.split('\n'));
+              instructions = (instr.split('\n'));
+              //print(instr);
+              _meals
+                  .doc(widget.day)
+                  .collection('Breakfast')
+                  .doc('Recipe')
+                  .update({
+                'Name': title,
+                'Instructions': instr,
+                'Description': description,
+                'Calories': calories,
+                'CookTime': cookTime,
+                'ImageURL': image,
+                'Ingredients': ing,
+              });
+              hasrecipe = true;
+              _meals
+                  .doc(widget.day)
+                  .collection('Breakfast')
+                  .doc('hasRecipe')
+                  .update({
+                'has': hasrecipe,
+              });
+              //print(ingrd[0]); // return ["one"
+              //ingredients.addAll(ing);
+              getMeals();
+              setState(() => {
+                    editOne = true,
+                  });
+            }
+            //to remove recipe
+            else {
+              ingredients = (ing.split('\n'));
+              instructions = (instr.split('\n'));
+              //print(instr);
+              _meals
+                  .doc(widget.day)
+                  .collection('Breakfast')
+                  .doc('Recipe')
+                  .update({
+                'Name': "add recipe from recipe book",
+                'Instructions': "none",
+                'Description': "none",
+                'Calories': 0,
+                'CookTime': "none",
+                'ImageURL': "",
+                'Ingredients': "none",
+              });
+              hasrecipe = false;
+              _meals
+                  .doc(widget.day)
+                  .collection('Breakfast')
+                  .doc('hasRecipe')
+                  .update({
+                'has': hasrecipe,
+              });
+              //print(ingrd[0]); // return ["one"
+              //ingredients.addAll(ing);
+              getMeals();
+              setState(() => {
+                    editOne = false,
+                  });
+            }
           },
         ),
         const SizedBox(height: 10),

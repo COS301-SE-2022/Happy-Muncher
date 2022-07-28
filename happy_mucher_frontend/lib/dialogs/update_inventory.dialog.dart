@@ -132,7 +132,7 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
           key: const Key('inventoryDialogAddButton'),
           onPressed: () async {
             final String name = nameController.text;
-            final num? quantity = num.tryParse(quantityController.text);
+            final int? quantity = int.tryParse(quantityController.text);
             final String expD = dateFieldController.text;
 
             if (quantity != null) {

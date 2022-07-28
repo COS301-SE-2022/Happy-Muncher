@@ -21,7 +21,6 @@ class _IventoryPageState extends State<IventoryPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
@@ -94,48 +93,12 @@ class _IventoryPageState extends State<IventoryPage> {
       ),
 
 // Add new product
-      // floatingActionButton: FloatingActionButton(
-      //   key: const Key('addToInventoryButton'),
-      //   onPressed: () => addInventoryDialog(context),
-      //   child: const Icon(Icons.add),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
-      floatingActionButton: SpeedDial(
-        icon: Icons.add,
-        children: [
-          SpeedDialChild(
-            onTap: () => addInventoryDialog(context),
-            key: const Key('addToInventoryButton'),
-            child: const Icon(
-              Icons.abc,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-          ),
-          SpeedDialChild(
-            onTap: () async {
-              final image =
-                  await _picker.pickImage(source: ImageSource.gallery);
-            },
-            child: const Icon(
-              Icons.collections,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-          ),
-          SpeedDialChild(
-            onTap: () async {
-              final photo = await _picker.pickImage(source: ImageSource.camera);
-            },
-            child: const Icon(
-              Icons.photo_camera,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-          )
-        ],
+      floatingActionButton: FloatingActionButton(
+        key: const Key('addToInventoryButton'),
+        onPressed: () => addInventoryDialog(context),
+        child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

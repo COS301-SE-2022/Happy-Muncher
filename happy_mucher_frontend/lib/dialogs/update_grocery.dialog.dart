@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> showUpdateDialogGroceryList(
@@ -81,12 +80,11 @@ class _UpdateGLPageState extends State<GLDialog> {
           onPressed: () async {
             final name = nameController.text;
             final price = priceController.text;
-            final priceInt = int.tryParse(price);
-            const valueFalse = false;
-            if (priceInt != null) {
+            final priceDouble = double.tryParse(price);
+            if (priceDouble != null) {
               await _items
                   .doc(documentSnapshot.id)
-                  .update({"name": name, "price": price});
+                  .update({"name": name, "price": priceDouble});
 
               nameController.text = '';
               priceController.text = '';
@@ -99,16 +97,4 @@ class _UpdateGLPageState extends State<GLDialog> {
       ],
     );
   }
-}
-
-class InventoryItemParams {
-  final String name;
-  final int quantity;
-  final DateTime date;
-
-  InventoryItemParams({
-    required this.quantity,
-    required this.name,
-    required this.date,
-  });
 }

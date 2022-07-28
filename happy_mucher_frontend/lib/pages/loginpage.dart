@@ -173,6 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(0),
                       ),
                       ElevatedButton(
+                        key: Key('home'),
                           child: Text('Home'),
                           onPressed: () {
                             Navigator.push(
@@ -224,40 +225,40 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: size.height,
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child:
-                      Image.asset("assets/images/top1.png", width: size.width),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Image.asset("assets/images/top2.png",
-                      width: size.width, height: 330),
-                ),
-                SizedBox(height: size.height * 0.03),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Image.asset("assets/images/bottom1.png",
-                      width: size.width, height: 300),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Image.asset("assets/images/bottom2.png",
-                      width: size.width),
-                ),
-              ],
-            ),
-          ),
+          //         Container(
+          //           width: double.infinity,
+          //           height: size.height,
+          //           child: Stack(
+          //             alignment: Alignment.center,
+          //             children: <Widget>[
+          //               Positioned(
+          //                 top: 0,
+          //                 right: 0,
+          //                 child:
+          //                     Image.asset("assets/images/top1.png", width: size.width),
+          //               ),
+          //               Positioned(
+          //                 top: 0,
+          //                 right: 0,
+          //                 child: Image.asset("assets/images/top2.png",
+          //                     width: size.width, height: 330),
+          //               ),
+          //               SizedBox(height: size.height * 0.03),
+          //               Positioned(
+          //                 bottom: 0,
+          //                 right: 0,
+          //                 child: Image.asset("assets/images/bottom1.png",
+          //                     width: size.width, height: 300),
+          //               ),
+          //               Positioned(
+          //                 bottom: 0,
+          //                 right: 0,
+          //                 child: Image.asset("assets/images/bottom2.png",
+          //                     width: size.width),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
         ],
       ),
     );

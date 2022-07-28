@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/monthcard_widget.dart';
 import 'month.dart';
 
 // void main() {
@@ -41,138 +42,133 @@ class _MyHomePageState extends State<MyHomePage> {
         body: ListView(
           key: Key("months"),
           children: <Widget>[
-            //Jan
-            ElevatedButton(
-              key: Key("jan"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "January"),
-                ));
-              },
-              child: const Text("January "),
-            ),
-
-            //Feb
-            ElevatedButton(
-              key: Key("feb"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "February"),
-                ));
-              },
-              child: const Text("February "),
-            ),
-
-            //March
-            ElevatedButton(
-              key: Key("mar"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "March"),
-                ));
-              },
-              child: const Text("March "),
-            ),
-
-            //April
-            ElevatedButton(
-              key: Key("apr"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "April"),
-                ));
-              },
-              child: const Text("April "),
-            ),
-
-            //May
-            ElevatedButton(
-              key: Key("may"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "May"),
-                ));
-              },
-              child: const Text("May "),
-            ),
-
-            //June
-            ElevatedButton(
-              key: Key("jun"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "June"),
-                ));
-              },
-              child: const Text("June "),
-            ),
-
-            //July
-            ElevatedButton(
-              key: Key("jul"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "July"),
-                ));
-              },
-              child: const Text("July "),
-            ),
-
-            //August
-            ElevatedButton(
-              key: Key("aug"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "August"),
-                ));
-              },
-              child: const Text("August "),
-            ),
-
-            //September
-            ElevatedButton(
-              key: Key("sept"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "September"),
-                ));
-              },
-              child: const Text("September "),
-            ),
-
-            //October
-            ElevatedButton(
-              key: Key("oct"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "October"),
-                ));
-              },
-              child: const Text("October "),
-            ),
-
-            //November
-            ElevatedButton(
-              key: Key("nov"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "November"),
-                ));
-              },
-              child: const Text("November "),
-            ),
-
-            //December
-            ElevatedButton(
-              key: Key("dec"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "December"),
-                ));
-              },
-              child: const Text("December "),
-            ),
+            const SizedBox(height: 10),
+            MonthCard(
+                image: 'assets/images/months/january.jpg', month: "January"),
+            const SizedBox(height: 5),
+            buildFebcard(),
+            const SizedBox(height: 5),
+            buildMarcard(),
+            const SizedBox(height: 5),
+            buildAprcard(),
+            const SizedBox(height: 5),
+            buildMaycard(),
           ],
         ));
   }
+
+  Widget buildJancard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/months/january.jpg'),
+              child: InkWell(
+                key: Key("jan"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Month(month: "January"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
+
+  Widget buildFebcard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/months/february.jpg'),
+              child: InkWell(
+                key: Key("feb"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Month(month: "February"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
+
+  Widget buildMarcard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/months/march.jpg'),
+              child: InkWell(
+                key: Key("mar"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Month(month: "March"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
+
+  Widget buildAprcard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/months/april.jpg'),
+              child: InkWell(
+                key: Key("apr"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Month(month: "April"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
+
+  Widget buildMaycard() => Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Ink.image(
+              image: AssetImage('assets/images/months/may.jpg'),
+              child: InkWell(
+                key: Key("may"),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Month(month: "May"),
+                  ));
+                },
+              ),
+              height: 130,
+              fit: BoxFit.cover,
+            )
+          ],
+        ),
+      );
 }

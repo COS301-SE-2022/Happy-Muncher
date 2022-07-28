@@ -1,148 +1,130 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
+import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/pages/individualRecipe.dart';
+import 'package:get_it/get_it.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:happy_mucher_frontend/dialogs/add_recipe.dialog.dart';
+import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
+
+//import 'package:flutter_bloc/flutter_bloc.dart';
+//import 'package:social_media_app/home/home_navigator_cubit.dart';
 
 class RecipeCard extends StatelessWidget {
-  final String title;
-  final double calories;
-  final String cookTime;
-  final String thumbnailUrl;
-  final String description;
-  final List<String> ing;
+  final List<tastyRecipe> recipes;
+
+  final _dummyImage =
+      'https://i1.wp.com/butwhythopodcast.com/wp-content/uploads/2020/09/maxresdefault-28.jpg?fit=1280%2C720&ssl=1';
   //List<Recipe>? recipes;
-  RecipeCard({
-    @required this.title = "",
-    @required this.cookTime = "",
-    @required this.calories = 0.0,
-    @required this.thumbnailUrl = "",
-    @required this.description = "",
-    @required this.ing = const [''],
-    //@required this.recipes,
-  });
+  RecipeCard({this.recipes = const []});
+
+  final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _meals => firestore.collection('Meal Planner');
+  String name = "";
+  String images = "";
+  //this.recipeid = 0,
+  String totTime = "";
+  String description = "";
+  double calories = 0;
+  List<String> ingredients = const [''];
+  List<String> instructions = const [''];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-      width: MediaQuery.of(context).size.width,
-      height: 180,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.6),
-            offset: Offset(
-              0.0,
-              10.0,
-            ),
-            blurRadius: 10.0,
-            spreadRadius: -6.0,
-          ),
-        ],
-        image: DecorationImage(
-          colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.35),
-            BlendMode.multiply,
-          ),
-          image: NetworkImage(thumbnailUrl),
-          fit: BoxFit.cover,
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recipe books'),
       ),
-      child: Stack(
+      body: _postsListView(context),
+    );
+  }
+
+  Widget _postAuthorRow(BuildContext context, int ind) {
+    const double avatarDiameter = 44;
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IndividualRecipe(
+          name: recipes[ind].name,
+          description: recipes[ind].description,
+          image: recipes[ind].images,
+          //id: recipeid,
+          ingredients: recipes[ind].ingredients,
+          cookTime: recipes[ind].totTime.toString(),
+          calories: recipes[ind].calories.toDouble(),
+          instructions: recipes[ind].instructions,
+        ),
+      )),
+      child: Row(
         children: [
-          Align(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.0),
-              child: Text(
-                title,
-                style: TextStyle(fontSize: 19, color: Colors.white),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+              width: avatarDiameter,
+              height: avatarDiameter,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(avatarDiameter / 2),
+                child: CachedNetworkImage(
+                  imageUrl: recipes[ind].images,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            alignment: Alignment.center,
           ),
-          Align(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.local_fire_department_outlined,
-                        color: Colors.yellow,
-                        size: 18,
-                      ),
-                      SizedBox(width: 7),
-                      Text(
-                        calories.toString(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.schedule,
-                        color: Colors.yellow,
-                        size: 18,
-                      ),
-                      SizedBox(width: 7),
-                      Text(
-                        cookTime,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+          Text(
+            recipes[ind].name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
-            alignment: Alignment.bottomLeft,
-          ),
-          Align(
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => IndividualRecipe(
-                        name: title,
-                        description: description,
-                        image: thumbnailUrl,
-                        calories: calories,
-                        ingredients: ing,
-                        cookTime: cookTime,
-                      ),
-                    ));
-                  },
-                  icon: Icon(
-                    Icons.navigate_next_rounded,
-                    color: Colors.white,
-                    size: 28,
-                  ),
-                )
-              ],
-            ),
-            alignment: Alignment.topLeft,
-          ),
+          )
         ],
       ),
     );
+  }
+
+  Widget _postImage(int ind) {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: CachedNetworkImage(
+        fit: BoxFit.cover,
+        imageUrl: recipes[ind].images,
+      ),
+    );
+  }
+
+  Widget _postCaption(int ind) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 4,
+      ),
+      child: Text(recipes[ind].description),
+    );
+  }
+
+  Widget _postView(BuildContext context, int ind) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _postAuthorRow(context, ind),
+        _postImage(ind),
+        _postCaption(ind),
+        //_postCommentsButton(context),
+      ],
+    );
+  }
+
+  Widget _postsListView(BuildContext context) {
+    return ListView.builder(
+        itemCount: recipes.length,
+        itemBuilder: (context, index) {
+          return _postView(context, index);
+        });
   }
 }
