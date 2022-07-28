@@ -94,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //email
                       SizedBox(height: size.height * 0.03),
                       TextFormField(
+                        key: const ValueKey("Email"),
                         style: TextStyle(fontSize: 25),
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -113,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       //password
                       TextFormField(
+                        key: const ValueKey("Password"),
                         style: TextStyle(fontSize: 25),
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
@@ -142,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       SizedBox(height: size.height * 0.03),
                       RaisedButton(
+                        key: const ValueKey("Submit"),
                         child: Container(
                           alignment: Alignment.center,
                           height: 50.0,
