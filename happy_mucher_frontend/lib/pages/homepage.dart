@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
-import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:happy_mucher_frontend/pages/profile.dart';
-import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 

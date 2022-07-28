@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/forgotpassword.dart';
 import 'package:provider/provider.dart';
 
 import 'signuppage.dart';
@@ -42,10 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey.currentState!.save();
 
     try {
+      print(_authData['email']!);
+      print(_authData['password']!);
       await Provider.of<Authentication>(context, listen: false)
           .logIn(_authData['email']!, _authData['password']!);
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
+
       Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
     } catch (error) {
       var errorMessage = 'Authentication Failed. Invalid email or password.';
@@ -57,22 +61,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Login'),
-      //   backgroundColor: Colors.green,
-      //   actions: <Widget>[
-      //     FlatButton(
-      //       child: Row(
-      //         children: <Widget>[Text('Signup'), Icon(Icons.person_add)],
-      //       ),
-      //       textColor: Colors.white,
-      //       onPressed: () {
-      //         Navigator.of(context)
-      //             .pushReplacementNamed(SignupScreen.routeName);
-      //       },
-      //     )
-      //   ],
-      // ),
+      appBar: AppBar(
+        title: Text('Login'),
+        actions: <Widget>[
+          FlatButton(
+            child: Row(
+              children: <Widget>[Text('Signup'), Icon(Icons.person_add)],
+            ),
+            textColor: Colors.white,
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => SignupScreen()),
+            ),
+          )
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           SizedBox(height: size.height * 0.03),
@@ -92,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //email
                       SizedBox(height: size.height * 0.03),
                       TextFormField(
+                        key: const ValueKey("Email"),
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -111,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       //password
                       TextFormField(
+                        key: const ValueKey("Password"),
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
@@ -124,9 +128,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           _authData['password'] = value!;
                         },
                       ),
+                      SizedBox(height: size.height * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            child: Text('Forgot Password?'),
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPassword()),
+                            ),
+                          )
+                        ],
+                      ),
+
 
                       SizedBox(height: size.height * 0.03),
                       RaisedButton(
+                        key: const ValueKey("Submit"),
                         child: Container(
                           alignment: Alignment.center,
                           height: 50.0,

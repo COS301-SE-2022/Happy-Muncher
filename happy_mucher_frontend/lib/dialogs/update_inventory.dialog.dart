@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
 
 Future<void> showUpdateDialog(BuildContext context, DocumentSnapshot document) {
   return showDialog(
@@ -106,8 +107,17 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
                     );
 
                     if (chosenDate != null) {
+                      final String name = nameController.text;
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
+                      int id = UniqueKey().hashCode;
+                      NotificationAPI.setID(id);
+
+                      /*NotificationAPI.showScheduledNotification(
+                          id: id,
+                          title: 'Happy Muncher',
+                          body: '$name expires today!',
+                          scheduledDate: chosenDate);*/
                     }
                   },
                   icon: const Icon(Icons.calendar_month),

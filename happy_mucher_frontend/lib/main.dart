@@ -1,26 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart'
     as mPrefix;
-import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/settings_page.dart';
-import 'package:provider/provider.dart';
-
 import 'pages/loginpage.dart';
 import 'pages/signuppage.dart';
-import 'pages/profile.dart';
-
 import 'models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
-//import 'package:dcdg/dcdg.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:happy_mucher_frontend/provider/google_sign_in.dart';
+import 'package:happy_mucher_frontend/provider/dark_theme_provider.dart';
+import 'package:happy_mucher_frontend/models/styles.dart';
 
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await mPrefix.Settings.init(cacheProvider: mPrefix.SharePreferenceCache());
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   final firestore = FirebaseFirestore.instance;
@@ -30,30 +26,30 @@ Future main() async {
   GetIt.I.registerSingleton(firebaseAuth);
 
   runApp(MyApp());
-  //runApp(MyMain());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: Authentication(),
-        )
-      ],
-      child: MyMain(),
-    );
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  final isDarkMode = mPrefix.Settings.getValue<bool>(SettingsPage.keyDarkMode,
+      defaultValue: false);
+
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
   }
-}
 
-class MyMain extends StatefulWidget {
-  static final String title = 'Settings';
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.devFestPreferences.getTheme();
+  }
 
-class _MyAppState extends State<MyMain> {
   @override
   Widget build(BuildContext context) {
     User? firebaseUser = FirebaseAuth.instance.currentUser;
@@ -66,31 +62,28 @@ class _MyAppState extends State<MyMain> {
     } else {
       firstWidget = LoginScreen();
     }
-    return mPrefix.ValueChangeObserver<bool>(
-      cacheKey: SettingsPage.keyDarkMode,
-      defaultValue: true,
-      builder: (_, isDarkMode, __) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: MyMain.title,
-        theme: isDarkMode
-            ? ThemeData.dark().copyWith(
-                primaryColor: Colors.teal,
-                scaffoldBackgroundColor: Color(0xFF170635),
-                canvasColor: Color(0xFF170635),
-                colorScheme:
-                    ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
-              )
-            : ThemeData.light().copyWith(
-                colorScheme:
-                    ColorScheme.fromSwatch().copyWith(secondary: Colors.black)),
-        home: firstWidget,
-        routes: {
-          SignupScreen.routeName: (ctx) => SignupScreen(),
-          LoginScreen.routeName: (ctx) => LoginScreen(),
-          MyHomePage.routeName: (ctx) => MyHomePage(),
-          Profile.routeName: (ctx) => Profile(),
-          // SettingsPage.routeName: (ctx) => SettingsPage(),
-        },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Authentication(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return themeChangeProvider;
+          },
+        )
+      ],
+      child: Consumer<DarkThemeProvider>(
+        builder: (_, value, __) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+          home: firstWidget,
+          routes: {
+            SignupScreen.routeName: (ctx) => SignupScreen(),
+            LoginScreen.routeName: (ctx) => LoginScreen(),
+            MyHomePage.routeName: (ctx) => MyHomePage()
+          },
+        ),
       ),
     );
   }

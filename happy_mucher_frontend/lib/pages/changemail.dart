@@ -2,6 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 
+Future addEmailDialog(BuildContext context) {
+  return showDialog(context: context, builder: (_) => const ChangeEmail());
+}
+
 class ChangeEmail extends StatefulWidget {
   const ChangeEmail({Key? key}) : super(key: key);
 
@@ -26,6 +30,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   }
 
   final currentUser = FirebaseAuth.instance.currentUser;
+
   changeEmail() async {
     try {
       await currentUser!.updateEmail(newEmail);
@@ -48,14 +53,10 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Change Email'),
-      ),
-      key: _formKey,
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: ListView(
+    return AlertDialog(
+        key: _formKey,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               margin: EdgeInsets.symmetric(vertical: 10.0),
@@ -78,23 +79,23 @@ class _ChangeEmailState extends State<ChangeEmail> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, otherwise false.
-                /*if (_formKey.currentState.validate()) {
-                  setState(() {});
-                }*/
-                newEmail = newEmailController.text;
-                changeEmail();
-              },
-              child: Text(
-                'Change Email',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
           ],
         ),
-      ),
-    );
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              // Validate returns true if the form is valid, otherwise false.
+              /*if (_formKey.currentState.validate()) {
+                  setState(() {});
+                }*/
+              newEmail = newEmailController.text;
+              changeEmail();
+            },
+            child: Text(
+              'Change',
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ),
+        ]);
   }
 }

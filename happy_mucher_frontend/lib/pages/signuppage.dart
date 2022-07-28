@@ -44,7 +44,10 @@ class _SignupScreenState extends State<SignupScreen> {
     try {
       await Provider.of<Authentication>(context, listen: false)
           .signUp(_authData['email']!, _authData['password']!);
-      Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
+      onPressed:
+      () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => MyHomePage()),
+          );
     } catch (error) {
       var errorMessage = 'Authentication Failed. Please try again later.';
       _showErrorDialog(errorMessage);
@@ -55,6 +58,20 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Signup'),
+        actions: <Widget>[
+          FlatButton(
+            child: Row(
+              children: <Widget>[Text('Login'), Icon(Icons.person)],
+            ),
+            textColor: Colors.white,
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            ),
+          )
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           SizedBox(height: size.height * 0.05),
@@ -68,6 +85,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: <Widget>[
                       //email
                       TextFormField(
+                        key: const ValueKey("Email"),
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(labelText: 'Email'),
                         keyboardType: TextInputType.emailAddress,
@@ -84,6 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(height: size.height * 0.03),
                       //password
                       TextFormField(
+                        key: const ValueKey("Email"),
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
@@ -101,6 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(height: size.height * 0.03),
                       //Confirm Password
                       TextFormField(
+                        key: const ValueKey("Confirm Password"),
                         style: TextStyle(fontSize: 20),
                         decoration:
                             InputDecoration(labelText: 'Confirm Password'),
@@ -116,6 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       SizedBox(height: size.height * 0.03),
                       RaisedButton(
+                        key: const ValueKey("Submit"),
                         child: Container(
                           alignment: Alignment.center,
                           height: 50.0,
