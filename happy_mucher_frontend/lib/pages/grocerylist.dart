@@ -49,9 +49,10 @@ class GroceryListPageState extends State<GroceryListPage> {
         appBar: AppBar(
           title: const Text('Grocery List'),
           centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13),
         ),
         bottomNavigationBar: BottomAppBar(
-          color: Colors.orange,
+          color: Color.fromARGB(255, 252, 95, 13),
           child: Row(
             children: [
               RichText(
@@ -168,6 +169,7 @@ class GroceryListPageState extends State<GroceryListPage> {
         ),
         floatingActionButton: FloatingActionButton(
           key: const Key('addToGroceryListButton'),
+          backgroundColor: Color.fromARGB(255, 172, 255, 78),
           onPressed: () => addGLDialog(context),
           child: const Icon(Icons.add),
         ),
