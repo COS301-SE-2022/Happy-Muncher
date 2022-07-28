@@ -76,6 +76,24 @@ class _MyHomePageState extends State<MyHomePage> {
             buildMealcard(),
             const SizedBox(height: 10),
             buildRecipecard(),
+            //   SizedBox(
+            //     width: 200,
+            //     height: 50,
+            //     child: RaisedButton(
+            //       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+            //       onPressed: () {
+            //         Navigator.push(context,
+            //             MaterialPageRoute(builder: (context) => RecipeBook()));
+            //       },
+            //       color: Colors.blue,
+            //       shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.all(Radius.circular(30))),
+            //       child: Text(
+            //         "Other recipe card",
+            //         style: TextStyle(color: Colors.white),
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
       ),

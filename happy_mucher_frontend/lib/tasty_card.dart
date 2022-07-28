@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/pages/individualRecipe.dart';
@@ -143,6 +144,7 @@ class TastyRecipeCard extends StatelessWidget {
                       //id: recipeid,
                       ingredients: ingredients,
                       cookTime: totTime,
+                      calories: calories.toDouble(),
                       instructions: instructions,
                     ),
                   )),
@@ -164,7 +166,6 @@ class TastyRecipeCard extends StatelessWidget {
                 ),
               ],
             ),
-
             alignment: Alignment.topRight,
           ),
         ],

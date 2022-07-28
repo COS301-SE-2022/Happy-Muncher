@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
@@ -20,17 +22,69 @@ class GroceryListPageState extends State<GroceryListPage> {
   final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
-
+  int shoppingPrices = 0;
+  int estimatePrices = 0;
   CollectionReference get _products => firestore.collection('GroceryList');
 
   CollectionReference get _inventory => firestore.collection('Inventory');
 
+  //final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _gltotals => firestore.collection('GL totals');
+  var data;
+  @override
+  void initState() {
+    super.initState();
+    // print('init');
+    // //Totals(context);
+    // print('est');
+    // print(estimatePrices);
+    // print('shopping');
+    // print(shoppingPrices);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () => Totals(context));
     return Scaffold(
         appBar: AppBar(
           title: const Text('Grocery List'),
           centerTitle: true,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.orange,
+          child: Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(Icons.add, size: 19),
+                    ),
+                    TextSpan(
+                        text: "Estimated Total: " +
+                            estimatePrices.toString() +
+                            "\n",
+                        style: TextStyle(fontSize: 19, color: Colors.black)),
+                    WidgetSpan(
+                      child: Icon(Icons.shopping_cart, size: 19),
+                    ),
+                    TextSpan(
+                        text: "Total: " + shoppingPrices.toString(),
+                        style: TextStyle(fontSize: 19, color: Colors.black)),
+                  ],
+                ),
+              )
+              // Text(
+
+              //   "\u2713 Estimated Price: " +
+              //       estimatePrices.toString() +
+              //       '\n' +
+              //       "Total: " +
+              //       shoppingPrices.toString(),
+              //   style: TextStyle(fontSize: 19, color: Colors.black),
+              // ),
+            ],
+          ),
         ),
         body: StreamBuilder(
           stream: _products.snapshots(),
@@ -71,7 +125,7 @@ class GroceryListPageState extends State<GroceryListPage> {
                           foregroundColor: Colors.white,
                           icon: Icons.edit,
                           label: 'Edit',
-                        )
+                        ),
                       ],
                     ),
                     child: CheckboxListTile(
@@ -119,9 +173,47 @@ class GroceryListPageState extends State<GroceryListPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
+
+  Totals(context) {
+    // estimatePrices = 0;
+    // shoppingPrices = 0;
+    int e = 0;
+    int s = 0;
+    FirebaseFirestore.instance
+        .collection('GroceryList')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if ((doc["price"]) != 0) {
+          e += int.parse(doc["price"]);
+
+          if ((doc["bought"]) == true) {
+            //print(doc["price"]);
+            s += int.parse(doc["price"]);
+          }
+        }
+      });
+      estimatePrices = e;
+      shoppingPrices = s;
+    });
+    if (estimatePrices != null || shoppingPrices != null) {
+      _gltotals.doc('Totals').update({
+        'estimated total': estimatePrices,
+        'shopping total': shoppingPrices
+      });
+     // _gltotals.doc('Totals').update({'shopping total': shoppingPrices});
+    }
+
+    setState(() {});
+  }
 }
-
-
+//  decoration: BoxDecoration(
+//           border: Border(
+//             top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
+//             bottom: BorderSide(width: 16.0, color: Colors.lightBlue.shade900),
+//           ),
+//           color: Colors.white,
+//         ),
 //SCAFFOLD
 //  APPBAR
 //    ICON + TEXT
@@ -135,4 +227,3 @@ class GroceryListPageState extends State<GroceryListPage> {
 //        ICONBUTTON
 //      PADDING
 //        ICONBUTTON
-
