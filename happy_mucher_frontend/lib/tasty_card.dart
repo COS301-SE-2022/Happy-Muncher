@@ -35,6 +35,7 @@ class TastyRecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: Key('recipeCard'),
       margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
       width: MediaQuery.of(context).size.width,
       height: 180,
@@ -130,6 +131,7 @@ class TastyRecipeCard extends StatelessWidget {
           ),
           Align(
             child: SpeedDial(
+              key: const Key('dots'),
               direction: SpeedDialDirection.down,
               icon: Icons.more_vert,
               backgroundColor: Colors.blue,
@@ -148,7 +150,7 @@ class TastyRecipeCard extends StatelessWidget {
                       instructions: instructions,
                     ),
                   )),
-                  key: const Key('goToInfo'),
+                  key: const Key('info'),
                   child: const Icon(
                     Icons.info_outline,
                     color: Colors.white,
@@ -157,7 +159,7 @@ class TastyRecipeCard extends StatelessWidget {
                 ),
                 SpeedDialChild(
                   onTap: () => showAlertDialog(context),
-                  key: const Key('addToInventoryButton'),
+                  key: const Key('add'),
                   child: const Icon(
                     Icons.add,
                     color: Colors.white,
@@ -207,6 +209,7 @@ class TastyRecipeCard extends StatelessWidget {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
+      key: Key('alert'),
       //title: Text("Compare Grocery List to Budget"),
       content: Text("Add " + '"' + name + '"' + " to your Meal Planner?"),
       actions: [yesButton, noButton],
