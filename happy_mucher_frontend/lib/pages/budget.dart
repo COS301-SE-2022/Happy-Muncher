@@ -37,22 +37,64 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
+          title: const Text('Budget'),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13),
         ),
         body: ListView(
           key: Key("months"),
           children: <Widget>[
             const SizedBox(height: 10),
             MonthCard(
-                image: 'assets/images/months/january.jpg', month: "January"),
+              month: "January",
+              inputText: "January",
+            ),
             const SizedBox(height: 5),
-            buildFebcard(),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
             const SizedBox(height: 5),
-            buildMarcard(),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
             const SizedBox(height: 5),
-            buildAprcard(),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
             const SizedBox(height: 5),
-            buildMaycard(),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "January",
+              inputText: "January",
+            ),
+            const SizedBox(height: 5),
           ],
         ));
   }
