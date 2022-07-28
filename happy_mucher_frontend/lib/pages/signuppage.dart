@@ -85,6 +85,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: <Widget>[
                       //email
                       TextFormField(
+                        key: const ValueKey("Email"),
                         style: TextStyle(fontSize: 25),
                         decoration: InputDecoration(labelText: 'Email'),
                         keyboardType: TextInputType.emailAddress,
@@ -101,6 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(height: size.height * 0.03),
                       //password
                       TextFormField(
+                        key: const ValueKey("Email"),
                         style: TextStyle(fontSize: 25),
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
@@ -118,6 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(height: size.height * 0.03),
                       //Confirm Password
                       TextFormField(
+                        key: const ValueKey("Confirm Password"),
                         style: TextStyle(fontSize: 25),
                         decoration:
                             InputDecoration(labelText: 'Confirm Password'),
@@ -133,6 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       SizedBox(height: size.height * 0.03),
                       RaisedButton(
+                        key: const ValueKey("Submit"),
                         child: Container(
                           alignment: Alignment.center,
                           height: 50.0,
