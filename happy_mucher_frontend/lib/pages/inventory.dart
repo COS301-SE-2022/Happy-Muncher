@@ -15,9 +15,6 @@ class IventoryPage extends StatefulWidget {
 class _IventoryPageState extends State<IventoryPage> {
   // text fields' controllers
   // text fields' controllers
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _quantityController = TextEditingController();
-  final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
