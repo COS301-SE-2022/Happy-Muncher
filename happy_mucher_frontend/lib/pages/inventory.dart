@@ -94,3 +94,20 @@ class _IventoryPageState extends State<IventoryPage> {
     );
   }
 }
+
+//STRUCTURE
+//SCAFFOLD
+//  APPBAR
+//    ICON + TEXT
+//  COLUMN
+//    EXPANDED (TO FILL UP SCREEN)
+//      LISTVIEW (LIST OF TILES)
+//       LIST TILE (LIST THAT CONTAINS INFO)
+//         TEXT + TEXT
+//    ROW (BOTTOM 2 BUTTONS)
+//      PADDING
+//        ICONBUTTON
+//      PADDING
+//        ICONBUTTON
+
+//CLASS OF THE RETURNED LIST ITEM
