@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Stack(alignment: Alignment.center, children: [
         InkWell(
+            key: Key('gbutton'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => GroceryListPage()));

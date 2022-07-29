@@ -61,6 +61,8 @@ dependencies:
   cached_network_image: ^3.2.1
   flutter_bloc: ^8.0.1
   flutter_native_splash: ^2.2.6
+  integration_test:
+    sdk: flutter
 
 dev_dependencies:
   flutter_driver:
