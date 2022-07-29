@@ -284,8 +284,6 @@ class GroceryListPageState extends State<GroceryListPage> {
   }
 
   void totals(context) {
-    // estimatePrices = 0;
-    // shoppingPrices = 0;
     int e = 0;
     int s = 0;
     _products.get().then((QuerySnapshot querySnapshot) {
