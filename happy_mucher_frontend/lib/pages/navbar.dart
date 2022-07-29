@@ -61,6 +61,7 @@ class NavBar extends StatelessWidget {
                   }),
           Divider(),
           ListTile(
+            key: const ValueKey("Logout"),
               title: Text('Logout'),
               leading: Icon(Icons.exit_to_app),
               onTap: () async => {
