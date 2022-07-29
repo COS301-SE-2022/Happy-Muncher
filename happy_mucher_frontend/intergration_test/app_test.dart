@@ -12,7 +12,7 @@ void main() {
     final emailField = find.byValueKey('Email');
     final passwordField = find.byValueKey('Password');
     final confirmField = find.byValueKey('Confirm Password');
-    final submitButton = find.byValueKey('Submit');
+    final submitButton = find.byValueKey('Logout');
 
     //home screen
     final signOutButton = find.byValueKey('signOut');
@@ -42,10 +42,10 @@ void main() {
       }
     });
 
-    test('create account', () async {
-      if (await isPresent(signOutButton)) {
+    test('login', () async {
+      /*if (await isPresent(signOutButton)) {
         await driver!.tap(signOutButton);
-      }
+      }*/
 
       await driver!.tap(emailField);
       await driver!.enterText("u20554240@tuks.co.za");
@@ -54,25 +54,41 @@ void main() {
       await driver!.enterText("123456");
 
       await driver!.tap(submitButton);
-      await driver!.waitFor(find.text("Your Todos"));
+      // await driver!.waitFor(find.text("Home"));
     });
 
-    /*test('login', () async {
+    /*test('home page', () async {
+      await driver!.tap(find.byValueKey("Grocery List"));
+      await driver!.tap(find.pageBack());
+
+      await driver!.tap(find.byValueKey("Inventory"));
+      await driver!.tap(find.pageBack());
+
+      await driver!.tap(find.byValueKey("Budget"));
+      await driver!.tap(find.pageBack());
+
+      await driver!.tap(find.byValueKey("Meal Planner"));
+      await driver!.tap(find.pageBack());
+
+      await driver!.tap(find.byValueKey("toRecipeBook"));
+      await driver!.tap(find.pageBack());
+    });
+
+    test('nav bar', () async {
+      await driver!.tap(find.byType("NavBar"));
+
+      await driver!.tap(find.byType("SettingsPage"));
+      await driver!.tap(find.pageBack());
+
       if (await isPresent(signOutButton)) {
-        await driver.tap(signOutButton);
+        await driver!.tap(signOutButton);
       }
 
-      await driver.tap(usernameField);
-      await driver.enterText("u20554240@tuks.co.za");
+      /*await driver.tap(signInButton);
+      await driver.waitFor(find.text("Your Todos"));*/
+    });*/
 
-      await driver.tap(passwordField);
-      await driver.enterText("123456");
-
-      await driver.tap(signInButton);
-      await driver.waitFor(find.text("Your Todos"));
-    });
-
-    test('add a todo', () async {
+    /*  test('add a todo', () async {
       if (await isPresent(signOutButton)) {
         await driver.tap(addField);
         await driver.enterText("make an integration test video");
