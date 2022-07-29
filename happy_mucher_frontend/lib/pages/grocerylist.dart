@@ -35,12 +35,6 @@ class GroceryListPageState extends State<GroceryListPage> {
   @override
   void initState() {
     super.initState();
-    // print('init');
-    // //Totals(context);
-    // print('est');
-    // print(estimatePrices);
-    // print('shopping');
-    // print(shoppingPrices);
   }
 
   @override
