@@ -83,14 +83,6 @@ class GroceryListPageState extends State<GroceryListPage> {
               ),
             )
             // Text(
-
-            //   "\u2713 Estimated Price: " +
-            //       estimatePrices.toString() +
-            //       '\n' +
-            //       "Total: " +
-            //       shoppingPrices.toString(),
-            //   style: TextStyle(fontSize: 19, color: Colors.black),
-            // ),
           ],
         ),
       ),
