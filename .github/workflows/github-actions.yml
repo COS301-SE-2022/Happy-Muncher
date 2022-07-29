@@ -25,8 +25,12 @@ jobs:
 
       - name: check for warnings
         if: always()
-        run: flutter analyze --fatal-infos
+        run: flutter analyze
 
       - name: run tests
         if: always()
         run: flutter test
+
+      - name: run integration tests
+        if: always()
+        run: flutter drive --target=test_driver/app.dart
