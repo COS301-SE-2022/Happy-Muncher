@@ -10,7 +10,6 @@ jobs:
       run:
         working-directory: happy_mucher_frontend
 
-
     steps:
       - uses: actions/checkout@v3
 
@@ -21,21 +20,17 @@ jobs:
         run: flutter pub get
 
       - name: verify code formatting
-
         if: always()
         run: flutter format --output=none --set-exit-if-changed .
 
       - name: check for warnings
         if: always()
-        run: flutter analyze --fatal-infos
+        run: flutter analyze
 
       - name: run tests
         if: always()
+        run: flutter test
 
-        run: flutter format --output=none --set-exit-if-changed .
-
-      - name: check for warnings
-        run: flutter ananlyze --fatal-infos
-
-      - name: run tests
-
+      - name: run integration tests
+        if: always()
+        run: flutter drive --target=test_driver/app.dart
