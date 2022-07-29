@@ -81,12 +81,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildGrocerycard() => Card(
+      key: const ValueKey("Grocery List"),
       shadowColor: Color.fromARGB(255, 172, 255, 78),
       elevation: 25,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Stack(alignment: Alignment.center, children: [
         InkWell(
+            key: Key('gbutton'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => GroceryListPage()));
@@ -111,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ]));
 
   Widget buildInventorycard() => Card(
+      key: const ValueKey("Inventory"),
       shadowColor: Color.fromARGB(255, 172, 255, 78),
       elevation: 25,
       clipBehavior: Clip.antiAlias,
@@ -140,6 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ))
       ]));
   Widget buildBudgetcard() => Card(
+      key: const ValueKey("Budget"),
       shadowColor: Color.fromARGB(255, 172, 255, 78),
       elevation: 25,
       clipBehavior: Clip.antiAlias,
@@ -169,6 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ))
       ]));
   Widget buildMealcard() => Card(
+      key: const ValueKey("Meal Planner"),
       shadowColor: Color.fromARGB(255, 172, 255, 78),
       elevation: 25,
       clipBehavior: Clip.antiAlias,
@@ -198,6 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ))
       ]));
   Widget buildRecipecard() => Card(
+      key: Key('toRecipeBook'),
       shadowColor: Color.fromARGB(255, 172, 255, 78),
       elevation: 25,
       clipBehavior: Clip.antiAlias,
