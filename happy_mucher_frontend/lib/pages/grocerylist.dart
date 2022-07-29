@@ -269,7 +269,7 @@ class GroceryListPageState extends State<GroceryListPage> {
       for (TextLine line in block.lines) {
         if (line.boundingBox.left / image.width * 100 < 10) {
           if (line.text.contains('@')) {
-            //multiples at spar
+            //multiples at spar adn other shops
             continue;
           }
           if (line.text.contains("promo")) {
