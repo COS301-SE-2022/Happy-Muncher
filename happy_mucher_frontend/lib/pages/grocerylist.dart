@@ -25,8 +25,8 @@ class GroceryListPageState extends State<GroceryListPage> {
   final ImagePicker _picker = ImagePicker();
 
   final FirebaseFirestore firestore = GetIt.I.get();
-  int shoppingPrices = 0;
-  int estimatePrices = 0;
+  double shoppingPrices = 0.0;
+  double estimatePrices = 0.0;
   CollectionReference get _products => firestore.collection('GroceryList');
 
   CollectionReference get _inventory => firestore.collection('Inventory');
@@ -42,11 +42,12 @@ class GroceryListPageState extends State<GroceryListPage> {
     // print(estimatePrices);
     // print('shopping');
     // print(shoppingPrices);
+    getTotals();
   }
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => totals(context));
+    //Future.delayed(Duration.zero, () => totals(context));
     return Scaffold(
       appBar: AppBar(
           title: const Text('Grocery List'),
@@ -296,31 +297,27 @@ class GroceryListPageState extends State<GroceryListPage> {
     return listOfItems;
   }
 
-  void totals(context) {
-    // estimatePrices = 0;
-    // shoppingPrices = 0;
-    int e = 0;
-    int s = 0;
-    _products.get().then((QuerySnapshot querySnapshot) {
-      for (final doc in querySnapshot.docs) {
-        if ((doc["price"]) != 0) {
-          e += int.parse(doc["price"]);
+  void getTotals() async {
+    print('fetching');
+    String? e = '';
+    String? s = '';
+    var es;
+    var sh;
+    var collection = FirebaseFirestore.instance.collection('GL totals');
+    //userUid is the current auth user
+    var docSnapshot = await collection.doc('Totals').get();
 
-          if ((doc["bought"]) == true) {
-            //print(doc["price"]);
-            s += int.parse(doc["price"]);
-          }
-        }
-      }
-      estimatePrices = e;
-      shoppingPrices = s;
-    });
-    _gltotals.doc('Totals').update({
-      'estimated total': estimatePrices,
-      'shopping total': shoppingPrices,
-    });
+    Map<String, dynamic> data = docSnapshot.data()!;
 
-    setState(() {});
+    e = data['estimated total'].toString();
+    s = data['shopping total'].toString();
+    estimatePrices = double.parse(e);
+    shoppingPrices = double.parse(s);
+
+    // print(sh);
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 
