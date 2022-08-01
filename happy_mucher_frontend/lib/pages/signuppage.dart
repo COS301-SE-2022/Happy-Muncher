@@ -86,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       //email
                       TextFormField(
                         key: const ValueKey("Email"),
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(labelText: 'Email'),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -103,7 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       //password
                       TextFormField(
                         key: const ValueKey("Email"),
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(labelText: 'Password'),
                         obscureText: true,
                         controller: _passwordController,
@@ -121,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       //Confirm Password
                       TextFormField(
                         key: const ValueKey("Confirm Password"),
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 20),
                         decoration:
                             InputDecoration(labelText: 'Confirm Password'),
                         obscureText: true,
@@ -142,11 +142,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           height: 50.0,
                           width: size.width * 0.5,
                           decoration: new BoxDecoration(
-                              borderRadius: BorderRadius.circular(80.0),
-                              gradient: new LinearGradient(colors: [
-                                Color.fromARGB(255, 255, 136, 34),
-                                Color.fromARGB(255, 255, 177, 41)
-                              ])),
+                            borderRadius: BorderRadius.circular(80.0),
+                            color: Color.fromARGB(255, 252, 95, 13),
+                          ),
                           padding: const EdgeInsets.all(0),
                           child: Text(
                             'Submit',
@@ -174,50 +172,64 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                           icon: Image.asset(
                             'assets/images/google_logo.png',
-                            height: 50,
-                            width: 50,
+                            height: 30,
+                            width: 30,
                           ),
                           label: Text("Sign in with Google",
                               style: TextStyle(fontSize: 20))),
+
+                      SizedBox(height: size.height * 0.03),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                              onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen()),
+                                  ),
+                              child:
+                                  Text("Already have an account? Log in here"))
+                        ],
+                      )
                     ],
                   ),
                 ),
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: size.height,
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child:
-                      Image.asset("assets/images/top1.png", width: size.width),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Image.asset("assets/images/top2.png",
-                      width: size.width, height: 330),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Image.asset("assets/images/bottom1.png",
-                      width: size.width, height: 300),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Image.asset("assets/images/bottom2.png",
-                      width: size.width),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   width: double.infinity,
+          //   height: size.height,
+          //   child: Stack(
+          //     alignment: Alignment.center,
+          //     children: <Widget>[
+          //       Positioned(
+          //         top: 0,
+          //         right: 0,
+          //         child:
+          //             Image.asset("assets/images/top1.png", width: size.width),
+          //       ),
+          //       Positioned(
+          //         top: 0,
+          //         right: 0,
+          //         child: Image.asset("assets/images/top2.png",
+          //             width: size.width, height: 330),
+          //       ),
+          //       Positioned(
+          //         bottom: 0,
+          //         right: 0,
+          //         child: Image.asset("assets/images/bottom1.png",
+          //             width: size.width, height: 300),
+          //       ),
+          //       Positioned(
+          //         bottom: 0,
+          //         right: 0,
+          //         child: Image.asset("assets/images/bottom2.png",
+          //             width: size.width),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:happy_mucher_frontend/pages/budget.dart';
-import 'package:happy_mucher_frontend/pages/month.dart';
+import 'package:happy_mucher_frontend/pages/weekday.dart';
 
-class MonthCard extends StatefulWidget {
-  const MonthCard({Key? key, required this.month, required this.inputText})
+class WeekCard extends StatefulWidget {
+  const WeekCard({Key? key, required this.day, required this.inputText})
       : super(key: key);
-  final String month;
+  final String day;
   final String inputText;
   @override
-  State<MonthCard> createState() => MonthCardState();
+  State<WeekCard> createState() => WeekCardState();
 }
 
-class MonthCardState extends State<MonthCard> {
+class WeekCardState extends State<WeekCard> {
   @override
   Widget build(BuildContext context) {
-    return buildMonthcard();
+    return buildWeekcard();
   }
 
-  Widget buildMonthcard() => Card(
+  Widget buildWeekcard() => Card(
       shadowColor: Color.fromARGB(255, 172, 255, 78),
       elevation: 25,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Stack(alignment: Alignment.center, children: [
         InkWell(
-            key: Key(widget.month),
+            key: Key(widget.day),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Month(month: widget.month),
+                builder: (context) => Weekday(day: widget.day),
               ));
             },
             child: Container(
