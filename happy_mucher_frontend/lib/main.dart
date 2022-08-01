@@ -1,125 +1,90 @@
-// @dart=2.9
-//
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart'
+    as mPrefix;
+import 'package:happy_mucher_frontend/pages/settings_page.dart';
+import 'pages/loginpage.dart';
+import 'pages/signuppage.dart';
+import 'models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:happy_mucher_frontend/provider/dark_theme_provider.dart';
+import 'package:happy_mucher_frontend/models/styles.dart';
 
-void main() => runApp(const MyApp());
+Future main() async {
+  await mPrefix.Settings.init(cacheProvider: mPrefix.SharePreferenceCache());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  final firestore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
 
-  static const String _title = 'Happy Muncher';
+  GetIt.I.registerSingleton(firestore);
+  GetIt.I.registerSingleton(firebaseAuth);
+
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  final isDarkMode = mPrefix.Settings.getValue<bool>(SettingsPage.keyDarkMode,
+      defaultValue: false);
+
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.devFestPreferences.getTheme();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
-        body: const MyStatefulWidget(),
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
+// Define a widget
+    Widget firstWidget;
+
+// Assign widget based on availability of currentUser
+    if (firebaseUser != null) {
+      firstWidget = MyHomePage();
+    } else {
+      firstWidget = LoginScreen();
+    }
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Authentication(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return themeChangeProvider;
+          },
+        )
+      ],
+      child: Consumer<DarkThemeProvider>(
+        builder: (_, value, __) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+          home: firstWidget,
+          routes: {
+            SignupScreen.routeName: (ctx) => SignupScreen(),
+            LoginScreen.routeName: (ctx) => LoginScreen(),
+            MyHomePage.routeName: (ctx) => MyHomePage()
+          },
+        ),
       ),
     );
-  }
-}
-
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key key}) : super(key: key);
-
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Welcome!',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(fontSize: 20),
-                )),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text(
-                'Forgot Password',
-              ),
-            ),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                  child: const Text('Login'),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => MyHomePage(),
-                      ),
-                    );
-                  },
-                )),
-            Row(
-              children: <Widget>[
-                const Text('Does not have account?'),
-                TextButton(
-                  child: const Text(
-                    'Sign in',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    //signup screen
-                  },
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            Row(
-              children: <Widget>[
-                const Text('Sign in with google'),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            )
-          ],
-        ));
   }
 }

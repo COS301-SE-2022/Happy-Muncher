@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/monthcard_widget.dart';
 import 'month.dart';
 
-void main() {
-  runApp(const Budget());
-}
+// void main() {
+//   runApp(const Budget());
+// }
 
 class Budget extends StatelessWidget {
   const Budget({Key? key}) : super(key: key);
@@ -36,142 +37,74 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
+          title: const Text('Budget'),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13),
         ),
         body: ListView(
           key: Key("months"),
           children: <Widget>[
-            //Jan
-            ElevatedButton(
-              key: Key("jan"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "January 2020"),
-                ));
-              },
-              child: const Text("January 2020"),
+            const SizedBox(height: 10),
+            MonthCard(
+              month: "January",
+              inputText: "January",
             ),
-
-            //Feb
-            ElevatedButton(
-              key: Key("feb"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "February 2020"),
-                ));
-              },
-              child: const Text("February 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "February",
+              inputText: "February",
             ),
-
-            //March
-            ElevatedButton(
-              key: Key("mar"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "March 2020"),
-                ));
-              },
-              child: const Text("March 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "March",
+              inputText: "March",
             ),
-
-            //April
-            ElevatedButton(
-              key: Key("apr"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "April 2020"),
-                ));
-              },
-              child: const Text("April 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "April",
+              inputText: "April",
             ),
-
-            //May
-            ElevatedButton(
-              key: Key("may"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "May 2020"),
-                ));
-              },
-              child: const Text("May 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "May",
+              inputText: "May",
             ),
-
-            //June
-            ElevatedButton(
-              key: Key("jun"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "June 2020"),
-                ));
-              },
-              child: const Text("June 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "June",
+              inputText: "June",
             ),
-
-            //July
-            ElevatedButton(
-              key: Key("jul"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "July 2020"),
-                ));
-              },
-              child: const Text("July 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "July",
+              inputText: "July",
             ),
-
-            //August
-            ElevatedButton(
-              key: Key("aug"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "August 2020"),
-                ));
-              },
-              child: const Text("August 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "August",
+              inputText: "August",
             ),
-
-            //September
-            ElevatedButton(
-              key: Key("sept"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "September 2020"),
-                ));
-              },
-              child: const Text("September 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "September",
+              inputText: "September",
             ),
-
-            //October
-            ElevatedButton(
-              key: Key("oct"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "October 2020"),
-                ));
-              },
-              child: const Text("October 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "October",
+              inputText: "October",
             ),
-
-            //November
-            ElevatedButton(
-              key: Key("nov"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "November 2020"),
-                ));
-              },
-              child: const Text("November 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "November",
+              inputText: "November",
             ),
-
-            //December
-            ElevatedButton(
-              key: Key("dec"),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Month(month: "December 2020"),
-                ));
-              },
-              child: const Text("December 2020"),
+            const SizedBox(height: 5),
+            MonthCard(
+              month: "December",
+              inputText: "December",
             ),
+            const SizedBox(height: 5),
           ],
         ));
   }

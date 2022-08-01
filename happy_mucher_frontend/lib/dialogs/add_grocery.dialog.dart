@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<GroceryItemParams?> addGroceryDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const _GroceryDialog());
+Future<GroceryItemParams?> addGLDialog(BuildContext context) {
+  return showDialog(context: context, builder: (_) => const _GLDialog());
 }
 
-class _GroceryDialog extends StatefulWidget {
-  const _GroceryDialog({Key? key}) : super(key: key);
+class _GLDialog extends StatefulWidget {
+  const _GLDialog({Key? key}) : super(key: key);
 
   @override
-  State<_GroceryDialog> createState() => _GroceryDialogState();
+  State<_GLDialog> createState() => GLDialogState();
 }
 
-class _GroceryDialogState extends State<_GroceryDialog> {
+class GLDialogState extends State<_GLDialog> {
   final nameController = TextEditingController();
-  final priceContoller = TextEditingController();
+  final priceController = TextEditingController();
   final dateFieldController = TextEditingController();
 
-  get _items => null;
+  final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _items => firestore.collection('GroceryList');
+
+  static final dateFormat = DateFormat('yyyy-MM-dd');
+  DateTime? expirationDate;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +40,7 @@ class _GroceryDialogState extends State<_GroceryDialog> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
-                label: Text('Name'),
+                label: Text('name'),
               ),
             ),
           ),
@@ -40,13 +48,13 @@ class _GroceryDialogState extends State<_GroceryDialog> {
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
               key: const Key('groceryListDialogPriceField'),
-              controller: priceContoller,
+              controller: priceController,
               keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+                  const TextInputType.numberWithOptions(decimal: false),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
-                label: Text('price'),
+                label: Text('Price'),
               ),
             ),
           ),
@@ -57,16 +65,14 @@ class _GroceryDialogState extends State<_GroceryDialog> {
           key: const Key('groceryListDialogAddButton'),
           onPressed: () async {
             final name = nameController.text;
-            final price = priceContoller.text;
-            final priceInt = int.tryParse(price);
-            const valueFalse = false;
-
-            if (priceInt != null) {
+            final price = priceController.text;
+            final priceDouble = double.tryParse(price);
+            if (priceDouble != null) {
               await _items
-                  .add({"name": name, "price": price, "value": valueFalse});
+                  .add({"name": name, "price": priceDouble, "bought": false});
 
               nameController.text = '';
-              priceContoller.text = '';
+              priceController.text = '';
 
               Navigator.of(context).pop();
             }
@@ -80,7 +86,7 @@ class _GroceryDialogState extends State<_GroceryDialog> {
 
 class GroceryItemParams {
   final String name;
-  final int price;
+  final double price;
   final bool value;
 
   GroceryItemParams({

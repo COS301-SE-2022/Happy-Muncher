@@ -6,8 +6,22 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 
 ## Demo Recordings
 [CodeBlooded-Demo1](https://drive.google.com/file/d/1HFU9CiN1slKBjAjXP9vxalan3Y2Gb98n/view?usp=sharing)
+
+[CodeBlooded-Demo2](https://drive.google.com/file/d/1HFU9CiN1slKBjAjXP9vxalan3Y2Gb98n/view?usp=sharing)
+
+[CodeBlooded-Demo3](https://drive.google.com/file/d/1HFU9CiN1slKBjAjXP9vxalan3Y2Gb98n/view?usp=sharing)
 ## System Requirement Specification
-[SRS Document](https://drive.google.com/file/d/1cj38yS1u46nPYsl6bdmmLr3X9dtbMNRl/view?usp=sharing)
+[SRS Document DEMO 1](https://drive.google.com/file/d/1cj38yS1u46nPYsl6bdmmLr3X9dtbMNRl/view?usp=sharing)
+
+[SRS Document DEMO 2](https://drive.google.com/file/d/1VKqbD6iUybg-Qb4P_Eu_0QOKMFPFCW6p/view?usp=sharing)
+## Architecture Requirements Document
+[Architecture Requirements Document DEMO 2](https://drive.google.com/file/d/1brHfv6RnfkvYVkmhGgPHpmi61FbnPSoK/view?usp=sharing)
+## Coding standards Document
+[Coding standards Document DEMO 2](https://drive.google.com/file/d/1YFDkelCUVaHnaCqa4YK2TMixYq0FU9Pc/view?usp=sharing)
+## User Manual
+[User Manual DEMO 2](https://drive.google.com/file/d/112uXADs6eBMXPLsvxBaxzEq6hWK_lOIc/view?usp=sharing)
+## Technical Installation Manual
+[User Manual DEMO 2](https://drive.google.com/file/d/112uXADs6eBMXPLsvxBaxzEq6hWK_lOIc/view?usp=sharing)
 ## Project Board
 [CodeBlooded Project Board](https://github.com/COS301-SE-2022/Happy-Muncher/projects/1)
 ## Team Members

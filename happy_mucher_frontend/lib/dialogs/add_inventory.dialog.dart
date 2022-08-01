@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/pages/notification.dart';
 
 Future<InventoryItemParams?> addInventoryDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const _InventoryDialog());
@@ -14,8 +17,12 @@ class _InventoryDialog extends StatefulWidget {
 
 class _InventoryDialogState extends State<_InventoryDialog> {
   final nameController = TextEditingController();
-  final quantityContoller = TextEditingController();
+  final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
+
+  final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _products => firestore.collection('Inventory');
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
@@ -42,9 +49,9 @@ class _InventoryDialogState extends State<_InventoryDialog> {
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
               key: const Key('inventoryDialogQuantityField'),
-              controller: quantityContoller,
+              controller: quantityController,
               keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+                  const TextInputType.numberWithOptions(decimal: false),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 isDense: true,
@@ -81,8 +88,17 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                     );
 
                     if (chosenDate != null) {
+                      final String name = nameController.text;
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
+                      int id = UniqueKey().hashCode;
+                      NotificationAPI.setID(id);
+                      /*NotificationAPI.showScheduledNotification(
+                          id: id,
+                          title: 'Happy Muncher',
+                          body:
+                              '$name expires today! Please add it to your grocery list.',
+                          scheduledDate: chosenDate);*/
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
@@ -95,21 +111,21 @@ class _InventoryDialogState extends State<_InventoryDialog> {
       actions: [
         TextButton(
           key: const Key('inventoryDialogAddButton'),
-          onPressed: () {
-            final name = nameController.text;
-            final quantity = quantityContoller.text;
-            final quantityInt = int.tryParse(quantity);
-            final date = expirationDate;
+          onPressed: () async {
+            final String name = nameController.text;
+            final int? quantity = int.tryParse(quantityController.text);
+            final String expD = dateFieldController.text;
+            if (quantity != null) {
+              await _products.add({
+                "expirationDate": expD,
+                "itemName": name,
+                "quantity": quantity
+              });
 
-            if (date != null && quantityInt != null) {
-              Navigator.pop(
-                context,
-                InventoryItemParams(
-                  quantity: quantityInt,
-                  name: name,
-                  date: date,
-                ),
-              );
+              nameController.text = '';
+              quantityController.text = '';
+              dateFieldController.text = '';
+              Navigator.of(context).pop();
             }
           },
           child: const Text('Add'),

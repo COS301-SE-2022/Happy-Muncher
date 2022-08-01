@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1079478459551",
+    "project_id": "signin-362ef",
+    "storage_bucket": "signin-362ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079478459551:android:d6ad4b612fa99a611016aa",
+        "android_client_info": {
+          "package_name": "com.example.happy_muncher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079478459551-ltkua30rs8uue32bud0tlklkj7rjmkui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.happy_muncher",
+            "certificate_hash": "0ecd9eaa64469c3e3edcc9fd3d58247eb92bb84c"
+          }
+        },
+        {
+          "client_id": "1079478459551-8q9n2fiq40ie6k86to875qcd486u50mj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF6S2oyRGiUZQ1rylutzKa223oaHV8tiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079478459551-8q9n2fiq40ie6k86to875qcd486u50mj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
