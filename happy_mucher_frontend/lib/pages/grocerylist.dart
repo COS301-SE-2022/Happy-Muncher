@@ -114,7 +114,11 @@ class GroceryListPageState extends State<GroceryListPage> {
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
+                            double price = documentSnapshot['price'];
+                            GLdelete(price);
                             _products.doc(documentSnapshot.id).delete();
+                            getTotals();
+                            setState(() {});
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -141,6 +145,8 @@ class GroceryListPageState extends State<GroceryListPage> {
                         onPressed: (context) {
                           showUpdateDialogGroceryList(
                               context, documentSnapshot);
+                          getTotals();
+                          setState(() {});
                         },
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
@@ -193,7 +199,11 @@ class GroceryListPageState extends State<GroceryListPage> {
         icon: Icons.add,
         children: [
           SpeedDialChild(
-            onTap: () => addGLDialog(context),
+            onTap: () {
+              addGLDialog(context);
+              getTotals();
+              setState(() {});
+            },
             key: const Key('addToInventoryButtonText'),
             child: const Icon(
               Icons.abc,
@@ -318,6 +328,24 @@ class GroceryListPageState extends State<GroceryListPage> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void GLdelete(double price) async {
+    String? e = '';
+    double estimate = 0.0;
+    var collection = FirebaseFirestore.instance.collection('GL totals');
+    //userUid is the current auth user
+    var docSnapshot = await collection.doc('Totals').get();
+
+    Map<String, dynamic> data = docSnapshot.data()!;
+
+    e = data['estimated total'].toString();
+
+    estimate = double.parse(e);
+    estimate = estimate - price;
+    await _gltotals.doc('Totals').update({
+      "estimated total": estimate,
+    });
   }
 }
 
