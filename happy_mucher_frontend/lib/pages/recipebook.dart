@@ -5,6 +5,8 @@ import 'package:happy_mucher_frontend/models/tasty.api.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
+import 'package:happy_mucher_frontend/pages/tasty_book.dart';
+
 //import 'package:http/http.dart' as http;
 
 class RecipeBook extends StatefulWidget {
@@ -39,17 +41,24 @@ class RecipeBookState extends State<RecipeBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Key('rbPage'),
-      // appBar: AppBar(
-      //   title: const Text('Recipe Book'),
-      //   centerTitle: true,
-      // ),
-      body: loading
-          ? Center(child: CircularProgressIndicator())
-          :  RecipeCard(
-                  recipes: tr,
-                )
-              
-    );
+        appBar: AppBar(
+            title: const Text('Grocery List'),
+            centerTitle: true,
+            backgroundColor: Color.fromARGB(255, 252, 95, 13)),
+        body: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => TastyBook()));
+                },
+                child: Text("Tasty Recipe Book")),
+            ElevatedButton(
+                onPressed: () {
+                  //this is where the button navigation will take you to the 'My recipe Book' page that @ponalo will create
+                },
+                child: Text("MY Recipe Book")),
+          ],
+        ));
   }
 }
