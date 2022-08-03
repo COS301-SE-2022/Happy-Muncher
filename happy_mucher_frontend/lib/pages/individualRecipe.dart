@@ -193,7 +193,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
   toGL() async {
     gl.forEach((element) async {
-      await _glItems.add({"name": element, "price": 0, "bought": false});
+      await _glItems.add({"name": element, "price": 0.0, "bought": false});
     });
   }
 }

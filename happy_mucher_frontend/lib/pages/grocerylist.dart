@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -36,6 +37,8 @@ class GroceryListPageState extends State<GroceryListPage> {
   @override
   void initState() {
     super.initState();
+
+    NotificationAPI.init();
     // print('init');
     // //Totals(context);
     // print('est');
@@ -43,6 +46,14 @@ class GroceryListPageState extends State<GroceryListPage> {
     // print('shopping');
     // print(shoppingPrices);
   }
+
+  void listenNotification() =>
+      NotificationAPI.onNotifications.stream.listen(onClickedNotification);
+
+  void onClickedNotification(String? payload) =>
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IventoryPage(),
+      ));
 
   @override
   Widget build(BuildContext context) {
