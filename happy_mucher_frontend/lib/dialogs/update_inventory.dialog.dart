@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> showUpdateDialog(BuildContext context, DocumentSnapshot document) {
   return showDialog(
@@ -25,13 +26,16 @@ class IventoryDialog extends StatefulWidget {
 class _UpdateIventoryPageState extends State<IventoryDialog> {
   // text fields' controllers
   // text fields' controllers
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+
   final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
-  CollectionReference get _products => firestore.collection('Inventory');
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
