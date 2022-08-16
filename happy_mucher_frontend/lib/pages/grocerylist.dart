@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -24,15 +25,15 @@ class GroceryListPageState extends State<GroceryListPage> {
   // text fields' controllers
   // text fields' controllers
   final ImagePicker _picker = ImagePicker();
-
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   int shoppingPrices = 0;
   int estimatePrices = 0;
-  CollectionReference get _products => firestore.collection('GroceryList');
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
 
   CollectionReference get _inventory => firestore.collection('Inventory');
 
-  //final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _gltotals => firestore.collection('GL totals');
   @override
   void initState() {
@@ -57,7 +58,7 @@ class GroceryListPageState extends State<GroceryListPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => totals(context));
+    //Future.delayed(Duration.zero, () => totals(context));
     return Scaffold(
       appBar: AppBar(
           title: const Text('Grocery List'),
