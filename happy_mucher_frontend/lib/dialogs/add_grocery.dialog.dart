@@ -77,7 +77,7 @@ class GLDialogState extends State<_GLDialog> {
               nameController.text = '';
               priceController.text = '';
               UpdateGL(priceDouble);
-              GroceryListPageState().getTotals();
+              //GroceryListPageState().getTotals();
               Navigator.of(context).pop();
             }
           },

@@ -117,7 +117,11 @@ class GroceryListPageState extends State<GroceryListPage> {
                             double price = documentSnapshot['price'];
                             GLdelete(price);
                             _products.doc(documentSnapshot.id).delete();
-                            getTotals();
+                            //getTotals();
+                            if (documentSnapshot['bought'] == true) {
+                              shoppingPrices = shoppingPrices - price;
+                            }
+                            estimatePrices = estimatePrices - price;
                             setState(() {});
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -164,6 +168,16 @@ class GroceryListPageState extends State<GroceryListPage> {
                       _products
                           .doc(documentSnapshot.id)
                           .update({'bought': !documentSnapshot['bought']});
+
+                      ChckUpdate(documentSnapshot['price'],
+                          !documentSnapshot['bought']);
+                      if (!documentSnapshot['bought'] == true) {
+                        shoppingPrices += documentSnapshot['price'];
+                      } else {
+                        shoppingPrices =
+                            shoppingPrices - documentSnapshot['price'];
+                      }
+                      setState(() {});
 
                       var checkVal = documentSnapshot['bought'];
                       var itemName = documentSnapshot['name'];
@@ -345,6 +359,31 @@ class GroceryListPageState extends State<GroceryListPage> {
     estimate = estimate - price;
     await _gltotals.doc('Totals').update({
       "estimated total": estimate,
+    });
+  }
+
+  void ChckUpdate(double price, bool bought) async {
+    String? e = '';
+    double shopped = 0.0;
+    var collection = FirebaseFirestore.instance.collection('GL totals');
+    //userUid is the current auth user
+    var docSnapshot = await collection.doc('Totals').get();
+
+    Map<String, dynamic> data = docSnapshot.data()!;
+
+    e = data['shopping total'].toString();
+
+    shopped = double.parse(e);
+
+    if (bought == false) {
+      //unchecked
+      shopped = shopped - price;
+    } else {
+      //checked
+      shopped = shopped + price;
+    }
+    await _gltotals.doc('Totals').update({
+      "shopping total": shopped,
     });
   }
 }
