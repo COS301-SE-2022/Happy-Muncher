@@ -63,7 +63,7 @@ class MyMonthState extends State<Month> {
   //DateTime today = DateTime.now();
 
   void getDB(context) async {
-    //print(today);
+    print("today");
     bought = [];
     //print("");
     totSpent = 0;
@@ -210,6 +210,13 @@ class MyMonthState extends State<Month> {
     //return;
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDB(context);
+  }
+
   ///figure out how to display info on page startup
 
   // @override
@@ -219,7 +226,7 @@ class MyMonthState extends State<Month> {
   //DocumentReference get _currentMonth => _budget.doc(widget.month);
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => getDB(context));
+    //Future.delayed(Duration.zero, () => getDB(context));
 // WidgetsBinding.instance.addPostFrameCallback((_) => yourFunc(context));
 
     return Scaffold(
@@ -327,6 +334,7 @@ class MyMonthState extends State<Month> {
 
                 //total budget for entire month = input from enterBudget textfield
                 totBudget = bud;
+                totRem = totBudget;
                 if (totBudget != null) {
                   _budget.doc(widget.month).update({'budget': totBudget});
                 }
