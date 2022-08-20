@@ -3,6 +3,7 @@ import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/models/tasty.api.dart';
 import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
+import 'package:happy_mucher_frontend/pages/myRecipeBook.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
@@ -42,7 +43,7 @@ class RecipeBookState extends State<RecipeBook> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Grocery List'),
+            title: const Text('Recipe Book'),
             centerTitle: true,
             backgroundColor: Color.fromARGB(255, 252, 95, 13)),
         body: Column(
@@ -55,7 +56,8 @@ class RecipeBookState extends State<RecipeBook> {
                 child: Text("Tasty Recipe Book")),
             ElevatedButton(
                 onPressed: () {
-                  //this is where the button navigation will take you to the 'My recipe Book' page that @ponalo will create
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyRecipeBook()));
                 },
                 child: Text("MY Recipe Book")),
           ],
