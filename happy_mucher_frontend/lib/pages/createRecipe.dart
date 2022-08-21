@@ -19,6 +19,10 @@ class Create extends StatefulWidget {
 
 class CreateState extends State<Create> {
   //Recipe recipe = Recipe();
+   final tabs = [
+      //TodoListWidget(),
+      Container(),
+    ];
   bool ingEdit = false;
   String ingredients = 'ing';
   final ingController = TextEditingController();
@@ -42,7 +46,9 @@ class CreateState extends State<Create> {
             title: const Text('Create Recipe'),
             centerTitle: true,
             backgroundColor: Color.fromARGB(255, 252, 95, 13)),
-        body: Column(
+        body:
+        
+         Column(
           children: [
             Text("Ingredients"),
             //ListView(),
