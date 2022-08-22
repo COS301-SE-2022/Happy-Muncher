@@ -32,29 +32,31 @@ class GroceryListPageState extends State<GroceryListPage> {
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
 
-  CollectionReference get _inventory => firestore.collection('Inventory');
+  CollectionReference get _inventory =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
 
-  CollectionReference get _gltotals => firestore.collection('GL totals');
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
+  late final LocalNotificationService service;
+
   @override
   void initState() {
     super.initState();
-
-    NotificationAPI.init();
-    // print('init');
-    // //Totals(context);
-    // print('est');
-    // print(estimatePrices);
-    // print('shopping');
-    // print(shoppingPrices);
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
   }
 
-  void listenNotification() =>
-      NotificationAPI.onNotifications.stream.listen(onClickedNotification);
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
 
-  void onClickedNotification(String? payload) =>
+  void onNoticationListener(String? payload) {
+    if (mounted) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => IventoryPage(),
       ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,11 +183,12 @@ class GroceryListPageState extends State<GroceryListPage> {
                             "expirationDate": ""
                           },
                         );
-                        NotificationAPI.showNotification(
-                            title: 'Happy Muncher',
-                            body:
-                                '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
-                            payload: 'groceryList');
+                        service.showNotification(
+                          id: 0,
+                          title: 'Happy Muncher',
+                          body:
+                              '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
+                        );
                       }
                     },
                   ),
