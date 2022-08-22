@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-class recipeField {
-  //static const createdTime = 'createdTime';
-}
+// class recipeField {
+//   //static const createdTime = 'createdTime';
+// }
 
 class myRecipe {
   String name;
@@ -13,7 +13,7 @@ class myRecipe {
   List<String> ingredients;
 
   myRecipe({
-    this.name = "",
+    required this.name,
     this.images = "",
     this.calories = 0,
     this.totalTime = "",
