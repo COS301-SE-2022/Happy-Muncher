@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 
 Future<InventoryItemParams?> addInventoryDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const _InventoryDialog());
@@ -27,9 +28,24 @@ class _InventoryDialogState extends State<_InventoryDialog> {
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
-
+  late final LocalNotificationService service;
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
+  @override
+  void initState() {
+    super.initState();
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => IventoryPage())));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +112,14 @@ class _InventoryDialogState extends State<_InventoryDialog> {
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
                       int id = UniqueKey().hashCode;
-                      NotificationAPI.setID(id);
-                      /*NotificationAPI.showScheduledNotification(
+                      LocalNotificationService.setID(id);
+                      service.showScheduledNotification(
                           id: id,
                           title: 'Happy Muncher',
                           body:
                               '$name expires today! Please add it to your grocery list.',
-                          scheduledDate: chosenDate);*/
+                          seconds: 5,
+                          scheduledDate: chosenDate);
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
@@ -129,7 +146,6 @@ class _InventoryDialogState extends State<_InventoryDialog> {
               nameController.text = '';
               quantityController.text = '';
               dateFieldController.text = '';
-              Navigator.of(context).pop();
             }
           },
           child: const Text('Add'),
