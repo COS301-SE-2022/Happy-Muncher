@@ -28,6 +28,25 @@ class _IventoryPageState extends State<IventoryPage> {
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
+  late final LocalNotificationService service;
+  void initState() {
+    super.initState();
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IventoryPage(),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +79,7 @@ class _IventoryPageState extends State<IventoryPage> {
                                     content: Text(
                                         'You have successfully deleted a product')));
                           });
-                          NotificationAPI.cancel(NotificationAPI.getID());
+                          service.cancel(LocalNotificationService.getID());
                         },
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
