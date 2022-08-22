@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 
 Future<void> showUpdateDialog(BuildContext context, DocumentSnapshot document) {
   return showDialog(
@@ -41,6 +42,23 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
   DateTime? expirationDate;
   DocumentSnapshot documentSnapshot;
   _UpdateIventoryPageState(this.documentSnapshot);
+  late final LocalNotificationService service;
+
+  @override
+  void initState() {
+    super.initState();
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => IventoryPage())));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,13 +133,14 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
                       int id = UniqueKey().hashCode;
-                      NotificationAPI.setID(id);
+                      LocalNotificationService.setID(id);
 
-                      /*NotificationAPI.showScheduledNotification(
+                      service.showScheduledNotification(
                           id: id,
                           title: 'Happy Muncher',
                           body: '$name expires today!',
-                          scheduledDate: chosenDate);*/
+                          seconds: 5,
+                          scheduledDate: chosenDate);
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
@@ -149,7 +168,6 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
               nameController.text = '';
               quantityController.text = '';
               dateFieldController.text = '';
-              Navigator.of(context).pop();
             }
           },
           child: const Text('Update'),
