@@ -2,35 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/monthcard_widget.dart';
 import 'month.dart';
 
-// void main() {
-//   runApp(const Budget());
-// }
+class MyBudget extends StatefulWidget {
+  // const MyBudget({Key? key, required this.title}) : super(key: key);
 
-class Budget extends StatelessWidget {
-  const Budget({Key? key}) : super(key: key);
+  // final String title;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Budget Page',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const MyHomePage(title: 'Budget'),
-    );
-  }
+  State<MyBudget> createState() => _MyBudgetState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _MyBudgetState extends State<MyBudget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
