@@ -463,6 +463,7 @@ class MyMonthState extends State<Month> {
                             'amount spent': double.parse(spent1),
                             'amount remaining': rem1
                           });
+
                           // if (totRem != null) {
                           //   _budget
                           //       .doc(widget.month)
@@ -799,7 +800,8 @@ class MyMonthState extends State<Month> {
           padding: const EdgeInsets.all(8),
           decoration: const BoxDecoration(
               border: Border(
-            bottom: BorderSide(color: Colors.grey, width: 3),
+            bottom:
+                BorderSide(color: Color.fromARGB(255, 75, 68, 68), width: 3),
           )),
           child: Align(
               alignment: Alignment.centerLeft,
