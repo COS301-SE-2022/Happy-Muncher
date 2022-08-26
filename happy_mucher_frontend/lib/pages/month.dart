@@ -72,7 +72,7 @@ class MyMonthState extends State<Month> {
     bought = [];
     //print("");
     totSpent = 0;
-    totBudget = 0;
+    //totBudget = 0;
     //print("START");
 
     var collection = FirebaseFirestore.instance
@@ -85,6 +85,7 @@ class MyMonthState extends State<Month> {
 
       // You can then retrieve the value from the Map like this:
       totBudget = data['budget'].toDouble();
+      print(totBudget);
     }
 
     //totRem -= totSpent;
@@ -396,15 +397,11 @@ class MyMonthState extends State<Month> {
                   'amount remaining': double.parse(rem4),
                 });
 
-                _budget
-                    .doc(widget.month)
-                    .collection('Totals')
-                    .add({'total remaining': totRem});
-
-                _budget
-                    .doc(widget.month)
-                    .collection('Totals')
-                    .add({'total spent': totSpent});
+                _budget.doc(widget.month).collection('Totals').add({
+                  'budgetTotal': 0.0,
+                  'total remaining': totRem,
+                  'total spent': totSpent
+                });
               });
             },
             color: Color.fromARGB(255, 172, 255, 78),
