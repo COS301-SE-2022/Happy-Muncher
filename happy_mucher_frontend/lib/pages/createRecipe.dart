@@ -10,6 +10,7 @@ import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/dialogs/add_ingredient_dialog.dart';
 import 'package:happy_mucher_frontend/ingredientlist_widget.dart';
+import 'package:happy_mucher_frontend/componentcard.dart';
 
 //import 'package:http/http.dart' as http;
 
@@ -22,20 +23,23 @@ class Create extends StatefulWidget {
 class CreateState extends State<Create> {
   //Recipe recipe = Recipe();
   myRecipe recipe = myRecipe(name: '');
+  String title = "my Recipe";
   int selectedIndex = 0;
   static List<String> ingredients = [];
-  final tabs = [
-    IngredientListWidget(),
-    Column(
-      children: [
-        IconButton(
-            onPressed: () {
-              print(ingredients[0]);
-            },
-            icon: Icon(Icons.search))
-      ],
-    ),
-  ];
+  // final tabs = [
+  //   IngredientListWidget(
+  //     ingredient: ingredients,
+  //   ),
+  //   Column(
+  //     children: [
+  //       IconButton(
+  //           onPressed: () {
+  //             print(ingredients[0]);
+  //           },
+  //           icon: Icon(Icons.search))
+  //     ],
+  //   ),
+  // ];
   bool ingEdit = false;
 
   final ingController = TextEditingController();
@@ -58,25 +62,67 @@ class CreateState extends State<Create> {
       appBar: AppBar(
           title: const Text('Create Recipe'),
           centerTitle: true,
+          leading: TextButton(
+            onPressed: () {
+              recipe = myRecipe(
+                name: title,
+              );
+            },
+            child: Text("Done"),
+          ),
           backgroundColor: Color.fromARGB(255, 252, 95, 13)),
-      body: Column(
-        children: [
-          IngredientListWidget(),
-          IconButton(
-              onPressed: () {
-                print(ingredients);
-              },
-              icon: Icon(Icons.search))
-        ],
+
+      body: ListView(
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        children: ingredients.map((String todo) {
+          return ComponentCard(
+            ingredient: todo,
+          );
+        }).toList(),
       ),
+      // StreamBuilder(builder: (context, snapshot) {
+      //   return ListView.builder(
+      //     itemCount: ingredients.length,
+      //     itemBuilder: (context, index) {
+      //       return ComponentCard(
+      //         ingredient: ingredients[index],
+      //       );
+      //     },
+      //   );
+      // }),
+
+      // ListView.builder(
+      //   itemCount: ingredients.length,
+      //   itemBuilder: (context, index) {
+      //     return IngredientListWidget(
+      //       ingredient: ingredients[index],
+      //     );
+      //   },
+      // ),
+      //tabs[selectedIndex],
+      //Column(
+      //   children: [
+
+      //     //IngredientListWidget(),
+
+      //     // IconButton(
+      //     //     onPressed: () {
+      //     //       print(ingredients);
+      //     //     },
+      //     //     icon: Icon(Icons.search))
+      //   ],
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AddIngredientDialog(
-                ingredients: ingredients,
-              );
-            }),
+          context: context,
+          builder: (BuildContext context) {
+            return AddIngredientDialog(
+              ingredients: ingredients,
+            );
+          },
+
+          //useRootNavigator: true,
+        ),
         child: Icon(Icons.add),
       ),
 

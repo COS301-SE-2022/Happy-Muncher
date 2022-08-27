@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 class IngredientFormWidget extends StatelessWidget {
   final String title;
@@ -47,6 +48,8 @@ class IngredientFormWidget extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(Colors.black),
           ),
           onPressed: addedIng,
+          //Navigator.of(context).pop();
+
           child: Text('Add'),
         ),
       );

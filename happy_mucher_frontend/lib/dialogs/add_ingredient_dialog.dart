@@ -12,9 +12,9 @@ class AddIngredientDialog extends StatefulWidget {
 }
 
 class _AddIngredientDialogState extends State<AddIngredientDialog> {
-  final _formKey = GlobalKey<FormState>();
+  //final _formKey = GlobalKey<FormState>();
   String ingredient = '';
-
+  final input = TextEditingController();
   @override
   Widget build(BuildContext context) => AlertDialog(
         content: Column(
@@ -29,12 +29,29 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
               ),
             ),
             const SizedBox(height: 8),
-            IngredientFormWidget(
-              onChangedTitle: (title) => setState(() {
-                print(title);
-                widget.ingredients.add(title);
-              }),
-              addedIng: () {},
+            TextFormField(
+              //maxLines: 1,
+              controller: input,
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 8),
+            SizedBox(height: 32),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
+                ),
+                onPressed: () {
+                  widget.ingredients.add(input.text);
+                  Navigator.of(context).pop();
+                },
+                //
+
+                child: Text('Add'),
+              ),
             ),
           ],
         ),
