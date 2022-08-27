@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MealWidget extends StatefulWidget {
   const MealWidget({Key? key, required this.day, required this.meal})
@@ -13,8 +14,10 @@ class MealWidget extends StatefulWidget {
 }
 
 class MealWidgetState extends State<MealWidget> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _meals => firestore.collection('Meal Planner');
+  CollectionReference get _meals =>
+      firestore.collection('Users').doc(uid).collection('Meal Planner');
   String image = '';
   String title = 'Add recipe from recipe book';
   String cookTime = '';
@@ -42,7 +45,10 @@ class MealWidgetState extends State<MealWidget> {
   }
 
   Future<void> getMeals() async {
-    var collection = FirebaseFirestore.instance.collection('Meal Planner');
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('Meal Planner');
     var docSnapshot = await collection
         .doc(widget.day)
         .collection(widget.meal)
