@@ -187,7 +187,7 @@ class TastyRecipeCard extends StatelessWidget {
         ing = ingredients.join('\n');
         String instruc = "";
         instruc = instructions.join('\n');
-        _meals.doc('Place Holder').update({
+        _meals.doc('Place Holder').set({
           'Name': name,
           'Instructions': instruc,
           'Description': description,
