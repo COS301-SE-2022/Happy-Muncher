@@ -66,7 +66,7 @@ class MealWidgetState extends State<MealWidget> {
       description = data['Description'];
       calories = data['Calories'];
       instr = data['Instructions'];
-      print(image);
+      print(title);
     }
 
     var docSnapshot2 = await collection
@@ -85,7 +85,7 @@ class MealWidgetState extends State<MealWidget> {
       setState(() {
         ingredients = (ing.split('\n'));
         instructions = (instr.split('\n'));
-        print(image);
+        print(title);
       });
     }
 
@@ -155,8 +155,10 @@ class MealWidgetState extends State<MealWidget> {
           iconSize: 44.0,
           onPressed: () async {
             if (hasrecipe == false) {
-              var collection =
-                  FirebaseFirestore.instance.collection('Meal Planner');
+              var collection = FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(uid)
+                  .collection('Meal Planner');
               var docSnapshot = await collection.doc('Place Holder').get();
               if (docSnapshot.exists) {
                 Map<String, dynamic> data = docSnapshot.data()!;
@@ -173,11 +175,7 @@ class MealWidgetState extends State<MealWidget> {
               ingredients = (ing.split('\n'));
               instructions = (instr.split('\n'));
               //print(instr);
-              _meals
-                  .doc(widget.day)
-                  .collection(widget.meal)
-                  .doc('Recipe')
-                  .update({
+              _meals.doc(widget.day).collection(widget.meal).doc('Recipe').set({
                 'Name': title,
                 'Instructions': instr,
                 'Description': description,
@@ -191,7 +189,7 @@ class MealWidgetState extends State<MealWidget> {
                   .doc(widget.day)
                   .collection(widget.meal)
                   .doc('hasRecipe')
-                  .update({
+                  .set({
                 'has': hasrecipe,
               });
               //print(ingrd[0]); // return ["one"
@@ -206,11 +204,7 @@ class MealWidgetState extends State<MealWidget> {
               ingredients = (ing.split('\n'));
               instructions = (instr.split('\n'));
               //print(instr);
-              _meals
-                  .doc(widget.day)
-                  .collection(widget.meal)
-                  .doc('Recipe')
-                  .update({
+              _meals.doc(widget.day).collection(widget.meal).doc('Recipe').set({
                 'Name': "add recipe from recipe book",
                 'Instructions': "none",
                 'Description': "none",
@@ -224,7 +218,7 @@ class MealWidgetState extends State<MealWidget> {
                   .doc(widget.day)
                   .collection(widget.meal)
                   .doc('hasRecipe')
-                  .update({
+                  .set({
                 'has': hasrecipe,
               });
               //print(ingrd[0]); // return ["one"
