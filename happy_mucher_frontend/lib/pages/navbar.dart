@@ -7,7 +7,6 @@ import 'package:happy_mucher_frontend/pages/changeusername.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
 import 'package:happy_mucher_frontend/pages/settings_page.dart';
-import 'package:happy_mucher_frontend/pages/temp.dart';
 
 class NavBar extends StatelessWidget {
   @override
@@ -72,13 +71,6 @@ class NavBar extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => LoginScreen())),
                   }),
           Divider(),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Temp'),
-              onTap: () async => {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BudgetPage())),
-                  }),
         ],
       ),
     );
