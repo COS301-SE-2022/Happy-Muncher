@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
@@ -10,6 +11,8 @@ import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:camera/camera.dart';
+import 'package:happy_mucher_frontend/models/barcode_api.dart';
+import 'package:happy_mucher_frontend/models/barcode_data.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -35,6 +38,13 @@ class _IventoryPageState extends State<IventoryPage> {
   bool _isBusy = false;
   String? _text;
   CameraController? controller;
+
+  String barcode = "";
+
+  List<BarcodeData> scanResult = [];
+  final TextEditingController inputController = TextEditingController();
+
+  String itemName = "";
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +133,15 @@ class _IventoryPageState extends State<IventoryPage> {
               Icons.photo_camera,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 172, 255, 78),
+            backgroundColor: Color.fromARGB(255, 147, 182, 106),
+          ),
+          SpeedDialChild(
+            onTap: () => showInputDialog(context),
+            child: const Icon(
+              CupertinoIcons.barcode_viewfinder,
+              color: Color.fromARGB(255, 70, 70, 70),
+            ),
+            backgroundColor: Colors.grey,
           )
         ],
       ),
@@ -189,6 +207,84 @@ class _IventoryPageState extends State<IventoryPage> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  Future<void> getItemName(String barcode) async {
+    //6009522300623
+    //009542020316
+    //recipes = await RecipeAPI.getRecipe();
+    //print("barcode: " + barcode);
+    scanResult = await BarcodeAPI.getBarcode(barcode);
+    itemName = scanResult[0].name;
+
+    showResultDialog(context);
+    setState(() {});
+  }
+
+  showInputDialog(BuildContext context) {
+    AlertDialog input = AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: TextField(
+              controller: inputController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                isDense: true,
+                label: Text('barcode'),
+              ),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          key: const Key('groceryListDialogAddButton'),
+          onPressed: () async {
+            setState(() {
+              this.barcode = inputController.text;
+              //print(inputController.text);
+              getItemName(barcode);
+            });
+          },
+          child: const Text('Add'),
+        )
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return input;
+      },
+    );
+  }
+
+  showResultDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Result"),
+      content: Text(itemName),
+      actions: [
+        okButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 
