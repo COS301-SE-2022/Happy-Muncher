@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
@@ -54,7 +54,6 @@ class MyMonthState extends State<Month> {
   String rem4 = "0";
   bool editFour = false;
   String buttonMsg = "";
-
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _budget =>
       firestore.collection('Users').doc(uid).collection('Budget');
@@ -72,7 +71,7 @@ class MyMonthState extends State<Month> {
     bought = [];
     //print("");
     totSpent = 0;
-    //totBudget = 0;
+    totBudget = 0;
     //print("START");
 
     var collection = FirebaseFirestore.instance
@@ -85,12 +84,14 @@ class MyMonthState extends State<Month> {
 
       // You can then retrieve the value from the Map like this:
       totBudget = data['budget'].toDouble();
-      print(totBudget);
     }
 
     //totRem -= totSpent;
     //print(totBudget);
-    collection
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('Budget')
         .doc(widget.month)
         .collection('Week1')
         .get()
@@ -103,7 +104,10 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    collection
+    firestore
+        .collection('Users')
+        .doc(uid)
+        .collection('Budget')
         .doc(widget.month)
         .collection('Week2')
         .get()
@@ -115,7 +119,10 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    collection
+    firestore
+        .collection('Users')
+        .doc(uid)
+        .collection('Budget')
         .doc(widget.month)
         .collection('Week3')
         .get()
@@ -127,7 +134,10 @@ class MyMonthState extends State<Month> {
       });
     });
 
-    collection
+    firestore
+        .collection('Users')
+        .doc(uid)
+        .collection('Budget')
         .doc(widget.month)
         .collection('Week4')
         .get()
@@ -168,7 +178,10 @@ class MyMonthState extends State<Month> {
     //   });
     // });
 
-    var totals = FirebaseFirestore.instance.collection('GL totals');
+    var totals = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('GL totals');
     var ds = await totals.doc('Totals').get();
     if (ds.exists) {
       Map<String, dynamic> data = ds.data()!;
@@ -203,12 +216,13 @@ class MyMonthState extends State<Month> {
         totRem = 0;
         totRem = totBudget;
         totRem -= totSpent;
-        /*if (totRem != null) {
-          _budget.doc(widget.month).update({'total remaining': totRem});
+        if (totRem != null) {
+          _budget.doc(widget.month).set({
+            'budget': totBudget,
+            'total remaining': totRem,
+            'total spent': totSpent
+          });
         }
-        if (totSpent != null) {
-          _budget.doc(widget.month).update({'total spent': totSpent});
-        }*/
       });
     }
     //setState(() => {});
@@ -324,11 +338,7 @@ class MyMonthState extends State<Month> {
           ),
           MaterialButton(
             key: Key("setBudget"),
-            onPressed: () async {
-              var collection = FirebaseFirestore.instance.collection('Budget');
-
-              var docSnapshot = await collection.doc(widget.month).get();
-
+            onPressed: () {
               setState(() {
                 //totSpent = 0;
 
@@ -344,9 +354,12 @@ class MyMonthState extends State<Month> {
                 //total budget for entire month = input from enterBudget textfield
                 totBudget = bud;
                 totRem = totBudget;
-                if (totBudget != null) {
-                  _budget.doc(widget.month).update({'budget': totBudget});
-                }
+
+                _budget.doc(widget.month).set({
+                  'budget': totBudget,
+                  'total remaining': totRem,
+                  'total spent': totSpent
+                });
 
                 double updateSpent = 0;
 
@@ -359,11 +372,10 @@ class MyMonthState extends State<Month> {
                 // print("rem1");
                 // print(rem1);
                 //update DB for week 1
-
-                _budget.doc(widget.month).collection('Week1').add({
+                _budget.doc(widget.month).collection('Week1').doc('Week1').set({
                   'budget': double.parse(mybudget),
-                  'amount spent': 0.0,
                   'amount remaining': double.parse(rem1),
+                  'amount spent': double.parse(spent1)
                 });
 
                 rem2 = mybudget;
@@ -371,37 +383,39 @@ class MyMonthState extends State<Month> {
                 updateSpent -= double.parse(spent2);
                 rem2 = updateSpent.toString();
                 //update DB for week 2
-                _budget.doc(widget.month).collection('Week2').add({
+                _budget.doc(widget.month).collection('Week2').doc('Week2').set({
                   'budget': double.parse(mybudget),
-                  'amount spent': 0.0,
                   'amount remaining': double.parse(rem2),
+                  'amount spent': double.parse(spent2)
                 });
                 rem3 = mybudget;
                 updateSpent = double.parse(rem3);
                 updateSpent -= double.parse(spent3);
                 rem3 = updateSpent.toString();
                 //update DB for week 3
-                _budget.doc(widget.month).collection('Week3').add({
+                _budget.doc(widget.month).collection('Week3').doc('Week3').set({
                   'budget': double.parse(mybudget),
-                  'amount spent': 0.0,
                   'amount remaining': double.parse(rem3),
+                  'amount spent': double.parse(spent3)
                 });
                 rem4 = mybudget;
                 updateSpent = double.parse(rem4);
                 updateSpent -= double.parse(spent4);
                 rem4 = updateSpent.toString();
                 //update DB for week 4
-                _budget.doc(widget.month).collection('Week4').add({
+                _budget.doc(widget.month).collection('Week4').doc('Week4').set({
                   'budget': double.parse(mybudget),
-                  'amount spent': 0.0,
                   'amount remaining': double.parse(rem4),
+                  'amount spent': double.parse(spent4)
                 });
 
-                _budget.doc(widget.month).collection('Totals').add({
-                  'budgetTotal': 0.0,
-                  'total remaining': totRem,
-                  'total spent': totSpent
-                });
+                if (totRem != null) {
+                  _budget.doc(widget.month).set({
+                    'budget': totBudget,
+                    'total remaining': totRem,
+                    'total spent': totSpent
+                  });
+                }
               });
             },
             color: Color.fromARGB(255, 172, 255, 78),
@@ -452,15 +466,7 @@ class MyMonthState extends State<Month> {
                       ),
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
-                      onSubmitted: (value) async {
-                        var collection = FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('Budget');
-                        var docSnapshot = await collection
-                            .doc(widget.month)
-                            .collection('Week1')
-                            .get();
+                      onSubmitted: (value) {
                         setState(() {
                           if (double.parse(spent1) !=
                               double.parse(spentOneController.text)) {
@@ -475,12 +481,12 @@ class MyMonthState extends State<Month> {
                             left = bud - left;
 
                             rem1 = left.toString();
-
                             _budget
                                 .doc(widget.month)
                                 .collection('Week1')
-                                .doc(docSnapshot.docs.first.id)
-                                .update({
+                                .doc('Week1')
+                                .set({
+                              'budget': mybudget,
                               'amount spent': double.parse(spent1),
                               'amount remaining': rem1
                             });
@@ -563,15 +569,7 @@ class MyMonthState extends State<Month> {
                       ),
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
-                      onSubmitted: (value) async {
-                        var collection = FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('Budget');
-                        var docSnapshot = await collection
-                            .doc(widget.month)
-                            .collection('Week2')
-                            .get();
+                      onSubmitted: (value) {
                         setState(() {
                           if (double.parse(spent2) !=
                               double.parse(spentTwoController.text)) {
@@ -586,12 +584,12 @@ class MyMonthState extends State<Month> {
                             left = bud - left;
 
                             rem2 = left.toString();
-
                             _budget
                                 .doc(widget.month)
                                 .collection('Week2')
-                                .doc(docSnapshot.docs.first.id)
-                                .update({
+                                .doc('Week2')
+                                .set({
+                              'budget': mybudget,
                               'amount spent': double.parse(spent2),
                               'amount remaining': rem2
                             });
@@ -672,15 +670,7 @@ class MyMonthState extends State<Month> {
                       ),
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
-                      onSubmitted: (value) async {
-                        var collection = FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('Budget');
-                        var docSnapshot = await collection
-                            .doc(widget.month)
-                            .collection('Week3')
-                            .get();
+                      onSubmitted: (value) {
                         setState(() {
                           if (double.parse(spent3) !=
                               double.parse(spentThreeController.text)) {
@@ -698,8 +688,9 @@ class MyMonthState extends State<Month> {
                             _budget
                                 .doc(widget.month)
                                 .collection('Week3')
-                                .doc(docSnapshot.docs.first.id)
-                                .update({
+                                .doc('Week3')
+                                .set({
+                              'budget': mybudget,
                               'amount spent': double.parse(spent3),
                               'amount remaining': rem3
                             });
@@ -780,15 +771,7 @@ class MyMonthState extends State<Month> {
                       ),
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
-                      onSubmitted: (value) async {
-                        var collection = FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('Budget');
-                        var docSnapshot = await collection
-                            .doc(widget.month)
-                            .collection('Week4')
-                            .get();
+                      onSubmitted: (value) {
                         setState(() {
                           if (double.parse(spent4) !=
                               double.parse(spentFourController.text)) {
@@ -806,8 +789,9 @@ class MyMonthState extends State<Month> {
                             _budget
                                 .doc(widget.month)
                                 .collection('Week4')
-                                .doc(docSnapshot.docs.first.id)
-                                .update({
+                                .doc('Week4')
+                                .set({
+                              'budget': mybudget,
                               'amount spent': double.parse(spent4),
                               'amount remaining': rem4
                             });
@@ -835,79 +819,54 @@ class MyMonthState extends State<Month> {
         const SizedBox(height: 10),
       ]));
 
-  void storeTotals() async {
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Budget');
-
-    var docSnapshot =
-        await collection.doc(widget.month).collection('Totals').get();
-
-    _budget
-        .doc(widget.month)
-        .collection('Totals')
-        .doc(docSnapshot.docs.first.id)
-        .update({'total remaining': totRem});
-
-    _budget
-        .doc(widget.month)
-        .collection('Totals')
-        .doc(docSnapshot.docs.first.id)
-        .update({'total spent': totSpent});
-  }
-
-  Widget Totals() {
-    storeTotals();
-    return Container(
-        key: Key("totals"),
-        child: Column(children: [
-          Container(
-            child: Container(
-              width: 600.0,
-              height: 42.0,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 172, 255, 78),
-              ),
-              child: const Center(
-                child: Text(
-                  'Totals',
-                  style: TextStyle(
-                    //fontFamily: 'Arial',
-                    fontSize: 18,
-                    color: Colors.white,
-                    height: 1,
-                  ),
-                  textAlign: TextAlign.left,
+  Widget Totals() => Container(
+      key: Key("totals"),
+      child: Column(children: [
+        Container(
+          child: Container(
+            width: 600.0,
+            height: 42.0,
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 172, 255, 78),
+            ),
+            child: const Center(
+              child: Text(
+                'Totals',
+                style: TextStyle(
+                  //fontFamily: 'Arial',
+                  fontSize: 18,
+                  color: Colors.white,
+                  height: 1,
                 ),
+                textAlign: TextAlign.left,
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          Container(
-            key: Key("totSpent"),
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-                border: Border(
-              bottom: BorderSide(color: Colors.grey, width: 3),
-            )),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Total Amount Spent:  " + totSpent.toString())),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-                border: Border(
-              bottom: BorderSide(color: Colors.grey, width: 3),
-            )),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Total Amount Remaining:  " + totRem.toString())),
-          ),
-        ]));
-  }
+        ),
+        const SizedBox(height: 10),
+        Container(
+          key: Key("totSpent"),
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+              border: Border(
+            bottom: BorderSide(color: Colors.grey, width: 3),
+          )),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Total Amount Spent:  " + totSpent.toString())),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+              border: Border(
+            bottom: BorderSide(color: Colors.grey, width: 3),
+          )),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Total Amount Remaining:  " + totRem.toString())),
+        ),
+      ]));
 
   //double update = 0;
   Widget EstTotal() => ElevatedButton(
