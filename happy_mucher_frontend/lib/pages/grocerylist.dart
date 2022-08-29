@@ -57,55 +57,55 @@ class GroceryListPageState extends State<GroceryListPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => totals(context));
+    //Future.delayed(Duration.zero, () => totals(context));
     return Scaffold(
       appBar: AppBar(
           title: const Text('Grocery List'),
           centerTitle: true,
           backgroundColor: Color.fromARGB(255, 252, 95, 13)),
-      bottomNavigationBar: BottomAppBar(
-        color: Color.fromARGB(255, 252, 95, 13),
-        child: Row(
-          children: [
-            RichText(
-              text: TextSpan(
-                children: [
-                  const WidgetSpan(
-                    child: Icon(Icons.add, size: 19),
-                  ),
-                  TextSpan(
-                    text:
-                        "Estimated Total: " + estimatePrices.toString() + "\n",
-                    style: const TextStyle(
-                      fontSize: 19,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const WidgetSpan(
-                    child: Icon(Icons.shopping_cart, size: 19),
-                  ),
-                  TextSpan(
-                    text: "Total: " + shoppingPrices.toString(),
-                    style: const TextStyle(
-                      fontSize: 19,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            )
-            // Text(
+      // bottomNavigationBar: BottomAppBar(
+      //   color: Color.fromARGB(255, 252, 95, 13),
+      //   child: Row(
+      //     children: [
+      //       RichText(
+      //         text: TextSpan(
+      //           children: [
+      //             const WidgetSpan(
+      //               child: Icon(Icons.add, size: 19),
+      //             ),
+      //             TextSpan(
+      //               text:
+      //                   "Estimated Total: " + estimatePrices.toString() + "\n",
+      //               style: const TextStyle(
+      //                 fontSize: 19,
+      //                 color: Colors.black,
+      //               ),
+      //             ),
+      //             const WidgetSpan(
+      //               child: Icon(Icons.shopping_cart, size: 19),
+      //             ),
+      //             TextSpan(
+      //               text: "Total: " + shoppingPrices.toString(),
+      //               style: const TextStyle(
+      //                 fontSize: 19,
+      //                 color: Colors.black,
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       )
+      //       // Text(
 
-            //   "\u2713 Estimated Price: " +
-            //       estimatePrices.toString() +
-            //       '\n' +
-            //       "Total: " +
-            //       shoppingPrices.toString(),
-            //   style: TextStyle(fontSize: 19, color: Colors.black),
-            // ),
-          ],
-        ),
-      ),
+      //       //   "\u2713 Estimated Price: " +
+      //       //       estimatePrices.toString() +
+      //       //       '\n' +
+      //       //       "Total: " +
+      //       //       shoppingPrices.toString(),
+      //       //   style: TextStyle(fontSize: 19, color: Colors.black),
+      //       // ),
+      //     ],
+      //   ),
+      // ),
       body: StreamBuilder(
         stream: _products.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -250,7 +250,11 @@ class GroceryListPageState extends State<GroceryListPage> {
     final listOfItemNames = await getRecognisedText(croppedImagePath);
 
     final futures = listOfItemNames.map((item) {
-      return _products.add({"name": item, "price": 0.0, "bought": false});
+      return _products.add({
+        "name": item.itemName,
+        "price": item.itemPrice,
+        "bought": false
+      }); //item.name item.price
     });
     await Future.wait(futures);
   }
@@ -266,14 +270,15 @@ class GroceryListPageState extends State<GroceryListPage> {
     return cropped?.path;
   }
 
-  Future<List<String>> getRecognisedText(String path) async {
+  Future<List<ReceiptItem>> getRecognisedText(String path) async {
     final image = await decodeImageFromList(File(path).readAsBytesSync());
     final inputImage = InputImage.fromFilePath(path);
     final textDetector = TextRecognizer();
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
     await textDetector.close();
-    //final listOfItems = <ReceiptItem>[];
+    final mapOfItems = <ReceiptItem>[];
     final listOfItems = <String>[];
+    final listOfItemsPrices = <double>[];
 
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
@@ -297,42 +302,80 @@ class GroceryListPageState extends State<GroceryListPage> {
             //checkers hyper
             continue;
           }
-          if (listOfItems.contains(line.text)) {
-            continue;
-          }
+          // if (listOfItems.contains(line.text)) {
+          //   continue;
+          // }
           listOfItems.add(line.text);
         }
       }
     }
-    return listOfItems;
-  }
 
-  void totals(context) {
-    // estimatePrices = 0;
-    // shoppingPrices = 0;
-    int e = 0;
-    int s = 0;
-    _products.get().then((QuerySnapshot querySnapshot) {
-      for (final doc in querySnapshot.docs) {
-        if ((doc["price"]) != 0) {
-          e += int.parse(doc["price"]);
-
-          if ((doc["bought"]) == true) {
-            //print(doc["price"]);
-            s += int.parse(doc["price"]);
+    for (TextBlock block in recognizedText.blocks) {
+      for (TextLine line in block.lines) {
+        if (line.boundingBox.right / image.width * 100 > 95) {
+          if (line.text.contains("-")) {
+            //if discount remove
+            continue;
           }
+          if (line.text.contains(RegExp("[a-zA-Z]+"))) {
+            final newPrice = line.text.replaceAll("[a-zA-Z]+", "");
+            listOfItemsPrices.add(double.parse(newPrice));
+            continue;
+          }
+          if (line.text.contains("R")) {
+            //if R remove R
+            final newPrice = line.text.replaceAll("R", "");
+            listOfItemsPrices.add(double.parse(newPrice));
+            continue;
+          }
+          if (line.text.contains("r")) {
+            final newPrice = line.text.replaceAll("r", "");
+            listOfItemsPrices.add(double.parse(newPrice));
+            continue;
+          }
+          listOfItemsPrices.add(double.parse(line.text));
         }
       }
-      estimatePrices = e;
-      shoppingPrices = s;
-    });
-    _gltotals.doc('Totals').update({
-      'estimated total': estimatePrices,
-      'shopping total': shoppingPrices,
-    });
+    }
+    print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    print(listOfItems.length);
+    print(listOfItemsPrices.length);
 
-    setState(() {});
+    for (int i = 0; i < listOfItems.length; i++) {
+      final newItem = ReceiptItem(
+          itemName: listOfItems[i], itemPrice: listOfItemsPrices[i]);
+      mapOfItems.add(newItem);
+    }
+
+    return mapOfItems;
   }
+
+  // void totals(context) {
+  //   // estimatePrices = 0;
+  //   // shoppingPrices = 0;
+  //   int e = 0;
+  //   int s = 0;
+  //   _products.get().then((QuerySnapshot querySnapshot) {
+  //     for (final doc in querySnapshot.docs) {
+  //       if ((doc["price"]) != 0) {
+  //         e += int.parse(doc["price"]);
+
+  //         if ((doc["bought"]) == true) {
+  //           //print(doc["price"]);
+  //           s += int.parse(doc["price"]);
+  //         }
+  //       }
+  //     }
+  //     estimatePrices = e;
+  //     shoppingPrices = s;
+  //   });
+  //   _gltotals.doc('Totals').update({
+  //     'estimated total': estimatePrices,
+  //     'shopping total': shoppingPrices,
+  //   });
+
+  //   setState(() {});
+  // }
 }
 
 class ReceiptItem {
