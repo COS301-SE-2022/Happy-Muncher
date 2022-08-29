@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:camera/camera.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -26,6 +28,14 @@ class _IventoryPageState extends State<IventoryPage> {
   final FirebaseFirestore firestore = GetIt.I.get();
   String _scanBarcode = 'Unknown';
   CollectionReference get _products => firestore.collection('Inventory');
+
+  final BarcodeScanner _barcodeScanner = BarcodeScanner();
+
+  bool _canProcess = true;
+  bool _isBusy = false;
+  String? _text;
+  CameraController? controller;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,7 +161,35 @@ class _IventoryPageState extends State<IventoryPage> {
     });
   }
 
-  
+  Future<void> processImage(InputImage inputImage) async {
+    if (!_canProcess) return;
+    if (_isBusy) return;
+    _isBusy = true;
+    setState(() {
+      _text = '';
+    });
+    final barcodes = await _barcodeScanner.processImage(inputImage);
+    if (inputImage.inputImageData?.size != null &&
+        inputImage.inputImageData?.imageRotation != null) {
+      // final painter = BarcodeDetectorPainter(
+      //     barcodes,
+      //     inputImage.inputImageData!.size,
+      //     inputImage.inputImageData!.imageRotation);
+      // _customPaint = CustomPaint(painter: painter);
+    } else {
+      String text = 'Barcodes found: ${barcodes.length}\n\n';
+      for (final barcode in barcodes) {
+        text += 'Barcode: ${barcode.rawValue}\n\n';
+      }
+      _text = text;
+      // TODO: set _customPaint to draw boundingRect on top of image
+      //_customPaint = null;
+    }
+    _isBusy = false;
+    if (mounted) {
+      setState(() {});
+    }
+  }
 }
 
 //STRUCTURE
