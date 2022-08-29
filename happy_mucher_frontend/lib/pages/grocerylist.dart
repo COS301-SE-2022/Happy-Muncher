@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -24,37 +25,38 @@ class GroceryListPageState extends State<GroceryListPage> {
   // text fields' controllers
   // text fields' controllers
   final ImagePicker _picker = ImagePicker();
-
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  double shoppingPrices = 0.0;
-  double estimatePrices = 0.0;
-  CollectionReference get _products => firestore.collection('GroceryList');
+  int shoppingPrices = 0;
+  int estimatePrices = 0;
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
 
-  CollectionReference get _inventory => firestore.collection('Inventory');
+  CollectionReference get _inventory =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
 
-  //final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _gltotals => firestore.collection('GL totals');
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
+  late final LocalNotificationService service;
+
   @override
   void initState() {
     super.initState();
-
-    NotificationAPI.init();
-    // print('init');
-    // //Totals(context);
-    // print('est');
-    // print(estimatePrices);
-    // print('shopping');
-    // print(shoppingPrices);
-    getTotals();
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
   }
 
-  void listenNotification() =>
-      NotificationAPI.onNotifications.stream.listen(onClickedNotification);
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
 
-  void onClickedNotification(String? payload) =>
+  void onNoticationListener(String? payload) {
+    if (mounted) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => IventoryPage(),
       ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,18 +127,7 @@ class GroceryListPageState extends State<GroceryListPage> {
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
-                            double price = documentSnapshot['price'];
-
-                            if (documentSnapshot['bought'] == true) {
-                              shoppingPrices = shoppingPrices - price;
-                            }
-                            estimatePrices =
-                                estimatePrices - documentSnapshot['price'];
-                            GLdelete(price, documentSnapshot['bought']);
                             _products.doc(documentSnapshot.id).delete();
-                            //getTotals();
-
-                            setState(() {});
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -163,8 +154,6 @@ class GroceryListPageState extends State<GroceryListPage> {
                         onPressed: (context) {
                           showUpdateDialogGroceryList(
                               context, documentSnapshot);
-                          getTotals();
-                          setState(() {});
                         },
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
@@ -183,16 +172,6 @@ class GroceryListPageState extends State<GroceryListPage> {
                           .doc(documentSnapshot.id)
                           .update({'bought': !documentSnapshot['bought']});
 
-                      ChckUpdate(documentSnapshot['price'],
-                          !documentSnapshot['bought']);
-                      if (!documentSnapshot['bought'] == true) {
-                        shoppingPrices += documentSnapshot['price'];
-                      } else {
-                        shoppingPrices =
-                            shoppingPrices - documentSnapshot['price'];
-                      }
-                      setState(() {});
-
                       var checkVal = documentSnapshot['bought'];
                       var itemName = documentSnapshot['name'];
                       if (checkVal == false) {
@@ -204,11 +183,12 @@ class GroceryListPageState extends State<GroceryListPage> {
                             "expirationDate": ""
                           },
                         );
-                        NotificationAPI.showNotification(
-                            title: 'Happy Muncher',
-                            body:
-                                '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
-                            payload: 'groceryList');
+                        service.showNotification(
+                          id: 0,
+                          title: 'Happy Muncher',
+                          body:
+                              '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
+                        );
                       }
                     },
                   ),
@@ -227,11 +207,7 @@ class GroceryListPageState extends State<GroceryListPage> {
         icon: Icons.add,
         children: [
           SpeedDialChild(
-            onTap: () {
-              addGLDialog(context);
-              getTotals();
-              setState(() {});
-            },
+            onTap: () => addGLDialog(context),
             key: const Key('addToInventoryButtonText'),
             child: const Icon(
               Icons.abc,
@@ -335,79 +311,31 @@ class GroceryListPageState extends State<GroceryListPage> {
     return listOfItems;
   }
 
-  void getTotals() async {
-    print('fetching');
-    String? e = '';
-    String? s = '';
-    var es;
-    var sh;
-    var collection = FirebaseFirestore.instance.collection('GL totals');
-    //userUid is the current auth user
-    var docSnapshot = await collection.doc('Totals').get();
+  void totals(context) {
+    // estimatePrices = 0;
+    // shoppingPrices = 0;
+    int e = 0;
+    int s = 0;
+    _products.get().then((QuerySnapshot querySnapshot) {
+      for (final doc in querySnapshot.docs) {
+        if ((doc["price"]) != 0) {
+          e += int.parse(doc["price"]);
 
-    Map<String, dynamic> data = docSnapshot.data()!;
-
-    e = data['estimated total'].toString();
-    s = data['shopping total'].toString();
-    estimatePrices = double.parse(e);
-    shoppingPrices = double.parse(s);
-
-    // print(sh);
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void GLdelete(double price, bool bought) async {
-    String? e = '';
-    String? s = '';
-    double estimate = 0.0;
-    double shopped = 0.0;
-    var collection = FirebaseFirestore.instance.collection('GL totals');
-    //userUid is the current auth user
-    var docSnapshot = await collection.doc('Totals').get();
-
-    Map<String, dynamic> data = docSnapshot.data()!;
-
-    e = data['estimated total'].toString();
-    s = data['shopping total'].toString();
-
-    estimate = double.parse(e);
-    estimate = estimate - price;
-
-    if (bought == true) {
-      shopped = double.parse(s);
-      shopped = shopped - price;
-    }
-
-    await _gltotals
-        .doc('Totals')
-        .update({"estimated total": estimate, "shopping total": shopped});
-  }
-
-  void ChckUpdate(double price, bool bought) async {
-    String? e = '';
-    double shopped = 0.0;
-    var collection = FirebaseFirestore.instance.collection('GL totals');
-    //userUid is the current auth user
-    var docSnapshot = await collection.doc('Totals').get();
-
-    Map<String, dynamic> data = docSnapshot.data()!;
-
-    e = data['shopping total'].toString();
-
-    shopped = double.parse(e);
-
-    if (bought == false) {
-      //unchecked
-      shopped = shopped - price;
-    } else {
-      //checked
-      shopped = shopped + price;
-    }
-    await _gltotals.doc('Totals').update({
-      "shopping total": shopped,
+          if ((doc["bought"]) == true) {
+            //print(doc["price"]);
+            s += int.parse(doc["price"]);
+          }
+        }
+      }
+      estimatePrices = e;
+      shoppingPrices = s;
     });
+    _gltotals.doc('Totals').update({
+      'estimated total': estimatePrices,
+      'shopping total': shoppingPrices,
+    });
+
+    setState(() {});
   }
 }
 
