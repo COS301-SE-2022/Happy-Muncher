@@ -478,7 +478,8 @@ class MyMonthState extends State<Month> {
                             double left = double.parse(spent1);
 
                             totSpent += double.parse(spent1);
-                            left = bud - left;
+                            left =
+                                double.parse(mybudget) - double.parse(spent1);
 
                             rem1 = left.toString();
                             _budget
@@ -581,7 +582,8 @@ class MyMonthState extends State<Month> {
                             double left = double.parse(spent2);
 
                             totSpent += double.parse(spent2);
-                            left = bud - left;
+                            left =
+                                double.parse(mybudget) - double.parse(spent2);
 
                             rem2 = left.toString();
                             _budget
@@ -682,7 +684,8 @@ class MyMonthState extends State<Month> {
                             double left = double.parse(spent3);
 
                             totSpent += double.parse(spent3);
-                            left = bud - left;
+                            left =
+                                double.parse(mybudget) - double.parse(spent3);
 
                             rem3 = left.toString();
                             _budget
@@ -783,7 +786,8 @@ class MyMonthState extends State<Month> {
                             double left = double.parse(spent4);
 
                             totSpent += double.parse(spent4);
-                            left = bud - left;
+                            left =
+                                double.parse(mybudget) - double.parse(spent4);
 
                             rem4 = left.toString();
                             _budget
