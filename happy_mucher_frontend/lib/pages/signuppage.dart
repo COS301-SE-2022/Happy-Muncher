@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'homepage.dart';
 import 'loginpage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupScreen extends StatefulWidget {
   static const routeName = '/signup';
@@ -42,12 +43,18 @@ class _SignupScreenState extends State<SignupScreen> {
     _formKey.currentState!.save();
 
     try {
+//      print(FirebaseAuth.instance.currentUser!.uid);
+      print(_authData['email']!);
+      print(_authData['password']!);
+
+      //final uid = FirebaseAuth.instance.currentUser!.uid;
+
       await Provider.of<Authentication>(context, listen: false)
           .signUp(_authData['email']!, _authData['password']!);
-      onPressed:
-      () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => MyHomePage()),
-          );
+      FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _authData['email']!, password: _authData['password']!);
+
+      Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
     } catch (error) {
       var errorMessage = 'Authentication Failed. Please try again later.';
       _showErrorDialog(errorMessage);
