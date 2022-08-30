@@ -212,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
         InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TastyBook()));
+                  MaterialPageRoute(builder: (context) => RecipeBook()));
             },
             child: Container(
               height: 120,
