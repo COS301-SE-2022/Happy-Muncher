@@ -278,58 +278,69 @@ class GroceryListPageState extends State<GroceryListPage> {
     await textDetector.close();
     final mapOfItems = <ReceiptItem>[];
     final listOfItems = <String>[];
+    final listOfTempItems = <String>[];
     final listOfItemsPrices = <double>[];
 
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
         if (line.boundingBox.left / image.width * 100 < 10) {
-          if (line.text.contains('@')) {
-            //multiples at spar
-            continue;
-          }
-          if (line.text.contains("promo")) {
-            //woolworths
-            continue;
-          }
-          if (line.text.contains("**")) {
-            continue;
-          }
-          if (line.text.contains("xtrasave")) {
-            //checkers hyper
-            continue;
-          }
-          if (line.text.contains("XTRASAVE")) {
-            //checkers hyper
-            continue;
-          }
-          // if (listOfItems.contains(line.text)) {
-          //   continue;
-          // }
-          listOfItems.add(line.text);
+          line.text.toLowerCase();
+          listOfTempItems.add(line.text);
         }
       }
     }
 
+    for (final text in listOfTempItems) {
+      if (text.contains('@')) {
+        //multiples at spar
+        continue;
+      }
+      if (text.contains("promo")) {
+        //woolworths
+        continue;
+      }
+      if (text.contains("**")) {
+        continue;
+      }
+      if (text.contains("xtrasave")) {
+        //checkers hyper
+        continue;
+      }
+      listOfItems.add(text);
+    }
+
+    //remove symbols : @
+    //fix R and regex
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
         if (line.boundingBox.right / image.width * 100 > 95) {
-          if (line.text.contains("-")) {
+          if (line.text.contains('-')) {
             //if discount remove
             continue;
           }
           if (line.text.contains(RegExp("[a-zA-Z]+"))) {
-            final newPrice = line.text.replaceAll("[a-zA-Z]+", "");
+            final newPrice = line.text.replaceAll("[a-zA-Z]+", '');
             listOfItemsPrices.add(double.parse(newPrice));
             continue;
           }
-          if (line.text.contains("R")) {
+          if (line.text.contains('R')) {
             //if R remove R
-            final newPrice = line.text.replaceAll("R", "");
+            final newPrice = line.text.replaceAll('R', '');
             listOfItemsPrices.add(double.parse(newPrice));
             continue;
           }
-          if (line.text.contains("r")) {
-            final newPrice = line.text.replaceAll("r", "");
+          if (line.text.contains('r')) {
+            final newPrice = line.text.replaceAll('', '');
+            listOfItemsPrices.add(double.parse(newPrice));
+            continue;
+          }
+          if (line.text.contains(' ')) {
+            final newPrice = line.text.replaceAll(' ', '');
+            listOfItemsPrices.add(double.parse(newPrice));
+            continue;
+          }
+          if (line.text.contains(',')) {
+            final newPrice = line.text.replaceAll(',', '.');
             listOfItemsPrices.add(double.parse(newPrice));
             continue;
           }
@@ -339,7 +350,9 @@ class GroceryListPageState extends State<GroceryListPage> {
     }
     print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
     print(listOfItems.length);
+    print(listOfItems);
     print(listOfItemsPrices.length);
+    print(listOfItemsPrices);
 
     for (int i = 0; i < listOfItems.length; i++) {
       final newItem = ReceiptItem(
