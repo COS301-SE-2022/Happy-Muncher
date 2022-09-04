@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
@@ -17,6 +18,7 @@ class Month extends StatefulWidget {
 }
 
 class MyMonthState extends State<Month> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final budgetController = TextEditingController();
   double bud = 0;
   String input = "0"; //input taken for budget
@@ -53,8 +55,10 @@ class MyMonthState extends State<Month> {
   bool editFour = false;
   String buttonMsg = "";
   final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _budget => firestore.collection('Budget');
-  CollectionReference get _groceryList => firestore.collection('GroceryList');
+  CollectionReference get _budget =>
+      firestore.collection('Users').doc(uid).collection('Budget');
+  CollectionReference get _groceryList =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
 
   List<int> bought = [];
   List<String> estimate = [];
@@ -63,14 +67,17 @@ class MyMonthState extends State<Month> {
   //DateTime today = DateTime.now();
 
   void getDB(context) async {
-    //print(today);
+    print("today");
     bought = [];
     //print("");
     totSpent = 0;
     totBudget = 0;
     //print("START");
 
-    var collection = FirebaseFirestore.instance.collection('Budget');
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('Budget');
     var docSnapshot = await collection.doc(widget.month).get();
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
@@ -82,6 +89,8 @@ class MyMonthState extends State<Month> {
     //totRem -= totSpent;
     //print(totBudget);
     FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
         .collection('Budget')
         .doc(widget.month)
         .collection('Week1')
@@ -96,6 +105,8 @@ class MyMonthState extends State<Month> {
     });
 
     firestore
+        .collection('Users')
+        .doc(uid)
         .collection('Budget')
         .doc(widget.month)
         .collection('Week2')
@@ -109,6 +120,8 @@ class MyMonthState extends State<Month> {
     });
 
     firestore
+        .collection('Users')
+        .doc(uid)
         .collection('Budget')
         .doc(widget.month)
         .collection('Week3')
@@ -122,6 +135,8 @@ class MyMonthState extends State<Month> {
     });
 
     firestore
+        .collection('Users')
+        .doc(uid)
         .collection('Budget')
         .doc(widget.month)
         .collection('Week4')
@@ -163,7 +178,10 @@ class MyMonthState extends State<Month> {
     //   });
     // });
 
-    var totals = FirebaseFirestore.instance.collection('GL totals');
+    var totals = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('GL totals');
     var ds = await totals.doc('Totals').get();
     if (ds.exists) {
       Map<String, dynamic> data = ds.data()!;
@@ -199,15 +217,23 @@ class MyMonthState extends State<Month> {
         totRem = totBudget;
         totRem -= totSpent;
         if (totRem != null) {
-          _budget.doc(widget.month).update({'total remaining': totRem});
-        }
-        if (totSpent != null) {
-          _budget.doc(widget.month).update({'total spent': totSpent});
+          _budget.doc(widget.month).set({
+            'budget': totBudget,
+            'total remaining': totRem,
+            'total spent': totSpent
+          });
         }
       });
     }
     //setState(() => {});
     //return;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDB(context);
   }
 
   ///figure out how to display info on page startup
@@ -219,7 +245,7 @@ class MyMonthState extends State<Month> {
   //DocumentReference get _currentMonth => _budget.doc(widget.month);
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => getDB(context));
+    //Future.delayed(Duration.zero, () => getDB(context));
 // WidgetsBinding.instance.addPostFrameCallback((_) => yourFunc(context));
 
     return Scaffold(
@@ -327,9 +353,13 @@ class MyMonthState extends State<Month> {
 
                 //total budget for entire month = input from enterBudget textfield
                 totBudget = bud;
-                if (totBudget != null) {
-                  _budget.doc(widget.month).update({'budget': totBudget});
-                }
+                totRem = totBudget;
+
+                _budget.doc(widget.month).set({
+                  'budget': totBudget,
+                  'total remaining': totRem,
+                  'total spent': totSpent
+                });
 
                 double updateSpent = 0;
 
@@ -342,13 +372,10 @@ class MyMonthState extends State<Month> {
                 // print("rem1");
                 // print(rem1);
                 //update DB for week 1
-                _budget
-                    .doc(widget.month)
-                    .collection('Week1')
-                    .doc('Week1')
-                    .update({
+                _budget.doc(widget.month).collection('Week1').doc('Week1').set({
                   'budget': double.parse(mybudget),
                   'amount remaining': double.parse(rem1),
+                  'amount spent': double.parse(spent1)
                 });
 
                 rem2 = mybudget;
@@ -356,46 +383,38 @@ class MyMonthState extends State<Month> {
                 updateSpent -= double.parse(spent2);
                 rem2 = updateSpent.toString();
                 //update DB for week 2
-                _budget
-                    .doc(widget.month)
-                    .collection('Week2')
-                    .doc('Week2')
-                    .update({
+                _budget.doc(widget.month).collection('Week2').doc('Week2').set({
                   'budget': double.parse(mybudget),
                   'amount remaining': double.parse(rem2),
+                  'amount spent': double.parse(spent2)
                 });
                 rem3 = mybudget;
                 updateSpent = double.parse(rem3);
                 updateSpent -= double.parse(spent3);
                 rem3 = updateSpent.toString();
                 //update DB for week 3
-                _budget
-                    .doc(widget.month)
-                    .collection('Week3')
-                    .doc('Week3')
-                    .update({
+                _budget.doc(widget.month).collection('Week3').doc('Week3').set({
                   'budget': double.parse(mybudget),
                   'amount remaining': double.parse(rem3),
+                  'amount spent': double.parse(spent3)
                 });
                 rem4 = mybudget;
                 updateSpent = double.parse(rem4);
                 updateSpent -= double.parse(spent4);
                 rem4 = updateSpent.toString();
                 //update DB for week 4
-                _budget
-                    .doc(widget.month)
-                    .collection('Week4')
-                    .doc('Week4')
-                    .update({
+                _budget.doc(widget.month).collection('Week4').doc('Week4').set({
                   'budget': double.parse(mybudget),
                   'amount remaining': double.parse(rem4),
+                  'amount spent': double.parse(spent4)
                 });
 
                 if (totRem != null) {
-                  _budget.doc(widget.month).update({'total remaining': totRem});
-                }
-                if (totSpent != null) {
-                  _budget.doc(widget.month).update({'total spent': totSpent});
+                  _budget.doc(widget.month).set({
+                    'budget': totBudget,
+                    'total remaining': totRem,
+                    'total spent': totSpent
+                  });
                 }
               });
             },
@@ -449,22 +468,32 @@ class MyMonthState extends State<Month> {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
                         setState(() {
+                          if (double.parse(spent1) !=
+                              double.parse(spentOneController.text)) {
+                            print("same");
+                            totSpent -= double.parse(spent1);
+                            totRem += double.parse(spent1);
+                            spent1 = spentOneController.text;
+                            totRem -= double.parse(spent1);
+                            double left = double.parse(spent1);
+
+                            totSpent += double.parse(spent1);
+                            left =
+                                double.parse(mybudget) - double.parse(spent1);
+
+                            rem1 = left.toString();
+                            _budget
+                                .doc(widget.month)
+                                .collection('Week1')
+                                .doc('Week1')
+                                .set({
+                              'budget': mybudget,
+                              'amount spent': double.parse(spent1),
+                              'amount remaining': rem1
+                            });
+                          }
                           spent1 = spentOneController.text;
-                          totRem -= double.parse(spent1);
-                          double left = double.parse(spent1);
-                          totSpent += double.parse(spent1);
-                          //getDB();
-                          //print("set");
-                          left = bud - left;
-                          rem1 = left.toString();
-                          _budget
-                              .doc(widget.month)
-                              .collection('Week1')
-                              .doc('Week1')
-                              .update({
-                            'amount spent': double.parse(spent1),
-                            'amount remaining': rem1
-                          });
+
                           // if (totRem != null) {
                           //   _budget
                           //       .doc(widget.month)
@@ -543,20 +572,31 @@ class MyMonthState extends State<Month> {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
                         setState(() {
+                          if (double.parse(spent2) !=
+                              double.parse(spentTwoController.text)) {
+                            print("same");
+                            totSpent -= double.parse(spent2);
+                            totRem += double.parse(spent2);
+                            spent2 = spentTwoController.text;
+                            totRem -= double.parse(spent2);
+                            double left = double.parse(spent2);
+
+                            totSpent += double.parse(spent2);
+                            left =
+                                double.parse(mybudget) - double.parse(spent2);
+
+                            rem2 = left.toString();
+                            _budget
+                                .doc(widget.month)
+                                .collection('Week2')
+                                .doc('Week2')
+                                .set({
+                              'budget': mybudget,
+                              'amount spent': double.parse(spent2),
+                              'amount remaining': rem2
+                            });
+                          }
                           spent2 = spentTwoController.text;
-                          totRem -= double.parse(spent2);
-                          double left = double.parse(spent2);
-                          totSpent += double.parse(spent2);
-                          left = bud - left;
-                          rem2 = left.toString();
-                          _budget
-                              .doc(widget.month)
-                              .collection('Week2')
-                              .doc('Week2')
-                              .update({
-                            'amount spent': double.parse(spent2),
-                            'amount remaining': rem2
-                          });
                           // if (totRem != null) {
                           //   _budget
                           //       .doc(widget.month)
@@ -634,20 +674,31 @@ class MyMonthState extends State<Month> {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
                         setState(() {
+                          if (double.parse(spent3) !=
+                              double.parse(spentThreeController.text)) {
+                            print("same");
+                            totSpent -= double.parse(spent3);
+                            totRem += double.parse(spent3);
+                            spent3 = spentThreeController.text;
+                            totRem -= double.parse(spent3);
+                            double left = double.parse(spent3);
+
+                            totSpent += double.parse(spent3);
+                            left =
+                                double.parse(mybudget) - double.parse(spent3);
+
+                            rem3 = left.toString();
+                            _budget
+                                .doc(widget.month)
+                                .collection('Week3')
+                                .doc('Week3')
+                                .set({
+                              'budget': mybudget,
+                              'amount spent': double.parse(spent3),
+                              'amount remaining': rem3
+                            });
+                          }
                           spent3 = spentThreeController.text;
-                          totRem -= double.parse(spent3);
-                          double left = double.parse(spent3);
-                          totSpent += double.parse(spent3);
-                          left = bud - left;
-                          rem3 = left.toString();
-                          _budget
-                              .doc(widget.month)
-                              .collection('Week3')
-                              .doc('Week3')
-                              .update({
-                            'amount spent': double.parse(spent3),
-                            'amount remaining': rem3
-                          });
                           // if (totRem != null) {
                           //   _budget
                           //       .doc(widget.month)
@@ -725,30 +776,30 @@ class MyMonthState extends State<Month> {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (value) {
                         setState(() {
-                          spent4 = spentFourController.text;
-                          totRem -= double.parse(spent4);
-                          double left = double.parse(spent4);
-                          totSpent += double.parse(spent4);
-                          left = bud - left;
-                          rem4 = left.toString();
-                          _budget
-                              .doc(widget.month)
-                              .collection('Week4')
-                              .doc('Week4')
-                              .update({
-                            'amount spent': double.parse(spent4),
-                            'amount remaining': rem4
-                          });
-                          // if (totRem != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total remaining': totRem});
-                          // }
-                          // if (totSpent != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total spent': totSpent});
-                          // }
+                          if (double.parse(spent4) !=
+                              double.parse(spentFourController.text)) {
+                            print("same");
+                            totSpent -= double.parse(spent4);
+                            totRem += double.parse(spent4);
+                            spent4 = spentFourController.text;
+                            totRem -= double.parse(spent4);
+                            double left = double.parse(spent4);
+
+                            totSpent += double.parse(spent4);
+                            left =
+                                double.parse(mybudget) - double.parse(spent4);
+
+                            rem4 = left.toString();
+                            _budget
+                                .doc(widget.month)
+                                .collection('Week4')
+                                .doc('Week4')
+                                .set({
+                              'budget': mybudget,
+                              'amount spent': double.parse(spent4),
+                              'amount remaining': rem4
+                            });
+                          }
                           editFour = false;
                         });
                       },
@@ -825,7 +876,10 @@ class MyMonthState extends State<Month> {
   Widget EstTotal() => ElevatedButton(
         onPressed: () async {
           est = 0;
-          var totals = FirebaseFirestore.instance.collection('GL totals');
+          var totals = FirebaseFirestore.instance
+              .collection('Users')
+              .doc(uid)
+              .collection('GL totals');
           var ds = await totals.doc('Totals').get();
           if (ds.exists) {
             Map<String, dynamic> data = ds.data()!;
@@ -836,7 +890,10 @@ class MyMonthState extends State<Month> {
             //est
           }
           double tr = 0;
-          var collection = FirebaseFirestore.instance.collection('Budget');
+          var collection = FirebaseFirestore.instance
+              .collection('Users')
+              .doc(uid)
+              .collection('Budget');
           var docSnapshot = await collection.doc(widget.month).get();
           if (docSnapshot.exists) {
             Map<String, dynamic> data = docSnapshot.data()!;

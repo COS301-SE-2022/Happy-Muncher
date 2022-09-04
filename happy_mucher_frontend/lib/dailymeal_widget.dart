@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MealWidget extends StatefulWidget {
   const MealWidget({Key? key, required this.day, required this.meal})
@@ -13,8 +14,10 @@ class MealWidget extends StatefulWidget {
 }
 
 class MealWidgetState extends State<MealWidget> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _meals => firestore.collection('Meal Planner');
+  CollectionReference get _meals =>
+      firestore.collection('Users').doc(uid).collection('Meal Planner');
   String image = '';
   String title = 'Add recipe from recipe book';
   String cookTime = '';
@@ -42,7 +45,10 @@ class MealWidgetState extends State<MealWidget> {
   }
 
   Future<void> getMeals() async {
-    var collection = FirebaseFirestore.instance.collection('Meal Planner');
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('Meal Planner');
     var docSnapshot = await collection
         .doc(widget.day)
         .collection(widget.meal)
@@ -60,7 +66,7 @@ class MealWidgetState extends State<MealWidget> {
       description = data['Description'];
       calories = data['Calories'];
       instr = data['Instructions'];
-      print(image);
+      print(title);
     }
 
     var docSnapshot2 = await collection
@@ -79,7 +85,7 @@ class MealWidgetState extends State<MealWidget> {
       setState(() {
         ingredients = (ing.split('\n'));
         instructions = (instr.split('\n'));
-        print(image);
+        print(title);
       });
     }
 
@@ -149,8 +155,10 @@ class MealWidgetState extends State<MealWidget> {
           iconSize: 44.0,
           onPressed: () async {
             if (hasrecipe == false) {
-              var collection =
-                  FirebaseFirestore.instance.collection('Meal Planner');
+              var collection = FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(uid)
+                  .collection('Meal Planner');
               var docSnapshot = await collection.doc('Place Holder').get();
               if (docSnapshot.exists) {
                 Map<String, dynamic> data = docSnapshot.data()!;
@@ -167,11 +175,7 @@ class MealWidgetState extends State<MealWidget> {
               ingredients = (ing.split('\n'));
               instructions = (instr.split('\n'));
               //print(instr);
-              _meals
-                  .doc(widget.day)
-                  .collection(widget.meal)
-                  .doc('Recipe')
-                  .update({
+              _meals.doc(widget.day).collection(widget.meal).doc('Recipe').set({
                 'Name': title,
                 'Instructions': instr,
                 'Description': description,
@@ -185,7 +189,7 @@ class MealWidgetState extends State<MealWidget> {
                   .doc(widget.day)
                   .collection(widget.meal)
                   .doc('hasRecipe')
-                  .update({
+                  .set({
                 'has': hasrecipe,
               });
               //print(ingrd[0]); // return ["one"
@@ -200,11 +204,7 @@ class MealWidgetState extends State<MealWidget> {
               ingredients = (ing.split('\n'));
               instructions = (instr.split('\n'));
               //print(instr);
-              _meals
-                  .doc(widget.day)
-                  .collection(widget.meal)
-                  .doc('Recipe')
-                  .update({
+              _meals.doc(widget.day).collection(widget.meal).doc('Recipe').set({
                 'Name': "add recipe from recipe book",
                 'Instructions': "none",
                 'Description': "none",
@@ -218,7 +218,7 @@ class MealWidgetState extends State<MealWidget> {
                   .doc(widget.day)
                   .collection(widget.meal)
                   .doc('hasRecipe')
-                  .update({
+                  .set({
                 'has': hasrecipe,
               });
               //print(ingrd[0]); // return ["one"

@@ -7,6 +7,7 @@ import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //search resource:
 //https://medium.com/@nishkarsh.makhija/implementing-searchable-list-view-in-flutter-using-data-from-network-d3aefffbd964
@@ -36,8 +37,9 @@ class IndividualRecipe extends StatefulWidget {
 
 class IndividualRecipeState extends State<IndividualRecipe> {
   final FirebaseFirestore firestore = GetIt.I.get();
-
-  CollectionReference get _glItems => firestore.collection('GroceryList');
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  CollectionReference get _glItems =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
   String ing = "";
   String steps = "";
   String its = '';
@@ -50,6 +52,8 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   List<String> gl = [];
   getInventory() {
     FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
         .collection('Inventory')
         .get()
         .then((QuerySnapshot querySnapshot) {
@@ -102,10 +106,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         Text(widget.cookTime + " mins"),
         const SizedBox(height: 24),
         Text(
-      
           "Ingredients",
           style: TextStyle(fontWeight: FontWeight.bold),
-              key: Key('ingredients'),
+          key: Key('ingredients'),
         ),
         Text(ing),
         ElevatedButton(
@@ -193,7 +196,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
   toGL() async {
     gl.forEach((element) async {
-      await _glItems.add({"name": element, "price": 0, "bought": false});
+      await _glItems.add({"name": element, "price": 0.0, "bought": false});
     });
   }
 }

@@ -7,10 +7,12 @@ import 'package:get_it/get_it.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -23,30 +25,42 @@ class GroceryListPageState extends State<GroceryListPage> {
   // text fields' controllers
   // text fields' controllers
   final ImagePicker _picker = ImagePicker();
-
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   int shoppingPrices = 0;
   int estimatePrices = 0;
-  CollectionReference get _products => firestore.collection('GroceryList');
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
 
-  CollectionReference get _inventory => firestore.collection('Inventory');
+  CollectionReference get _inventory =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
 
-  //final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _gltotals => firestore.collection('GL totals');
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
+  late final LocalNotificationService service;
+
   @override
   void initState() {
     super.initState();
-    // print('init');
-    // //Totals(context);
-    // print('est');
-    // print(estimatePrices);
-    // print('shopping');
-    // print(shoppingPrices);
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IventoryPage(),
+      ));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () => totals(context));
+    //Future.delayed(Duration.zero, () => totals(context));
     return Scaffold(
       appBar: AppBar(
           title: const Text('Grocery List'),
@@ -169,11 +183,12 @@ class GroceryListPageState extends State<GroceryListPage> {
                             "expirationDate": ""
                           },
                         );
-                        NotificationAPI.showNotification(
-                            title: 'Happy Muncher',
-                            body:
-                                '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
-                            payload: 'groceryList');
+                        service.showNotification(
+                          id: 0,
+                          title: 'Happy Muncher',
+                          body:
+                              '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
+                        );
                       }
                     },
                   ),
