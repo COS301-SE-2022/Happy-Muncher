@@ -22,7 +22,7 @@ class DashboardPageState extends State<DashboardPage> {
         domainFn: (Values sales, _) => sales.total_remaining.toString(),
         measureFn: (Values sales, _) => (sales.budget),
         colorFn: (Values sales, _) =>
-            charts.ColorUtil.fromDartColor(Colors.blue),
+            charts.ColorUtil.fromDartColor(Colors.orange),
         id: 'Sales',
         data: mydata,
         labelAccessorFn: (Values row, _) => "${row.budget}",
@@ -61,8 +61,13 @@ class DashboardPageState extends State<DashboardPage> {
   Widget _buildChart(BuildContext context, List<Values> saledata) {
     mydata = saledata;
     _generateData(mydata);
-    return Padding(
-      padding: EdgeInsets.all(8.0),
+
+    return Card(
+      //padding: EdgeInsets.all(8.0),
+      shadowColor: Color.fromARGB(255, 172, 255, 78),
+      elevation: 25,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Container(
         //width: 50,
         height: 300,
@@ -70,7 +75,7 @@ class DashboardPageState extends State<DashboardPage> {
           child: Column(
             children: <Widget>[
               Text(
-                'Your budget for each month',
+                'Monthly budget',
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -98,3 +103,34 @@ class DashboardPageState extends State<DashboardPage> {
     );
   }
 }
+
+/*Widget buildMealcard() => Card(
+    key: const ValueKey("Meal Planner"),
+    shadowColor: Color.fromARGB(255, 172, 255, 78),
+    elevation: 25,
+    clipBehavior: Clip.antiAlias,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+    child: Stack(alignment: Alignment.center, children: [
+      InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MealPage()));
+          },
+          child: Container(
+            height: 120,
+            width: 350,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: const Center(
+              child: Text(
+                "Meal Planner",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 172, 255, 78),
+                  fontSize: 35,
+                ),
+              ),
+            ),
+          ))
+    ]));*/
