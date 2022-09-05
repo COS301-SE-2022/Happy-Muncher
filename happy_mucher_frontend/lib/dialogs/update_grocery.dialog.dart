@@ -30,6 +30,7 @@ class _UpdateGLPageState extends State<GLDialog> {
   final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _items => firestore.collection('GroceryList');
+  CollectionReference get _gltotals => firestore.collection('GL totals');
 
   DateTime? expirationDate;
   DocumentSnapshot documentSnapshot;
@@ -89,6 +90,17 @@ class _UpdateGLPageState extends State<GLDialog> {
               nameController.text = '';
               priceController.text = '';
               dateFieldController.text = '';
+
+              final currentTotals =
+                  ((await _gltotals.doc("Totals").get()).data() as Map);
+              final estimatedTotals = currentTotals["estimated total"] as num;
+              final shoppingTotals = currentTotals["shopping total"] as num;
+
+              _gltotals.doc("Totals").update({
+                'estimated total': estimatedTotals,
+                'shopping total': shoppingTotals + num.parse(price)
+              });
+
               Navigator.of(context).pop();
             }
           },
