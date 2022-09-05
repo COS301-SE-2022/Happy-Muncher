@@ -19,8 +19,8 @@ class DashboardPageState extends State<DashboardPage> {
     _seriesBarData = [];
     _seriesBarData.add(
       charts.Series(
-        domainFn: (Values sales, _) => sales.budget,
-        measureFn: (Values sales, _) => sales.total_remaining,
+        domainFn: (Values sales, _) => sales.total_remaining.toString(),
+        measureFn: (Values sales, _) => (sales.budget),
         colorFn: (Values sales, _) =>
             charts.ColorUtil.fromDartColor(Colors.blue),
         id: 'Sales',
@@ -64,11 +64,13 @@ class DashboardPageState extends State<DashboardPage> {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Container(
+        //width: 50,
+        height: 300,
         child: Center(
           child: Column(
             children: <Widget>[
               Text(
-                'Sales by Year',
+                'Your budget for each month',
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -79,14 +81,14 @@ class DashboardPageState extends State<DashboardPage> {
                   _seriesBarData,
                   animate: true,
                   animationDuration: Duration(seconds: 5),
-                  behaviors: [
+                  /*behaviors: [
                     new charts.DatumLegend(
                       entryTextStyle: charts.TextStyleSpec(
                           color: charts.MaterialPalette.purple.shadeDefault,
                           fontFamily: 'Georgia',
                           fontSize: 18),
                     )
-                  ],
+                  ],*/
                 ),
               ),
             ],
