@@ -78,16 +78,22 @@ class GroceryListPageState extends State<GroceryListPage> {
                     children: [
                       SlidableAction(
                         onPressed: (context) {
-                          setState(() {
+                          setState(() async {
                             _products.doc(documentSnapshot.id).delete();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'You have successfully deleted a grocery list item',
-                                ),
-                              ),
-                            );
 
+                            final currentTotals =
+                                ((await _gltotals.doc("Totals").get()).data()
+                                    as Map);
+                            final estimatedTotals =
+                                currentTotals["estimated total"] as num;
+                            final shoppingTotals =
+                                currentTotals["shopping total"] as num;
+
+                            _gltotals.doc("Totals").update({
+                              'estimated total': estimatedTotals,
+                              'shopping total':
+                                  shoppingTotals - documentSnapshot['price']
+                            });
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -227,14 +233,26 @@ class GroceryListPageState extends State<GroceryListPage> {
       return;
     }
     final listOfItemNames = await getRecognisedText(croppedImagePath);
+    var priceUpdate = 0.0;
+
+    for (final item in listOfItemNames) {
+      priceUpdate += item.itemPrice;
+    }
+    final currentTotals = ((await _gltotals.doc("Totals").get()).data() as Map);
+    final estimatedTotals = currentTotals["estimated total"] as num;
+    final shoppingTotals = currentTotals["shopping total"] as num;
+
+    _gltotals.doc("Totals").update({
+      'estimated total': estimatedTotals,
+      'shopping total': shoppingTotals + priceUpdate
+    });
 
     final futures = listOfItemNames.map((item) {
-      return _products.add({
-        "name": item.itemName,
-        "price": item.itemPrice,
-        "bought": false
-      }); //item.name item.price
+      return _products.add(
+          {"name": item.itemName, "price": item.itemPrice, "bought": false});
+      //item.name item.price
     });
+
     await Future.wait(futures);
   }
 
@@ -263,8 +281,8 @@ class GroceryListPageState extends State<GroceryListPage> {
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
         if (line.boundingBox.left / image.width * 100 < 10) {
-          line.text.toLowerCase();
-          listOfTempItems.add(line.text);
+          final textLower = line.text.toLowerCase();
+          listOfTempItems.add(textLower);
         }
       }
     }
