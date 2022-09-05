@@ -26,8 +26,6 @@ class GroceryListPageState extends State<GroceryListPage> {
   final ImagePicker _picker = ImagePicker();
 
   final FirebaseFirestore firestore = GetIt.I.get();
-  int shoppingPrices = 0;
-  int estimatePrices = 0;
   CollectionReference get _products => firestore.collection('GroceryList');
 
   CollectionReference get _inventory => firestore.collection('Inventory');
@@ -145,6 +143,27 @@ class GroceryListPageState extends State<GroceryListPage> {
                             body:
                                 '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
                             payload: 'groceryList');
+                      }
+
+                      final currentTotals =
+                          ((await _gltotals.doc("Totals").get()).data() as Map);
+                      final estimatedTotals =
+                          currentTotals["estimated total"] as num;
+                      final shoppingTotals =
+                          currentTotals["shopping total"] as num;
+
+                      if (checkVal) {
+                        _gltotals.doc("Totals").update({
+                          'estimated total':
+                              estimatedTotals + documentSnapshot['price'],
+                          'shopping total': shoppingTotals
+                        });
+                      } else {
+                        _gltotals.doc("Totals").update({
+                          'estimated total':
+                              estimatedTotals - documentSnapshot['price'],
+                          'shopping total': shoppingTotals
+                        });
                       }
                     },
                   ),
