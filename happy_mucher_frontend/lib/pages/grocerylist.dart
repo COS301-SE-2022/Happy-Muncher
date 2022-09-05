@@ -52,7 +52,7 @@ class GroceryListPageState extends State<GroceryListPage> {
 
   void onClickedNotification(String? payload) =>
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => IventoryPage(),
+        builder: (context) => const IventoryPage(),
       ));
 
   @override
@@ -62,50 +62,7 @@ class GroceryListPageState extends State<GroceryListPage> {
       appBar: AppBar(
           title: const Text('Grocery List'),
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 252, 95, 13)),
-      // bottomNavigationBar: BottomAppBar(
-      //   color: Color.fromARGB(255, 252, 95, 13),
-      //   child: Row(
-      //     children: [
-      //       RichText(
-      //         text: TextSpan(
-      //           children: [
-      //             const WidgetSpan(
-      //               child: Icon(Icons.add, size: 19),
-      //             ),
-      //             TextSpan(
-      //               text:
-      //                   "Estimated Total: " + estimatePrices.toString() + "\n",
-      //               style: const TextStyle(
-      //                 fontSize: 19,
-      //                 color: Colors.black,
-      //               ),
-      //             ),
-      //             const WidgetSpan(
-      //               child: Icon(Icons.shopping_cart, size: 19),
-      //             ),
-      //             TextSpan(
-      //               text: "Total: " + shoppingPrices.toString(),
-      //               style: const TextStyle(
-      //                 fontSize: 19,
-      //                 color: Colors.black,
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       )
-      //       // Text(
-
-      //       //   "\u2713 Estimated Price: " +
-      //       //       estimatePrices.toString() +
-      //       //       '\n' +
-      //       //       "Total: " +
-      //       //       shoppingPrices.toString(),
-      //       //   style: TextStyle(fontSize: 19, color: Colors.black),
-      //       // ),
-      //     ],
-      //   ),
-      // ),
+          backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
       body: StreamBuilder(
         stream: _products.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -164,15 +121,17 @@ class GroceryListPageState extends State<GroceryListPage> {
                     title: Text(documentSnapshot['name']),
                     value: documentSnapshot['bought'],
                     subtitle: Text('R' + documentSnapshot['price'].toString()),
-                    onChanged: (newValue) {
+                    onChanged: (checkVal) async {
+                      if (checkVal == null) {
+                        return;
+                      }
                       _products
                           .doc(documentSnapshot.id)
-                          .update({'bought': !documentSnapshot['bought']});
+                          .update({'bought': checkVal});
 
-                      var checkVal = documentSnapshot['bought'];
                       var itemName = documentSnapshot['name'];
-                      if (checkVal == false) {
-                        //checks previous value if it is changing from false to true that means its being bought
+
+                      if (checkVal == true) {
                         _inventory.add(
                           {
                             "itemName": itemName,
@@ -180,6 +139,7 @@ class GroceryListPageState extends State<GroceryListPage> {
                             "expirationDate": ""
                           },
                         );
+
                         NotificationAPI.showNotification(
                             title: 'Happy Muncher',
                             body:
@@ -319,18 +279,7 @@ class GroceryListPageState extends State<GroceryListPage> {
             continue;
           }
           if (line.text.contains(RegExp("[a-zA-Z]+"))) {
-            final newPrice = line.text.replaceAll("[a-zA-Z]+", '');
-            listOfItemsPrices.add(double.parse(newPrice));
-            continue;
-          }
-          if (line.text.contains('R')) {
-            //if R remove R
-            final newPrice = line.text.replaceAll('R', '');
-            listOfItemsPrices.add(double.parse(newPrice));
-            continue;
-          }
-          if (line.text.contains('r')) {
-            final newPrice = line.text.replaceAll('', '');
+            final newPrice = line.text.replaceAll(RegExp("[a-zA-Z]+"), '');
             listOfItemsPrices.add(double.parse(newPrice));
             continue;
           }
@@ -341,6 +290,13 @@ class GroceryListPageState extends State<GroceryListPage> {
           }
           if (line.text.contains(',')) {
             final newPrice = line.text.replaceAll(',', '.');
+            listOfItemsPrices.add(double.parse(newPrice));
+            continue;
+          }
+          if (line.text
+              .contains(RegExp(r"[`~!@#$%^&*()_+\\<>?/{}\[\]|:;']+"))) {
+            final newPrice = line.text
+                .replaceAll(RegExp(r"[`~!@#$%^&*()_+\\<>?/{}\[\]|:;']+"), '');
             listOfItemsPrices.add(double.parse(newPrice));
             continue;
           }
@@ -362,33 +318,6 @@ class GroceryListPageState extends State<GroceryListPage> {
 
     return mapOfItems;
   }
-
-  // void totals(context) {
-  //   // estimatePrices = 0;
-  //   // shoppingPrices = 0;
-  //   int e = 0;
-  //   int s = 0;
-  //   _products.get().then((QuerySnapshot querySnapshot) {
-  //     for (final doc in querySnapshot.docs) {
-  //       if ((doc["price"]) != 0) {
-  //         e += int.parse(doc["price"]);
-
-  //         if ((doc["bought"]) == true) {
-  //           //print(doc["price"]);
-  //           s += int.parse(doc["price"]);
-  //         }
-  //       }
-  //     }
-  //     estimatePrices = e;
-  //     shoppingPrices = s;
-  //   });
-  //   _gltotals.doc('Totals').update({
-  //     'estimated total': estimatePrices,
-  //     'shopping total': shoppingPrices,
-  //   });
-
-  //   setState(() {});
-  // }
 }
 
 class ReceiptItem {
