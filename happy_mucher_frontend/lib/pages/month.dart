@@ -220,7 +220,8 @@ class MyMonthState extends State<Month> {
           _budget.doc(widget.month).set({
             'budget': totBudget,
             'total remaining': totRem,
-            'total spent': totSpent
+            'total spent': totSpent,
+            'month': widget.month
           });
         }
       });
@@ -358,7 +359,8 @@ class MyMonthState extends State<Month> {
                 _budget.doc(widget.month).set({
                   'budget': totBudget,
                   'total remaining': totRem,
-                  'total spent': totSpent
+                  'total spent': totSpent,
+                  'month': widget.month
                 });
 
                 double updateSpent = 0;
@@ -413,7 +415,8 @@ class MyMonthState extends State<Month> {
                   _budget.doc(widget.month).set({
                     'budget': totBudget,
                     'total remaining': totRem,
-                    'total spent': totSpent
+                    'total spent': totSpent,
+                    'month': widget.month
                   });
                 }
               });
