@@ -7,6 +7,7 @@ import '../models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -49,6 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
           .logIn(_authData['email']!, _authData['password']!);
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set({'firstName': 'Kajal'});
 
       Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
     } catch (error) {

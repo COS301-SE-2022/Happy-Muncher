@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -18,13 +19,34 @@ class IventoryPage extends StatefulWidget {
 class _IventoryPageState extends State<IventoryPage> {
   // text fields' controllers
   // text fields' controllers
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
-  CollectionReference get _products => firestore.collection('Inventory');
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
+  late final LocalNotificationService service;
+  void initState() {
+    super.initState();
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IventoryPage(),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +79,7 @@ class _IventoryPageState extends State<IventoryPage> {
                                     content: Text(
                                         'You have successfully deleted a product')));
                           });
-                          NotificationAPI.cancel(NotificationAPI.getID());
+                          service.cancel(LocalNotificationService.getID());
                         },
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
