@@ -1,14 +1,15 @@
 class Values {
   final double budget;
-  final String total_remaining;
-  Values(this.budget, this.total_remaining);
+  final String month;
+
+  Values(this.budget, this.month);
 
   Values.fromMap(dynamic map)
       : assert(map['budget'] != null),
         assert(map['month'] != null),
         budget = map['budget'],
-        total_remaining = map['month'];
+        month = map['month'];
 
   @override
-  String toString() => "Record<$budget:$total_remaining>";
+  String toString() => "Record<$budget:$month>";
 }
