@@ -61,25 +61,138 @@ class GroceryListPageState extends State<GroceryListPage> {
           title: const Text('Grocery List'),
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
-      body: StreamBuilder(
-        stream: _products.snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          if (streamSnapshot.hasData) {
-            return ListView.builder(
-              key: const Key('Grocery_ListView'),
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Slidable(
-                  key: Key(documentSnapshot['name']),
-                  startActionPane: ActionPane(
-                    motion: const ScrollMotion(),
+      body: Column(
+        children: [
+          StreamBuilder<DocumentSnapshot>(
+              stream: _gltotals.doc('Totals').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final data = snapshot.data?.data() as Map;
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SlidableAction(
-                        onPressed: (context) {
-                          setState(() async {
-                            _products.doc(documentSnapshot.id).delete();
+                      Text(
+                        'Estimated Total: ${(data['estimated total'] as num).toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      Text(
+                        'Actual Total: ${(data['shopping total'] as num).toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }),
+          Expanded(
+            child: StreamBuilder(
+              stream: _products.snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  return ListView.builder(
+                    key: const Key('Grocery_ListView'),
+                    itemCount: streamSnapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[index];
+                      return Slidable(
+                        key: Key(documentSnapshot['name']),
+                        startActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                setState(() async {
+                                  _products.doc(documentSnapshot.id).delete();
+
+                                  final currentTotals =
+                                      ((await _gltotals.doc("Totals").get())
+                                          .data() as Map);
+                                  final estimatedTotals =
+                                      currentTotals["estimated total"] as num;
+                                  final shoppingTotals =
+                                      currentTotals["shopping total"] as num;
+
+                                  final isBought = documentSnapshot['bought'];
+
+                                  if (isBought == false) {
+                                    _gltotals.doc("Totals").update({
+                                      'estimated total': estimatedTotals,
+                                      'shopping total': shoppingTotals -
+                                          documentSnapshot['price']
+                                    });
+                                  } else {
+                                    _gltotals.doc("Totals").update({
+                                      'estimated total': estimatedTotals -
+                                          documentSnapshot['price'],
+                                      'shopping total': shoppingTotals -
+                                          documentSnapshot['price']
+                                    });
+                                  }
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'You have successfully deleted a grocery list item',
+                                      ),
+                                    ),
+                                  );
+                                });
+                              },
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                            ),
+                            SlidableAction(
+                              onPressed: (context) {
+                                showUpdateDialogGroceryList(
+                                    context, documentSnapshot);
+                              },
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                              icon: Icons.edit,
+                              label: 'Edit',
+                            )
+                          ],
+                        ),
+                        child: CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(documentSnapshot['name']),
+                          value: documentSnapshot['bought'],
+                          subtitle:
+                              Text('R' + documentSnapshot['price'].toString()),
+                          onChanged: (checkVal) async {
+                            if (checkVal == null) {
+                              return;
+                            }
+                            _products
+                                .doc(documentSnapshot.id)
+                                .update({'bought': checkVal});
+
+                            var itemName = documentSnapshot['name'];
+
+                            if (checkVal == true) {
+                              _inventory.add(
+                                {
+                                  "itemName": itemName,
+                                  "quantity": 1,
+                                  "expirationDate": ""
+                                },
+                              );
+
+                              NotificationAPI.showNotification(
+                                  title: 'Happy Muncher',
+                                  body:
+                                      '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
+                                  payload: 'groceryList');
+                            }
 
                             final currentTotals =
                                 ((await _gltotals.doc("Totals").get()).data()
@@ -89,99 +202,33 @@ class GroceryListPageState extends State<GroceryListPage> {
                             final shoppingTotals =
                                 currentTotals["shopping total"] as num;
 
-                            _gltotals.doc("Totals").update({
-                              'estimated total': estimatedTotals,
-                              'shopping total':
-                                  shoppingTotals - documentSnapshot['price']
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'You have successfully deleted a grocery list item',
-                                ),
-                              ),
-                            );
-                          });
-                        },
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: 'Delete',
-                      ),
-                      SlidableAction(
-                        onPressed: (context) {
-                          showUpdateDialogGroceryList(
-                              context, documentSnapshot);
-                        },
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        icon: Icons.edit,
-                        label: 'Edit',
-                      )
-                    ],
-                  ),
-                  child: CheckboxListTile(
-                    controlAffinity: ListTileControlAffinity.leading,
-                    title: Text(documentSnapshot['name']),
-                    value: documentSnapshot['bought'],
-                    subtitle: Text('R' + documentSnapshot['price'].toString()),
-                    onChanged: (checkVal) async {
-                      if (checkVal == null) {
-                        return;
-                      }
-                      _products
-                          .doc(documentSnapshot.id)
-                          .update({'bought': checkVal});
-
-                      var itemName = documentSnapshot['name'];
-
-                      if (checkVal == true) {
-                        _inventory.add(
-                          {
-                            "itemName": itemName,
-                            "quantity": 1,
-                            "expirationDate": ""
+                            if (checkVal) {
+                              _gltotals.doc("Totals").update({
+                                'estimated total':
+                                    estimatedTotals + documentSnapshot['price'],
+                                'shopping total': shoppingTotals
+                              });
+                            } else {
+                              _gltotals.doc("Totals").update({
+                                'estimated total':
+                                    estimatedTotals - documentSnapshot['price'],
+                                'shopping total': shoppingTotals
+                              });
+                            }
                           },
-                        );
-
-                        NotificationAPI.showNotification(
-                            title: 'Happy Muncher',
-                            body:
-                                '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
-                            payload: 'groceryList');
-                      }
-
-                      final currentTotals =
-                          ((await _gltotals.doc("Totals").get()).data() as Map);
-                      final estimatedTotals =
-                          currentTotals["estimated total"] as num;
-                      final shoppingTotals =
-                          currentTotals["shopping total"] as num;
-
-                      if (checkVal) {
-                        _gltotals.doc("Totals").update({
-                          'estimated total':
-                              estimatedTotals + documentSnapshot['price'],
-                          'shopping total': shoppingTotals
-                        });
-                      } else {
-                        _gltotals.doc("Totals").update({
-                          'estimated total':
-                              estimatedTotals - documentSnapshot['price'],
-                          'shopping total': shoppingTotals
-                        });
-                      }
+                        ),
+                      );
                     },
-                  ),
+                  );
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
               },
-            );
-          }
-
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: SpeedDial(
         key: const Key('speed_dial_button'),
