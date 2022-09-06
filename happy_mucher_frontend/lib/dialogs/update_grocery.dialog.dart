@@ -96,9 +96,10 @@ class _UpdateGLPageState extends State<GLDialog> {
               final estimatedTotals = currentTotals["estimated total"] as num;
               final shoppingTotals = currentTotals["shopping total"] as num;
 
-              _gltotals.doc("Totals").update({
+              await _gltotals.doc("Totals").update({
                 'estimated total': estimatedTotals,
-                'shopping total': shoppingTotals + num.parse(price)
+                'shopping total':
+                    shoppingTotals - documentSnapshot['price'] + priceDouble
               });
 
               Navigator.of(context).pop();
