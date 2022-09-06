@@ -179,6 +179,7 @@ class _IventoryPageState extends State<IventoryPage> {
     });
   }
 
+//using ML kit
   Future<void> processImage(InputImage inputImage) async {
     if (!_canProcess) return;
     if (_isBusy) return;
@@ -189,19 +190,12 @@ class _IventoryPageState extends State<IventoryPage> {
     final barcodes = await _barcodeScanner.processImage(inputImage);
     if (inputImage.inputImageData?.size != null &&
         inputImage.inputImageData?.imageRotation != null) {
-      // final painter = BarcodeDetectorPainter(
-      //     barcodes,
-      //     inputImage.inputImageData!.size,
-      //     inputImage.inputImageData!.imageRotation);
-      // _customPaint = CustomPaint(painter: painter);
     } else {
       String text = 'Barcodes found: ${barcodes.length}\n\n';
       for (final barcode in barcodes) {
         text += 'Barcode: ${barcode.rawValue}\n\n';
       }
       _text = text;
-      // TODO: set _customPaint to draw boundingRect on top of image
-      //_customPaint = null;
     }
     _isBusy = false;
     if (mounted) {
