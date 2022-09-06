@@ -25,19 +25,25 @@ class MyRecipeBookState extends State<MyRecipeBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Grocery List'),
-            centerTitle: true,
-            backgroundColor: Color.fromARGB(255, 252, 95, 13)),
-        body: Column(
-          children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Create()));
-                },
-                icon: Icon(Icons.add))
-          ],
-        ));
+      appBar: AppBar(
+          title: const Text('Grocery List'),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13)),
+      body: Column(
+        children: [
+          ListTile(
+            title: Text("My recipe"),
+            leading: Icon(Icons.star_border),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Create()));
+        },
+        child: Icon(Icons.add),
+      ),
+    );
   }
 }

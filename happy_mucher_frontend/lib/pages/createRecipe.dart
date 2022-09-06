@@ -44,12 +44,13 @@ class CreateState extends State<Create> {
 
   final ingController = TextEditingController();
   //final List<String> ingredients = <String>[];
-
+  final titleController = TextEditingController();
   final cooktimeController = TextEditingController();
   final caloriesController = TextEditingController();
   final preptimeController = TextEditingController();
 
   String cookTime = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -66,19 +67,86 @@ class CreateState extends State<Create> {
             onPressed: () {
               recipe = myRecipe(
                 name: title,
+                //navigate back to other page
               );
             },
             child: Text("Done"),
           ),
           backgroundColor: Color.fromARGB(255, 252, 95, 13)),
 
-      body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
-        children: ingredients.map((String todo) {
-          return ComponentCard(
-            ingredient: todo,
-          );
-        }).toList(),
+      body: Column(
+        children: [
+          Text('Enter your Recipe Title ', style: TextStyle(height: 3.2)),
+          const SizedBox(height: 14),
+
+          TextField(
+              key: Key("enterTitle"),
+              controller: titleController,
+              decoration: const InputDecoration(
+                hintText: ('Title'),
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              onSubmitted: ((value) {
+                title = titleController.text;
+                print(title);
+              })
+              // autofocus: true,
+              ),
+          Text('Enter your Ingredients ', style: TextStyle(height: 3.2)),
+          const SizedBox(height: 14),
+          Flexible(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              children: ingredients.map((String item) {
+                return ComponentCard(
+                  ingredient: item,
+                );
+              }).toList(),
+            ),
+          ),
+          // ListView(
+          //   padding: EdgeInsets.symmetric(vertical: 8.0),
+          //   children: ingredients.map((String item) {
+          //     return ComponentCard(
+          //       ingredient: item,
+          //     );
+          //   }).toList(),
+          // ),
+
+          FloatingActionButton(
+            heroTag: "ingbutton",
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddIngredientDialog(
+                  ingredients: ingredients,
+                );
+              },
+
+              //useRootNavigator: true,
+            ),
+            child: Icon(Icons.add),
+          ),
+          Text('Enter your Instructions ', style: TextStyle(height: 3.2)),
+          const SizedBox(height: 14),
+          FloatingActionButton(
+            heroTag: "insbutton",
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddIngredientDialog(
+                  ingredients: ingredients,
+                );
+              },
+
+              //useRootNavigator: true,
+            ),
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
       // StreamBuilder(builder: (context, snapshot) {
       //   return ListView.builder(
@@ -112,19 +180,20 @@ class CreateState extends State<Create> {
       //     //     icon: Icon(Icons.search))
       //   ],
       // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AddIngredientDialog(
-              ingredients: ingredients,
-            );
-          },
+      // floatingActionButton:
+      // FloatingActionButton(
+      //   onPressed: () => showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return AddIngredientDialog(
+      //         ingredients: ingredients,
+      //       );
+      //     },
 
-          //useRootNavigator: true,
-        ),
-        child: Icon(Icons.add),
-      ),
+      //     //useRootNavigator: true,
+      //   ),
+      //   child: Icon(Icons.add),
+      // ),
 
       // FloatingActionButton(
       //   onPressed: () {},r
