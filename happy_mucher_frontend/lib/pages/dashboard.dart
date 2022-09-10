@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 import 'package:happy_mucher_frontend/pages/values.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -21,6 +22,29 @@ class DashboardPage extends StatefulWidget {
 class DashboardPageState extends State<DashboardPage> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
+  CollectionReference get _lunch => firestore
+      .collection('Users')
+      .doc(uid)
+      .collection('Meal Planner')
+      .doc(DateFormat('EEEE').format(DateTime.now()))
+      .collection('Lunch');
+
+  CollectionReference get _breakfast => firestore
+      .collection('Users')
+      .doc(uid)
+      .collection('Meal Planner')
+      .doc(DateFormat('EEEE').format(DateTime.now()))
+      .collection('Breakfast');
+
+  CollectionReference get _supper => firestore
+      .collection('Users')
+      .doc(uid)
+      .collection('Meal Planner')
+      .doc(DateFormat('EEEE').format(DateTime.now()))
+      .collection('Supper');
+
   List<charts.Series<Values, String>> _seriesBarData = [];
   List<Values> mydata = [];
   _generateData(mydata) {
@@ -55,58 +79,6 @@ class DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  String mealsForDay = " ";
-  void getMeals() async {
-    //mealsForDay = "";
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Meal Planner');
-
-    collection
-        .doc(DateFormat('EEEE').format(DateTime.now()))
-        .collection("Breakfast")
-        .doc('Recipe')
-        .get()
-        .then((value) {
-      if (value.exists) {
-        Meal("Breakfast: " + value.data()?["Name"]);
-      } else {
-        Meal("Breakfast: No meal added");
-      }
-    });
-
-    collection
-        .doc(DateFormat('EEEE').format(DateTime.now()))
-        .collection("Lunch")
-        .doc('Recipe')
-        .get()
-        .then((value) {
-      if (value.exists) {
-        Meal("Lunch: " + value.data()?["Name"]);
-      } else {
-        Meal("Lunch: No meal added");
-      }
-    });
-
-    collection
-        .doc(DateFormat('EEEE').format(DateTime.now()))
-        .collection("Supper")
-        .doc('Recipe')
-        .get()
-        .then((value) {
-      if (value.exists) {
-        Meal("Supper: " + value.data()?["Name"]);
-      } else {
-        Meal("Supper: No meal added");
-      }
-    });
-  }
-
-  void Meal(String s) {
-    mealsForDay += s + " \n";
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,13 +91,13 @@ class DashboardPageState extends State<DashboardPage> {
       body: ListView(
         children: <Widget>[
           const SizedBox(height: 10),
-          buildMealPlanner(),
+          buildMealPlanner(context),
           const SizedBox(height: 10),
           buildGLcard(context),
           const SizedBox(height: 10),
           buildBudgetcard(context),
           const SizedBox(height: 10),
-          //buildMealcard(),
+          buildInventoryCard(context),
           const SizedBox(height: 10),
           // buildRecipecard(),
           //   SizedBox(
@@ -183,11 +155,7 @@ class DashboardPageState extends State<DashboardPage> {
     return meals;
   }*/
 
-  Widget buildMealPlanner() {
-    getMeals();
-    String meals = mealsForDay;
-    mealsForDay = "";
-    print(meals);
+  Widget buildMealPlanner(BuildContext context) {
     return Card(
         key: const ValueKey("Meal Planner"),
         shadowColor: Color.fromARGB(255, 172, 255, 78),
@@ -195,36 +163,137 @@ class DashboardPageState extends State<DashboardPage> {
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(alignment: Alignment.center, children: [
+          Text(
+            'Meal Planner',
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
           InkWell(
-              onTap: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MealPage()));
-              },
-              child: Container(
-                height: 160,
-                width: 400,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
+            onTap: () async {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MealPage()));
+            },
+            child: Container(
+              height: 160,
+              width: 400,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: Center(
+                child: Stack(
+                  children: [
+                    StreamBuilder(
+                      stream: _breakfast.snapshots(),
+                      builder: (context,
+                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        if (streamSnapshot.hasData) {
+                          return ListView.builder(
+                            key: const Key('Inventory_ListView'),
+                            itemCount: streamSnapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
+
+                              DateTime dateToday = new DateTime.now();
+                              String date =
+                                  dateToday.toString().substring(0, 10);
+                              if (index == 0) {
+                                return ListTile(
+                                  title: Text("Breakfast: " +
+                                      documentSnapshot['Name'].toString() +
+                                      "\n"),
+                                  minVerticalPadding: 20,
+                                );
+                              } else {
+                                return ListTile(
+                                  title: Text(""),
+                                );
+                              }
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 500,
+                    ),
+                    StreamBuilder(
+                      stream: _lunch.snapshots(),
+                      builder: (context,
+                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        if (streamSnapshot.hasData) {
+                          return ListView.builder(
+                            key: const Key('Inventory_ListView'),
+                            itemCount: streamSnapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
+
+                              DateTime dateToday = new DateTime.now();
+                              String date =
+                                  dateToday.toString().substring(0, 10);
+                              if (index == 0) {
+                                return ListTile(
+                                  title: Text("Lunch: " +
+                                      documentSnapshot['Name'].toString() +
+                                      "\n"),
+                                  minVerticalPadding: 40,
+                                );
+                              } else {
+                                return ListTile(
+                                  title: Text(""),
+                                );
+                              }
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                    StreamBuilder(
+                      stream: _supper.snapshots(),
+                      builder: (context,
+                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        if (streamSnapshot.hasData) {
+                          return ListView.builder(
+                            key: const Key('Inventory_ListView'),
+                            itemCount: streamSnapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
+
+                              DateTime dateToday = new DateTime.now();
+                              String date =
+                                  dateToday.toString().substring(0, 10);
+                              if (index == 0) {
+                                return ListTile(
+                                  title: Text("Supper: " +
+                                      documentSnapshot['Name'].toString() +
+                                      "\n"),
+                                  minVerticalPadding: 60,
+                                );
+                              } else {
+                                return ListTile(
+                                  title: Text(""),
+                                );
+                              }
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                child: Center(
-                  child: RichText(
-                      text: TextSpan(
-                          text: "Meal Planner \n\n",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 3, 3, 3),
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold),
-                          children: <TextSpan>[
-                        TextSpan(
-                          text: meals,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Color.fromARGB(255, 86, 83, 83),
-                              fontSize: 21),
-                        )
-                      ])),
-                ),
-              ))
+              ),
+            ),
+          )
         ]));
   }
 
@@ -284,13 +353,14 @@ class DashboardPageState extends State<DashboardPage> {
                         animate: true,
                         animationDuration: Duration(seconds: 1),
                         /*behaviors: [
-                    new charts.DatumLegend(
-                      entryTextStyle: charts.TextStyleSpec(
-                          color: charts.MaterialPalette.purple.shadeDefault,
-                          fontFamily: 'Georgia',
-                          fontSize: 18),
-                    )
-                  ],*/
+                          new charts.DatumLegend(
+                            entryTextStyle: charts.TextStyleSpec(
+                                color:
+                                    charts.MaterialPalette.purple.shadeDefault,
+                                fontFamily: 'Georgia',
+                                fontSize: 18),
+                          )
+                        ],*/
                       ),
                     ),
                   ],
@@ -348,25 +418,97 @@ class DashboardPageState extends State<DashboardPage> {
                       height: 10.0,
                     ),
                     Expanded(
-                      child: charts.PieChart(
-                        _seriesPieData,
-                        animate: true,
-                        animationDuration: Duration(seconds: 1),
-                        /*behaviors: [
-                    new charts.DatumLegend(
-                      entryTextStyle: charts.TextStyleSpec(
-                          color: charts.MaterialPalette.purple.shadeDefault,
-                          fontFamily: 'Georgia',
-                          fontSize: 18),
-                    )
-                  ],*/
-                      ),
+                      child: charts.PieChart<String>(_seriesPieData,
+                          animate: true,
+                          animationDuration: Duration(seconds: 1),
+                          behaviors: [
+                            new charts.DatumLegend(
+                              entryTextStyle: charts.TextStyleSpec(
+                                  color: charts
+                                      .MaterialPalette.purple.shadeDefault,
+                                  fontFamily: 'Georgia',
+                                  fontSize: 18),
+                            )
+                          ],
+                          defaultRenderer: new charts.ArcRendererConfig(
+                              arcWidth: 100,
+                              arcRendererDecorators: [
+                                new charts.ArcLabelDecorator(
+                                    labelPosition:
+                                        charts.ArcLabelPosition.inside)
+                              ])),
                     ),
                   ],
                 ),
               ),
             ),
           )
+        ]));
+  }
+
+  Widget buildInventoryCard(BuildContext context) {
+    return Card(
+        key: const ValueKey("Meal Planner"),
+        shadowColor: Color.fromARGB(255, 172, 255, 78),
+        elevation: 25,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(alignment: Alignment.center, children: [
+          Text(
+            'Inventory',
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
+          InkWell(
+              onTap: () async {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => IventoryPage()));
+              },
+              child: Container(
+                height: 160,
+                width: 400,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Center(
+                  child: StreamBuilder(
+                    stream: _products.snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                      if (streamSnapshot.hasData) {
+                        return ListView.builder(
+                          key: const Key('Inventory_ListView'),
+                          itemCount: streamSnapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final DocumentSnapshot documentSnapshot =
+                                streamSnapshot.data!.docs[index];
+
+                            DateTime dateToday = new DateTime.now();
+                            String date = dateToday.toString().substring(0, 10);
+
+                            if (documentSnapshot['expirationDate'] == date) {
+                              return ListTile(
+                                title: Text(
+                                    documentSnapshot['quantity'].toString() +
+                                        ' \u{00D7} ' +
+                                        documentSnapshot['itemName'] +
+                                        ' ' +
+                                        'expires today!'),
+                              );
+                            } else {
+                              return ListTile(
+                                title: Text(""),
+                              );
+                            }
+                          },
+                        );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+              ))
         ]));
   }
 }
