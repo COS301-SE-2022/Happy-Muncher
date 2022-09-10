@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
@@ -7,6 +9,7 @@ import 'package:happy_mucher_frontend/pages/values.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -35,6 +38,23 @@ class DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  List<charts.Series<GLValues, String>> _seriesPieData = [];
+  List<GLValues> mypiedata = [];
+  _generatePieData(mypiedata) {
+    _seriesPieData = [];
+    _seriesPieData.add(
+      charts.Series(
+        domainFn: (GLValues estimatedVal, _) => estimatedVal.type,
+        measureFn: (GLValues totalVal, _) => (totalVal.shoppingTotal),
+        colorFn: (GLValues estimatedVal, _) =>
+            charts.ColorUtil.fromDartColor(Color.fromARGB(255, 14, 157, 200)),
+        id: 'Dashboard',
+        data: mypiedata,
+        labelAccessorFn: (GLValues row, _) => "${row.shoppingTotal}",
+      ),
+    );
+  }
+
   String mealsForDay = " ";
   void getMeals() async {
     //mealsForDay = "";
@@ -44,7 +64,7 @@ class DashboardPageState extends State<DashboardPage> {
         .collection('Meal Planner');
 
     collection
-        .doc('Monday')
+        .doc(DateFormat('EEEE').format(DateTime.now()))
         .collection("Breakfast")
         .doc('Recipe')
         .get()
@@ -57,7 +77,7 @@ class DashboardPageState extends State<DashboardPage> {
     });
 
     collection
-        .doc('Monday')
+        .doc(DateFormat('EEEE').format(DateTime.now()))
         .collection("Lunch")
         .doc('Recipe')
         .get()
@@ -70,7 +90,7 @@ class DashboardPageState extends State<DashboardPage> {
     });
 
     collection
-        .doc('Monday')
+        .doc(DateFormat('EEEE').format(DateTime.now()))
         .collection("Supper")
         .doc('Recipe')
         .get()
@@ -99,9 +119,9 @@ class DashboardPageState extends State<DashboardPage> {
       body: ListView(
         children: <Widget>[
           const SizedBox(height: 10),
-          buildGL(),
+          buildMealPlanner(),
           const SizedBox(height: 10),
-          // buildInventorycard(),
+          buildGLcard(context),
           const SizedBox(height: 10),
           buildBudgetcard(context),
           const SizedBox(height: 10),
@@ -163,7 +183,7 @@ class DashboardPageState extends State<DashboardPage> {
     return meals;
   }*/
 
-  Widget buildGL() {
+  Widget buildMealPlanner() {
     getMeals();
     String meals = mealsForDay;
     mealsForDay = "";
@@ -261,6 +281,75 @@ class DashboardPageState extends State<DashboardPage> {
                     Expanded(
                       child: charts.BarChart(
                         _seriesBarData,
+                        animate: true,
+                        animationDuration: Duration(seconds: 1),
+                        /*behaviors: [
+                    new charts.DatumLegend(
+                      entryTextStyle: charts.TextStyleSpec(
+                          color: charts.MaterialPalette.purple.shadeDefault,
+                          fontFamily: 'Georgia',
+                          fontSize: 18),
+                    )
+                  ],*/
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ]));
+  }
+
+  Widget buildGLcard(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('GL totals').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return LinearProgressIndicator();
+        } else {
+          List<GLValues> sales = snapshot.data!.docs
+              .map((content) => GLValues.fromMap(content))
+              .toList();
+          return _buildPieChart(context, sales);
+        }
+      },
+    );
+  }
+
+  Widget _buildPieChart(BuildContext context, List<GLValues> saledata) {
+    mypiedata = saledata;
+    _generatePieData(mypiedata);
+
+    return Card(
+        shadowColor: Color.fromARGB(255, 172, 255, 78),
+        elevation: 25,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(alignment: Alignment.center, children: [
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => GroceryListPage()));
+            },
+            child: Container(
+              padding: EdgeInsets.all(20.0),
+              //width: 50,
+              height: 300,
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      'Grocery List',
+                      style: TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Expanded(
+                      child: charts.PieChart(
+                        _seriesPieData,
                         animate: true,
                         animationDuration: Duration(seconds: 1),
                         /*behaviors: [
