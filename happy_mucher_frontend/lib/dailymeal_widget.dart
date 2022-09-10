@@ -191,6 +191,7 @@ class MealWidgetState extends State<MealWidget> {
                   .doc('hasRecipe')
                   .set({
                 'has': hasrecipe,
+                'Name': 'add recipe from recipe book'
               });
               //print(ingrd[0]); // return ["one"
               //ingredients.addAll(ing);
@@ -220,6 +221,7 @@ class MealWidgetState extends State<MealWidget> {
                   .doc('hasRecipe')
                   .set({
                 'has': hasrecipe,
+                'Name': 'add recipe from recipe book'
               });
               //print(ingrd[0]); // return ["one"
               //ingredients.addAll(ing);
