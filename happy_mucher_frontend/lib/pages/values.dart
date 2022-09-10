@@ -13,3 +13,16 @@ class Values {
   @override
   String toString() => "Record<$budget:$month>";
 }
+
+class GLValues {
+  final String type;
+  final num shoppingTotal;
+
+  GLValues(this.type, this.shoppingTotal);
+
+  GLValues.fromMap(dynamic map)
+      : assert(map['type'] != null),
+        assert(map['total'] != null),
+        type = map['type'],
+        shoppingTotal = map['total'];
+}
