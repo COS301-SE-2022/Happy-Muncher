@@ -65,13 +65,23 @@ class DashboardPageState extends State<DashboardPage> {
   List<charts.Series<GLValues, String>> _seriesPieData = [];
   List<GLValues> mypiedata = [];
   _generatePieData(mypiedata) {
+    bool first = true;
     _seriesPieData = [];
     _seriesPieData.add(
       charts.Series(
         domainFn: (GLValues estimatedVal, _) => estimatedVal.type,
         measureFn: (GLValues totalVal, _) => (totalVal.shoppingTotal),
-        colorFn: (GLValues estimatedVal, _) =>
-            charts.ColorUtil.fromDartColor(Color.fromARGB(255, 14, 157, 200)),
+        colorFn: (GLValues estimatedVal, _) {
+          
+          if (first == true) {
+            first = false;
+            return charts.ColorUtil.fromDartColor(Color.fromARGB(255, 14, 157, 200));
+            
+          } else {
+            return charts.ColorUtil.fromDartColor(Color.fromARGB(255, 222, 236, 27));
+          }
+          ;
+        },
         id: 'Dashboard',
         data: mypiedata,
         labelAccessorFn: (GLValues row, _) => "${row.shoppingTotal}",
