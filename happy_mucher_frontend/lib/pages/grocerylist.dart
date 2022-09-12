@@ -394,10 +394,24 @@ class GroceryListPageState extends State<GroceryListPage> {
     print(listOfItemsPrices.length);
     print(listOfItemsPrices);
 
-    for (int i = 0; i < listOfItems.length; i++) {
-      final newItem = ReceiptItem(
-          itemName: listOfItems[i], itemPrice: listOfItemsPrices[i]);
-      mapOfItems.add(newItem);
+    if (listOfItemsPrices.length == listOfItems.length) {
+      for (int i = 0; i < listOfItems.length; i++) {
+        final newItem = ReceiptItem(
+            itemName: listOfItems[i], itemPrice: listOfItemsPrices[i]);
+        mapOfItems.add(newItem);
+      }
+    } else if (listOfItemsPrices.length > listOfItems.length) {
+      for (int i = 0; i < listOfItems.length; i++) {
+        final newItem = ReceiptItem(
+            itemName: listOfItems[i], itemPrice: listOfItemsPrices[i]);
+        mapOfItems.add(newItem);
+      }
+    } else if (listOfItemsPrices.length < listOfItems.length) {
+      for (int i = 0; i < listOfItemsPrices.length; i++) {
+        final newItem = ReceiptItem(
+            itemName: listOfItems[i], itemPrice: listOfItemsPrices[i]);
+        mapOfItems.add(newItem);
+      }
     }
 
     return mapOfItems;
