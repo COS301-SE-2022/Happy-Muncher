@@ -22,6 +22,8 @@ class IventoryPage extends StatefulWidget {
 }
 
 class _IventoryPageState extends State<IventoryPage> {
+  final ImagePicker picker = ImagePicker();
+  String? imagepath;
   // text fields' controllers
   // text fields' controllers
   final TextEditingController _nameController = TextEditingController();
@@ -128,7 +130,7 @@ class _IventoryPageState extends State<IventoryPage> {
             backgroundColor: Color.fromARGB(255, 172, 255, 78),
           ),
           SpeedDialChild(
-            onTap: () => scanBarcodeNormal(),
+            onTap: () => getImage(ImageSource.camera),
             child: const Icon(
               Icons.photo_camera,
               color: Colors.white,
@@ -179,8 +181,20 @@ class _IventoryPageState extends State<IventoryPage> {
     });
   }
 
+  void getImage(ImageSource image) async {
+    // XFile? file = await ImagePicker().pickImage(source: image);
+    final photo = await ImagePicker().pickImage(source: image);
+    if (photo != null) {
+      imagepath = photo.path;
+      setState(() {});
+      //processImage(photo);
+    }
+  }
+  //imagefile Xfile
+
 //using ML kit
-  Future<void> processImage(InputImage inputImage) async {
+  Future<void> processImage(XFile image) async {
+    final inputImage = InputImage.fromFilePath(image.path);
     if (!_canProcess) return;
     if (_isBusy) return;
     _isBusy = true;
@@ -194,23 +208,29 @@ class _IventoryPageState extends State<IventoryPage> {
       String text = 'Barcodes found: ${barcodes.length}\n\n';
       for (final barcode in barcodes) {
         text += 'Barcode: ${barcode.rawValue}\n\n';
+        print("text " + text);
       }
       _text = text;
+      barcode = text;
     }
     _isBusy = false;
+
     if (mounted) {
       setState(() {});
     }
+    print("String: " + barcode);
+    getItemName(barcode);
   }
 
   Future<void> getItemName(String barcode) async {
     //6009522300623
     //009542020316
     //recipes = await RecipeAPI.getRecipe();
-    //print("barcode: " + barcode);
-    scanResult = await BarcodeAPI.getBarcode(barcode);
-    itemName = scanResult[0].name;
 
+    scanResult = await BarcodeAPI.getBarcode(barcode);
+
+    itemName = scanResult[0].name;
+    print(itemName);
     showResultDialog(context);
     setState(() {});
   }
@@ -281,20 +301,3 @@ class _IventoryPageState extends State<IventoryPage> {
     );
   }
 }
-
-//STRUCTURE
-//SCAFFOLD
-//  APPBAR
-//    ICON + TEXT
-//  COLUMN
-//    EXPANDED (TO FILL UP SCREEN)
-//      LISTVIEW (LIST OF TILES)
-//       LIST TILE (LIST THAT CONTAINS INFO)
-//         TEXT + TEXT
-//    ROW (BOTTOM 2 BUTTONS)
-//      PADDING
-//        ICONBUTTON
-//      PADDING
-//        ICONBUTTON
-
-//CLASS OF THE RETURNED LIST ITEM
