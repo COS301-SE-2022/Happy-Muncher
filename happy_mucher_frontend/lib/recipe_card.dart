@@ -15,10 +15,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class RecipeCard extends StatelessWidget {
   final List<tastyRecipe> recipes;
-
-  final _dummyImage =
-      'https://i1.wp.com/butwhythopodcast.com/wp-content/uploads/2020/09/maxresdefault-28.jpg?fit=1280%2C720&ssl=1';
-  //List<Recipe>? recipes;
+//List<Recipe>? recipes;
   RecipeCard({this.recipes = const []});
 
   final FirebaseFirestore firestore = GetIt.I.get();
