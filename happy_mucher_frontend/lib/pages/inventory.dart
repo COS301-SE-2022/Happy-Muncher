@@ -187,13 +187,14 @@ class _IventoryPageState extends State<IventoryPage> {
     if (photo != null) {
       imagepath = photo.path;
       setState(() {});
-      //processImage(photo);
+      processImage(photo);
     }
   }
   //imagefile Xfile
 
 //using ML kit
   Future<void> processImage(XFile image) async {
+    String vals = "";
     final inputImage = InputImage.fromFilePath(image.path);
     if (!_canProcess) return;
     if (_isBusy) return;
@@ -206,19 +207,20 @@ class _IventoryPageState extends State<IventoryPage> {
         inputImage.inputImageData?.imageRotation != null) {
     } else {
       String text = 'Barcodes found: ${barcodes.length}\n\n';
-      for (final barcode in barcodes) {
-        text += 'Barcode: ${barcode.rawValue}\n\n';
-        print("text " + text);
+      for (final bar in barcodes) {
+        vals += '${bar.rawValue}';
+
+        //print(bar);
+        //print("text " + text);
       }
-      _text = text;
-      barcode = text;
     }
     _isBusy = false;
-
+    barcode = vals;
     if (mounted) {
       setState(() {});
     }
-    print("String: " + barcode);
+    //print("String: " + barcode);
+
     getItemName(barcode);
   }
 
@@ -226,10 +228,15 @@ class _IventoryPageState extends State<IventoryPage> {
     //6009522300623
     //009542020316
     //recipes = await RecipeAPI.getRecipe();
+    print(barcode);
+    try {
+      scanResult = await BarcodeAPI.getBarcode(barcode);
+      itemName = scanResult[0].name;
+    } catch (e) {
+      print("here");
+      itemName = "unknown";
+    }
 
-    scanResult = await BarcodeAPI.getBarcode(barcode);
-
-    itemName = scanResult[0].name;
     print(itemName);
     showResultDialog(context);
     setState(() {});

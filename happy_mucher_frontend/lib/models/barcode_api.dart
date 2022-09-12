@@ -20,10 +20,16 @@ class BarcodeAPI {
       "X-RapidAPI-Key": key,
       "X-RapidAPI-Host": 'barcodes1.p.rapidapi.com',
     });
-    Map data = jsonDecode(utf8.decode(resp.bodyBytes));
-    //print(data);
     List temp = [];
-    data.entries.forEach((e) => temp.add((e.value)));
+    if (resp.statusCode == 200) {
+      Map data = jsonDecode(utf8.decode(resp.bodyBytes));
+      print(data);
+
+      data.entries.forEach((e) => temp.add((e.value)));
+    } else {
+      throw Exception();
+    }
+
     // for (var i in data['product']) {
     //   print("item");
     //   print(i);
