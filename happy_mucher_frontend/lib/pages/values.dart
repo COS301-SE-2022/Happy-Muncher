@@ -15,14 +15,14 @@ class Values {
 }
 
 class GLValues {
+  final num total;
   final String type;
-  final num shoppingTotal;
 
-  GLValues(this.type, this.shoppingTotal);
+  GLValues(this.type, this.total);
 
   GLValues.fromMap(dynamic map)
       : assert(map['type'] != null),
         assert(map['total'] != null),
         type = map['type'],
-        shoppingTotal = map['total'];
+        total = map['total'];
 }
