@@ -64,27 +64,27 @@ class DashboardPageState extends State<DashboardPage> {
 
   List<charts.Series<GLValues, String>> _seriesPieData = [];
   List<GLValues> mypiedata = [];
+  bool first = true;
   _generatePieData(mypiedata) {
-    bool first = true;
     _seriesPieData = [];
     _seriesPieData.add(
       charts.Series(
         domainFn: (GLValues estimatedVal, _) => estimatedVal.type,
-        measureFn: (GLValues totalVal, _) => (totalVal.shoppingTotal),
+        measureFn: (GLValues totalVal, _) => (totalVal.total),
         colorFn: (GLValues estimatedVal, _) {
-          
           if (first == true) {
             first = false;
-            return charts.ColorUtil.fromDartColor(Color.fromARGB(255, 14, 157, 200));
-            
+            return charts.ColorUtil.fromDartColor(
+                Color.fromARGB(255, 14, 157, 200));
           } else {
-            return charts.ColorUtil.fromDartColor(Color.fromARGB(255, 222, 236, 27));
+            return charts.ColorUtil.fromDartColor(
+                Color.fromARGB(255, 170, 27, 236));
           }
           ;
         },
         id: 'Dashboard',
         data: mypiedata,
-        labelAccessorFn: (GLValues row, _) => "${row.shoppingTotal}",
+        labelAccessorFn: (GLValues row, _) => "${row.type}",
       ),
     );
   }
@@ -95,216 +95,168 @@ class DashboardPageState extends State<DashboardPage> {
       appBar: AppBar(
         title: Text('HAPPY MUNCHER'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
+        backgroundColor: Color.fromARGB(255, 220, 204, 195),
       ),
       //drawer: NavBar(),
       body: ListView(
         children: <Widget>[
-          const SizedBox(height: 10),
-          buildMealPlanner(context),
-          const SizedBox(height: 10),
-          buildGLcard(context),
-          const SizedBox(height: 10),
-          buildBudgetcard(context),
-          const SizedBox(height: 10),
+          Row(children: <Widget>[
+            buildMealPlanner(context),
+            buildGLcard(context),
+          ]),
           buildInventoryCard(context),
-          const SizedBox(height: 10),
-          // buildRecipecard(),
-          //   SizedBox(
-          //     width: 200,
-          //     height: 50,
-          //     child: RaisedButton(
-          //       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
-          //       onPressed: () {
-          //         Navigator.push(context,
-          //             MaterialPageRoute(builder: (context) => RecipeBook()));
-          //       },
-          //       color: Colors.blue,
-          //       shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.all(Radius.circular(30))),
-          //       child: Text(
-          //         "Other recipe card",
-          //         style: TextStyle(color: Colors.white),
-          //       ),
-          //     ),
-          //   ),
+          buildBudgetcard(context),
         ],
       ),
     );
   }
 
-  /*Future<List> getMeals() async {
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Meal Planner')
-        .doc('Monday');
-    List meals = [];
-    String str = "";
-    for (int i = 0; i < 3; i++) {
-      if (i == 0) {
-        str = "Breakfast";
-      }
-      if (i == 1) {
-        str = "Lunch";
-      }
-      if (i == 2) {
-        str = "Supper";
-      }
-      var docSnapshot = await collection.collection(str).get();
-      if (docSnapshot!=null) {
-        Map<String, dynamic> data = docSnapshot.;
-        String title = data['Name'];
-        meals.add("title");
-      } else {
-        meals.add("None");
-      }
-
-      //print(tr);
-    }
-    return meals;
-  }*/
-
   Widget buildMealPlanner(BuildContext context) {
-    return Card(
-        key: const ValueKey("Meal Planner"),
-        shadowColor: Color.fromARGB(255, 172, 255, 78),
-        elevation: 25,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(alignment: Alignment.center, children: [
-          Text(
-            'Meal Planner',
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-          ),
-          InkWell(
-            onTap: () async {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MealPage()));
-            },
-            child: Container(
-              height: 160,
-              width: 400,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
+    return Container(
+        width: 250,
+        height: 300,
+        margin: EdgeInsets.fromLTRB(20, 20, 10, 0),
+        child: Card(
+            //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
+            key: const ValueKey("Meal Planner"),
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.topCenter, children: [
+              Text(
+                'Meal Planner',
+                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
-              child: Center(
-                child: Stack(
-                  children: [
-                    StreamBuilder(
-                      stream: _breakfast.snapshots(),
-                      builder: (context,
-                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                        if (streamSnapshot.hasData) {
-                          return ListView.builder(
-                            key: const Key('Inventory_ListView'),
-                            itemCount: streamSnapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              final DocumentSnapshot documentSnapshot =
-                                  streamSnapshot.data!.docs[index];
+              InkWell(
+                onTap: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MealPage()));
+                },
+                child: Container(
+                  height: 160,
+                  width: 400,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        StreamBuilder(
+                          stream: _breakfast.snapshots(),
+                          builder: (context,
+                              AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                            if (streamSnapshot.hasData) {
+                              return ListView.builder(
+                                key: const Key('Inventory_ListView'),
+                                itemCount: streamSnapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
 
-                              DateTime dateToday = new DateTime.now();
-                              String date =
-                                  dateToday.toString().substring(0, 10);
-                              if (index == 0) {
-                                return ListTile(
-                                  title: Text("Breakfast: " +
-                                      documentSnapshot['Name'].toString() +
-                                      "\n"),
-                                  minVerticalPadding: 20,
-                                );
-                              } else {
-                                return ListTile(
-                                  title: Text(""),
-                                );
-                              }
-                            },
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 500,
-                    ),
-                    StreamBuilder(
-                      stream: _lunch.snapshots(),
-                      builder: (context,
-                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                        if (streamSnapshot.hasData) {
-                          return ListView.builder(
-                            key: const Key('Inventory_ListView'),
-                            itemCount: streamSnapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              final DocumentSnapshot documentSnapshot =
-                                  streamSnapshot.data!.docs[index];
+                                  DateTime dateToday = new DateTime.now();
+                                  String date =
+                                      dateToday.toString().substring(0, 10);
+                                  if (index == 0) {
+                                    return ListTile(
+                                      title: Text("Breakfast: " +
+                                          documentSnapshot['Name'].toString() +
+                                          "\n"),
+                                      minVerticalPadding: 20,
+                                    );
+                                  } else {
+                                    return ListTile(
+                                      title: Text(""),
+                                    );
+                                  }
+                                },
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 500,
+                        ),
+                        StreamBuilder(
+                          stream: _lunch.snapshots(),
+                          builder: (context,
+                              AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                            if (streamSnapshot.hasData) {
+                              return ListView.builder(
+                                key: const Key('Inventory_ListView'),
+                                itemCount: streamSnapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
 
-                              DateTime dateToday = new DateTime.now();
-                              String date =
-                                  dateToday.toString().substring(0, 10);
-                              if (index == 0) {
-                                return ListTile(
-                                  title: Text("Lunch: " +
-                                      documentSnapshot['Name'].toString() +
-                                      "\n"),
-                                  minVerticalPadding: 40,
-                                );
-                              } else {
-                                return ListTile(
-                                  title: Text(""),
-                                );
-                              }
-                            },
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
-                    StreamBuilder(
-                      stream: _supper.snapshots(),
-                      builder: (context,
-                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                        if (streamSnapshot.hasData) {
-                          return ListView.builder(
-                            key: const Key('Inventory_ListView'),
-                            itemCount: streamSnapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              final DocumentSnapshot documentSnapshot =
-                                  streamSnapshot.data!.docs[index];
+                                  DateTime dateToday = new DateTime.now();
+                                  String date =
+                                      dateToday.toString().substring(0, 10);
+                                  if (index == 0) {
+                                    return ListTile(
+                                      title: Text("Lunch: " +
+                                          documentSnapshot['Name'].toString() +
+                                          "\n"),
+                                      minVerticalPadding: 40,
+                                    );
+                                  } else {
+                                    return ListTile(
+                                      title: Text(""),
+                                    );
+                                  }
+                                },
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                        StreamBuilder(
+                          stream: _supper.snapshots(),
+                          builder: (context,
+                              AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                            if (streamSnapshot.hasData) {
+                              return ListView.builder(
+                                key: const Key('Inventory_ListView'),
+                                itemCount: streamSnapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
 
-                              DateTime dateToday = new DateTime.now();
-                              String date =
-                                  dateToday.toString().substring(0, 10);
-                              if (index == 0) {
-                                return ListTile(
-                                  title: Text("Supper: " +
-                                      documentSnapshot['Name'].toString() +
-                                      "\n"),
-                                  minVerticalPadding: 60,
-                                );
-                              } else {
-                                return ListTile(
-                                  title: Text(""),
-                                );
-                              }
-                            },
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
+                                  DateTime dateToday = new DateTime.now();
+                                  String date =
+                                      dateToday.toString().substring(0, 10);
+                                  if (index == 0) {
+                                    return ListTile(
+                                      title: Text("Supper: " +
+                                          documentSnapshot['Name'].toString() +
+                                          "\n"),
+                                      minVerticalPadding: 60,
+                                    );
+                                  } else {
+                                    return ListTile(
+                                      title: Text(""),
+                                    );
+                                  }
+                                },
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          )
-        ]));
+              )
+            ])));
   }
 
   Widget buildBudgetcard(BuildContext context) {
@@ -330,39 +282,43 @@ class DashboardPageState extends State<DashboardPage> {
   Widget _buildChart(BuildContext context, List<Values> saledata) {
     mydata = saledata;
     _generateData(mydata);
-
-    return Card(
-        shadowColor: Color.fromARGB(255, 172, 255, 78),
-        elevation: 25,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(alignment: Alignment.center, children: [
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyBudget()));
-            },
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              //width: 50,
-              height: 300,
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Monthly budget',
-                      style: TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Expanded(
-                      child: charts.BarChart(
-                        _seriesBarData,
-                        animate: true,
-                        animationDuration: Duration(seconds: 1),
-                        /*behaviors: [
+    return Container(
+        width: 250,
+        height: 300,
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+        child: Card(
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 50,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.center, children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyBudget()));
+                },
+                child: Container(
+                  padding: EdgeInsets.all(20.0),
+                  //width: 50,
+                  height: 300,
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'Monthly budget',
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Expanded(
+                          child: charts.BarChart(
+                            _seriesBarData,
+                            animate: true,
+                            animationDuration: Duration(seconds: 1),
+                            /*behaviors: [
                           new charts.DatumLegend(
                             entryTextStyle: charts.TextStyleSpec(
                                 color:
@@ -371,19 +327,23 @@ class DashboardPageState extends State<DashboardPage> {
                                 fontSize: 18),
                           )
                         ],*/
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          )
-        ]));
+              )
+            ])));
   }
 
   Widget buildGLcard(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('GL totals').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .collection('GL Totals')
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LinearProgressIndicator();
@@ -401,124 +361,131 @@ class DashboardPageState extends State<DashboardPage> {
     mypiedata = saledata;
     _generatePieData(mypiedata);
 
-    return Card(
-        shadowColor: Color.fromARGB(255, 172, 255, 78),
-        elevation: 25,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(alignment: Alignment.center, children: [
-          InkWell(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GroceryListPage()));
-            },
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              //width: 50,
-              height: 300,
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Grocery List',
-                      style: TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.bold),
+    return Container(
+        width: 280,
+        height: 300,
+        margin: EdgeInsets.fromLTRB(10, 20, 20, 0),
+        child: Card(
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.center, children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GroceryListPage()));
+                },
+                child: Container(
+                  padding: EdgeInsets.all(20.0),
+                  //width: 50,
+                  height: 300,
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'Grocery List',
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Expanded(
+                          child: charts.PieChart<String>(_seriesPieData,
+                              animate: true,
+                              animationDuration: Duration(seconds: 1),
+                              defaultRenderer: new charts.ArcRendererConfig(
+                                  arcWidth: 100,
+                                  arcRendererDecorators: [
+                                    new charts.ArcLabelDecorator(
+                                        labelPosition:
+                                            charts.ArcLabelPosition.inside)
+                                  ])),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Expanded(
-                      child: charts.PieChart<String>(_seriesPieData,
-                          animate: true,
-                          animationDuration: Duration(seconds: 1),
-                          behaviors: [
-                            new charts.DatumLegend(
-                              entryTextStyle: charts.TextStyleSpec(
-                                  color: charts
-                                      .MaterialPalette.purple.shadeDefault,
-                                  fontFamily: 'Georgia',
-                                  fontSize: 18),
-                            )
-                          ],
-                          defaultRenderer: new charts.ArcRendererConfig(
-                              arcWidth: 100,
-                              arcRendererDecorators: [
-                                new charts.ArcLabelDecorator(
-                                    labelPosition:
-                                        charts.ArcLabelPosition.inside)
-                              ])),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          )
-        ]));
+              )
+            ])));
   }
 
   Widget buildInventoryCard(BuildContext context) {
-    return Card(
-        key: const ValueKey("Meal Planner"),
-        shadowColor: Color.fromARGB(255, 172, 255, 78),
-        elevation: 25,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        child: Stack(alignment: Alignment.center, children: [
-          Text(
-            'Inventory',
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-          ),
-          InkWell(
-              onTap: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => IventoryPage()));
-              },
-              child: Container(
-                height: 160,
-                width: 400,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Center(
-                  child: StreamBuilder(
-                    stream: _products.snapshots(),
-                    builder:
-                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                      if (streamSnapshot.hasData) {
-                        return ListView.builder(
-                          key: const Key('Inventory_ListView'),
-                          itemCount: streamSnapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final DocumentSnapshot documentSnapshot =
-                                streamSnapshot.data!.docs[index];
+    return Container(
+        width: 400,
+        height: 100,
+        margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+        child: Card(
+            key: const ValueKey("Meal Planner"),
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.topCenter, children: [
+              Text(
+                'Inventory',
+                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              ),
+              InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => IventoryPage()));
+                  },
+                  child: Container(
+                    height: 160,
+                    width: 400,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Center(
+                      child: StreamBuilder(
+                        stream: _products.snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                          if (streamSnapshot.hasData) {
+                            return ListView.builder(
+                              key: const Key('Inventory_ListView'),
+                              itemCount: streamSnapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final DocumentSnapshot documentSnapshot =
+                                    streamSnapshot.data!.docs[index];
 
-                            DateTime dateToday = new DateTime.now();
-                            String date = dateToday.toString().substring(0, 10);
+                                DateTime dateToday = new DateTime.now();
+                                String date =
+                                    dateToday.toString().substring(0, 10);
 
-                            if (documentSnapshot['expirationDate'] == date) {
-                              return ListTile(
-                                title: Text(
-                                    documentSnapshot['quantity'].toString() +
+                                if (documentSnapshot['expirationDate'] ==
+                                    date) {
+                                  return ListTile(
+                                    title: Text(documentSnapshot['quantity']
+                                            .toString() +
                                         ' \u{00D7} ' +
                                         documentSnapshot['itemName'] +
                                         ' ' +
                                         'expires today!'),
-                              );
-                            } else {
-                              return ListTile(
-                                title: Text(""),
-                              );
-                            }
-                          },
-                        );
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                ),
-              ))
-        ]));
+                                  );
+                                } else {
+                                  return ListTile(
+                                    title: Text(""),
+                                  );
+                                }
+                              },
+                            );
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ),
+                  ))
+            ])));
   }
 }
