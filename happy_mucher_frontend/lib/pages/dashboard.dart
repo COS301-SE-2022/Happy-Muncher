@@ -1,11 +1,15 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+import 'package:happy_mucher_frontend/pages/navbar.dart';
+import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/pages/values.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +24,14 @@ class DashboardPage extends StatefulWidget {
 }
 
 class DashboardPageState extends State<DashboardPage> {
+  int index = 0;
+  final screens = [
+    GroceryListPage(),
+    IventoryPage(),
+    MyBudget(),
+    MealPage(),
+    TastyBook(),
+  ];
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _products =>
@@ -57,7 +69,7 @@ class DashboardPageState extends State<DashboardPage> {
           if (budgetVal.budget > 5000) {
             first = false;
             return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 234, 93, 11));
+                Color.fromARGB(255, 252, 95, 13));
           } else {
             return charts.ColorUtil.fromDartColor(
                 Color.fromARGB(255, 55, 190, 15));
@@ -82,13 +94,13 @@ class DashboardPageState extends State<DashboardPage> {
         domainFn: (GLValues estimatedVal, _) => estimatedVal.type,
         measureFn: (GLValues totalVal, _) => (totalVal.total),
         colorFn: (GLValues estimatedVal, _) {
-          if (estimatedVal.total > 50) {
+          if (estimatedVal.total <= 50) {
             first = false;
             return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 14, 157, 200));
+                Color.fromARGB(255, 55, 190, 15));
           } else {
             return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 234, 93, 11));
+                Color.fromARGB(255, 252, 95, 13));
           }
           ;
         },
@@ -102,23 +114,65 @@ class DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('HAPPY MUNCHER'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 220, 204, 195),
-      ),
-      //drawer: NavBar(),
-      body: ListView(
-        children: <Widget>[
-          Row(children: <Widget>[
-            buildMealPlanner(context),
-            buildGLcard(context),
-          ]),
-          buildInventoryCard(context),
-          buildBudgetcard(context),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: Text('HAPPY MUNCHER'),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13),
+        ),
+        drawer: NavBar(),
+        body: PageView(
+          children: <Widget>[
+            ListView(children: <Widget>[
+              Row(children: <Widget>[
+                buildMealPlanner(context),
+                buildGLcard(context),
+              ]),
+              buildInventoryCard(context),
+              buildBudgetcard(context),
+            ]),
+            screens[index],
+          ],
+        ),
+        bottomNavigationBar: NavigationBarTheme(
+          data: NavigationBarThemeData(
+              indicatorColor: Colors.orange.shade100,
+              labelTextStyle: MaterialStateProperty.all(
+                TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              )),
+          child: NavigationBar(
+              height: 60,
+              selectedIndex: index,
+              animationDuration: Duration(seconds: 3),
+              onDestinationSelected: (index) =>
+                  setState(() => this.index = index),
+              destinations: [
+                NavigationDestination(
+                  icon: Icon(Icons.local_grocery_store_outlined),
+                  selectedIcon: Icon(Icons.local_grocery_store),
+                  label: 'Grocery List',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.receipt_outlined),
+                  selectedIcon: Icon(Icons.receipt),
+                  label: 'Inventory',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.monetization_on_outlined),
+                  selectedIcon: Icon(Icons.monetization_on),
+                  label: 'Budget',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.edit_calendar_outlined),
+                  selectedIcon: Icon(Icons.edit_calendar),
+                  label: 'Meal-Plan',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.book_outlined),
+                  selectedIcon: Icon(Icons.book),
+                  label: 'Recipe book',
+                ),
+              ]),
+        ));
   }
 
   Widget buildMealPlanner(BuildContext context) {
