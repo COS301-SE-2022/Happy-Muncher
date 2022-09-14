@@ -218,6 +218,7 @@ class MyWeekdayState extends State<Weekday> {
                   .doc('hasRecipe')
                   .set({
                 'has': hasrecipe,
+                'Name': 'add recipe from recipe book'
               });
               //print(ingrd[0]); // return ["one"
               //ingredients.addAll(ing);
@@ -247,6 +248,7 @@ class MyWeekdayState extends State<Weekday> {
                   .doc('hasRecipe')
                   .set({
                 'has': hasrecipe,
+                'Name': 'add recipe from recipe book'
               });
               //print(ingrd[0]); // return ["one"
               //ingredients.addAll(ing);
@@ -346,9 +348,8 @@ class MyWeekdayState extends State<Weekday> {
                 'Ingredients': ing,
               });
               hasrecipe = true;
-              _meals.doc(widget.day).collection('Lunch').doc('hasRecipe').set({
-                'has': hasrecipe,
-              });
+              _meals.doc(widget.day).collection('Lunch').doc('hasRecipe').set(
+                  {'has': hasrecipe, 'Name': 'add recipe from recipe book'});
               //print(ingrd[0]); // return ["one"
               //ingredients.addAll(ing);
               getMeals();
@@ -446,9 +447,8 @@ class MyWeekdayState extends State<Weekday> {
                 'Ingredients': ing,
               });
               hasrecipe = true;
-              _meals.doc(widget.day).collection('Supper').doc('hasRecipe').set({
-                'has': hasrecipe,
-              });
+              _meals.doc(widget.day).collection('Supper').doc('hasRecipe').set(
+                  {'has': hasrecipe, 'Name': 'add recipe from recipe book'});
               //print(ingrd[0]); // return ["one"
               //ingredients.addAll(ing);
               getMeals();
