@@ -57,12 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
-              indicatorColor: Colors.orange.shade100,
+              indicatorColor: Colors.orange.shade300,
               labelTextStyle: MaterialStateProperty.all(
                 TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               )),
           child: NavigationBar(
               height: 60,
+              backgroundColor: Colors.grey.shade400,
               selectedIndex: index,
               animationDuration: Duration(seconds: 3),
               onDestinationSelected: (index) =>
