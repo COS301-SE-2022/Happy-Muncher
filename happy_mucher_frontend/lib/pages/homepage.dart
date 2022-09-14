@@ -20,10 +20,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int index = 0;
   final screens = [
-<<<<<<< HEAD
     DashboardPage(),
-=======
->>>>>>> b8947abfed2d7f2b7e4a644b694556e33e1a9bc7
     GroceryListPage(),
     IventoryPage(),
     MyBudget(),
@@ -47,11 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               )),
           child: NavigationBar(
-<<<<<<< HEAD
-              height: 40,
-=======
               height: 60,
->>>>>>> b8947abfed2d7f2b7e4a644b694556e33e1a9bc7
               selectedIndex: index,
               animationDuration: Duration(seconds: 3),
               onDestinationSelected: (index) =>
