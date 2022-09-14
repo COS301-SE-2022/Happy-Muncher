@@ -177,8 +177,8 @@ class DashboardPageState extends State<DashboardPage> {
 
   Widget buildMealPlanner(BuildContext context) {
     return Container(
-        width: 250,
-        height: 300,
+        width: 150,
+        height: 275,
         margin: EdgeInsets.fromLTRB(20, 20, 10, 0),
         child: Card(
             //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
@@ -193,6 +193,7 @@ class DashboardPageState extends State<DashboardPage> {
                 margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
                 child: Text(
                   'Meal Planner',
+                  textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -427,8 +428,8 @@ class DashboardPageState extends State<DashboardPage> {
     _generatePieData(mypiedata);
 
     return Container(
-        width: 280,
-        height: 300,
+        width: 180,
+        height: 275,
         margin: EdgeInsets.fromLTRB(10, 20, 20, 0),
         child: Card(
             shadowColor: Color.fromARGB(255, 180, 181, 179),
@@ -482,7 +483,7 @@ class DashboardPageState extends State<DashboardPage> {
   Widget buildInventoryCard(BuildContext context) {
     return Container(
         width: 400,
-        height: 200,
+        height: 180,
         margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: Card(
             key: const ValueKey("Meal Planner"),
