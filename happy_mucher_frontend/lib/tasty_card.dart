@@ -158,7 +158,7 @@ class TastyRecipeCard extends StatelessWidget {
                     Icons.info_outline,
                     color: Colors.white,
                   ),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color.fromARGB(255, 172, 255, 78),
                 ),
                 SpeedDialChild(
                   onTap: () => showAlertDialog(context),
@@ -167,7 +167,7 @@ class TastyRecipeCard extends StatelessWidget {
                     Icons.add,
                     color: Colors.white,
                   ),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color.fromARGB(255, 172, 255, 78),
                 ),
               ],
             ),
