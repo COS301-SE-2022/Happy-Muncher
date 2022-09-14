@@ -53,8 +53,17 @@ class DashboardPageState extends State<DashboardPage> {
       charts.Series(
         domainFn: (Values budgetVal, _) => budgetVal.month,
         measureFn: (Values budgetVal, _) => (budgetVal.budget),
-        colorFn: (Values budgetVal, _) =>
-            charts.ColorUtil.fromDartColor(Colors.orange),
+        colorFn: (Values budgetVal, _) {
+          if (budgetVal.budget > 5000) {
+            first = false;
+            return charts.ColorUtil.fromDartColor(
+                Color.fromARGB(255, 234, 93, 11));
+          } else {
+            return charts.ColorUtil.fromDartColor(
+                Color.fromARGB(255, 55, 190, 15));
+          }
+          ;
+        },
         id: 'Dashboard',
         data: mydata,
         labelAccessorFn: (Values row, _) => "${row.budget}",
@@ -65,6 +74,7 @@ class DashboardPageState extends State<DashboardPage> {
   List<charts.Series<GLValues, String>> _seriesPieData = [];
   List<GLValues> mypiedata = [];
   bool first = true;
+
   _generatePieData(mypiedata) {
     _seriesPieData = [];
     _seriesPieData.add(
@@ -72,13 +82,13 @@ class DashboardPageState extends State<DashboardPage> {
         domainFn: (GLValues estimatedVal, _) => estimatedVal.type,
         measureFn: (GLValues totalVal, _) => (totalVal.total),
         colorFn: (GLValues estimatedVal, _) {
-          if (first == true) {
+          if (estimatedVal.total > 50) {
             first = false;
             return charts.ColorUtil.fromDartColor(
                 Color.fromARGB(255, 14, 157, 200));
           } else {
             return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 170, 27, 236));
+                Color.fromARGB(255, 234, 93, 11));
           }
           ;
         },
@@ -125,9 +135,12 @@ class DashboardPageState extends State<DashboardPage> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             child: Stack(alignment: Alignment.topCenter, children: [
-              Text(
-                'Meal Planner',
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                child: Text(
+                  'Meal Planner',
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                ),
               ),
               InkWell(
                 onTap: () async {
@@ -135,8 +148,8 @@ class DashboardPageState extends State<DashboardPage> {
                       MaterialPageRoute(builder: (context) => MealPage()));
                 },
                 child: Container(
-                  height: 160,
-                  width: 400,
+                  height: 300,
+                  width: 250,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
@@ -163,7 +176,7 @@ class DashboardPageState extends State<DashboardPage> {
                                       title: Text("Breakfast: " +
                                           documentSnapshot['Name'].toString() +
                                           "\n"),
-                                      minVerticalPadding: 20,
+                                      minVerticalPadding: 60,
                                     );
                                   } else {
                                     return ListTile(
@@ -201,7 +214,7 @@ class DashboardPageState extends State<DashboardPage> {
                                       title: Text("Lunch: " +
                                           documentSnapshot['Name'].toString() +
                                           "\n"),
-                                      minVerticalPadding: 40,
+                                      minVerticalPadding: 130,
                                     );
                                   } else {
                                     return ListTile(
@@ -211,9 +224,7 @@ class DashboardPageState extends State<DashboardPage> {
                                 },
                               );
                             }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return Text("No Meals were added for today.");
                           },
                         ),
                         StreamBuilder(
@@ -236,7 +247,7 @@ class DashboardPageState extends State<DashboardPage> {
                                       title: Text("Supper: " +
                                           documentSnapshot['Name'].toString() +
                                           "\n"),
-                                      minVerticalPadding: 60,
+                                      minVerticalPadding: 200,
                                     );
                                   } else {
                                     return ListTile(
@@ -268,7 +279,7 @@ class DashboardPageState extends State<DashboardPage> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return LinearProgressIndicator();
+          return CircularProgressIndicator();
         } else {
           List<Values> sales = snapshot.data!.docs
               .map((content) => Values.fromMap(content))
@@ -346,7 +357,7 @@ class DashboardPageState extends State<DashboardPage> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return LinearProgressIndicator();
+          return CircularProgressIndicator();
         } else {
           List<GLValues> sales = snapshot.data!.docs
               .map((content) => GLValues.fromMap(content))
@@ -417,7 +428,7 @@ class DashboardPageState extends State<DashboardPage> {
   Widget buildInventoryCard(BuildContext context) {
     return Container(
         width: 400,
-        height: 100,
+        height: 200,
         margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: Card(
             key: const ValueKey("Meal Planner"),
@@ -427,9 +438,12 @@ class DashboardPageState extends State<DashboardPage> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             child: Stack(alignment: Alignment.topCenter, children: [
-              Text(
-                'Inventory',
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                child: Text(
+                  'Inventory',
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                ),
               ),
               InkWell(
                   onTap: () async {
@@ -439,7 +453,8 @@ class DashboardPageState extends State<DashboardPage> {
                             builder: (context) => IventoryPage()));
                   },
                   child: Container(
-                    height: 160,
+                    margin: EdgeInsets.all(20),
+                    height: 200,
                     width: 400,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
@@ -450,38 +465,42 @@ class DashboardPageState extends State<DashboardPage> {
                         builder: (context,
                             AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                           if (streamSnapshot.hasData) {
+                            bool exp = false;
                             return ListView.builder(
-                              key: const Key('Inventory_ListView'),
-                              itemCount: streamSnapshot.data!.docs.length,
-                              itemBuilder: (context, index) {
-                                final DocumentSnapshot documentSnapshot =
-                                    streamSnapshot.data!.docs[index];
+                                key: const Key('Inventory_ListView'),
+                                itemCount: streamSnapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
 
-                                DateTime dateToday = new DateTime.now();
-                                String date =
-                                    dateToday.toString().substring(0, 10);
+                                  DateTime dateToday = new DateTime.now();
+                                  String date =
+                                      dateToday.toString().substring(0, 10);
 
-                                if (documentSnapshot['expirationDate'] ==
-                                    date) {
-                                  return ListTile(
-                                    title: Text(documentSnapshot['quantity']
-                                            .toString() +
-                                        ' \u{00D7} ' +
-                                        documentSnapshot['itemName'] +
-                                        ' ' +
-                                        'expires today!'),
-                                  );
-                                } else {
-                                  return ListTile(
-                                    title: Text(""),
-                                  );
-                                }
-                              },
-                            );
+                                  if (documentSnapshot['expirationDate'] ==
+                                      date) {
+                                    exp = true;
+                                    return ListTile(
+                                      title: Text(documentSnapshot['quantity']
+                                              .toString() +
+                                          ' \u{00D7} ' +
+                                          documentSnapshot['itemName'] +
+                                          ' ' +
+                                          'expires today!'),
+                                    );
+                                  } else if (index ==
+                                          streamSnapshot.data!.docs.length -
+                                              1 &&
+                                      exp == false) {
+                                    return ListTile(
+                                      title: Text("No items expire today"),
+                                    );
+                                  } else {
+                                    return Text("");
+                                  }
+                                });
                           }
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return Text("No items expire today.");
                         },
                       ),
                     ),
