@@ -16,14 +16,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  static const routeName = '/home';
+  const MyHomePage({Key? key}) : super(key: key);
   //static List<GroceryListItem> inventoryList = [];
   @override
-  State<DashboardPage> createState() => DashboardPageState();
+  State<MyHomePage> createState() => HomePageState();
 }
 
-class DashboardPageState extends State<DashboardPage> {
+class HomePageState extends State<MyHomePage> {
   int index = 0;
   final screens = [
     GroceryListPage(),
