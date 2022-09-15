@@ -14,8 +14,12 @@ class ingredientCard extends StatelessWidget {
     Color offWhite = Color(0xFFDFDEE3);
 
     return Container(
-        decoration:
-            BoxDecoration(border: Border(bottom: BorderSide(color: lightGrey))),
-        child: Text(ingredient));
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: llGrey, width: 2))),
+        child: Text(
+          ingredient,
+          style: TextStyle(color: offWhite, fontSize: 15),
+        ));
   }
 }
