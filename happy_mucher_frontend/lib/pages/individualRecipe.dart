@@ -108,7 +108,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
                 fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
         Image(image: NetworkImage(widget.image)),
         //const SizedBox(height: 24),
-
+        if (widget.description != "") Description(),
         const SizedBox(height: 24),
         Container(
             padding: const EdgeInsets.all(15),
@@ -257,4 +257,25 @@ class IndividualRecipeState extends State<IndividualRecipe> {
       await _glItems.add({"name": element, "price": 0, "bought": false});
     });
   }
+
+  Widget Description() => Column(children: [
+        SizedBox(height: 24),
+        Text("Description",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: offWhite, fontSize: 20)),
+        SizedBox(height: 24),
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: llGrey), color: lightGrey),
+          padding: const EdgeInsets.all(15),
+          //color: Color(0xFF2D2C31),
+          //color: lightGrey,
+          child: Text(
+            widget.description,
+            style: TextStyle(color: Color(0xFFDFDEE3), fontSize: 18),
+            textAlign: TextAlign.left,
+          ),
+        ),
+        SizedBox(height: 24)
+      ]);
 }
