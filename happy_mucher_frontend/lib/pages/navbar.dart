@@ -79,7 +79,7 @@ class NavBar extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DashboardPage())),
+                            builder: (context) => MyHomePage())),
                   }),
         ],
       ),
