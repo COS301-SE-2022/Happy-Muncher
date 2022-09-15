@@ -12,8 +12,16 @@ class MealPage extends StatefulWidget {
 
 class _MealPageState extends State<MealPage> {
   @override
-  Widget build(BuildContext context) => ListView(
-        key: Key("day"),
+  Widget build(BuildContext context) => Scaffold(
+      key: Key("day"),
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text('Meal Planner'),
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
+      ),
+      body: ListView(
         padding: EdgeInsets.all(16),
         children: [
           buildCards(),
@@ -25,7 +33,7 @@ class _MealPageState extends State<MealPage> {
           buildCards3(),
           const SizedBox(height: 12),
         ],
-      );
+      ));
 
   Widget buildCards() => Row(
         children: [
