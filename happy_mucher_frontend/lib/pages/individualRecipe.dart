@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 class IndividualRecipe extends StatefulWidget {
   const IndividualRecipe(
       {Key? key,
+      this.id = 0,
       this.recipe,
       this.description = "",
       this.name = "",
@@ -25,6 +26,7 @@ class IndividualRecipe extends StatefulWidget {
   final List<Recipe>? recipe;
   final String description;
   final String name;
+  final int id;
   final String image;
   final double calories;
   final List<String> ingredients;
@@ -42,6 +44,12 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   String steps = "";
   String its = '';
   String donts = '';
+
+  Color llGrey = Color(0xFF555555);
+  Color lightGrey = Color(0xFF2D2C31); //ingredients block
+  Color darkGrey = Color(0xFF212025); //ingredients background
+  Color mediumGrey = Color(0xFF39383D);
+  Color offWhite = Color(0xFFDFDEE3);
 
   List<String> inventory = [];
 
@@ -66,11 +74,13 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     //
     super.initState();
     getInventory();
+
     for (int i = 0; i < widget.instructions.length; i++) {
       int x = i + 1;
 
       steps += x.toString() + ". " + widget.instructions[i] + '\n\n';
     }
+    print(widget.ingredients);
     for (int i = 0; i < widget.ingredients.length; i++) {
       ing += "\u2022  " + widget.ingredients[i] + '\n';
     }
@@ -80,34 +90,82 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name),
-        centerTitle: true,
+        // title: Text(widget.name),
+        // centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                print(widget.id);
+              },
+              icon: Icon(Icons.heart_broken))
+        ],
       ),
+      backgroundColor: darkGrey,
       body: ListView(padding: const EdgeInsets.all(32), children: [
+        const SizedBox(height: 24),
+        Text(widget.name,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
         Image(image: NetworkImage(widget.image)),
+        //const SizedBox(height: 24),
+
         const SizedBox(height: 24),
-        Text("description", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text(widget.description),
+        Container(
+            padding: const EdgeInsets.all(15),
+            color: lightGrey,
+            //Color(0xFF2D2C31),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      "Calories:  ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: offWhite,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      widget.calories.toString(),
+                      style: TextStyle(
+                        color: offWhite,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "Cook Time:  ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: offWhite,
+                      ),
+                    ),
+                    Text(
+                      widget.cookTime + " mins",
+                      style: TextStyle(
+                        color: offWhite,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            )),
+
         const SizedBox(height: 24),
         Text(
-          "Calories",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(widget.calories.toString()),
-        const SizedBox(height: 24),
-        Text(
-          "Cook Time",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(widget.cookTime + " mins"),
-        const SizedBox(height: 24),
-        Text(
-      
           "Ingredients",
-          style: TextStyle(fontWeight: FontWeight.bold),
-              key: Key('ingredients'),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: offWhite,
+          ),
+          key: Key('ingredients'),
         ),
         Text(ing),
+
         ElevatedButton(
             onPressed: () {
               CompareInventory();
@@ -116,7 +174,10 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         const SizedBox(height: 24),
         Text(
           "Instructions",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: offWhite,
+          ),
         ),
         Text(steps),
       ]),
