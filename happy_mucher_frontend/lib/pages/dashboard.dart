@@ -10,6 +10,7 @@ import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/pages/values.dart';
+import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -104,25 +105,33 @@ class DashboardState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-      ),
-      //drawer: NavBar(),
-      body: PageView(
-        children: <Widget>[
-          ListView(children: <Widget>[
-            Row(children: <Widget>[
-              buildMealPlanner(context),
-              buildInventoryCard(context),
+        appBar: AppBar(
+          title: Text('Happy Muncher'),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 252, 95, 13),
+        ),
+        drawer: NavBar(),
+        body: PageView(
+          children: <Widget>[
+            ListView(children: <Widget>[
+              Row(children: <Widget>[
+                buildMealPlanner(context),
+                buildInventoryCard(context),
+              ]),
+              buildGLcard(context),
+              buildBudgetcard(context),
             ]),
-            buildGLcard(context),
-            buildBudgetcard(context),
-          ]),
-        ],
-      ),
-    );
+            //MyHomePage()
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+            // isExtended: true,
+            child: Icon(Icons.arrow_forward),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => MyHomePage(),
+              ));
+            }));
   }
 
   Widget buildMealPlanner(BuildContext context) {
@@ -481,7 +490,7 @@ class DashboardState extends State<DashboardPage> {
                             builder: (context) => IventoryPage()));
                   },
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(0, 30, 20, 0),
+                    margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
                     height: 200,
                     width: 400,
                     decoration: BoxDecoration(
