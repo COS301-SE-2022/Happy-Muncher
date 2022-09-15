@@ -31,15 +31,11 @@ class HomePageState extends State<MyHomePage> {
     MealPage(),
     TastyBook(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('HAPPY MUNCHER'),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 252, 95, 13),
-        ),
-        drawer: NavBar(),
+        //drawer: NavBar(),
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
