@@ -94,7 +94,7 @@ class DashboardPageState extends State<DashboardPage> {
         domainFn: (GLValues estimatedVal, _) => estimatedVal.type,
         measureFn: (GLValues totalVal, _) => (totalVal.total),
         colorFn: (GLValues estimatedVal, _) {
-          if (estimatedVal.total <= 50) {
+          if (estimatedVal.total < 50) {
             first = false;
             return charts.ColorUtil.fromDartColor(
                 Color.fromARGB(255, 55, 190, 15));
