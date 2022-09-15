@@ -143,7 +143,7 @@ class TastyRecipeCard extends StatelessWidget {
                       name: name,
                       description: description,
                       image: images,
-                      //id: recipeid,
+                      id: recipeid,
                       ingredients: ingredients,
                       cookTime: totTime,
                       calories: calories.toDouble(),
