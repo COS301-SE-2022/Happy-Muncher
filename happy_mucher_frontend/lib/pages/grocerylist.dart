@@ -70,33 +70,33 @@ class GroceryListPageState extends State<GroceryListPage> {
         color: Color.fromARGB(255, 252, 95, 13),
         child: Row(
           children: [
-            RichText(
-              text: TextSpan(
-                children: [
-                  const WidgetSpan(
-                    child: Icon(Icons.add, size: 19),
-                  ),
-                  TextSpan(
-                    text:
-                        "Estimated Total: " + estimatePrices.toString() + "\n",
-                    style: const TextStyle(
-                      fontSize: 19,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const WidgetSpan(
-                    child: Icon(Icons.shopping_cart, size: 19),
-                  ),
-                  TextSpan(
-                    text: "Total: " + shoppingPrices.toString(),
-                    style: const TextStyle(
-                      fontSize: 19,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            )
+            // RichText(
+            //   text: TextSpan(
+            //     children: [
+            //       const WidgetSpan(
+            //         child: Icon(Icons.add, size: 19),
+            //       ),
+            //       TextSpan(
+            //         text:
+            //             "Estimated Total: " + estimatePrices.toString() + "\n",
+            //         style: const TextStyle(
+            //           fontSize: 19,
+            //           color: Colors.black,
+            //         ),
+            //       ),
+            //       const WidgetSpan(
+            //         child: Icon(Icons.shopping_cart, size: 19),
+            //       ),
+            //       TextSpan(
+            //         text: "Total: " + shoppingPrices.toString(),
+            //         style: const TextStyle(
+            //           fontSize: 19,
+            //           color: Colors.black,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // )
             // Text(
 
             //   "\u2713 Estimated Price: " +
@@ -155,7 +155,7 @@ class GroceryListPageState extends State<GroceryListPage> {
                           showUpdateDialogGroceryList(
                               context, documentSnapshot);
                         },
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
                         icon: Icons.edit,
                         label: 'Edit',
@@ -205,6 +205,7 @@ class GroceryListPageState extends State<GroceryListPage> {
       floatingActionButton: SpeedDial(
         key: const Key('speed_dial_button'),
         icon: Icons.add,
+        backgroundColor: Color.fromARGB(255, 172, 255, 78),
         children: [
           SpeedDialChild(
             onTap: () => addGLDialog(context),

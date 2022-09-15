@@ -4,6 +4,7 @@ import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/changeusername.dart';
+import 'package:happy_mucher_frontend/pages/dashboard.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
 import 'package:happy_mucher_frontend/pages/settings_page.dart';
@@ -71,6 +72,15 @@ class NavBar extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => LoginScreen())),
                   }),
           Divider(),
+          ListTile(
+              leading: Icon(Icons.dashboard),
+              title: Text('Dashboard'),
+              onTap: () async => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DashboardPage())),
+                  }),
         ],
       ),
     );
