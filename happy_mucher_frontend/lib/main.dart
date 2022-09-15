@@ -59,7 +59,7 @@ class MyAppState extends State<MyApp> {
 
 // Assign widget based on availability of currentUser
     if (firebaseUser != null) {
-      firstWidget = DashboardPage();
+      firstWidget = MyHomePage();
     } else {
       firstWidget = LoginScreen();
     }
