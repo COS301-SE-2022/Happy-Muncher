@@ -13,8 +13,16 @@ class MyBudget extends StatefulWidget {
 
 class _MyBudgetState extends State<MyBudget> {
   @override
-  Widget build(BuildContext context) => ListView(
-        key: Key("months"),
+  Widget build(BuildContext context) => Scaffold(
+      key: Key("months"),
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text('Budget'),
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
+      ),
+      body: ListView(
         padding: EdgeInsets.all(16),
         children: [
           buildCards(),
@@ -29,7 +37,7 @@ class _MyBudgetState extends State<MyBudget> {
           const SizedBox(height: 12),
           buildCards5(),
         ],
-      );
+      ));
 
   Widget buildCards() => Row(
         children: [
