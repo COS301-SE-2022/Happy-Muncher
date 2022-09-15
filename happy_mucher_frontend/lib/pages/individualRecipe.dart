@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/ingredient_displaycard.dart';
+import 'package:happy_mucher_frontend/recipeInstruction_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -51,6 +52,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   Color darkGrey = Color(0xFF212025); //ingredients background
   Color mediumGrey = Color(0xFF39383D);
   Color offWhite = Color(0xFFDFDEE3);
+  Color RRgreen = Color(0xFFACFF4E);
 
   List<String> inventory = [];
 
@@ -81,7 +83,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
       steps += x.toString() + ". " + widget.instructions[i] + '\n\n';
     }
-    print(widget.ingredients);
+    print(widget.instructions);
     for (int i = 0; i < widget.ingredients.length; i++) {
       ing += "\u2022  " + widget.ingredients[i] + '\n';
     }
@@ -91,29 +93,36 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         // title: Text(widget.name),
         // centerTitle: true,
+        iconTheme: IconThemeData(color: RRgreen),
         actions: <Widget>[
           IconButton(
-              onPressed: () {
-                print(widget.id);
-              },
-              icon: Icon(Icons.heart_broken))
+            onPressed: () {
+              print(widget.id);
+            },
+            icon: Icon(Icons.favorite),
+            color: RRgreen,
+          )
         ],
       ),
       backgroundColor: darkGrey,
       body: ListView(padding: const EdgeInsets.all(32), children: [
-        const SizedBox(height: 24),
+        //const SizedBox(height: 12),
         Text(widget.name,
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
+        const SizedBox(height: 12),
         Image(image: NetworkImage(widget.image)),
         //const SizedBox(height: 24),
         if (widget.description != "") Description(),
         const SizedBox(height: 24),
         Container(
             padding: const EdgeInsets.all(15),
-            color: lightGrey,
+            //color: lightGrey,
+            decoration: BoxDecoration(
+                border: Border.all(color: llGrey), color: lightGrey),
             //Color(0xFF2D2C31),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,18 +176,34 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           textAlign: TextAlign.left,
         ),
         //Text(ing),
+
         ListView.builder(
             shrinkWrap: true,
             itemCount: widget.ingredients.length,
             itemBuilder: (context, index) {
               return ingredientCard(ingredient: widget.ingredients[index]);
             }),
+        const SizedBox(height: 18),
 
         ElevatedButton(
-            onPressed: () {
-              CompareInventory();
-            },
-            child: const Text("Compare to Inventory")),
+          onPressed: () {
+            CompareInventory();
+          },
+          child: Text(
+            "Compare to Inventory",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: offWhite,
+              fontSize: 18,
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+              primary: lightGrey,
+              side: BorderSide(
+                  width: 2, // the thickness
+                  color: lightGrey // the color of the border
+                  )),
+        ),
         const SizedBox(height: 24),
         Text(
           "Instructions",
@@ -187,7 +212,16 @@ class IndividualRecipeState extends State<IndividualRecipe> {
             color: offWhite,
           ),
         ),
-        Text(steps),
+
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.instructions.length,
+            itemBuilder: (context, index) {
+              return InstructionCard(
+                instruction: widget.instructions[index],
+                step: index,
+              );
+            }),
       ]),
     );
   }
@@ -287,7 +321,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           //color: lightGrey,
           child: Text(
             widget.description,
-            style: TextStyle(color: Color(0xFFDFDEE3), fontSize: 18),
+            style: TextStyle(color: offWhite, fontSize: 18),
             textAlign: TextAlign.left,
           ),
         ),
