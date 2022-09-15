@@ -64,16 +64,6 @@ class NavBar extends StatelessWidget {
                   }),
           Divider(),
           ListTile(
-              key: const ValueKey("Logout"),
-              title: Text('Logout'),
-              leading: Icon(Icons.exit_to_app),
-              onTap: () async => {
-                    await FirebaseAuth.instance.signOut(),
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen())),
-                  }),
-          Divider(),
-          ListTile(
               leading: Icon(Icons.dashboard),
               title: Text('Dashboard'),
               onTap: () async => {
@@ -81,6 +71,16 @@ class NavBar extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => DashboardPage())),
+                  }),
+          Divider(),
+          ListTile(
+              key: const ValueKey("Logout"),
+              title: Text('Logout'),
+              leading: Icon(Icons.exit_to_app),
+              onTap: () async => {
+                    await FirebaseAuth.instance.signOut(),
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen())),
                   }),
         ],
       ),
