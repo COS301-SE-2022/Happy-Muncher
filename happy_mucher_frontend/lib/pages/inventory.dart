@@ -13,6 +13,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:camera/camera.dart';
 import 'package:happy_mucher_frontend/models/barcode_api.dart';
 import 'package:happy_mucher_frontend/models/barcode_data.dart';
+import 'package:happy_mucher_frontend/dialogs/add_barcode.dialog.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -41,6 +42,7 @@ class _IventoryPageState extends State<IventoryPage> {
   String? _text;
   CameraController? controller;
 
+  bool fetchingBarcode = true;
   String barcode = "";
 
   List<BarcodeData> scanResult = [];
@@ -59,7 +61,7 @@ class _IventoryPageState extends State<IventoryPage> {
       body: StreamBuilder(
         stream: _products.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          if (streamSnapshot.hasData) {
+          if (streamSnapshot.hasData && fetchingBarcode == true) {
             return ListView.builder(
               key: const Key('Inventory_ListView'),
               itemCount: streamSnapshot.data!.docs.length,
@@ -110,6 +112,7 @@ class _IventoryPageState extends State<IventoryPage> {
               },
             );
           }
+
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -228,18 +231,21 @@ class _IventoryPageState extends State<IventoryPage> {
     //6009522300623
     //009542020316
     //recipes = await RecipeAPI.getRecipe();
+    fetchingBarcode = false;
     print(barcode);
     try {
       scanResult = await BarcodeAPI.getBarcode(barcode);
       itemName = scanResult[0].name;
+      fetchingBarcode = true;
     } catch (e) {
-      print("here");
+      //print("here");
       itemName = "unknown";
     }
 
     print(itemName);
-    showResultDialog(context);
+    //showResultDialog(context);
     setState(() {});
+    addBarcodeDialog(context, itemName);
   }
 
   showInputDialog(BuildContext context) {
