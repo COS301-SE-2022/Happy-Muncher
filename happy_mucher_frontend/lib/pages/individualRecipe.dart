@@ -4,6 +4,7 @@ import 'package:happy_mucher_frontend/pages/recipebook.dart';
 import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
+import 'package:happy_mucher_frontend/ingredient_displaycard.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -161,10 +162,17 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: offWhite,
+            fontSize: 20,
           ),
-          key: Key('ingredients'),
+          textAlign: TextAlign.left,
         ),
-        Text(ing),
+        //Text(ing),
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.ingredients.length,
+            itemBuilder: (context, index) {
+              return ingredientCard(ingredient: widget.ingredients[index]);
+            }),
 
         ElevatedButton(
             onPressed: () {
@@ -258,11 +266,18 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     });
   }
 
-  Widget Description() => Column(children: [
+  Widget Description() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(height: 24),
-        Text("Description",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: offWhite, fontSize: 20)),
+        Text(
+          "Description",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: offWhite,
+            fontSize: 20,
+          ),
+          textAlign: TextAlign.left,
+        ),
         SizedBox(height: 24),
         Container(
           decoration: BoxDecoration(
