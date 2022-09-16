@@ -9,6 +9,7 @@ import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
 import 'package:happy_mucher_frontend/pages/settings_page.dart';
+import 'package:happy_mucher_frontend/pages/temp.dart';
 
 class NavBar extends StatelessWidget {
   @override
@@ -81,6 +82,17 @@ class NavBar extends StatelessWidget {
                     await FirebaseAuth.instance.signOut(),
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen())),
+                  }),
+          Divider(),
+          ListTile(
+              key: const ValueKey("Logout"),
+              title: Text('Carousel'),
+              leading: Icon(Icons.exit_to_app),
+              onTap: () async => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CarouselDemo())),
                   }),
         ],
       ),
