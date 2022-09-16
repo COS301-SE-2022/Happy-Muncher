@@ -206,8 +206,16 @@ class MyMonthState extends State<Month> {
   }
 
   percentIndicator(double spent, double rem, String budget) {
-    percentageSpent = spent / double.parse(budget);
-    percentageRemaining = rem / double.parse(budget) * 100;
+    if (budget == '750.0') {
+      print("fcking true");
+    } else {
+      print(budget);
+    }
+    if (budget != "") {
+      double b = double.parse(budget);
+      percentageSpent = spent / b;
+      percentageRemaining = rem / b * 100;
+    }
 
     return Container(
         width: 400,
