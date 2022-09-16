@@ -6,6 +6,7 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
@@ -148,35 +149,9 @@ class MyMonthState extends State<Month> {
         rem4 = doc["amount remaining"].toString();
       });
     });
-    //
-    //getDB();
-    //print('spent set');
+
     bought = [];
     double update = 0;
-    // try {
-    //   await FirebaseFirestore.instance
-    //       .collection('GroceryList')
-    //       .get()
-    //       .then((QuerySnapshot qs) {
-    //     qs.docs.forEach((doc) {
-    //       if (doc["bought"] == true) {
-    //         bought.add(doc["price"]);
-    //         //print(doc["price"]);
-    //       }
-    //     });
-    //   });
-    //   //return bought;
-    // } catch (e) {}
-
-    // _groceryList.get().then((QuerySnapshot qs) {
-    //   qs.docs.forEach((doc) {
-    //     if (doc["bought"] == true) {
-    //       bought.add(doc["price"]);
-    //       //print(doc["price"]);
-    //       //print(bought);
-    //     }
-    //   });
-    // });
 
     var totals = FirebaseFirestore.instance
         .collection('Users')
@@ -195,11 +170,6 @@ class MyMonthState extends State<Month> {
       //est
     }
 
-// bought.forEach((element) {
-//       update += double.parse(element.to);
-//     });
-    // print("got update");
-    // print(update);
     totSpent = 0;
     totSpent += double.parse(spent1) +
         double.parse(spent2) +
@@ -207,9 +177,6 @@ class MyMonthState extends State<Month> {
         double.parse(spent4) +
         update;
 
-    //print(totSpent);
-    // print("totspent");
-    // print(totSpent);
     if (mounted) {
       setState(() {
         //totRem -= totSpent;
@@ -237,6 +204,28 @@ class MyMonthState extends State<Month> {
     getDB(context);
   }
 
+  percentIndicator(double spent, double rem, String budget) {
+    percentageSpent = spent / double.parse(budget);
+    percentageRemaining = rem / double.parse(budget) * 100;
+
+    return LinearPercentIndicator(
+      width: MediaQuery.of(context).size.width - 100,
+      animation: true,
+      lineHeight: 20.0,
+      animationDuration: 2000,
+      barRadius: const Radius.circular(16),
+      percent: percentageSpent,
+      center: Text(percentageRemaining.toString() + "% remaining"),
+      progressColor: percentageRemaining >= 75
+          ? Color.fromARGB(255, 52, 108, 35)
+          : percentageRemaining < 75 && percentageRemaining >= 50
+              ? Color.fromARGB(255, 239, 255, 12)
+              : percentageRemaining < 50 && percentageRemaining >= 25
+                  ? Color.fromARGB(255, 238, 150, 19)
+                  : Color.fromARGB(255, 250, 27, 11),
+    );
+  }
+
   ///figure out how to display info on page startup
 
   // @override
@@ -255,7 +244,7 @@ class MyMonthState extends State<Month> {
         // the App.build method, and use it to set our appbar title.
         title: Text('${widget.month}'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
+        backgroundColor: const Color.fromARGB(255, 252, 95, 13),
       ),
       body: ListView(
         padding: const EdgeInsets.all(32),
@@ -282,7 +271,7 @@ class MyMonthState extends State<Month> {
   Widget viewBudget() => Column(
         children: [
           Text('Your Budget for ' + '${widget.month}' + ' is: ',
-              style: TextStyle(height: 1.2)),
+              style: const TextStyle(height: 1.2)),
           Container(
             height: 60,
             width: 100,
@@ -295,7 +284,7 @@ class MyMonthState extends State<Month> {
             //child: Text('R ' + totBudget.toString()),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.money,
                   color: Colors.grey,
                 ),
@@ -307,14 +296,15 @@ class MyMonthState extends State<Month> {
             alignment: Alignment.centerLeft,
           ),
           MaterialButton(
-            key: Key("editBudget"),
+            key: const Key("editBudget"),
             onPressed: () {
               setState(() {
                 budgetSet = true;
               });
             },
-            color: Color.fromARGB(255, 172, 255, 78),
-            child: Text("Edit Budget", style: TextStyle(color: Colors.white)),
+            color: const Color.fromARGB(255, 172, 255, 78),
+            child: const Text("Edit Budget",
+                style: TextStyle(color: Colors.white)),
           )
         ],
         mainAxisAlignment: MainAxisAlignment.start,
@@ -323,9 +313,9 @@ class MyMonthState extends State<Month> {
   Widget setBudget() => Column(
         children: [
           Text('Enter Your budget for ' + '${widget.month}',
-              style: TextStyle(height: 1.2)),
+              style: const TextStyle(height: 1.2)),
           TextField(
-            key: Key("enterBudget"),
+            key: const Key("enterBudget"),
             controller: budgetController,
             decoration: const InputDecoration(
               hintText: ('R '),
@@ -338,7 +328,7 @@ class MyMonthState extends State<Month> {
             // autofocus: true,
           ),
           MaterialButton(
-            key: Key("setBudget"),
+            key: const Key("setBudget"),
             onPressed: () {
               setState(() {
                 //totSpent = 0;
@@ -421,11 +411,14 @@ class MyMonthState extends State<Month> {
                 }
               });
             },
-            color: Color.fromARGB(255, 172, 255, 78),
-            child: Text("Set Budget", style: TextStyle(color: Colors.white)),
+            color: const Color.fromARGB(255, 172, 255, 78),
+            child:
+                const Text("Set Budget", style: TextStyle(color: Colors.white)),
           ),
         ],
       );
+  double percentageSpent = 0;
+  double percentageRemaining = 0;
 
   Widget WeekOne() => Container(
           child: Column(children: [
@@ -456,12 +449,12 @@ class MyMonthState extends State<Month> {
             children: [const Text("Budget"), Text("R " + mybudget)]),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text("Amount Spent"),
+          const Text("Amount Spent"),
           Flexible(
               child: !editOne
                   ? Text('R' + spent1)
                   : TextField(
-                      key: Key("spent1"),
+                      key: const Key("spent1"),
                       textAlign: TextAlign.right,
                       controller: spentOneController,
                       decoration: const InputDecoration(
@@ -497,30 +490,21 @@ class MyMonthState extends State<Month> {
                           }
                           spent1 = spentOneController.text;
 
-                          // if (totRem != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total remaining': totRem});
-                          // }
-                          // if (totSpent != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total spent': totSpent});
-                          // }
                           editOne = false;
                         });
                       },
                     )),
         ]),
         const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Amount Remaining"), Text("R " + rem1)]),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          const Text("Amount Remaining"),
+          Text("R " + rem1),
+        ]),
         IconButton(
           alignment: Alignment.bottomRight,
           //color: Colors.green,
           //hoverColor: Colors.green,
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           onPressed: () {
             setState(() => {
                   editOne = true,
@@ -529,6 +513,10 @@ class MyMonthState extends State<Month> {
         ),
         const SizedBox(height: 10),
         const SizedBox(height: 10),
+        Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(
+                double.parse(spent1), double.parse(rem1), mybudget))
       ]));
 
   Widget WeekTwo() => Container(
@@ -565,7 +553,7 @@ class MyMonthState extends State<Month> {
               child: !editTwo
                   ? Text('R' + spent2)
                   : TextField(
-                      key: Key("spent2"),
+                      key: const Key("spent2"),
                       textAlign: TextAlign.right,
                       controller: spentTwoController,
                       decoration: const InputDecoration(
@@ -623,7 +611,7 @@ class MyMonthState extends State<Month> {
           alignment: Alignment.bottomRight,
           //color: Colors.green,
           //hoverColor: Colors.green,
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           onPressed: () {
             setState(() => {
                   editTwo = true,
@@ -631,6 +619,10 @@ class MyMonthState extends State<Month> {
           },
         ),
         const SizedBox(height: 10),
+        Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(
+                double.parse(spent2), double.parse(rem2), mybudget))
       ]));
 
   Widget WeekThree() => Container(
@@ -667,7 +659,7 @@ class MyMonthState extends State<Month> {
               child: !editThree
                   ? Text('R' + spent3)
                   : TextField(
-                      key: Key("spent3"),
+                      key: const Key("spent3"),
                       textAlign: TextAlign.right,
                       controller: spentThreeController,
                       decoration: const InputDecoration(
@@ -725,7 +717,7 @@ class MyMonthState extends State<Month> {
           alignment: Alignment.bottomRight,
           //color: Colors.green,
           //hoverColor: Colors.green,
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           onPressed: () {
             setState(() => {
                   editThree = true,
@@ -733,6 +725,10 @@ class MyMonthState extends State<Month> {
           },
         ),
         const SizedBox(height: 10),
+        Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(
+                double.parse(spent3), double.parse(rem3), mybudget))
       ]));
 
   Widget WeekFour() => Container(
@@ -769,7 +765,7 @@ class MyMonthState extends State<Month> {
               child: !editFour
                   ? Text('R' + spent4)
                   : TextField(
-                      key: Key("spent4"),
+                      key: const Key("spent4"),
                       textAlign: TextAlign.right,
                       controller: spentFourController,
                       decoration: const InputDecoration(
@@ -816,7 +812,7 @@ class MyMonthState extends State<Month> {
           alignment: Alignment.bottomRight,
           //color: Colors.green,
           //hoverColor: Colors.green,
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           onPressed: () {
             setState(() => {
                   editFour = true,
@@ -824,10 +820,14 @@ class MyMonthState extends State<Month> {
           },
         ),
         const SizedBox(height: 10),
+        Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(
+                double.parse(spent4), double.parse(rem4), mybudget))
       ]));
 
   Widget Totals() => Container(
-      key: Key("totals"),
+      key: const Key("totals"),
       child: Column(children: [
         Container(
           child: Container(
@@ -852,7 +852,7 @@ class MyMonthState extends State<Month> {
         ),
         const SizedBox(height: 10),
         Container(
-          key: Key("totSpent"),
+          key: const Key("totSpent"),
           padding: const EdgeInsets.all(8),
           decoration: const BoxDecoration(
               border: Border(
@@ -873,6 +873,10 @@ class MyMonthState extends State<Month> {
               alignment: Alignment.centerLeft,
               child: Text("Total Amount Remaining:  " + totRem.toString())),
         ),
+        const SizedBox(height: 10),
+        Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(totSpent, totRem, totBudget.toString()))
       ]));
 
   //double update = 0;
@@ -949,15 +953,15 @@ class MyMonthState extends State<Month> {
           showAlertDialog(context);
         },
         style: ElevatedButton.styleFrom(
-          primary: Color.fromARGB(255, 172, 255, 78),
+          primary: const Color.fromARGB(255, 172, 255, 78),
         ),
-        child: Text("Compare to Grocery List"),
+        child: const Text("Compare to Grocery List"),
       );
 
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
-      child: Text("OK"),
+      child: const Text("OK"),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop('dialog');
       },
@@ -965,7 +969,7 @@ class MyMonthState extends State<Month> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Compare Grocery List to Budget"),
+      title: const Text("Compare Grocery List to Budget"),
       content: Text(compMessage),
       actions: [
         okButton,
