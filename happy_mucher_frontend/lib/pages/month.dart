@@ -264,7 +264,7 @@ class MyMonthState extends State<Month> {
                   ),
                   items: <Widget>[
                 WeekOne(),
-                Indicator(spent1, rem1),
+                Indicator(spent1, rem1, mybudget),
               ])),
           const SizedBox(height: 24),
           Container(
@@ -276,7 +276,7 @@ class MyMonthState extends State<Month> {
                   ),
                   items: <Widget>[
                 WeekTwo(),
-                Indicator(spent2, rem2),
+                Indicator(spent2, rem2, mybudget),
               ])),
 
           const SizedBox(height: 24),
@@ -289,7 +289,7 @@ class MyMonthState extends State<Month> {
                   ),
                   items: <Widget>[
                 WeekThree(),
-                Indicator(spent3, rem3),
+                Indicator(spent3, rem3, mybudget),
               ])),
           const SizedBox(height: 24),
           Container(
@@ -301,21 +301,22 @@ class MyMonthState extends State<Month> {
                   ),
                   items: <Widget>[
                 WeekFour(),
-                Indicator(spent4, rem4),
+                Indicator(spent4, rem4, mybudget),
               ])),
           const SizedBox(height: 32),
           Container(
               child: CarouselSlider(
                   options: CarouselOptions(
-                    aspectRatio: 1.4,
+                    aspectRatio: 1.6,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: false,
                   ),
                   items: <Widget>[
                 Totals(),
-                Indicator(totSpent.toString(), totRem.toString()),
+                Indicator(totSpent.toString(), totRem.toString(),
+                    totBudget.toString()),
               ])),
-
+          const SizedBox(height: 32),
           EstTotal(),
 
           /*Container(
@@ -341,17 +342,20 @@ class MyMonthState extends State<Month> {
   Widget viewBudget() => Column(
         children: [
           Text('Your Budget for ' + '${widget.month}' + ' is: ',
-              style: const TextStyle(height: 1.2)),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 0, 0, 0))),
+          SizedBox(height: 25),
           Container(
             height: 60,
-            width: 100,
+            width: 150,
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.grey,
               ),
               borderRadius: BorderRadius.zero,
             ),
-            //child: Text('R ' + totBudget.toString()),
             child: Row(
               children: [
                 const Icon(
@@ -360,19 +364,25 @@ class MyMonthState extends State<Month> {
                 ),
                 Text(
                   '   R ' + totBudget.toString(),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ],
             ),
             alignment: Alignment.centerLeft,
           ),
+          SizedBox(height: 25),
           MaterialButton(
+            shape: StadiumBorder(),
             key: const Key("editBudget"),
             onPressed: () {
               setState(() {
                 budgetSet = true;
               });
             },
-            color: const Color.fromARGB(255, 172, 255, 78),
+            color: Colors.black,
             child: const Text("Edit Budget",
                 style: TextStyle(color: Colors.white)),
           )
@@ -383,7 +393,10 @@ class MyMonthState extends State<Month> {
   Widget setBudget() => Column(
         children: [
           Text('Enter Your budget for ' + '${widget.month}',
-              style: const TextStyle(height: 1.2)),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 0, 0, 0))),
           TextField(
             key: const Key("enterBudget"),
             controller: budgetController,
@@ -398,6 +411,7 @@ class MyMonthState extends State<Month> {
             // autofocus: true,
           ),
           MaterialButton(
+            shape: StadiumBorder(),
             key: const Key("setBudget"),
             onPressed: () {
               setState(() {
@@ -481,7 +495,7 @@ class MyMonthState extends State<Month> {
                 }
               });
             },
-            color: const Color.fromARGB(255, 172, 255, 78),
+            color: Colors.black,
             child:
                 const Text("Set Budget", style: TextStyle(color: Colors.white)),
           ),
@@ -490,9 +504,9 @@ class MyMonthState extends State<Month> {
   double percentageSpent = 0;
   double percentageRemaining = 0;
 
-  Widget Indicator(String s, String r) => Container(
-      child: Center(
-          child: percentIndicator(double.parse(s), double.parse(r), mybudget)));
+  Widget Indicator(String s, String r, String b) => Container(
+      child:
+          Center(child: percentIndicator(double.parse(s), double.parse(r), b)));
 
   Widget WeekOne() => Container(
       child: Card(
@@ -895,57 +909,57 @@ class MyMonthState extends State<Month> {
           ]))));
 
   Widget Totals() => Container(
-      key: const Key("totals"),
-      child: Column(children: [
-        Container(
+      child: Card(
+          elevation: 10,
+          clipBehavior: Clip.antiAlias,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Container(
-            width: 600.0,
-            height: 42.0,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 172, 255, 78),
-            ),
-            child: const Center(
-              child: Text(
-                'Totals',
-                style: TextStyle(
-                  //fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1,
+              key: const Key("totals"),
+              child: Column(children: [
+                Container(
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: const Center(
+                      child: Text(
+                        'Totals',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
                 ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Container(
-          key: const Key("totSpent"),
-          padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-              border: Border(
-            bottom: BorderSide(color: Colors.grey, width: 3),
-          )),
-          child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text("Total Amount Spent:  " + totSpent.toString())),
-        ),
-        const SizedBox(height: 10),
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-              border: Border(
-            bottom: BorderSide(color: Colors.grey, width: 3),
-          )),
-          child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text("Total Amount Remaining:  " + totRem.toString())),
-        ),
-        const SizedBox(height: 10),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: percentIndicator(totSpent, totRem, totBudget.toString()))
-      ]));
+                const SizedBox(height: 10),
+                Container(
+                  key: const Key("totSpent"),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                    bottom: BorderSide(color: Colors.grey, width: 3),
+                  )),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                          "   Total Amount Spent:  " + totSpent.toString())),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                    bottom: BorderSide(color: Colors.grey, width: 3),
+                  )),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("   Total Amount Remaining:  " +
+                          totRem.toString() +
+                          "   ")),
+                ),
+                const SizedBox(height: 10),
+              ]))));
 
   //double update = 0;
   Widget EstTotal() => ElevatedButton(
@@ -976,30 +990,7 @@ class MyMonthState extends State<Month> {
             // You can then retrieve the value from the Map like this:
             tr = data['total remaining'].toDouble();
           }
-
-          // print(totRem);
           print(tr);
-          //getGL();
-          // FirebaseFirestore.instance
-          //     .collection('GroceryList')
-          //     .get()
-          //     .then((QuerySnapshot qs) {
-          //   qs.docs.forEach((doc) {
-          //     estimate.add(doc["price"]);
-          //   });
-          //   // print("estimate");
-          //   // print(estimate);
-          // });
-          // // print("getGL called");
-          // // print(estimate);
-          // if (estimate.isEmpty) {
-          //   //print("values not set");
-          // }
-          // estimate.forEach((element) {
-          //   est += double.parse(element);
-          //   // print("got estimates");
-          //   // print(est);
-          // });
 
           String message = "";
           double comp = 0;
@@ -1021,8 +1012,7 @@ class MyMonthState extends State<Month> {
           showAlertDialog(context);
         },
         style: ElevatedButton.styleFrom(
-          primary: const Color.fromARGB(255, 172, 255, 78),
-        ),
+            primary: Colors.black, shape: StadiumBorder()),
         child: const Text("Compare to Grocery List"),
       );
 
