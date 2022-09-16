@@ -7,6 +7,7 @@ import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Month extends StatefulWidget {
   const Month({Key? key, this.month = "", this.price = 0, this.glSpent = 0})
@@ -208,31 +209,33 @@ class MyMonthState extends State<Month> {
     percentageSpent = spent / double.parse(budget);
     percentageRemaining = rem / double.parse(budget) * 100;
 
-    return LinearPercentIndicator(
-      width: MediaQuery.of(context).size.width - 100,
-      animation: true,
-      lineHeight: 20.0,
-      animationDuration: 2000,
-      barRadius: const Radius.circular(16),
-      percent: percentageSpent,
-      center: Text(percentageRemaining.toString() + "% remaining"),
-      progressColor: percentageRemaining >= 75
-          ? Color.fromARGB(255, 52, 108, 35)
-          : percentageRemaining < 75 && percentageRemaining >= 50
-              ? Color.fromARGB(255, 239, 255, 12)
-              : percentageRemaining < 50 && percentageRemaining >= 25
-                  ? Color.fromARGB(255, 238, 150, 19)
-                  : Color.fromARGB(255, 250, 27, 11),
-    );
+    return Container(
+        width: 400,
+        height: 250,
+        //margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        child: Card(
+            elevation: 10,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: LinearPercentIndicator(
+              width: MediaQuery.of(context).size.width - 150,
+              animation: true,
+              lineHeight: 25.0,
+              animationDuration: 2000,
+              barRadius: const Radius.circular(16),
+              percent: percentageSpent,
+              center: Text(percentageRemaining.toString() + "% remaining"),
+              progressColor: percentageRemaining >= 75
+                  ? Color.fromARGB(255, 52, 108, 35)
+                  : percentageRemaining < 75 && percentageRemaining >= 50
+                      ? Color.fromARGB(255, 239, 255, 12)
+                      : percentageRemaining < 50 && percentageRemaining >= 25
+                          ? Color.fromARGB(255, 238, 150, 19)
+                          : Color.fromARGB(255, 250, 27, 11),
+            )));
   }
 
-  ///figure out how to display info on page startup
-
-  // @override
-  // void initState() => getDB(context);
-
-  //get current month
-  //DocumentReference get _currentMonth => _budget.doc(widget.month);
   @override
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getDB(context));
@@ -251,16 +254,83 @@ class MyMonthState extends State<Month> {
         children: <Widget>[
           if (budgetSet) setBudget() else viewBudget(),
           const SizedBox(height: 24),
-          WeekOne(),
+          //WeekOne(),
+          Container(
+              child: CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 1.4,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                  ),
+                  items: <Widget>[
+                WeekOne(),
+                Indicator(spent1, rem1),
+              ])),
           const SizedBox(height: 24),
-          WeekTwo(),
+          Container(
+              child: CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 1.4,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                  ),
+                  items: <Widget>[
+                WeekTwo(),
+                Indicator(spent2, rem2),
+              ])),
+
           const SizedBox(height: 24),
-          WeekThree(),
+          Container(
+              child: CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 1.4,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                  ),
+                  items: <Widget>[
+                WeekThree(),
+                Indicator(spent3, rem3),
+              ])),
           const SizedBox(height: 24),
-          WeekFour(),
+          Container(
+              child: CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 1.4,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                  ),
+                  items: <Widget>[
+                WeekFour(),
+                Indicator(spent4, rem4),
+              ])),
           const SizedBox(height: 32),
-          Totals(),
+          Container(
+              child: CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 1.4,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                  ),
+                  items: <Widget>[
+                Totals(),
+                Indicator(totSpent.toString(), totRem.toString()),
+              ])),
+
           EstTotal(),
+
+          /*Container(
+              child: CarouselSlider(
+                  options: CarouselOptions(
+                    disableCenter: true,
+                  ),
+                  items: <Widget>[
+                if (budgetSet) setBudget() else viewBudget(),
+                const SizedBox(height: 24),
+                WeekTwo(),
+                const SizedBox(height: 24),
+                Indicator(spent2, rem2),
+              ])),*/
+
           //Comparison(),
           //showAlertDialog(context)
         ],
@@ -420,411 +490,409 @@ class MyMonthState extends State<Month> {
   double percentageSpent = 0;
   double percentageRemaining = 0;
 
+  Widget Indicator(String s, String r) => Container(
+      child: Center(
+          child: percentIndicator(double.parse(s), double.parse(r), mybudget)));
+
   Widget WeekOne() => Container(
+      child: Card(
+          elevation: 10,
+          clipBehavior: Clip.antiAlias,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Column(children: [
-        Container(
-          child: Container(
-            width: 600.0,
-            height: 42.0,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 172, 255, 78),
-            ),
-            child: const Center(
-              child: Text(
-                'Week 1',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1,
+            Container(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: const Center(
+                  child: Text(
+                    'Week 1',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-                textAlign: TextAlign.left,
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R " + mybudget)]),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Text("Amount Spent"),
-          Flexible(
-              child: !editOne
-                  ? Text('R' + spent1)
-                  : TextField(
-                      key: const Key("spent1"),
-                      textAlign: TextAlign.right,
-                      controller: spentOneController,
-                      decoration: const InputDecoration(
-                        hintText: 'R 0',
-                      ),
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          if (double.parse(spent1) !=
-                              double.parse(spentOneController.text)) {
-                            print("same");
-                            totSpent -= double.parse(spent1);
-                            totRem += double.parse(spent1);
-                            spent1 = spentOneController.text;
-                            totRem -= double.parse(spent1);
-                            double left = double.parse(spent1);
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Budget"),
+              Text("R " + mybudget + "   ")
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Spent"),
+              Flexible(
+                  child: !editOne
+                      ? Text('R' + spent1 + "   ")
+                      : TextField(
+                          key: const Key("spent1"),
+                          textAlign: TextAlign.right,
+                          controller: spentOneController,
+                          decoration: const InputDecoration(
+                            hintText: 'R 0',
+                          ),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (value) {
+                            setState(() {
+                              if (double.parse(spent1) !=
+                                  double.parse(spentOneController.text)) {
+                                print("same");
+                                totSpent -= double.parse(spent1);
+                                totRem += double.parse(spent1);
+                                spent1 = spentOneController.text;
+                                totRem -= double.parse(spent1);
+                                double left = double.parse(spent1);
 
-                            totSpent += double.parse(spent1);
-                            left =
-                                double.parse(mybudget) - double.parse(spent1);
+                                totSpent += double.parse(spent1);
+                                left = double.parse(mybudget) -
+                                    double.parse(spent1);
 
-                            rem1 = left.toString();
-                            _budget
-                                .doc(widget.month)
-                                .collection('Week1')
-                                .doc('Week1')
-                                .set({
-                              'budget': mybudget,
-                              'amount spent': double.parse(spent1),
-                              'amount remaining': rem1
+                                rem1 = left.toString();
+                                _budget
+                                    .doc(widget.month)
+                                    .collection('Week1')
+                                    .doc('Week1')
+                                    .set({
+                                  'budget': mybudget,
+                                  'amount spent': double.parse(spent1),
+                                  'amount remaining': rem1
+                                });
+                              }
+                              spent1 = spentOneController.text;
+
+                              editOne = false;
                             });
-                          }
-                          spent1 = spentOneController.text;
-
-                          editOne = false;
-                        });
-                      },
-                    )),
-        ]),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Text("Amount Remaining"),
-          Text("R " + rem1),
-        ]),
-        IconButton(
-          alignment: Alignment.bottomRight,
-          //color: Colors.green,
-          //hoverColor: Colors.green,
-          icon: const Icon(Icons.edit),
-          onPressed: () {
-            setState(() => {
-                  editOne = true,
-                });
-          },
-        ),
-        const SizedBox(height: 10),
-        const SizedBox(height: 10),
-        Padding(
+                          },
+                        )),
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Remaining"),
+              Text("R " + rem1 + "   "),
+            ]),
+            IconButton(
+              alignment: Alignment.bottomRight,
+              //color: Colors.green,
+              //hoverColor: Colors.green,
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                setState(() => {
+                      editOne = true,
+                    });
+              },
+            ),
+            const SizedBox(height: 10),
+            const SizedBox(height: 10),
+            /*Padding(
             padding: const EdgeInsets.all(15.0),
             child: percentIndicator(
-                double.parse(spent1), double.parse(rem1), mybudget))
-      ]));
+                double.parse(spent1), double.parse(rem1), mybudget))*/
+          ])));
 
   Widget WeekTwo() => Container(
-          child: Column(children: [
-        Container(
+      child: Card(
+          elevation: 25,
+          clipBehavior: Clip.antiAlias,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Container(
-            width: 600.0,
-            height: 42.0,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 172, 255, 78),
-            ),
-            child: const Center(
-              child: Text(
-                'Week 2',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1,
+              child: Column(children: [
+            Container(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: const Center(
+                  child: Text(
+                    'Week 2',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-                textAlign: TextAlign.left,
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R" + mybudget)]),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Text("Amount Spent"),
-          Flexible(
-              child: !editTwo
-                  ? Text('R' + spent2)
-                  : TextField(
-                      key: const Key("spent2"),
-                      textAlign: TextAlign.right,
-                      controller: spentTwoController,
-                      decoration: const InputDecoration(
-                        hintText: 'R 0',
-                      ),
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          if (double.parse(spent2) !=
-                              double.parse(spentTwoController.text)) {
-                            print("same");
-                            totSpent -= double.parse(spent2);
-                            totRem += double.parse(spent2);
-                            spent2 = spentTwoController.text;
-                            totRem -= double.parse(spent2);
-                            double left = double.parse(spent2);
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Budget"),
+              Text("R" + mybudget + "   ")
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Spent"),
+              Flexible(
+                  child: !editTwo
+                      ? Text('R' + spent2 + "   ")
+                      : TextField(
+                          key: const Key("spent2"),
+                          textAlign: TextAlign.right,
+                          controller: spentTwoController,
+                          decoration: const InputDecoration(
+                            hintText: 'R 0',
+                          ),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (value) {
+                            setState(() {
+                              if (double.parse(spent2) !=
+                                  double.parse(spentTwoController.text)) {
+                                print("same");
+                                totSpent -= double.parse(spent2);
+                                totRem += double.parse(spent2);
+                                spent2 = spentTwoController.text;
+                                totRem -= double.parse(spent2);
+                                double left = double.parse(spent2);
 
-                            totSpent += double.parse(spent2);
-                            left =
-                                double.parse(mybudget) - double.parse(spent2);
+                                totSpent += double.parse(spent2);
+                                left = double.parse(mybudget) -
+                                    double.parse(spent2);
 
-                            rem2 = left.toString();
-                            _budget
-                                .doc(widget.month)
-                                .collection('Week2')
-                                .doc('Week2')
-                                .set({
-                              'budget': mybudget,
-                              'amount spent': double.parse(spent2),
-                              'amount remaining': rem2
+                                rem2 = left.toString();
+                                _budget
+                                    .doc(widget.month)
+                                    .collection('Week2')
+                                    .doc('Week2')
+                                    .set({
+                                  'budget': mybudget,
+                                  'amount spent': double.parse(spent2),
+                                  'amount remaining': rem2
+                                });
+                              }
+                              spent2 = spentTwoController.text;
+                              // if (totRem != null) {
+                              //   _budget
+                              //       .doc(widget.month)
+                              //       .update({'total remaining': totRem});
+                              // }
+                              // if (totSpent != null) {
+                              //   _budget
+                              //       .doc(widget.month)
+                              //       .update({'total spent': totSpent});
+                              // }
+                              editTwo = false;
                             });
-                          }
-                          spent2 = spentTwoController.text;
-                          // if (totRem != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total remaining': totRem});
-                          // }
-                          // if (totSpent != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total spent': totSpent});
-                          // }
-                          editTwo = false;
-                        });
-                      },
-                    ))
-        ]),
-        const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Amount Remaining"), Text("R " + rem2)]),
-        IconButton(
-          alignment: Alignment.bottomRight,
-          //color: Colors.green,
-          //hoverColor: Colors.green,
-          icon: const Icon(Icons.edit),
-          onPressed: () {
-            setState(() => {
-                  editTwo = true,
-                });
-          },
-        ),
-        const SizedBox(height: 10),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: percentIndicator(
-                double.parse(spent2), double.parse(rem2), mybudget))
-      ]));
+                          },
+                        ))
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Remaining"),
+              Text("R " + rem2 + "   ")
+            ]),
+            IconButton(
+              alignment: Alignment.bottomRight,
+              //color: Colors.green,
+              //hoverColor: Colors.green,
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                setState(() => {
+                      editTwo = true,
+                    });
+              },
+            ),
+            const SizedBox(height: 10),
+          ]))));
 
   Widget WeekThree() => Container(
-          child: Column(children: [
-        Container(
+      child: Card(
+          elevation: 10,
+          clipBehavior: Clip.antiAlias,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Container(
-            width: 600.0,
-            height: 42.0,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 172, 255, 78),
-            ),
-            child: const Center(
-              child: Text(
-                'Week 3',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1,
+              child: Column(children: [
+            Container(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: const Center(
+                  child: Text(
+                    'Week 3',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-                textAlign: TextAlign.left,
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R" + mybudget)]),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Text("Amount Spent"),
-          Flexible(
-              child: !editThree
-                  ? Text('R' + spent3)
-                  : TextField(
-                      key: const Key("spent3"),
-                      textAlign: TextAlign.right,
-                      controller: spentThreeController,
-                      decoration: const InputDecoration(
-                        hintText: 'R 0',
-                      ),
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          if (double.parse(spent3) !=
-                              double.parse(spentThreeController.text)) {
-                            print("same");
-                            totSpent -= double.parse(spent3);
-                            totRem += double.parse(spent3);
-                            spent3 = spentThreeController.text;
-                            totRem -= double.parse(spent3);
-                            double left = double.parse(spent3);
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Budget"),
+              Text("R" + mybudget + "   ")
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Spent"),
+              Flexible(
+                  child: !editThree
+                      ? Text('R' + spent3 + "   ")
+                      : TextField(
+                          key: const Key("spent3"),
+                          textAlign: TextAlign.right,
+                          controller: spentThreeController,
+                          decoration: const InputDecoration(
+                            hintText: 'R 0',
+                          ),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (value) {
+                            setState(() {
+                              if (double.parse(spent3) !=
+                                  double.parse(spentThreeController.text)) {
+                                print("same");
+                                totSpent -= double.parse(spent3);
+                                totRem += double.parse(spent3);
+                                spent3 = spentThreeController.text;
+                                totRem -= double.parse(spent3);
+                                double left = double.parse(spent3);
 
-                            totSpent += double.parse(spent3);
-                            left =
-                                double.parse(mybudget) - double.parse(spent3);
+                                totSpent += double.parse(spent3);
+                                left = double.parse(mybudget) -
+                                    double.parse(spent3);
 
-                            rem3 = left.toString();
-                            _budget
-                                .doc(widget.month)
-                                .collection('Week3')
-                                .doc('Week3')
-                                .set({
-                              'budget': mybudget,
-                              'amount spent': double.parse(spent3),
-                              'amount remaining': rem3
+                                rem3 = left.toString();
+                                _budget
+                                    .doc(widget.month)
+                                    .collection('Week3')
+                                    .doc('Week3')
+                                    .set({
+                                  'budget': mybudget,
+                                  'amount spent': double.parse(spent3),
+                                  'amount remaining': rem3
+                                });
+                              }
+                              spent3 = spentThreeController.text;
+                              // if (totRem != null) {
+                              //   _budget
+                              //       .doc(widget.month)
+                              //       .update({'total remaining': totRem});
+                              // }
+                              // if (totSpent != null) {
+                              //   _budget
+                              //       .doc(widget.month)
+                              //       .update({'total spent': totSpent});
+                              // }
+                              editThree = false;
                             });
-                          }
-                          spent3 = spentThreeController.text;
-                          // if (totRem != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total remaining': totRem});
-                          // }
-                          // if (totSpent != null) {
-                          //   _budget
-                          //       .doc(widget.month)
-                          //       .update({'total spent': totSpent});
-                          // }
-                          editThree = false;
-                        });
-                      },
-                    ))
-        ]),
-        const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Amount Remaining"), Text("R " + rem3)]),
-        IconButton(
-          alignment: Alignment.bottomRight,
-          //color: Colors.green,
-          //hoverColor: Colors.green,
-          icon: const Icon(Icons.edit),
-          onPressed: () {
-            setState(() => {
-                  editThree = true,
-                });
-          },
-        ),
-        const SizedBox(height: 10),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: percentIndicator(
-                double.parse(spent3), double.parse(rem3), mybudget))
-      ]));
+                          },
+                        ))
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Remaining"),
+              Text("R " + rem3 + "   ")
+            ]),
+            IconButton(
+              alignment: Alignment.bottomRight,
+              //color: Colors.green,
+              //hoverColor: Colors.green,
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                setState(() => {
+                      editThree = true,
+                    });
+              },
+            ),
+            const SizedBox(height: 10),
+          ]))));
 
   Widget WeekFour() => Container(
-          child: Column(children: [
-        Container(
+      child: Card(
+          elevation: 10,
+          clipBehavior: Clip.antiAlias,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Container(
-            width: 600.0,
-            height: 42.0,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 172, 255, 78),
-            ),
-            child: const Center(
-              child: Text(
-                'Week 4',
-                style: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1,
+              child: Column(children: [
+            Container(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: const Center(
+                  child: Text(
+                    'Week 4',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-                textAlign: TextAlign.left,
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Budget"), Text("R" + mybudget)]),
-        const SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Text("Amount Spent"),
-          Flexible(
-              child: !editFour
-                  ? Text('R' + spent4)
-                  : TextField(
-                      key: const Key("spent4"),
-                      textAlign: TextAlign.right,
-                      controller: spentFourController,
-                      decoration: const InputDecoration(
-                        hintText: 'R 0',
-                      ),
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) {
-                        setState(() {
-                          if (double.parse(spent4) !=
-                              double.parse(spentFourController.text)) {
-                            print("same");
-                            totSpent -= double.parse(spent4);
-                            totRem += double.parse(spent4);
-                            spent4 = spentFourController.text;
-                            totRem -= double.parse(spent4);
-                            double left = double.parse(spent4);
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Budget"),
+              Text("R" + mybudget + "   ")
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Spent"),
+              Flexible(
+                  child: !editFour
+                      ? Text('R' + spent4 + "   ")
+                      : TextField(
+                          key: const Key("spent4"),
+                          textAlign: TextAlign.right,
+                          controller: spentFourController,
+                          decoration: const InputDecoration(
+                            hintText: 'R 0',
+                          ),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (value) {
+                            setState(() {
+                              if (double.parse(spent4) !=
+                                  double.parse(spentFourController.text)) {
+                                print("same");
+                                totSpent -= double.parse(spent4);
+                                totRem += double.parse(spent4);
+                                spent4 = spentFourController.text;
+                                totRem -= double.parse(spent4);
+                                double left = double.parse(spent4);
 
-                            totSpent += double.parse(spent4);
-                            left =
-                                double.parse(mybudget) - double.parse(spent4);
+                                totSpent += double.parse(spent4);
+                                left = double.parse(mybudget) -
+                                    double.parse(spent4);
 
-                            rem4 = left.toString();
-                            _budget
-                                .doc(widget.month)
-                                .collection('Week4')
-                                .doc('Week4')
-                                .set({
-                              'budget': mybudget,
-                              'amount spent': double.parse(spent4),
-                              'amount remaining': rem4
+                                rem4 = left.toString();
+                                _budget
+                                    .doc(widget.month)
+                                    .collection('Week4')
+                                    .doc('Week4')
+                                    .set({
+                                  'budget': mybudget,
+                                  'amount spent': double.parse(spent4),
+                                  'amount remaining': rem4
+                                });
+                              }
+                              editFour = false;
                             });
-                          }
-                          editFour = false;
-                        });
-                      },
-                    ))
-        ]),
-        const SizedBox(height: 10),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [const Text("Amount Remaining"), Text(rem4)]),
-        IconButton(
-          alignment: Alignment.bottomRight,
-          //color: Colors.green,
-          //hoverColor: Colors.green,
-          icon: const Icon(Icons.edit),
-          onPressed: () {
-            setState(() => {
-                  editFour = true,
-                });
-          },
-        ),
-        const SizedBox(height: 10),
-        Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: percentIndicator(
-                double.parse(spent4), double.parse(rem4), mybudget))
-      ]));
+                          },
+                        ))
+            ]),
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("   Amount Remaining"),
+              Text(rem4 + "   ")
+            ]),
+            IconButton(
+              alignment: Alignment.bottomRight,
+              //color: Colors.green,
+              //hoverColor: Colors.green,
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                setState(() => {
+                      editFour = true,
+                    });
+              },
+            ),
+            const SizedBox(height: 10),
+          ]))));
 
   Widget Totals() => Container(
       key: const Key("totals"),
