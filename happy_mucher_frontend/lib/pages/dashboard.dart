@@ -15,6 +15,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -118,7 +119,8 @@ class DashboardState extends State<DashboardPage> {
                 buildMealPlanner(context),
                 buildInventoryCard(context),
               ]),
-              buildGLcard(context),
+              //buildGLcard(context),
+              buildProgressIndicator(),
               buildBudgetcard(context),
             ]),
             //MyHomePage()
@@ -459,6 +461,96 @@ class DashboardState extends State<DashboardPage> {
                   ),
                 ),
               )
+            ])));
+  }
+
+  double total = 0;
+  Widget buildProgressIndicator() {
+    return Container(
+        width: 150,
+        height: 150,
+        margin: EdgeInsets.fromLTRB(10, 20, 20, 0),
+        child: Card(
+            key: const ValueKey("Meal Planner"),
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.topCenter, children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text('Grocery List',
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center),
+              ),
+              InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => IventoryPage()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
+                    height: 100,
+                    width: 400,
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('GL totals')
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                          if (streamSnapshot.hasData) {
+                            bool exp = false;
+                            return ListView.builder(
+                                key: const Key('Inventory_ListView'),
+                                itemCount: streamSnapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
+
+                                  DateTime dateToday = new DateTime.now();
+                                  String date =
+                                      dateToday.toString().substring(0, 10);
+                                  total = documentSnapshot['estimated total'] +
+                                      documentSnapshot['shopping total'];
+
+                                  if (index == 0) {
+                                    //print(documentSnapshot['total']);
+                                    return LinearPercentIndicator(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                200,
+                                        animation: true,
+                                        lineHeight: 22.0,
+                                        animationDuration: 2000,
+                                        leading: new Text("estimated \n total"),
+                                        trailing: new Text("shopping\n total"),
+                                        percent: documentSnapshot[
+                                                'estimated total'] /
+                                            total,
+                                        // center: Text(percentageRemaining.toString() + "% remaining"),
+
+                                        backgroundColor:
+                                            Color.fromARGB(255, 252, 95, 13),
+                                        progressColor:
+                                            Color.fromARGB(255, 55, 190, 15));
+                                  } else {
+                                    total += documentSnapshot['total'];
+                                    return Text("");
+                                  }
+                                });
+                          }
+                          return Text("No items expire today.",
+                              textAlign: TextAlign.center);
+                        },
+                      ),
+                    ),
+                  ))
             ])));
   }
 
