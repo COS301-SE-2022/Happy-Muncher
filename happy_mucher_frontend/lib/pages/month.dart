@@ -205,7 +205,7 @@ class MyMonthState extends State<Month> {
     getDB(context);
   }
 
-  percentIndicator(double spent, double rem, String budget) {
+  percentIndicator(double spent, double rem, String budget, String w) {
     if (budget == '750.0') {
       print("fcking true");
     } else {
@@ -215,6 +215,11 @@ class MyMonthState extends State<Month> {
       double b = double.parse(budget);
       percentageSpent = spent / b;
       percentageRemaining = rem / b * 100;
+    }
+    print(percentageSpent);
+    if (percentageSpent > 1 || percentageRemaining == double.negativeInfinity) {
+      percentageSpent = 0;
+      percentageRemaining = 100;
     }
 
     return Container(
@@ -226,22 +231,41 @@ class MyMonthState extends State<Month> {
             clipBehavior: Clip.antiAlias,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: LinearPercentIndicator(
-              width: MediaQuery.of(context).size.width - 150,
-              animation: true,
-              lineHeight: 25.0,
-              animationDuration: 2000,
-              barRadius: const Radius.circular(16),
-              percent: percentageSpent,
-              center: Text(percentageRemaining.toString() + "% remaining"),
-              progressColor: percentageRemaining >= 75
-                  ? Color.fromARGB(255, 52, 108, 35)
-                  : percentageRemaining < 75 && percentageRemaining >= 50
-                      ? Color.fromARGB(255, 239, 255, 12)
-                      : percentageRemaining < 50 && percentageRemaining >= 25
-                          ? Color.fromARGB(255, 238, 150, 19)
-                          : Color.fromARGB(255, 250, 27, 11),
-            )));
+            child: Container(
+                child: Column(children: [
+              Container(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Center(
+                    child: Text(
+                      '${w}',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 65),
+              LinearPercentIndicator(
+                width: MediaQuery.of(context).size.width - 150,
+                animation: true,
+                lineHeight: 25.0,
+                animationDuration: 2000,
+                barRadius: const Radius.circular(16),
+                percent: percentageSpent,
+                center: Text(percentageRemaining.toString() + "% remaining"),
+                progressColor: percentageRemaining >= 75
+                    ? Color.fromARGB(255, 52, 108, 35)
+                    : percentageRemaining < 75 && percentageRemaining >= 50
+                        ? Color.fromARGB(255, 239, 255, 12)
+                        : percentageRemaining < 50 && percentageRemaining >= 25
+                            ? Color.fromARGB(255, 238, 150, 19)
+                            : Color.fromARGB(255, 250, 27, 11),
+              )
+            ]))));
   }
 
   @override
@@ -271,8 +295,8 @@ class MyMonthState extends State<Month> {
                     enableInfiniteScroll: false,
                   ),
                   items: <Widget>[
+                Indicator(spent1, rem1, mybudget, 'Week 1'),
                 WeekOne(),
-                Indicator(spent1, rem1, mybudget),
               ])),
           const SizedBox(height: 24),
           Container(
@@ -283,8 +307,8 @@ class MyMonthState extends State<Month> {
                     enableInfiniteScroll: false,
                   ),
                   items: <Widget>[
+                Indicator(spent2, rem2, mybudget, 'Week 2'),
                 WeekTwo(),
-                Indicator(spent2, rem2, mybudget),
               ])),
 
           const SizedBox(height: 24),
@@ -296,8 +320,8 @@ class MyMonthState extends State<Month> {
                     enableInfiniteScroll: false,
                   ),
                   items: <Widget>[
+                Indicator(spent3, rem3, mybudget, 'Week 3'),
                 WeekThree(),
-                Indicator(spent3, rem3, mybudget),
               ])),
           const SizedBox(height: 24),
           Container(
@@ -308,8 +332,8 @@ class MyMonthState extends State<Month> {
                     enableInfiniteScroll: false,
                   ),
                   items: <Widget>[
+                Indicator(spent4, rem4, mybudget, 'Week 4'),
                 WeekFour(),
-                Indicator(spent4, rem4, mybudget),
               ])),
           const SizedBox(height: 32),
           Container(
@@ -320,9 +344,9 @@ class MyMonthState extends State<Month> {
                     enableInfiniteScroll: false,
                   ),
                   items: <Widget>[
-                Totals(),
                 Indicator(totSpent.toString(), totRem.toString(),
-                    totBudget.toString()),
+                    totBudget.toString(), 'Totals'),
+                Totals(),
               ])),
           const SizedBox(height: 32),
           EstTotal(),
@@ -512,9 +536,9 @@ class MyMonthState extends State<Month> {
   double percentageSpent = 0;
   double percentageRemaining = 0;
 
-  Widget Indicator(String s, String r, String b) => Container(
-      child:
-          Center(child: percentIndicator(double.parse(s), double.parse(r), b)));
+  Widget Indicator(String s, String r, String b, String week) => Container(
+      child: Center(
+          child: percentIndicator(double.parse(s), double.parse(r), b, week)));
 
   Widget WeekOne() => Container(
       child: Card(
