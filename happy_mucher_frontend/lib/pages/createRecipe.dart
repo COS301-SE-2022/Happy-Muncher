@@ -26,20 +26,6 @@ class CreateState extends State<Create> {
   String title = "my Recipe";
   int selectedIndex = 0;
   static List<String> ingredients = [];
-  // final tabs = [
-  //   IngredientListWidget(
-  //     ingredient: ingredients,
-  //   ),
-  //   Column(
-  //     children: [
-  //       IconButton(
-  //           onPressed: () {
-  //             print(ingredients[0]);
-  //           },
-  //           icon: Icon(Icons.search))
-  //     ],
-  //   ),
-  // ];
   bool ingEdit = false;
 
   final ingController = TextEditingController();
@@ -53,7 +39,6 @@ class CreateState extends State<Create> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -72,15 +57,13 @@ class CreateState extends State<Create> {
             },
             child: Text("Done"),
           ),
-          backgroundColor: Color.fromARGB(255, 252, 95, 13)),
-
+          backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
       body: Column(
         children: [
-          Text('Enter your Recipe Title ', style: TextStyle(height: 3.2)),
+          const Text('Enter your Recipe Title ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
-
           TextField(
-              key: Key("enterTitle"),
+              key: const Key("enterTitle"),
               controller: titleController,
               decoration: const InputDecoration(
                 hintText: ('Title'),
@@ -94,12 +77,12 @@ class CreateState extends State<Create> {
               })
               // autofocus: true,
               ),
-          Text('Enter your Ingredients ', style: TextStyle(height: 3.2)),
+          const Text('Enter your Ingredients ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           Flexible(
             child: ListView(
               shrinkWrap: true,
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               children: ingredients.map((String item) {
                 return ComponentCard(
                   ingredient: item,
@@ -107,16 +90,8 @@ class CreateState extends State<Create> {
               }).toList(),
             ),
           ),
-          // ListView(
-          //   padding: EdgeInsets.symmetric(vertical: 8.0),
-          //   children: ingredients.map((String item) {
-          //     return ComponentCard(
-          //       ingredient: item,
-          //     );
-          //   }).toList(),
-          // ),
-
           FloatingActionButton(
+            //MAKE THIS SPEED DIAL
             heroTag: "ingbutton",
             onPressed: () => showDialog(
               context: context,
@@ -128,11 +103,12 @@ class CreateState extends State<Create> {
 
               //useRootNavigator: true,
             ),
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
-          Text('Enter your Instructions ', style: TextStyle(height: 3.2)),
+          const Text('Enter your Instructions ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           FloatingActionButton(
+            //MAKE THIS SPEED DIAL
             heroTag: "insbutton",
             onPressed: () => showDialog(
               context: context,
@@ -144,90 +120,10 @@ class CreateState extends State<Create> {
 
               //useRootNavigator: true,
             ),
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ],
       ),
-      // StreamBuilder(builder: (context, snapshot) {
-      //   return ListView.builder(
-      //     itemCount: ingredients.length,
-      //     itemBuilder: (context, index) {
-      //       return ComponentCard(
-      //         ingredient: ingredients[index],
-      //       );
-      //     },
-      //   );
-      // }),
-
-      // ListView.builder(
-      //   itemCount: ingredients.length,
-      //   itemBuilder: (context, index) {
-      //     return IngredientListWidget(
-      //       ingredient: ingredients[index],
-      //     );
-      //   },
-      // ),
-      //tabs[selectedIndex],
-      //Column(
-      //   children: [
-
-      //     //IngredientListWidget(),
-
-      //     // IconButton(
-      //     //     onPressed: () {
-      //     //       print(ingredients);
-      //     //     },
-      //     //     icon: Icon(Icons.search))
-      //   ],
-      // ),
-      // floatingActionButton:
-      // FloatingActionButton(
-      //   onPressed: () => showDialog(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return AddIngredientDialog(
-      //         ingredients: ingredients,
-      //       );
-      //     },
-
-      //     //useRootNavigator: true,
-      //   ),
-      //   child: Icon(Icons.add),
-      // ),
-
-      // FloatingActionButton(
-      //   onPressed: () {},r
-      //   child: Icon(Icons.add)
-      // ),
     );
-    // Column(
-    //   children: [
-    //     Text("Ingredients"),
-    //     Flexible(
-    //         child: !ingEdit
-    //             ? Text(ingredients)
-    //             : TextField(
-    //                 textAlign: TextAlign.left,
-    //                 controller: ingController,
-    //                 textInputAction: TextInputAction.done,
-    //                 onSubmitted: (value) {
-    //                   setState(() {
-    //                     ingredients = ingController.text;
-    //                   });
-    //                   ingEdit = false;
-    //                 })),
-    //     IconButton(
-    //       alignment: Alignment.bottomRight,
-    //       //color: Colors.green,
-    //       //hoverColor: Colors.green,
-    //       icon: Icon(Icons.edit),
-    //       onPressed: () {
-    //         setState(() => {
-    //               ingEdit = true,
-    //             });
-    //       },
-    //     ),
-    //   ],
-    // ));
   }
 }
