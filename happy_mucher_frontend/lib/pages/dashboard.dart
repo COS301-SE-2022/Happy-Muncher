@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:happy_mucher_frontend/dailymeal_widget.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -50,6 +51,17 @@ class DashboardState extends State<DashboardPage> {
       .collection('Meal Planner')
       .doc(DateFormat('EEEE').format(DateTime.now()))
       .collection('Supper');
+
+  String getTimeofDay() {
+    int h = DateTime.now().hour;
+    print(DateTime.now().hour);
+    if (h >= 0 && h < 12) {
+      return 'Breakfast';
+    } else if (h >= 12 && h < 17) {
+      return 'Lunch';
+    } else {}
+    return 'Supper';
+  }
 
   List<charts.Series<Values, String>> _seriesBarData = [];
   List<Values> mydata = [];
@@ -138,162 +150,34 @@ class DashboardState extends State<DashboardPage> {
   Widget buildMealPlanner(BuildContext context) {
     return Container(
         width: 180,
-        height: 275,
+        height: 360,
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Card(
-            //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
-            key: const ValueKey("Meal Planner"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
+
+        //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
+        key: const ValueKey("Meal Planner"),
+        /* shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-            child: Stack(alignment: Alignment.topCenter, children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                child: Text(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),*/
+        child: Stack(alignment: Alignment.topCenter, children: [
+          Container(
+              /*child: Text(
                   'Meal Planner',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                ),
+                ),*/
               ),
-              InkWell(
-                onTap: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MealPage()));
-                },
-                child: Container(
-                  height: 300,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: Center(
-                    child: Stack(
-                      children: [
-                        StreamBuilder(
-                          stream: _breakfast.snapshots(),
-                          builder: (context,
-                              AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                            if (streamSnapshot.hasData) {
-                              return ListView.builder(
-                                key: const Key('Inventory_ListView'),
-                                itemCount: streamSnapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final DocumentSnapshot documentSnapshot =
-                                      streamSnapshot.data!.docs[index];
-
-                                  DateTime dateToday = new DateTime.now();
-                                  String date =
-                                      dateToday.toString().substring(0, 10);
-                                  if (index == 0) {
-                                    return ListTile(
-                                      title: Text("Breakfast: ",
-                                          textAlign: TextAlign.center),
-                                      subtitle: Text(
-                                        documentSnapshot['Name'].toString() +
-                                            "\n",
-                                      ),
-                                      minVerticalPadding: 70,
-                                    );
-                                  } else {
-                                    return ListTile(
-                                      title: Text(""),
-                                    );
-                                  }
-                                },
-                              );
-                            }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: 500,
-                        ),
-                        StreamBuilder(
-                          stream: _lunch.snapshots(),
-                          builder: (context,
-                              AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                            if (streamSnapshot.hasData) {
-                              return ListView.builder(
-                                key: const Key('Inventory_ListView'),
-                                itemCount: streamSnapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final DocumentSnapshot documentSnapshot =
-                                      streamSnapshot.data!.docs[index];
-
-                                  DateTime dateToday = new DateTime.now();
-                                  String date =
-                                      dateToday.toString().substring(0, 10);
-                                  if (index == 0) {
-                                    return ListTile(
-                                      title: Text("Lunch: ",
-                                          textAlign: TextAlign.center),
-                                      subtitle: Text(
-                                        documentSnapshot['Name'].toString() +
-                                            "\n",
-                                      ),
-                                      minVerticalPadding: 130,
-                                    );
-                                  } else {
-                                    return ListTile(
-                                      title: Text(""),
-                                    );
-                                  }
-                                },
-                              );
-                            }
-                            return Text("No Meals were added for today.");
-                          },
-                        ),
-                        StreamBuilder(
-                          stream: _supper.snapshots(),
-                          builder: (context,
-                              AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                            if (streamSnapshot.hasData) {
-                              return ListView.builder(
-                                key: const Key('Inventory_ListView'),
-                                itemCount: streamSnapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final DocumentSnapshot documentSnapshot =
-                                      streamSnapshot.data!.docs[index];
-
-                                  DateTime dateToday = new DateTime.now();
-                                  String date =
-                                      dateToday.toString().substring(0, 10);
-                                  if (index == 0) {
-                                    return ListTile(
-                                      title: Text(
-                                        "Supper: ",
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      subtitle: Text(
-                                        documentSnapshot['Name'].toString() +
-                                            "\n",
-                                      ),
-                                      minVerticalPadding: 190,
-                                    );
-                                  } else {
-                                    return ListTile(
-                                      title: Text(""),
-                                    );
-                                  }
-                                },
-                              );
-                            }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ])));
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyBudget()));
+            },
+          ),
+          MealWidget(
+              day: DateFormat('EEEE').format(DateTime.now()),
+              meal: getTimeofDay()),
+        ]));
   }
 
   Widget buildBudgetcard(BuildContext context) {
@@ -463,7 +347,7 @@ class DashboardState extends State<DashboardPage> {
             ])));
   }
 
-  double total = 0;
+  int total = 0;
   Widget buildProgressIndicator() {
     return Container(
         width: 150,
@@ -539,7 +423,8 @@ class DashboardState extends State<DashboardPage> {
                                         progressColor:
                                             Color.fromARGB(255, 55, 190, 15));
                                   } else {
-                                    total += documentSnapshot['total'];
+                                    total +=
+                                        int.parse(documentSnapshot['total']);
                                     return Text("");
                                   }
                                 });
