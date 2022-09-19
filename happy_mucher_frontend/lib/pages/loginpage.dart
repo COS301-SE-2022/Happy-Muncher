@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/dashboard.dart';
 import 'package:happy_mucher_frontend/pages/forgotpassword.dart';
 import 'package:provider/provider.dart';
 
@@ -44,19 +47,18 @@ class _LoginScreenState extends State<LoginScreen> {
     _formKey.currentState!.save();
 
     try {
-      print(_authData['email']!);
-      print(_authData['password']!);
+      /*print(_authData['email']!);
+      print(_authData['password']!);*/
       await Provider.of<Authentication>(context, listen: false)
           .logIn(_authData['email']!, _authData['password']!);
+
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
 
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .set({'firstName': 'Kajal'});
-
-      Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
+      Timer(Duration(seconds: 1), () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DashboardPage()));
+      });
     } catch (error) {
       var errorMessage = 'Authentication Failed. Invalid email or password.';
       _showErrorDialog(errorMessage);
@@ -151,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           _submit();
                         },
                         shape: RoundedRectangleBorder(
