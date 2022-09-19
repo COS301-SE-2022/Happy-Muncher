@@ -19,13 +19,15 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
+
   @override
   State<DashboardPage> createState() => DashboardState();
 }
 
 class DashboardState extends State<DashboardPage> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
   CollectionReference get _lunch => firestore
@@ -115,11 +117,8 @@ class DashboardState extends State<DashboardPage> {
         body: PageView(
           children: <Widget>[
             ListView(children: <Widget>[
-              Row(children: <Widget>[
-                buildMealPlanner(context),
-                buildInventoryCard(context),
-              ]),
-              //buildGLcard(context),
+              buildMealPlanner(context),
+              buildInventoryCard(context),
               buildProgressIndicator(),
               buildBudgetcard(context),
             ]),
@@ -140,7 +139,7 @@ class DashboardState extends State<DashboardPage> {
     return Container(
         width: 180,
         height: 275,
-        margin: EdgeInsets.fromLTRB(20, 20, 10, 0),
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
             key: const ValueKey("Meal Planner"),
@@ -469,7 +468,7 @@ class DashboardState extends State<DashboardPage> {
     return Container(
         width: 150,
         height: 150,
-        margin: EdgeInsets.fromLTRB(10, 20, 20, 0),
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             key: const ValueKey("Meal Planner"),
             shadowColor: Color.fromARGB(255, 180, 181, 179),
@@ -524,7 +523,7 @@ class DashboardState extends State<DashboardPage> {
                                     return LinearPercentIndicator(
                                         width:
                                             MediaQuery.of(context).size.width -
-                                                200,
+                                                210,
                                         animation: true,
                                         lineHeight: 22.0,
                                         animationDuration: 2000,
@@ -557,11 +556,11 @@ class DashboardState extends State<DashboardPage> {
   Widget buildInventoryCard(BuildContext context) {
     return Container(
         width: 150,
-        height: 275,
-        margin: EdgeInsets.fromLTRB(10, 20, 20, 0),
+        height: 150,
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             key: const ValueKey("Meal Planner"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            shadowColor: Color.fromARGB(255, 123, 161, 86),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -582,7 +581,7 @@ class DashboardState extends State<DashboardPage> {
                             builder: (context) => IventoryPage()));
                   },
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
+                    margin: EdgeInsets.fromLTRB(10, 45, 10, 0),
                     height: 200,
                     width: 400,
                     decoration: BoxDecoration(
