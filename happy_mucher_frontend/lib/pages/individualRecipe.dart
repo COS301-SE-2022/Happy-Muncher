@@ -53,6 +53,8 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   Color mediumGrey = Color(0xFF39383D);
   Color offWhite = Color(0xFFDFDEE3);
   Color RRgreen = Color(0xFFACFF4E);
+  Color VSpurple = Color.fromARGB(255, 168, 76, 184);
+  Color crPurple = Color(0xFF965BC8);
 
   List<String> inventory = [];
 
@@ -93,17 +95,19 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        // title: Text(widget.name),
+        backgroundColor: offWhite,
+        title: Text(widget.name,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
         // centerTitle: true,
-        iconTheme: IconThemeData(color: RRgreen),
+        iconTheme: IconThemeData(color: Color.fromARGB(255, 168, 76, 184)),
         actions: <Widget>[
           IconButton(
             onPressed: () {
               print(widget.id);
             },
             icon: Icon(Icons.favorite),
-            color: RRgreen,
+            color: Color.fromARGB(255, 83, 61, 207),
           )
         ],
       ),
