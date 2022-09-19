@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/dailymeal_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class Weekday extends StatefulWidget {
