@@ -21,7 +21,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Add Ingredient',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -32,12 +32,12 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
             TextFormField(
               //maxLines: 1,
               controller: input,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
               ),
             ),
-            SizedBox(height: 8),
-            SizedBox(height: 32),
+            const SizedBox(height: 8),
+            const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
