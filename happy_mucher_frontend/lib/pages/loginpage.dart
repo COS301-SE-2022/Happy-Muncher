@@ -56,9 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _authData['email']!, password: _authData['password']!);
 
       Timer(Duration(seconds: 1), () {
-        FirebaseFirestore.instance
-            .collection('Users')
-            .doc(FirebaseAuth.instance.currentUser!.uid);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DashboardPage()));
       });
