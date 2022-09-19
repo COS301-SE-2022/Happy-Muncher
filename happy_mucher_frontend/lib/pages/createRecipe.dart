@@ -11,6 +11,7 @@ import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/dialogs/add_ingredient_dialog.dart';
 import 'package:happy_mucher_frontend/ingredientlist_widget.dart';
 import 'package:happy_mucher_frontend/componentcard.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 //import 'package:http/http.dart' as http;
 
@@ -55,7 +56,7 @@ class CreateState extends State<Create> {
                 //navigate back to other page
               );
             },
-            child: Text("Done"),
+            child: const Text("Done"),
           ),
           backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
       body: Column(
@@ -90,37 +91,73 @@ class CreateState extends State<Create> {
               }).toList(),
             ),
           ),
-          FloatingActionButton(
-            //MAKE THIS SPEED DIAL
-            heroTag: "ingbutton",
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AddIngredientDialog(
-                  ingredients: ingredients,
-                );
-              },
-
-              //useRootNavigator: true,
-            ),
-            child: const Icon(Icons.add),
+          SpeedDial(
+            key: const Key('speed_dial_button'),
+            icon: Icons.add,
+            children: [
+              SpeedDialChild(
+                onTap: () => {},
+                key: const Key('addToInventoryButtonText'),
+                child: const Icon(
+                  Icons.abc,
+                  color: Colors.white,
+                ),
+                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+              ),
+              SpeedDialChild(
+                key: const Key('addToInventoryButtonGallery'),
+                onTap: () async {},
+                child: const Icon(
+                  Icons.collections,
+                  color: Colors.white,
+                ),
+                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+              ),
+              SpeedDialChild(
+                key: const Key('addToInventoryButtonCamera'),
+                onTap: () async {},
+                child: const Icon(
+                  Icons.photo_camera,
+                  color: Colors.white,
+                ),
+                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+              )
+            ],
           ),
           const Text('Enter your Instructions ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
-          FloatingActionButton(
-            //MAKE THIS SPEED DIAL
-            heroTag: "insbutton",
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AddIngredientDialog(
-                  ingredients: ingredients,
-                );
-              },
-
-              //useRootNavigator: true,
-            ),
-            child: const Icon(Icons.add),
+          SpeedDial(
+            //key: const Key('speed_dial_button'),
+            icon: Icons.add,
+            children: [
+              SpeedDialChild(
+                onTap: () => {},
+                //key: const Key('addToInventoryButtonText'),
+                child: const Icon(
+                  Icons.abc,
+                  color: Colors.white,
+                ),
+                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+              ),
+              SpeedDialChild(
+                //key: const Key('addToInventoryButtonGallery'),
+                onTap: () async {},
+                child: const Icon(
+                  Icons.collections,
+                  color: Colors.white,
+                ),
+                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+              ),
+              SpeedDialChild(
+                //key: const Key('addToInventoryButtonCamera'),
+                onTap: () async {},
+                child: const Icon(
+                  Icons.photo_camera,
+                  color: Colors.white,
+                ),
+                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+              )
+            ],
           ),
         ],
       ),
