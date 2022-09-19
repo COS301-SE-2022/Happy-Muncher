@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/dailymeal_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Weekday extends StatefulWidget {
   const Weekday({Key? key, required this.day}) : super(key: key);
@@ -106,37 +107,29 @@ class MyWeekdayState extends State<Weekday> {
         ),
         body: SafeArea(
           //padding: const EdgeInsets.all(32),
+
           child: Column(
             children: <Widget>[
               Expanded(
                 child: Container(
-                  child: VerticalCardPager(
-                      titles: [
-                        '',
-                        '',
-                        ''
-                      ], // required
-                      images: <Widget>[
-                        //Breakfast(),
-                        MealWidget(day: widget.day, meal: "Breakfast"),
-                        //const SizedBox(height: 24),
-                        MealWidget(day: widget.day, meal: "Lunch"),
-                        //const SizedBox(height: 24),
-                        MealWidget(day: widget.day, meal: "Supper"),
-                      ],
-                      //const SizedBox(height: 24) ], // required
-                      textStyle: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold), // optional
-                      onPageChanged: (page) {
-                        // optional
-                      },
-                      onSelectedItem: (index) {
-                        // optional
-                      },
-                      initialPage: 0, // optional
-                      align: ALIGN.CENTER // optional
-                      ),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                        aspectRatio: 0.5,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        scrollDirection: Axis.vertical,
+                        viewportFraction: 0.55), // required
+
+                    items: <Widget>[
+                      //Breakfast(),
+                      MealWidget(day: widget.day, meal: "Breakfast"),
+                      //const SizedBox(height: 24),
+                      MealWidget(day: widget.day, meal: "Lunch"),
+                      //const SizedBox(height: 24),
+                      MealWidget(day: widget.day, meal: "Supper"),
+                    ],
+                    //const SizedBox(height: 24) ], // required
+                  ),
                 ),
               ),
             ],
