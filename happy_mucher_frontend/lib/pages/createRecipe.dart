@@ -1,17 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:happy_mucher_frontend/dialogs/add_inventory.dialog.dart';
-import 'package:happy_mucher_frontend/models/recipe.api.dart';
-import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/models/myRecipe.dart';
-import 'package:happy_mucher_frontend/models/tasty.api.dart';
-import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
-import 'package:happy_mucher_frontend/recipe_card.dart';
-import 'package:happy_mucher_frontend/tasty_card.dart';
-import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/dialogs/add_ingredient_dialog.dart';
-import 'package:happy_mucher_frontend/ingredientlist_widget.dart';
 import 'package:happy_mucher_frontend/componentcard.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 //import 'package:http/http.dart' as http;
 
@@ -22,6 +18,7 @@ class Create extends StatefulWidget {
 }
 
 class CreateState extends State<Create> {
+  final ImagePicker _picker = ImagePicker();
   //Recipe recipe = Recipe();
   myRecipe recipe = myRecipe(name: '');
   String title = "my Recipe";
@@ -96,7 +93,7 @@ class CreateState extends State<Create> {
             icon: Icons.add,
             children: [
               SpeedDialChild(
-                onTap: () => {},
+                onTap: () => AddIngredientDialog(ingredients: ingredients),
                 key: const Key('addToInventoryButtonText'),
                 child: const Icon(
                   Icons.abc,
@@ -162,5 +159,44 @@ class CreateState extends State<Create> {
         ],
       ),
     );
+  }
+
+  void captureImageReceipt(ImageSource imageSource) async {
+    final image = await _picker.pickImage(source: imageSource);
+    if (image == null) {
+      return;
+    }
+    final croppedImagePath = await cropImage(image.path);
+    if (croppedImagePath == null) {
+      return;
+    }
+  }
+
+  Future<String?> cropImage(String path) async {
+    final cropped =
+        await ImageCropper().cropImage(sourcePath: path, uiSettings: [
+      AndroidUiSettings(
+          toolbarTitle: 'Croppper',
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false)
+    ]);
+    return cropped?.path;
+  }
+
+  Future<List<String>> getRecognisedText(String path) async {
+    final image = await decodeImageFromList(File(path).readAsBytesSync());
+    final inputImage = InputImage.fromFilePath(path);
+    final textDetector = TextRecognizer();
+    RecognizedText recognizedText = await textDetector.processImage(inputImage);
+    await textDetector.close();
+    //final listOfItems = <ReceiptItem>[];
+    final listOfItems = <String>[];
+
+    for (TextBlock block in recognizedText.blocks) {
+      for (TextLine line in block.lines) {
+        if (line.boundingBox.left / image.width * 100 < 10) {}
+      }
+    }
+    return listOfItems;
   }
 }
