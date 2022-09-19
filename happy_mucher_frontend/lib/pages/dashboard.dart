@@ -209,7 +209,7 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             shadowColor: Color.fromARGB(255, 180, 181, 179),
-            elevation: 50,
+            elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -445,7 +445,7 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             key: const ValueKey("Meal Planner"),
-            shadowColor: Color.fromARGB(255, 123, 161, 86),
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
