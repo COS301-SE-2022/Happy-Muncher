@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/dailymeal_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vertical_card_pager/vertical_card_pager.dart';
 
 class Weekday extends StatefulWidget {
   const Weekday({Key? key, required this.day}) : super(key: key);
@@ -98,25 +99,49 @@ class MyWeekdayState extends State<Weekday> {
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getMeals(context));
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.day}'),
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(32),
-        children: <Widget>[
-          const SizedBox(height: 24),
-          //Breakfast(),
-          MealWidget(day: widget.day, meal: "Breakfast"),
-          const SizedBox(height: 24),
-          MealWidget(day: widget.day, meal: "Lunch"),
-          const SizedBox(height: 24),
-          MealWidget(day: widget.day, meal: "Supper"),
-          const SizedBox(height: 24),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: Text('${widget.day}'),
+          backgroundColor: Color.fromARGB(255, 252, 95, 13),
+          centerTitle: true,
+        ),
+        body: SafeArea(
+          //padding: const EdgeInsets.all(32),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  child: VerticalCardPager(
+                      titles: [
+                        '',
+                        '',
+                        ''
+                      ], // required
+                      images: <Widget>[
+                        //Breakfast(),
+                        MealWidget(day: widget.day, meal: "Breakfast"),
+                        //const SizedBox(height: 24),
+                        MealWidget(day: widget.day, meal: "Lunch"),
+                        //const SizedBox(height: 24),
+                        MealWidget(day: widget.day, meal: "Supper"),
+                      ],
+                      //const SizedBox(height: 24) ], // required
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold), // optional
+                      onPageChanged: (page) {
+                        // optional
+                      },
+                      onSelectedItem: (index) {
+                        // optional
+                      },
+                      initialPage: 0, // optional
+                      align: ALIGN.CENTER // optional
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget Breakfast() => Container(
