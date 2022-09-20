@@ -10,7 +10,6 @@ import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/pages/values.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
