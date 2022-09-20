@@ -3,6 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/addIngredient_widget.dart';
 import 'package:happy_mucher_frontend/models/myRecipe.dart';
 
+Future<String?> showAddIngredientDialog(
+  BuildContext context,
+  List<String> ingredients,
+) async {
+  return await showDialog(
+    context: context,
+    builder: (_) => AddIngredientDialog(
+      ingredients: ingredients,
+    ),
+  );
+}
+
 class AddIngredientDialog extends StatefulWidget {
   List<String> ingredients = [];
 
@@ -45,8 +57,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
                   backgroundColor: MaterialStateProperty.all(Colors.black),
                 ),
                 onPressed: () {
-                  widget.ingredients.add(input.text);
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(input.text.trim());
                 },
                 //
 
