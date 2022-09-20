@@ -93,8 +93,17 @@ class CreateState extends State<Create> {
             icon: Icons.add,
             children: [
               SpeedDialChild(
-                onTap: () => {
-                  AddIngredientDialog(ingredients: ingredients),
+                onTap: () async {
+                  final newIngredient = await showAddIngredientDialog(
+                    context,
+                    ingredients,
+                  );
+                  if (newIngredient != null) {
+                    setState(() {
+                      //used to refresh list
+                      ingredients.add(newIngredient);
+                    });
+                  }
                 },
                 key: const Key('addToIngredientsyButtonText'),
                 child: const Icon(
