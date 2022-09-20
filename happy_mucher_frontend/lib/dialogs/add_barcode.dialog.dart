@@ -99,7 +99,7 @@ class _addBarcodeDialogState extends State<_addBarcodeDialog> {
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
                       int id = UniqueKey().hashCode;
-                      NotificationAPI.setID(id);
+                      //NotificationAPI.setID(id);
                       /*NotificationAPI.showScheduledNotification(
                           id: id,
                           title: 'Happy Muncher',
