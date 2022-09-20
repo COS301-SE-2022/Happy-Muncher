@@ -264,7 +264,7 @@ class DashboardState extends State<DashboardPage> {
       stream: FirebaseFirestore.instance
           .collection('Users')
           .doc(uid)
-          .collection('GL Totals')
+          .collection('GL totals')
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -347,7 +347,7 @@ class DashboardState extends State<DashboardPage> {
             ])));
   }
 
-  int total = 0;
+  num total = 0;
   Widget buildProgressIndicator() {
     return Container(
         width: 150,
@@ -383,6 +383,8 @@ class DashboardState extends State<DashboardPage> {
                       margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
                       child: StreamBuilder(
                         stream: FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(uid)
                             .collection('GL totals')
                             .snapshots(),
                         builder: (context,
