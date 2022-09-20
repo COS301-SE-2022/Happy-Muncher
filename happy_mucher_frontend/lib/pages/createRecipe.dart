@@ -93,8 +93,10 @@ class CreateState extends State<Create> {
             icon: Icons.add,
             children: [
               SpeedDialChild(
-                onTap: () => AddIngredientDialog(ingredients: ingredients),
-                key: const Key('addToInventoryButtonText'),
+                onTap: () => {
+                  AddIngredientDialog(ingredients: ingredients),
+                },
+                key: const Key('addToIngredientsyButtonText'),
                 child: const Icon(
                   Icons.abc,
                   color: Colors.white,
@@ -102,8 +104,10 @@ class CreateState extends State<Create> {
                 backgroundColor: const Color.fromARGB(255, 172, 255, 78),
               ),
               SpeedDialChild(
-                key: const Key('addToInventoryButtonGallery'),
-                onTap: () async {},
+                key: const Key('addToIngredientsButtonGallery'),
+                onTap: () async {
+                  captureImageReceiptIngredients(ImageSource.gallery);
+                },
                 child: const Icon(
                   Icons.collections,
                   color: Colors.white,
@@ -111,8 +115,10 @@ class CreateState extends State<Create> {
                 backgroundColor: const Color.fromARGB(255, 172, 255, 78),
               ),
               SpeedDialChild(
-                key: const Key('addToInventoryButtonCamera'),
-                onTap: () async {},
+                key: const Key('addToIngredientsButtonCamera'),
+                onTap: () async {
+                  captureImageReceiptIngredients(ImageSource.camera);
+                },
                 child: const Icon(
                   Icons.photo_camera,
                   color: Colors.white,
@@ -138,7 +144,9 @@ class CreateState extends State<Create> {
               ),
               SpeedDialChild(
                 //key: const Key('addToInventoryButtonGallery'),
-                onTap: () async {},
+                onTap: () async {
+                  captureImageReceiptRecipe(ImageSource.gallery);
+                },
                 child: const Icon(
                   Icons.collections,
                   color: Colors.white,
@@ -147,7 +155,9 @@ class CreateState extends State<Create> {
               ),
               SpeedDialChild(
                 //key: const Key('addToInventoryButtonCamera'),
-                onTap: () async {},
+                onTap: () async {
+                  captureImageReceiptRecipe(ImageSource.camera);
+                },
                 child: const Icon(
                   Icons.photo_camera,
                   color: Colors.white,
@@ -161,7 +171,7 @@ class CreateState extends State<Create> {
     );
   }
 
-  void captureImageReceipt(ImageSource imageSource) async {
+  void captureImageReceiptIngredients(ImageSource imageSource) async {
     final image = await _picker.pickImage(source: imageSource);
     if (image == null) {
       return;
@@ -170,6 +180,21 @@ class CreateState extends State<Create> {
     if (croppedImagePath == null) {
       return;
     }
+
+    final ingredients = await getRecognisedTextIngredients(croppedImagePath);
+  }
+
+  void captureImageReceiptRecipe(ImageSource imageSource) async {
+    final image = await _picker.pickImage(source: imageSource);
+    if (image == null) {
+      return;
+    }
+    final croppedImagePath = await cropImage(image.path);
+    if (croppedImagePath == null) {
+      return;
+    }
+
+    final ingredients = await getRecognisedTextRecipe(croppedImagePath);
   }
 
   Future<String?> cropImage(String path) async {
@@ -183,20 +208,41 @@ class CreateState extends State<Create> {
     return cropped?.path;
   }
 
-  Future<List<String>> getRecognisedText(String path) async {
+  Future<List<String>> getRecognisedTextIngredients(String path) async {
     final image = await decodeImageFromList(File(path).readAsBytesSync());
     final inputImage = InputImage.fromFilePath(path);
     final textDetector = TextRecognizer();
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
     await textDetector.close();
     //final listOfItems = <ReceiptItem>[];
-    final listOfItems = <String>[];
+    final listOfText = <String>[];
 
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        if (line.boundingBox.left / image.width * 100 < 10) {}
+        if (line.boundingBox.left / image.width * 100 < 10) {
+          listOfText.add(line.text);
+        }
       }
     }
-    return listOfItems;
+    return listOfText;
+  }
+
+  Future<List<String>> getRecognisedTextRecipe(String path) async {
+    final image = await decodeImageFromList(File(path).readAsBytesSync());
+    final inputImage = InputImage.fromFilePath(path);
+    final textDetector = TextRecognizer();
+    RecognizedText recognizedText = await textDetector.processImage(inputImage);
+    await textDetector.close();
+    //final listOfItems = <ReceiptItem>[];
+    final listOfText = <String>[];
+
+    for (TextBlock block in recognizedText.blocks) {
+      for (TextLine line in block.lines) {
+        if (line.boundingBox.left / image.width * 100 < 10) {
+          listOfText.add(line.text);
+        }
+      }
+    }
+    return listOfText;
   }
 }
