@@ -35,6 +35,12 @@ void main() {
       await tester.tap(submitButton);
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
+      await tester.tap(find.byKey(Key('Meal Planner')));
+      await tester.pumpAndSettle();
+
+      /*await tester.tap(find.byKey(Key('NavButton')));
+      await tester.pumpAndSettle();*/
+
       //expect(GLbutton, findsOneWidget);
       // await tester.tap(GLbutton);
       // await tester.pumpAndSettle(const Duration(milliseconds: 500));
