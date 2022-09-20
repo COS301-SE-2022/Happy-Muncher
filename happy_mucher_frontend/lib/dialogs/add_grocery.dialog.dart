@@ -23,14 +23,11 @@ class GLDialogState extends State<_GLDialog> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
-
-  CollectionReference get _gltotals => firestore.collection('GL totals');
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
 
   CollectionReference get _items =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
-
-  CollectionReference get _totals => firestore.collection('GL totals');
-
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
@@ -93,7 +90,7 @@ class GLDialogState extends State<_GLDialog> {
             final estimatedTotals = currentTotals["estimated total"] as num;
             final shoppingTotals = currentTotals["shopping total"] as num;
 
-            _gltotals.doc("Totals").update({
+            _gltotals.doc("Totals").set({
               'estimated total': estimatedTotals,
               'shopping total': shoppingTotals + num.parse(price)
             });
@@ -107,20 +104,23 @@ class GLDialogState extends State<_GLDialog> {
   void UpdateGL(double price) async {
     String? e = '';
     double estimate = 0.0;
-    var collection = FirebaseFirestore.instance.collection('GL totals');
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('GL totals');
     //userUid is the current auth user
     var docSnapshot = await collection.doc('Totals').get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
 
-    Map<String, dynamic> data = docSnapshot.data()!;
-
-    e = data['estimated total'].toString();
-
+      e = data['estimated total'].toString();
+    }
     estimate = double.parse(e);
-
     estimate += price;
-    await _totals.doc('Totals').update({
-      "estimated total": estimate,
-    });
+
+    await _gltotals
+        .doc('Totals')
+        .set({"estimated total": estimate, "shopping total": 0});
   }
 }
 
