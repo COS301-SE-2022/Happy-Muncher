@@ -138,6 +138,7 @@ class DashboardState extends State<DashboardPage> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+            key: const ValueKey('NavButton'),
             // isExtended: true,
             child: Icon(Icons.arrow_forward),
             onPressed: () {
