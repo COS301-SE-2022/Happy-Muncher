@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/authentication.dart';
@@ -6,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'homepage.dart';
 import 'loginpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/pages/dashboard.dart';
 
 class SignupScreen extends StatefulWidget {
   static const routeName = '/signup';
@@ -44,8 +47,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
     try {
 //      print(FirebaseAuth.instance.currentUser!.uid);
-      print(_authData['email']!);
-      print(_authData['password']!);
 
       //final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -54,7 +55,10 @@ class _SignupScreenState extends State<SignupScreen> {
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
 
-      Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+      Timer(Duration(seconds: 2), () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DashboardPage()));
+      });
     } catch (error) {
       var errorMessage = 'Authentication Failed. Please try again later.';
       _showErrorDialog(errorMessage);
@@ -246,7 +250,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       if (result != null) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+            context, MaterialPageRoute(builder: (context) => DashboardPage()));
       } // if result not null we simply call the MaterialpageRoute,
       // for go to the HomePage screen
     }

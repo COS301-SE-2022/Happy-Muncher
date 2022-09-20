@@ -171,7 +171,7 @@ class DashboardState extends State<DashboardPage> {
           InkWell(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyBudget()));
+                  context, MaterialPageRoute(builder: (context) => MealPage()));
             },
           ),
           MealWidget(
@@ -373,7 +373,7 @@ class DashboardState extends State<DashboardPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => IventoryPage()));
+                            builder: (context) => GroceryListPage()));
                   },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
