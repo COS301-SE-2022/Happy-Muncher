@@ -14,6 +14,7 @@ import 'package:camera/camera.dart';
 import 'package:happy_mucher_frontend/models/barcode_api.dart';
 import 'package:happy_mucher_frontend/models/barcode_data.dart';
 import 'package:happy_mucher_frontend/dialogs/add_barcode.dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class IventoryPage extends StatefulWidget {
   const IventoryPage({Key? key}) : super(key: key);
@@ -27,13 +28,13 @@ class _IventoryPageState extends State<IventoryPage> {
   String? imagepath;
   // text fields' controllers
   // text fields' controllers
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
   String _scanBarcode = 'Unknown';
-  CollectionReference get _products => firestore.collection('Inventory');
 
   final BarcodeScanner _barcodeScanner = BarcodeScanner();
 
@@ -49,6 +50,27 @@ class _IventoryPageState extends State<IventoryPage> {
   final TextEditingController inputController = TextEditingController();
 
   String itemName = "";
+
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
+  late final LocalNotificationService service;
+  void initState() {
+    super.initState();
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IventoryPage(),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +104,7 @@ class _IventoryPageState extends State<IventoryPage> {
                                     content: Text(
                                         'You have successfully deleted a product')));
                           });
-                          NotificationAPI.cancel(NotificationAPI.getID());
+                          service.cancel(LocalNotificationService.getID());
                         },
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,

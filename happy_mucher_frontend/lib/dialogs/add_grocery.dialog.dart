@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<GroceryItemParams?> addGLDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const _GLDialog());
@@ -19,10 +20,11 @@ class GLDialogState extends State<_GLDialog> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final dateFieldController = TextEditingController();
-
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
-  CollectionReference get _items => firestore.collection('GroceryList');
+  CollectionReference get _items =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
 
   CollectionReference get _totals => firestore.collection('GL totals');
 
