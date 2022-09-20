@@ -2,110 +2,88 @@ import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/monthcard_widget.dart';
 import 'month.dart';
 
-// void main() {
-//   runApp(const Budget());
-// }
+class MyBudget extends StatefulWidget {
+  // const MyBudget({Key? key, required this.title}) : super(key: key);
 
-class Budget extends StatelessWidget {
-  const Budget({Key? key}) : super(key: key);
+  // final String title;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Budget Page',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
+  State<MyBudget> createState() => _MyBudgetState();
+}
+
+class _MyBudgetState extends State<MyBudget> {
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      key: Key("months"),
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text('Budget'),
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 252, 95, 13),
       ),
-      home: const MyHomePage(title: 'Budget'),
-    );
-  }
-}
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          buildCards(),
+          const SizedBox(height: 12),
+          buildCards1(),
+          const SizedBox(height: 12),
+          buildCards2(),
+          const SizedBox(height: 12),
+          buildCards3(),
+          const SizedBox(height: 12),
+          buildCards4(),
+          const SizedBox(height: 12),
+          buildCards5(),
+        ],
+      ));
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  Widget buildCards() => Row(
+        children: [
+          Expanded(child: MonthCard(month: "January", inputText: "Jan")),
+          const SizedBox(width: 12),
+          Expanded(child: MonthCard(month: "February", inputText: "Feb")),
+        ],
+      );
 
-  final String title;
+  Widget buildCards1() => Row(
+        children: [
+          Expanded(child: MonthCard(month: "March", inputText: "Mar")),
+          const SizedBox(width: 12),
+          Expanded(child: MonthCard(month: "April", inputText: "Apr")),
+        ],
+      );
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  Widget buildCards2() => Row(
+        children: [
+          Expanded(child: MonthCard(month: "May", inputText: "May")),
+          const SizedBox(width: 12),
+          Expanded(child: MonthCard(month: "June", inputText: "Jun")),
+        ],
+      );
 
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: const Text('Budget'),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 252, 95, 13),
-        ),
-        body: ListView(
-          key: Key("months"),
-          children: <Widget>[
-            const SizedBox(height: 10),
-            MonthCard(
-              month: "January",
-              inputText: "January",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "February",
-              inputText: "February",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "March",
-              inputText: "March",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "April",
-              inputText: "April",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "May",
-              inputText: "May",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "June",
-              inputText: "June",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "July",
-              inputText: "July",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "August",
-              inputText: "August",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "September",
-              inputText: "September",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "October",
-              inputText: "October",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "November",
-              inputText: "November",
-            ),
-            const SizedBox(height: 5),
-            MonthCard(
-              month: "December",
-              inputText: "December",
-            ),
-            const SizedBox(height: 5),
-          ],
-        ));
-  }
+  Widget buildCards3() => Row(
+        children: [
+          Expanded(child: MonthCard(month: "July", inputText: "Jul")),
+          const SizedBox(width: 12),
+          Expanded(child: MonthCard(month: "August", inputText: "Aug")),
+        ],
+      );
+
+  Widget buildCards4() => Row(
+        children: [
+          Expanded(child: MonthCard(month: "September", inputText: "Sep")),
+          const SizedBox(width: 12),
+          Expanded(child: MonthCard(month: "October", inputText: "Oct")),
+        ],
+      );
+
+  Widget buildCards5() => Row(
+        children: [
+          Expanded(child: MonthCard(month: "November", inputText: "Nov")),
+          const SizedBox(width: 12),
+          Expanded(child: MonthCard(month: "December", inputText: "Dec")),
+        ],
+      );
 }

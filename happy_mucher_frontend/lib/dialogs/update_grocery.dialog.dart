@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> showUpdateDialogGroceryList(
     BuildContext context, DocumentSnapshot document) {
@@ -23,14 +24,18 @@ class GLDialog extends StatefulWidget {
 class _UpdateGLPageState extends State<GLDialog> {
   // text fields' controllers
   // text fields' controllers
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final dateFieldController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
-  CollectionReference get _items => firestore.collection('GroceryList');
+
   CollectionReference get _gltotals => firestore.collection('GL totals');
+  CollectionReference get _items =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
+
 
   DateTime? expirationDate;
   DocumentSnapshot documentSnapshot;

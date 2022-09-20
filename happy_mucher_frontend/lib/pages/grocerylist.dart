@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -24,34 +25,38 @@ class GroceryListPageState extends State<GroceryListPage> {
   // text fields' controllers
   // text fields' controllers
   final ImagePicker _picker = ImagePicker();
-
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _products => firestore.collection('GroceryList');
+  int shoppingPrices = 0;
+  int estimatePrices = 0;
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
 
-  CollectionReference get _inventory => firestore.collection('Inventory');
+  CollectionReference get _inventory =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
 
-  //final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _gltotals => firestore.collection('GL totals');
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
+  late final LocalNotificationService service;
+
   @override
   void initState() {
     super.initState();
-
-    NotificationAPI.init();
-    // print('init');
-    // //Totals(context);
-    // print('est');
-    // print(estimatePrices);
-    // print('shopping');
-    // print(shoppingPrices);
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
   }
 
-  void listenNotification() =>
-      NotificationAPI.onNotifications.stream.listen(onClickedNotification);
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
 
-  void onClickedNotification(String? payload) =>
+  void onNoticationListener(String? payload) {
+    if (mounted) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const IventoryPage(),
       ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,6 +238,7 @@ class GroceryListPageState extends State<GroceryListPage> {
       floatingActionButton: SpeedDial(
         key: const Key('speed_dial_button'),
         icon: Icons.add,
+        backgroundColor: Color.fromARGB(255, 172, 255, 78),
         children: [
           SpeedDialChild(
             onTap: () => addGLDialog(context),
@@ -388,11 +394,6 @@ class GroceryListPageState extends State<GroceryListPage> {
         }
       }
     }
-    print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
-    print(listOfItems.length);
-    print(listOfItems);
-    print(listOfItemsPrices.length);
-    print(listOfItemsPrices);
 
     if (listOfItemsPrices.length == listOfItems.length) {
       for (int i = 0; i < listOfItems.length; i++) {
