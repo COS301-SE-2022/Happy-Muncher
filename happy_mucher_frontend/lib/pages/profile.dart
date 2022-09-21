@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/changeprofile.dart';
 import 'package:happy_mucher_frontend/pages/changeusername.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
+import 'package:happy_mucher_frontend/pages/tempchangeun.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -100,7 +101,7 @@ class ProfileState extends State<Profile> {
                       style: TextStyle(fontSize: 25.0),
                     ),
                     TextButton.icon(
-                        onPressed: () => addUsernameDialog(context),
+                        onPressed: () => ChangeUsername(),
                         icon: Icon(Icons.edit),
                         label: Text('')),
                     SizedBox(
@@ -130,10 +131,10 @@ class ProfileState extends State<Profile> {
                         : TextButton(
                             onPressed: () => {verifyEmail()},
                             child: Text('  Verify Email')),
-                    TextButton.icon(
-                        onPressed: () => addEmailDialog(context),
+                    /* TextButton.icon(
+                       // onPressed: () => addEmaillDialog(context),
                         icon: Icon(Icons.edit),
-                        label: Text(''))
+                        label: Text(''))*/
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
