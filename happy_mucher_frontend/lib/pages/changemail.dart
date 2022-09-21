@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
-
-Future addEmailDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const ChangeEmail());
-}
+import 'package:happy_mucher_frontend/pages/profile.dart';
 
 class ChangeEmail extends StatefulWidget {
   const ChangeEmail({Key? key}) : super(key: key);
@@ -53,49 +51,68 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-        key: _formKey,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: TextFormField(
-                autofocus: false,
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: 'New Email: ',
-                  hintText: 'Enter New Email',
-                  labelStyle: TextStyle(fontSize: 20.0),
-                  border: OutlineInputBorder(),
-                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-                ),
-                controller: newEmailController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter Email';
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ],
+    return Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+              color: Colors
+                  .black), // set backbutton color here which will reflect in all screens.
+          leading: BackButton(),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              // Validate returns true if the form is valid, otherwise false.
-              /*if (_formKey.currentState.validate()) {
-                  setState(() {});
-                }*/
-              newEmail = newEmailController.text;
-              changeEmail();
-            },
-            child: Text(
-              'Change',
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ),
-        ]);
+        body: Form(
+          key: _formKey,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                    width: 320,
+                    child: const Text(
+                      "Change your Email?",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: SizedBox(
+                        height: 100,
+                        width: 320,
+                        child: TextFormField(
+                          // Handles Form Validation
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Email';
+                            }
+                            return null;
+                          },
+                          controller: newEmailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                          ),
+                        ))),
+                Padding(
+                    padding: EdgeInsets.only(top: 150),
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          width: 320,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Validate returns true if the form is valid, or false otherwise.
+                              newEmail = newEmailController.text;
+                              changeEmail();
+                            },
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.black, shape: StadiumBorder()),
+                          ),
+                        )))
+              ]),
+        ));
   }
 }
