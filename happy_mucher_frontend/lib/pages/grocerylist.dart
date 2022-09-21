@@ -288,12 +288,14 @@ class GroceryListPageState extends State<GroceryListPage> {
     if (croppedImagePath == null) {
       return;
     }
+
     final listOfItemNames = await getRecognisedText(croppedImagePath);
     var priceUpdate = 0.0;
-
+    print("fetching data");
     for (final item in listOfItemNames) {
       priceUpdate += item.itemPrice;
     }
+
     final currentTotals = ((await _gltotals.doc("Totals").get()).data() as Map);
     final estimatedTotals = currentTotals["estimated total"] as num;
     final shoppingTotals = currentTotals["shopping total"] as num;
@@ -304,6 +306,7 @@ class GroceryListPageState extends State<GroceryListPage> {
     });
 
     final futures = listOfItemNames.map((item) {
+      print(item.itemName + " " + item.itemPrice.toString());
       return _products.add(
           {"name": item.itemName, "price": item.itemPrice, "bought": false});
       //item.name item.price
