@@ -347,7 +347,7 @@ class DashboardState extends State<DashboardPage> {
             ])));
   }
 
-  num total = 0;
+  double total = 0;
   Widget buildProgressIndicator() {
     return Container(
         width: 150,
