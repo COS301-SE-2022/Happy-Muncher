@@ -3,35 +3,51 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happy_mucher_frontend/pages/inventory.dart';
 
-Future<InventoryItemParams?> addBarcodeDialog(
-    BuildContext context, String itemN) {
+Future<GroceryItemParams?> addbarD(BuildContext context, String itemN) {
   return showDialog(
-      context: context, builder: (_) => _addBarcodeDialog(itemName: itemN));
+      context: context, builder: (_) => _addbarD(itemName: itemN));
 }
 
-class _addBarcodeDialog extends StatefulWidget {
-  const _addBarcodeDialog({Key? key, required this.itemName}) : super(key: key);
+class _addbarD extends StatefulWidget {
+  const _addbarD({Key? key, required this.itemName}) : super(key: key);
   final String itemName;
-
   @override
-  State<_addBarcodeDialog> createState() => _addBarcodeDialogState();
+  State<_addbarD> createState() => addbarState();
 }
 
-class _addBarcodeDialogState extends State<_addBarcodeDialog> {
-  TextEditingController nameController = TextEditingController();
+class addbarState extends State<_addbarD> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+
+  //final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
-  CollectionReference get _products => firestore.collection('Inventory');
-
+  CollectionReference get _products =>
+      firestore.collection('Users').doc(uid).collection('Inventory');
+  late final LocalNotificationService service;
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
+  TextEditingController nameController = TextEditingController();
   @override
   void initState() {
+    super.initState();
     nameController.text = widget.itemName;
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: ((context) => IventoryPage())));
   }
 
   @override
@@ -99,13 +115,14 @@ class _addBarcodeDialogState extends State<_addBarcodeDialog> {
                       dateFieldController.text = dateFormat.format(chosenDate);
                       expirationDate = chosenDate;
                       int id = UniqueKey().hashCode;
-                      //NotificationAPI.setID(id);
-                      /*NotificationAPI.showScheduledNotification(
+                      LocalNotificationService.setID(id);
+                      service.showScheduledNotification(
                           id: id,
                           title: 'Happy Muncher',
                           body:
                               '$name expires today! Please add it to your grocery list.',
-                          scheduledDate: chosenDate);*/
+                          seconds: 5,
+                          scheduledDate: chosenDate);
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
@@ -132,7 +149,6 @@ class _addBarcodeDialogState extends State<_addBarcodeDialog> {
               nameController.text = '';
               quantityController.text = '';
               dateFieldController.text = '';
-              Navigator.of(context).pop();
             }
           },
           child: const Text('Add'),
@@ -142,14 +158,14 @@ class _addBarcodeDialogState extends State<_addBarcodeDialog> {
   }
 }
 
-class InventoryItemParams {
+class GroceryItemParams {
   final String name;
-  final int quantity;
-  final DateTime date;
+  final double price;
+  final bool value;
 
-  InventoryItemParams({
-    required this.quantity,
+  GroceryItemParams({
+    required this.price,
     required this.name,
-    required this.date,
+    required this.value,
   });
 }

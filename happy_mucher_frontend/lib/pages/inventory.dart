@@ -13,7 +13,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:camera/camera.dart';
 import 'package:happy_mucher_frontend/models/barcode_api.dart';
 import 'package:happy_mucher_frontend/models/barcode_data.dart';
-import 'package:happy_mucher_frontend/dialogs/add_barcode.dialog.dart';
+import 'package:happy_mucher_frontend/dialogs/add_bar.dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class IventoryPage extends StatefulWidget {
@@ -267,7 +267,7 @@ class _IventoryPageState extends State<IventoryPage> {
     print(itemName);
     //showResultDialog(context);
     setState(() {});
-    addBarcodeDialog(context, itemName);
+    addbarD(context, itemName);
   }
 
   showInputDialog(BuildContext context) {
