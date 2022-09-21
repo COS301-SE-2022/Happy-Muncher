@@ -9,6 +9,8 @@ import 'package:happy_mucher_frontend/pages/changeprofile.dart';
 import 'package:happy_mucher_frontend/pages/changeusername.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/display_image_widget.dart';
+import 'package:happy_mucher_frontend/pages/settings_page.dart';
+import 'package:happy_mucher_frontend/pages/tempchangeun.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({Key? key}) : super(key: key);
@@ -81,10 +83,13 @@ class ProfileState extends State<MyProfile> {
                 imagePath: profile,
                 onPressed: () {},
               )),
+          SizedBox(height: 40),
           buildUserInfoDisplay(uid, 'Name', ChangeUsername()),
           buildUserInfoDisplay(email.toString(), 'Email', ChangeEmail()),
-          /*buildUserInfoDisplay(user.email, 'Email', EditEmailFormPage()),
-          Expanded(
+          buildUserInfoDisplay('Change Password', '', ChangePassword()),
+          buildUserInfoDisplay('View settings', 'Settings', SettingsPage()),
+
+          /*Expanded(
             child: buildAbout(user),
             flex: 4,
           )*/
@@ -96,46 +101,47 @@ class ProfileState extends State<MyProfile> {
   // Widget builds the display item with the proper formatting to display the user's info
   Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
       Padding(
-          padding: EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(bottom: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey,
+              Row(children: [
+                SizedBox(
+                  width: 20,
                 ),
-              ),
-              SizedBox(
-                height: 1,
-              ),
-              Container(
-                  width: 350,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ))),
-                  child: Row(children: [
-                    Expanded(
-                        child: TextButton(
-                            onPressed: () {
-                              navigateSecondPage(editPage);
-                            },
-                            child: Text(
-                              getValue,
-                              style: TextStyle(fontSize: 16, height: 1.4),
-                            ))),
-                    Icon(
-                      Icons.keyboard_arrow_right,
+                Icon(Icons.person),
+                SizedBox(
+                  height: 1,
+                ),
+                Container(
+                    width: 350,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
                       color: Colors.grey,
-                      size: 40.0,
-                    )
-                  ]))
+                      width: 1,
+                    ))),
+                    child: Row(children: [
+                      Expanded(
+                          child: TextButton(
+                              onPressed: () {
+                                navigateSecondPage(editPage);
+                              },
+                              child: Text(
+                                getValue,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    height: 1.4,
+                                    color: Colors.black),
+                              ))),
+                      Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.grey,
+                        size: 30.0,
+                      )
+                    ]))
+              ])
             ],
           ));
 
