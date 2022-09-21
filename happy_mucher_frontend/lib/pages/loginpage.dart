@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
 
-      Timer(Duration(seconds: 1), () {
+      Timer(Duration(seconds: 2), () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DashboardPage()));
       });

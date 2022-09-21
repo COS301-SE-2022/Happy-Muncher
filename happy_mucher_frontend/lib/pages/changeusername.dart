@@ -59,12 +59,11 @@ class _ChangeUsernameState extends State<ChangeUsername> {
       key: _formKey,
       content: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.zero,
-            child: TextFormField(
-              autofocus: false,
-              obscureText: false,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: TextField(
               decoration: InputDecoration(
                 labelText: 'New Username: ',
                 hintText: 'Enter New Username',
@@ -73,12 +72,12 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                 errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
               ),
               controller: newUsernameController,
-              validator: (value) {
+              /*validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please Enter Username';
                 }
                 return null;
-              },
+              },*/
             ),
           ),
         ],

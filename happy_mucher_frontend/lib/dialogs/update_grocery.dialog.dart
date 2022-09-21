@@ -31,11 +31,10 @@ class _UpdateGLPageState extends State<GLDialog> {
 
   final FirebaseFirestore firestore = GetIt.I.get();
 
-
-  CollectionReference get _gltotals => firestore.collection('GL totals');
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
   CollectionReference get _items =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
-
 
   DateTime? expirationDate;
   DocumentSnapshot documentSnapshot;
@@ -43,7 +42,7 @@ class _UpdateGLPageState extends State<GLDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (documentSnapshot != null) {
+    if (documentSnapshot.exists) {
       nameController.text = documentSnapshot['name'];
       priceController.text = documentSnapshot['price'].toString();
     }

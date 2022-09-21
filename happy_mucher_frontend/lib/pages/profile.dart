@@ -52,101 +52,106 @@ class ProfileState extends State<Profile> {
           'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
     }
     return Scaffold(
-      //appBar: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      appBar: AppBar(
-        title: Text('Profile'),
-        actions: <Widget>[
-          FlatButton(
-            child: Row(
-              children: <Widget>[Text('Home'), Icon(Icons.home)],
+        //appBar: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        appBar: AppBar(
+          title: Text('Profile'),
+          actions: <Widget>[
+            FlatButton(
+              child: Row(
+                children: <Widget>[Text('Home'), Icon(Icons.home)],
+              ),
+              textColor: Colors.white,
+              onPressed: () async => {
+                Navigator.of(context).pushReplacementNamed(MyHomePage.routeName)
+              },
             ),
-            textColor: Colors.white,
-            onPressed: () async => {
-              Navigator.of(context).pushReplacementNamed(MyHomePage.routeName)
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 30),
-            CircleAvatar(
-              radius: 100,
-              backgroundImage: NetworkImage(profile.toString()),
-            ),
-            /*BoxDecoration(
+          ],
+        ),
+        body: Center(
+          child: Container(
+            child: Column(
+              children: [
+                SizedBox(height: 30),
+                CircleAvatar(
+                  radius: 100,
+                  backgroundImage: NetworkImage(profile.toString()),
+                ),
+                /*BoxDecoration(
               color: Colors.grey,
               /*image: DecorationImage(
                   fit: BoxFit.fill,
                   image: NetworkImage(
                       'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg')),*/
             ),*/
-            TextButton.icon(
-                onPressed: () async => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeProfile()))
-                    },
-                icon: Icon(Icons.edit),
-                label: Text('')),
-            SizedBox(height: 60),
-            Row(
-              children: [
-                Text(
-                  'Username: $uid',
-                  style: TextStyle(fontSize: 25.0),
-                ),
                 TextButton.icon(
-                    onPressed: () => addUsernameDialog(context),
+                    onPressed: () async => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChangeProfile()))
+                        },
                     icon: Icon(Icons.edit),
-                    label: Text(''))
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            SizedBox(height: 40),
-            Row(
-              children: [
-                Text(
-                  'Email:' + '$email',
-                  style: TextStyle(fontSize: 25.0),
+                    label: Text('')),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      'Username: $uid',
+                      style: TextStyle(fontSize: 25.0),
+                    ),
+                    TextButton.icon(
+                        onPressed: () => addUsernameDialog(context),
+                        icon: Icon(Icons.edit),
+                        label: Text('')),
+                    SizedBox(
+                      height: 0,
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
                 ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            Row(
-              children: [
-                user!.emailVerified
-                    ? const Text(
-                        '  verified',
-                        style:
-                            TextStyle(fontSize: 18.0, color: Colors.blueGrey),
-                      )
-                    : TextButton(
-                        onPressed: () => {verifyEmail()},
-                        child: Text('  Verify Email')),
+                SizedBox(height: 40),
+                Row(
+                  children: [
+                    Text(
+                      'Email:' + '$email',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                Row(
+                  children: [
+                    user!.emailVerified
+                        ? const Text(
+                            '  verified',
+                            style: TextStyle(
+                                fontSize: 18.0, color: Colors.blueGrey),
+                          )
+                        : TextButton(
+                            onPressed: () => {verifyEmail()},
+                            child: Text('  Verify Email')),
+                    TextButton.icon(
+                        onPressed: () => addEmailDialog(context),
+                        icon: Icon(Icons.edit),
+                        label: Text(''))
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                //SizedBox(height: 30),
+
                 TextButton.icon(
-                    onPressed: () => addEmailDialog(context),
-                    icon: Icon(Icons.edit),
-                    label: Text(''))
+                    onPressed: () async => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChangePassword()))
+                        },
+                    label: Text('Change Password',
+                        style: TextStyle(fontSize: 25.0)),
+                    icon: Icon(Icons.edit))
               ],
-              mainAxisAlignment: MainAxisAlignment.center,
             ),
-            SizedBox(height: 30),
-            TextButton.icon(
-                onPressed: () async => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangePassword()))
-                    },
-                label:
-                    Text('Change Password', style: TextStyle(fontSize: 25.0)),
-                icon: Icon(Icons.edit)),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

@@ -36,6 +36,7 @@ class GroceryListPageState extends State<GroceryListPage> {
 
   CollectionReference get _gltotals =>
       firestore.collection('Users').doc(uid).collection('GL totals');
+
   late final LocalNotificationService service;
 
   @override
@@ -67,23 +68,25 @@ class GroceryListPageState extends State<GroceryListPage> {
           backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
       body: Column(
         children: [
-          StreamBuilder<DocumentSnapshot>(
-              stream: _gltotals.doc('Totals').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final data = snapshot.data?.data() as Map;
+          StreamBuilder(
+              stream: _gltotals.snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData &&
+                    !streamSnapshot.data!.docs.isEmpty) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[0];
 
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Estimated Total: ${(data['estimated total'] as num).toStringAsFixed(2)}',
+                        'Estimated Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 17,
                         ),
                       ),
                       Text(
-                        'Actual Total: ${(data['shopping total'] as num).toStringAsFixed(2)}',
+                        'Actual Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 17,
                         ),
@@ -126,13 +129,13 @@ class GroceryListPageState extends State<GroceryListPage> {
                                   final isBought = documentSnapshot['bought'];
 
                                   if (isBought == false) {
-                                    _gltotals.doc("Totals").update({
+                                    _gltotals.doc("Totals").set({
                                       'estimated total': estimatedTotals,
                                       'shopping total': shoppingTotals -
                                           documentSnapshot['price']
                                     });
                                   } else {
-                                    _gltotals.doc("Totals").update({
+                                    _gltotals.doc("Totals").set({
                                       'estimated total': estimatedTotals -
                                           documentSnapshot['price'],
                                       'shopping total': shoppingTotals -
@@ -191,11 +194,12 @@ class GroceryListPageState extends State<GroceryListPage> {
                                 },
                               );
 
-                              NotificationAPI.showNotification(
-                                  title: 'Happy Muncher',
-                                  body:
-                                      '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
-                                  payload: 'groceryList');
+                              service.showNotification(
+                                id: 0,
+                                title: 'Happy Muncher',
+                                body:
+                                    '$itemName has been added to inventory. Please go the the inventory page to edit the quantity and expiration date',
+                              );
                             }
 
                             final currentTotals =
@@ -207,13 +211,13 @@ class GroceryListPageState extends State<GroceryListPage> {
                                 currentTotals["shopping total"] as num;
 
                             if (checkVal) {
-                              _gltotals.doc("Totals").update({
+                              _gltotals.doc("Totals").set({
                                 'estimated total':
                                     estimatedTotals + documentSnapshot['price'],
                                 'shopping total': shoppingTotals
                               });
                             } else {
-                              _gltotals.doc("Totals").update({
+                              _gltotals.doc("Totals").set({
                                 'estimated total':
                                     estimatedTotals - documentSnapshot['price'],
                                 'shopping total': shoppingTotals
@@ -294,7 +298,7 @@ class GroceryListPageState extends State<GroceryListPage> {
     final estimatedTotals = currentTotals["estimated total"] as num;
     final shoppingTotals = currentTotals["shopping total"] as num;
 
-    _gltotals.doc("Totals").update({
+    _gltotals.doc("Totals").set({
       'estimated total': estimatedTotals,
       'shopping total': shoppingTotals + priceUpdate
     });
