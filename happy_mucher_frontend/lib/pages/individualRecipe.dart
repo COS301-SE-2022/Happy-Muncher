@@ -9,6 +9,7 @@ import 'package:happy_mucher_frontend/recipeInstruction_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //search resource:
 //https://medium.com/@nishkarsh.makhija/implementing-searchable-list-view-in-flutter-using-data-from-network-d3aefffbd964
@@ -39,7 +40,12 @@ class IndividualRecipe extends StatefulWidget {
 }
 
 class IndividualRecipeState extends State<IndividualRecipe> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _favourites =>
+      firestore.collection('Users').doc(uid).collection('Recipes');
+  //final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _glItems => firestore.collection('GroceryList');
   String ing = "";
@@ -103,8 +109,13 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         iconTheme: IconThemeData(color: Color.fromARGB(255, 168, 76, 184)),
         actions: <Widget>[
           IconButton(
-            onPressed: () {
-              print(widget.id);
+            onPressed: () async {
+              final String id = widget.id.toString();
+              if (id != null) {
+                await _favourites.add({
+                  "ID": id,
+                });
+              }
             },
             icon: Icon(Icons.favorite),
             color: Color.fromARGB(255, 83, 61, 207),

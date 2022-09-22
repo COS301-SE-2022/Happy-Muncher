@@ -7,6 +7,7 @@ import 'package:happy_mucher_frontend/pages/myRecipeBook.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
+import 'package:happy_mucher_frontend/pages/favourites.dart';
 
 //import 'package:http/http.dart' as http;
 
@@ -60,6 +61,14 @@ class RecipeBookState extends State<RecipeBook> {
                       MaterialPageRoute(builder: (context) => MyRecipeBook()));
                 },
                 child: Text("MY Recipe Book")),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FavouritesBook()));
+                },
+                child: Text("My Favourites")),
           ],
         ));
   }
