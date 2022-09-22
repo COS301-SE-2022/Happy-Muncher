@@ -9,7 +9,7 @@ class ComponentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          Icon(
+          const Icon(
             Icons.star,
             color: Colors.orange,
           ),
