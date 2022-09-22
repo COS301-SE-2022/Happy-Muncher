@@ -83,15 +83,6 @@ class NavBar extends StatelessWidget {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen())),
                   }),
-          Divider(),
-          ListTile(
-              key: const ValueKey("Logout"),
-              title: Text('Temp porfile'),
-              leading: Icon(Icons.exit_to_app),
-              onTap: () async => {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MyProfile())),
-                  }),
         ],
       ),
     );
