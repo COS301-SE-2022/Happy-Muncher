@@ -7,6 +7,7 @@ import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/changeprofile.dart';
 import 'package:happy_mucher_frontend/pages/changeusername.dart';
+import 'package:happy_mucher_frontend/pages/dashboard.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/display_image_widget.dart';
 import 'package:happy_mucher_frontend/pages/settings_page.dart';
@@ -57,13 +58,43 @@ class ProfileState extends State<MyProfile> {
     }
 
     return Scaffold(
+      appBar: new AppBar(
+          title: new Text(
+            "Activities",
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: new Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 100,
+                backgroundColor: Color.fromRGBO(150, 91, 200, 1),
+                child: CircleAvatar(
+                    backgroundImage: NetworkImage(profile) as ImageProvider,
+                    radius: 50,
+                    child: InkWell(
+                      onTap: () {
+                        navigateSecondPage(ChangeProfile());
+                      },
+                    )),
+              )),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    navigateSecondPage(DashboardPage());
+                  },
+                  child: Icon(
+                    Icons.dashboard,
+                    size: 26.0,
+                    color: Colors.black,
+                  ),
+                ))
+          ]),
       body: Column(
         children: [
-          AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            toolbarHeight: 10,
-          ),
           Center(
               child: Padding(
                   padding: EdgeInsets.only(bottom: 20),
@@ -72,7 +103,7 @@ class ProfileState extends State<MyProfile> {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromRGBO(64, 105, 225, 1),
+                      color: Color(0xFF965BC8),
                     ),
                   ))),
           InkWell(
@@ -84,10 +115,10 @@ class ProfileState extends State<MyProfile> {
                 onPressed: () {},
               )),
           SizedBox(height: 40),
-          buildUserInfoDisplay(uid, 'Name', ChangeUsername()),
-          buildUserInfoDisplay(email.toString(), 'Email', ChangeEmail()),
-          buildUserInfoDisplay('Change Password', '', ChangePassword()),
-          buildUserInfoDisplay('View settings', 'Settings', SettingsPage()),
+          buildUserInfoDisplay(uid, Icons.person, ChangeUsername()),
+          buildUserInfoDisplay(email.toString(), Icons.email, ChangeEmail()),
+          buildUserInfoDisplay('Change Password', Icons.lock, ChangePassword()),
+          buildUserInfoDisplay('View settings', Icons.settings, SettingsPage()),
 
           /*Expanded(
             child: buildAbout(user),
@@ -99,7 +130,7 @@ class ProfileState extends State<MyProfile> {
   }
 
   // Widget builds the display item with the proper formatting to display the user's info
-  Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
+  Widget buildUserInfoDisplay(String getValue, IconData t, Widget editPage) =>
       Padding(
           padding: EdgeInsets.only(bottom: 30),
           child: Column(
@@ -109,13 +140,16 @@ class ProfileState extends State<MyProfile> {
                 SizedBox(
                   width: 20,
                 ),
-                Icon(Icons.person),
+                Icon(
+                  t,
+                  color: Colors.grey,
+                ),
                 SizedBox(
                   height: 1,
                 ),
                 Container(
                     width: 350,
-                    height: 40,
+                    height: 60,
                     decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
