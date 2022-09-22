@@ -108,6 +108,7 @@ class MyWeekdayState extends State<Weekday> {
             children: <Widget>[
               Expanded(
                 child: Container(
+                  alignment: Alignment.center,
                   child: CarouselSlider(
                     options: CarouselOptions(
                         aspectRatio: 0.5,
