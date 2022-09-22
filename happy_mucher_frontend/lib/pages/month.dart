@@ -271,6 +271,7 @@ class MyMonthState extends State<Month> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
+        key: Key("monthapp"),
         title: Text('${widget.month}'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 252, 95, 13),
