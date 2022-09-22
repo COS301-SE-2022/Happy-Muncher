@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/monthcard_widget.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'month.dart';
 
 class MyBudget extends StatefulWidget {
@@ -15,13 +16,7 @@ class _MyBudgetState extends State<MyBudget> {
   @override
   Widget build(BuildContext context) => Scaffold(
       key: Key("months"),
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: const Text('Budget'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-      ),
+      appBar: buildAppBar(context, "Budget"),
       body: ListView(
         padding: EdgeInsets.all(16),
         children: [
