@@ -8,6 +8,7 @@ import 'package:happy_mucher_frontend/dialogs/update_inventory.dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:camera/camera.dart';
@@ -75,11 +76,7 @@ class _IventoryPageState extends State<IventoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inventory'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-      ),
+      appBar: buildAppBar(context, "Inventory"),
       body: StreamBuilder(
         stream: _products.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
