@@ -6,6 +6,7 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -268,13 +269,7 @@ class MyMonthState extends State<Month> {
 // WidgetsBinding.instance.addPostFrameCallback((_) => yourFunc(context));
 
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('${widget.month}'),
-        centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 252, 95, 13),
-      ),
+      appBar: buildAppBar(context, widget.month),
       body: ListView(
         padding: const EdgeInsets.all(32),
         children: <Widget>[
