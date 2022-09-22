@@ -8,13 +8,13 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
+import 'package:happy_mucher_frontend/pages/profile.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/pages/values.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:happy_mucher_frontend/dailymeal_widget.dart';
@@ -55,7 +55,6 @@ class DashboardState extends State<DashboardPage> {
 
   String getTimeofDay() {
     int h = DateTime.now().hour;
-    print(DateTime.now().hour);
     if (h >= 0 && h < 12) {
       return 'Breakfast';
     } else if (h >= 12 && h < 17) {
@@ -120,32 +119,59 @@ class DashboardState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = FirebaseAuth.instance.currentUser?.photoURL;
+    if (profile == null) {
+      profile ??=
+          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+    }
     return Scaffold(
-        appBar: buildAppBar(context, "Dashboard"),
-        drawer: NavBar(),
-        body: PageView(
-          children: <Widget>[
-            ListView(children: <Widget>[
-              buildMealPlanner(context),
-              buildInventoryCard(context),
-              buildProgressIndicator(),
-              buildBudgetcard(context),
-            ]),
-            //MyHomePage()
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-            // isExtended: true,
-            child: Icon(
-              Icons.arrow_forward,
-              color: Color(0xFF965BC8),
-              size: 40,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MyHomePage(),
-              ));
-            }));
+      appBar: AppBar(
+          title: new Text(
+            "Dashboard",
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: new Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 100,
+                backgroundColor: Color(0xFF965BC8),
+                child: CircleAvatar(
+                    backgroundImage: NetworkImage(profile) as ImageProvider,
+                    radius: 50,
+                    child: InkWell(onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Profile()));
+                    })),
+              )),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                  },
+                  child: Icon(
+                    Icons.arrow_forward_outlined,
+                    size: 30.0,
+                    color: Colors.black,
+                  ),
+                ))
+          ]),
+      body: PageView(
+        children: <Widget>[
+          ListView(children: <Widget>[
+            buildMealPlanner(context),
+            buildInventoryCard(context),
+            buildProgressIndicator(),
+            buildBudgetcard(context),
+          ]),
+          //MyHomePage()
+        ],
+      ),
+    );
   }
 
   Widget buildMealPlanner(BuildContext context) {
@@ -174,10 +200,10 @@ class DashboardState extends State<DashboardPage> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MealPage()));
             },
+            child: MealWidget(
+                day: DateFormat('EEEE').format(DateTime.now()),
+                meal: getTimeofDay()),
           ),
-          MealWidget(
-              day: DateFormat('EEEE').format(DateTime.now()),
-              meal: getTimeofDay()),
         ]));
   }
 
