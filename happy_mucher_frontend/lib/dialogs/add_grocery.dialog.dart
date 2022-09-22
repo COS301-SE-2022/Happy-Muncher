@@ -74,6 +74,24 @@ class GLDialogState extends State<_GLDialog> {
             final price = priceController.text;
             final priceDouble = double.tryParse(price);
 
+            var docSnapshot = await _gltotals.doc('Totals').get();
+
+            if (docSnapshot.exists) {
+              final currentTotals =
+                  ((await _gltotals.doc("Totals").get()).data() as Map);
+              final estimatedTotals = currentTotals["estimated total"] as num;
+              final shoppingTotals = currentTotals["shopping total"] as num;
+
+              _gltotals.doc("Totals").set({
+                'estimated total': estimatedTotals,
+                'shopping total': shoppingTotals + num.parse(price)
+              });
+            } else {
+              await _gltotals
+                  .doc("Totals")
+                  .set({"estimated total": 0, "shopping total": 0});
+            }
+
             if (priceDouble != null) {
               await _items
                   .add({"name": name, "price": priceDouble, "bought": false});
@@ -83,16 +101,6 @@ class GLDialogState extends State<_GLDialog> {
               //GroceryListPageState().getTotals();
               Navigator.of(context).pop();
             }
-
-            final currentTotals =
-                ((await _gltotals.doc("Totals").get()).data() as Map);
-            final estimatedTotals = currentTotals["estimated total"] as num;
-            final shoppingTotals = currentTotals["shopping total"] as num;
-
-            _gltotals.doc("Totals").set({
-              'estimated total': estimatedTotals,
-              'shopping total': shoppingTotals + num.parse(price)
-            });
           },
           child: const Text('Add'),
         )
