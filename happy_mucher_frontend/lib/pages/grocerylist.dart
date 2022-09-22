@@ -239,7 +239,7 @@ class GroceryListPageState extends State<GroceryListPage> {
       floatingActionButton: SpeedDial(
         key: const Key('speed_dial_button'),
         icon: Icons.add,
-        backgroundColor: Color.fromARGB(255, 172, 255, 78),
+        iconTheme: IconThemeData(color: Color(0xFF965BC8)),
         children: [
           SpeedDialChild(
             onTap: () => addGLDialog(context),
@@ -248,7 +248,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.abc,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 172, 255, 78),
+            backgroundColor: Color.fromARGB(255, 185, 141, 223),
           ),
           SpeedDialChild(
             key: const Key('addToInventoryButtonGallery'),
@@ -259,7 +259,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.collections,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 172, 255, 78),
+            backgroundColor: Color.fromARGB(255, 158, 72, 233),
           ),
           SpeedDialChild(
             key: const Key('addToInventoryButtonCamera'),
@@ -270,10 +270,11 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.photo_camera,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 172, 255, 78),
+            backgroundColor: Color.fromARGB(255, 123, 1, 230),
           )
         ],
       ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
