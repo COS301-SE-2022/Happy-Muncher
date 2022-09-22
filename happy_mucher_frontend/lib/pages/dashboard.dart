@@ -14,6 +14,7 @@ import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:happy_mucher_frontend/dailymeal_widget.dart';
@@ -120,11 +121,7 @@ class DashboardState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Happy Muncher'),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 252, 95, 13),
-        ),
+        appBar: buildAppBar(context, "Dashboard"),
         drawer: NavBar(),
         body: PageView(
           children: <Widget>[
