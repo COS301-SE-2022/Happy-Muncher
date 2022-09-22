@@ -13,9 +13,9 @@ class ComponentCard extends StatelessWidget {
             Icons.star,
             color: Colors.orange,
           ),
-          Column(
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Text(ingredient)]),
+          Expanded(
+            child: Text(ingredient),
+          ),
         ],
       );
 }
