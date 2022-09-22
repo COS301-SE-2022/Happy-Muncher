@@ -136,7 +136,11 @@ class DashboardState extends State<DashboardPage> {
         ),
         floatingActionButton: FloatingActionButton(
             // isExtended: true,
-            child: Icon(Icons.arrow_forward),
+            child: Icon(
+              Icons.arrow_forward,
+              color: Color(0xFF965BC8),
+              size: 40,
+            ),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => MyHomePage(),
