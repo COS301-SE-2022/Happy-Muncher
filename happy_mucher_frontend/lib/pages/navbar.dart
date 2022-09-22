@@ -9,7 +9,6 @@ import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
 import 'package:happy_mucher_frontend/pages/settings_page.dart';
-import 'package:happy_mucher_frontend/pages/tempprofile.dart';
 
 class NavBar extends StatelessWidget {
   @override
