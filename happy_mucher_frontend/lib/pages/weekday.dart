@@ -5,6 +5,7 @@ import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/dailymeal_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class Weekday extends StatefulWidget {
   const Weekday({Key? key, required this.day}) : super(key: key);
@@ -99,11 +100,7 @@ class MyWeekdayState extends State<Weekday> {
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getMeals(context));
     return Scaffold(
-        appBar: AppBar(
-          title: Text('${widget.day}'),
-          backgroundColor: Color.fromARGB(255, 252, 95, 13),
-          centerTitle: true,
-        ),
+        appBar: buildAppBar(context, widget.day),
         body: SafeArea(
           //padding: const EdgeInsets.all(32),
 
