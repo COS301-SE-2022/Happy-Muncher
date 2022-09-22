@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/dialogs/add_instruction.dialog.dart';
 import 'package:happy_mucher_frontend/models/myRecipe.dart';
 import 'package:happy_mucher_frontend/dialogs/add_ingredient_dialog.dart';
 import 'package:happy_mucher_frontend/componentcard.dart';
@@ -24,6 +25,7 @@ class CreateState extends State<Create> {
   String title = "my Recipe";
   int selectedIndex = 0;
   static List<String> ingredients = [];
+  static List<String> steps = [];
   bool ingEdit = false;
 
   final ingController = TextEditingController();
@@ -138,12 +140,34 @@ class CreateState extends State<Create> {
           ),
           const Text('Enter your Instructions ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
+          Flexible(
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              children: steps.map((String item) {
+                return ComponentCard(
+                  ingredient: item,
+                );
+              }).toList(),
+            ),
+          ),
           SpeedDial(
             //key: const Key('speed_dial_button'),
             icon: Icons.add,
             children: [
               SpeedDialChild(
-                onTap: () => {},
+                onTap: () async {
+                  final newInstruction = await showAddInstructionDialog(
+                    context,
+                    ingredients,
+                  );
+                  if (newInstruction != null) {
+                    setState(() {
+                      //used to refresh list
+                      steps.add(newInstruction);
+                    });
+                  }
+                },
                 //key: const Key('addToInventoryButtonText'),
                 child: const Icon(
                   Icons.abc,
@@ -203,7 +227,7 @@ class CreateState extends State<Create> {
       return;
     }
 
-    final ingredients = await getRecognisedTextRecipe(croppedImagePath);
+    final steps = await getRecognisedTextRecipe(croppedImagePath);
   }
 
   Future<String?> cropImage(String path) async {
