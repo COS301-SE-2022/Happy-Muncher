@@ -6,6 +6,7 @@ import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -83,10 +84,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.name),
-        centerTitle: true,
-      ),
+      appBar: buildAppBar(context, widget.name),
       body: ListView(padding: const EdgeInsets.all(32), children: [
         Image(image: NetworkImage(widget.image)),
         const SizedBox(height: 24),
