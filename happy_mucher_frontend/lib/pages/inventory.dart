@@ -141,6 +141,7 @@ class _IventoryPageState extends State<IventoryPage> {
 // Add new product
       floatingActionButton: SpeedDial(
         icon: Icons.add,
+        iconTheme: IconThemeData(color: Color(0xFF965BC8)),
         children: [
           SpeedDialChild(
             onTap: () => addInventoryDialog(context),
@@ -149,7 +150,7 @@ class _IventoryPageState extends State<IventoryPage> {
               Icons.abc,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 172, 255, 78),
+            backgroundColor: Color.fromARGB(255, 185, 141, 223),
           ),
           SpeedDialChild(
             onTap: () => getImage(ImageSource.camera),
@@ -157,15 +158,15 @@ class _IventoryPageState extends State<IventoryPage> {
               Icons.photo_camera,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 147, 182, 106),
+            backgroundColor: Color.fromARGB(255, 158, 72, 233),
           ),
           SpeedDialChild(
             onTap: () => showInputDialog(context),
             child: const Icon(
               CupertinoIcons.barcode_viewfinder,
-              color: Color.fromARGB(255, 70, 70, 70),
+              color: Colors.white,
             ),
-            backgroundColor: Colors.grey,
+            backgroundColor: Color.fromARGB(255, 123, 1, 230),
           )
         ],
       ),
@@ -176,7 +177,7 @@ class _IventoryPageState extends State<IventoryPage> {
       //   onPressed: () => addInventoryDialog(context),
       //   child: const Icon(Icons.add),
       // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+//      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
