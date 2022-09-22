@@ -80,7 +80,6 @@ class GLDialogState extends State<_GLDialog> {
 
               nameController.text = '';
               priceController.text = '';
-              UpdateGL(priceDouble);
               //GroceryListPageState().getTotals();
               Navigator.of(context).pop();
             }
@@ -99,28 +98,6 @@ class GLDialogState extends State<_GLDialog> {
         )
       ],
     );
-  }
-
-  void UpdateGL(double price) async {
-    String? e = '';
-    double estimate = 0.0;
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('GL totals');
-    //userUid is the current auth user
-    var docSnapshot = await collection.doc('Totals').get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data()!;
-
-      e = data['estimated total'].toString();
-    }
-    estimate = double.parse(e);
-    estimate += price;
-
-    await _gltotals
-        .doc('Totals')
-        .set({"estimated total": estimate, "shopping total": 0});
   }
 }
 
