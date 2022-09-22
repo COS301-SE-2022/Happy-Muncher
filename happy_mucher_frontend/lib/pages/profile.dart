@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/changepassword.dart';
@@ -71,6 +72,21 @@ class ProfileState extends State<Profile> {
           buildUserInfoDisplay(email.toString(), Icons.email, ChangeEmail()),
           buildUserInfoDisplay('Change Password', Icons.lock, ChangePassword()),
           buildUserInfoDisplay('View settings', Icons.settings, SettingsPage()),
+          ElevatedButton(
+            onPressed: () async => {
+              await FirebaseAuth.instance.signOut(),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen())),
+            },
+            child: const Text(
+              'Log out',
+              style: TextStyle(fontSize: 15),
+            ),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                shape: StadiumBorder(),
+                onPrimary: Colors.black),
+          ),
 
           /*Expanded(
             child: buildAbout(user),
