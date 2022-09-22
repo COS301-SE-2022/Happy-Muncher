@@ -120,7 +120,14 @@ class CreateState extends State<Create> {
                 SpeedDialChild(
                   key: const Key('addToIngredientsButtonGallery'),
                   onTap: () async {
-                    captureImageReceiptIngredients(ImageSource.gallery);
+                    final newIngredients = await captureImageReceiptIngredients(
+                        ImageSource.gallery);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newIngredients.length; i++) {
+                        ingredients.add(newIngredients[i]);
+                      }
+                    });
                   },
                   child: const Icon(
                     Icons.collections,
@@ -211,17 +218,20 @@ class CreateState extends State<Create> {
     );
   }
 
-  void captureImageReceiptIngredients(ImageSource imageSource) async {
+  Future<List<String>> captureImageReceiptIngredients(
+      ImageSource imageSource) async {
     final image = await _picker.pickImage(source: imageSource);
     if (image == null) {
-      return;
+      return [];
     }
     final croppedImagePath = await cropImage(image.path);
     if (croppedImagePath == null) {
-      return;
+      return [];
     }
 
     final ingredients = await getRecognisedTextIngredients(croppedImagePath);
+    print(ingredients);
+    return ingredients;
   }
 
   void captureImageReceiptRecipe(ImageSource imageSource) async {
