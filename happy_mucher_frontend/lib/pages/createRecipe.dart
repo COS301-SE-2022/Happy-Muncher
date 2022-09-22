@@ -58,7 +58,8 @@ class CreateState extends State<Create> {
             child: const Text("Done"),
           ),
           backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
-      body: Column(
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
         children: [
           const Text('Enter your Recipe Title ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
@@ -79,10 +80,10 @@ class CreateState extends State<Create> {
               ),
           const Text('Enter your Ingredients ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
-          Flexible(
-            child: ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: ingredients.map((String item) {
                 return ComponentCard(
                   ingredient: item,
@@ -90,60 +91,63 @@ class CreateState extends State<Create> {
               }).toList(),
             ),
           ),
-          SpeedDial(
-            key: const Key('speed_dial_button'),
-            icon: Icons.add,
-            children: [
-              SpeedDialChild(
-                onTap: () async {
-                  final newIngredient = await showAddIngredientDialog(
-                    context,
-                    ingredients,
-                  );
-                  if (newIngredient != null) {
-                    setState(() {
-                      //used to refresh list
-                      ingredients.add(newIngredient);
-                    });
-                  }
-                },
-                key: const Key('addToIngredientsyButtonText'),
-                child: const Icon(
-                  Icons.abc,
-                  color: Colors.white,
+          Align(
+            alignment: Alignment.center,
+            child: SpeedDial(
+              key: const Key('speed_dial_button'),
+              icon: Icons.add,
+              children: [
+                SpeedDialChild(
+                  onTap: () async {
+                    final newIngredient = await showAddIngredientDialog(
+                      context,
+                      ingredients,
+                    );
+                    if (newIngredient != null) {
+                      setState(() {
+                        //used to refresh list
+                        ingredients.add(newIngredient);
+                      });
+                    }
+                  },
+                  key: const Key('addToIngredientsyButtonText'),
+                  child: const Icon(
+                    Icons.abc,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
                 ),
-                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-              ),
-              SpeedDialChild(
-                key: const Key('addToIngredientsButtonGallery'),
-                onTap: () async {
-                  captureImageReceiptIngredients(ImageSource.gallery);
-                },
-                child: const Icon(
-                  Icons.collections,
-                  color: Colors.white,
+                SpeedDialChild(
+                  key: const Key('addToIngredientsButtonGallery'),
+                  onTap: () async {
+                    captureImageReceiptIngredients(ImageSource.gallery);
+                  },
+                  child: const Icon(
+                    Icons.collections,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
                 ),
-                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-              ),
-              SpeedDialChild(
-                key: const Key('addToIngredientsButtonCamera'),
-                onTap: () async {
-                  captureImageReceiptIngredients(ImageSource.camera);
-                },
-                child: const Icon(
-                  Icons.photo_camera,
-                  color: Colors.white,
-                ),
-                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-              )
-            ],
+                SpeedDialChild(
+                  key: const Key('addToIngredientsButtonCamera'),
+                  onTap: () async {
+                    captureImageReceiptIngredients(ImageSource.camera);
+                  },
+                  child: const Icon(
+                    Icons.photo_camera,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                )
+              ],
+            ),
           ),
           const Text('Enter your Instructions ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
-          Flexible(
-            child: ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: steps.map((String item) {
                 return ComponentCard(
                   ingredient: item,
@@ -151,53 +155,56 @@ class CreateState extends State<Create> {
               }).toList(),
             ),
           ),
-          SpeedDial(
-            //key: const Key('speed_dial_button'),
-            icon: Icons.add,
-            children: [
-              SpeedDialChild(
-                onTap: () async {
-                  final newInstruction = await showAddInstructionDialog(
-                    context,
-                    ingredients,
-                  );
-                  if (newInstruction != null) {
-                    setState(() {
-                      //used to refresh list
-                      steps.add(newInstruction);
-                    });
-                  }
-                },
-                //key: const Key('addToInventoryButtonText'),
-                child: const Icon(
-                  Icons.abc,
-                  color: Colors.white,
+          Align(
+            alignment: Alignment.center,
+            child: SpeedDial(
+              //key: const Key('speed_dial_button'),
+              icon: Icons.add,
+              children: [
+                SpeedDialChild(
+                  onTap: () async {
+                    final newInstruction = await showAddInstructionDialog(
+                      context,
+                      ingredients,
+                    );
+                    if (newInstruction != null) {
+                      setState(() {
+                        //used to refresh list
+                        steps.add(newInstruction);
+                      });
+                    }
+                  },
+                  //key: const Key('addToInventoryButtonText'),
+                  child: const Icon(
+                    Icons.abc,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
                 ),
-                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-              ),
-              SpeedDialChild(
-                //key: const Key('addToInventoryButtonGallery'),
-                onTap: () async {
-                  captureImageReceiptRecipe(ImageSource.gallery);
-                },
-                child: const Icon(
-                  Icons.collections,
-                  color: Colors.white,
+                SpeedDialChild(
+                  //key: const Key('addToInventoryButtonGallery'),
+                  onTap: () async {
+                    captureImageReceiptRecipe(ImageSource.gallery);
+                  },
+                  child: const Icon(
+                    Icons.collections,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
                 ),
-                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-              ),
-              SpeedDialChild(
-                //key: const Key('addToInventoryButtonCamera'),
-                onTap: () async {
-                  captureImageReceiptRecipe(ImageSource.camera);
-                },
-                child: const Icon(
-                  Icons.photo_camera,
-                  color: Colors.white,
-                ),
-                backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-              )
-            ],
+                SpeedDialChild(
+                  //key: const Key('addToInventoryButtonCamera'),
+                  onTap: () async {
+                    captureImageReceiptRecipe(ImageSource.camera);
+                  },
+                  child: const Icon(
+                    Icons.photo_camera,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                )
+              ],
+            ),
           ),
         ],
       ),
