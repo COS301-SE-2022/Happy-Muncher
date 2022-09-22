@@ -9,6 +9,7 @@ import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/pages/notification.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,10 +63,7 @@ class GroceryListPageState extends State<GroceryListPage> {
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => totals(context));
     return Scaffold(
-      appBar: AppBar(
-          title: const Text('Grocery List'),
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
+      appBar: buildAppBar(context, "Grocery List"),
       body: Column(
         children: [
           StreamBuilder(
