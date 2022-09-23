@@ -138,7 +138,14 @@ class CreateState extends State<Create> {
                 SpeedDialChild(
                   key: const Key('addToIngredientsButtonCamera'),
                   onTap: () async {
-                    captureImageReceiptIngredients(ImageSource.camera);
+                    final newIngredients = await captureImageReceiptIngredients(
+                        ImageSource.camera);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newIngredients.length; i++) {
+                        ingredients.add(newIngredients[i]);
+                      }
+                    });
                   },
                   child: const Icon(
                     Icons.photo_camera,
@@ -191,7 +198,14 @@ class CreateState extends State<Create> {
                 SpeedDialChild(
                   //key: const Key('addToInventoryButtonGallery'),
                   onTap: () async {
-                    captureImageReceiptRecipe(ImageSource.gallery);
+                    final newSteps =
+                        await captureImageReceiptRecipe(ImageSource.gallery);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newSteps.length; i++) {
+                        steps.add(newSteps[i]);
+                      }
+                    });
                   },
                   child: const Icon(
                     Icons.collections,
@@ -202,7 +216,14 @@ class CreateState extends State<Create> {
                 SpeedDialChild(
                   //key: const Key('addToInventoryButtonCamera'),
                   onTap: () async {
-                    captureImageReceiptRecipe(ImageSource.camera);
+                    final newSteps =
+                        await captureImageReceiptRecipe(ImageSource.camera);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newSteps.length; i++) {
+                        steps.add(newSteps[i]);
+                      }
+                    });
                   },
                   child: const Icon(
                     Icons.photo_camera,
@@ -230,21 +251,22 @@ class CreateState extends State<Create> {
     }
 
     final ingredients = await getRecognisedTextIngredients(croppedImagePath);
-    print(ingredients);
     return ingredients;
   }
 
-  void captureImageReceiptRecipe(ImageSource imageSource) async {
+  Future<List<String>> captureImageReceiptRecipe(
+      ImageSource imageSource) async {
     final image = await _picker.pickImage(source: imageSource);
     if (image == null) {
-      return;
+      return [];
     }
     final croppedImagePath = await cropImage(image.path);
     if (croppedImagePath == null) {
-      return;
+      return [];
     }
 
     final steps = await getRecognisedTextRecipe(croppedImagePath);
+    return steps;
   }
 
   Future<String?> cropImage(String path) async {
@@ -266,14 +288,30 @@ class CreateState extends State<Create> {
     await textDetector.close();
     //final listOfItems = <ReceiptItem>[];
     final listOfText = <String>[];
+    final listOfTempItems = <String>[];
 
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        if (line.boundingBox.left / image.width * 100 < 10) {
-          listOfText.add(line.text);
-        }
+        final textLower = line.text.toLowerCase();
+        listOfTempItems.add(textLower);
       }
     }
+
+    for (final text in listOfTempItems) {
+      if (text.contains('•')) {
+        final newName = text.replaceAll('•', '');
+        listOfText.add(newName);
+        continue;
+      }
+      if (text.contains('optional')) {
+        continue;
+      }
+      if (text.contains('method')) {
+        continue;
+      }
+      listOfText.add(text);
+    }
+
     return listOfText;
   }
 
@@ -284,15 +322,35 @@ class CreateState extends State<Create> {
     RecognizedText recognizedText = await textDetector.processImage(inputImage);
     await textDetector.close();
     //final listOfItems = <ReceiptItem>[];
-    final listOfText = <String>[];
+    String string = "";
+    var listOfText = <String>[];
+    var listOfFinalText = <String>[];
 
     for (TextBlock block in recognizedText.blocks) {
-      for (TextLine line in block.lines) {
-        if (line.boundingBox.left / image.width * 100 < 10) {
-          listOfText.add(line.text);
-        }
-      }
+      string += block.text;
     }
-    return listOfText;
+    listOfText = string.split('.');
+
+    if (listOfText.last == " " || listOfText.last == "") {
+      listOfText.removeLast();
+    }
+
+    RegExp numbers = RegExp("^[0-9]");
+
+    for (var item in listOfText) {
+      if (item.contains('\n')) {
+        var newItem = item.replaceAll('\n', '');
+        if (numbers.hasMatch(newItem)) {
+          continue;
+        }
+        listOfFinalText.add(newItem);
+        continue;
+      } else if (numbers.hasMatch(item)) {
+        continue;
+      }
+      listOfFinalText.add(item);
+    }
+
+    return listOfFinalText;
   }
 }
