@@ -97,32 +97,281 @@ class DashboardState extends State<DashboardPage> {
     );
   }
 
-  List<charts.Series<GLValues, String>> _seriesPieData = [];
-  List<GLValues> mypiedata = [];
   bool first = true;
 
-  _generatePieData(mypiedata) {
-    _seriesPieData = [];
-    _seriesPieData.add(
-      charts.Series(
-        domainFn: (GLValues estimatedVal, _) => estimatedVal.type,
-        measureFn: (GLValues totalVal, _) => (totalVal.total),
-        colorFn: (GLValues estimatedVal, _) {
-          if (estimatedVal.total <= 50) {
-            first = false;
-            return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 55, 190, 15));
-          } else {
-            return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 252, 95, 13));
-          }
-          ;
-        },
-        id: 'Dashboard',
-        data: mypiedata,
-        labelAccessorFn: (GLValues row, _) => "${row.type}",
+  @override
+  Widget build(BuildContext context) {
+    var profile = FirebaseAuth.instance.currentUser?.photoURL;
+    if (profile == null) {
+      profile ??=
+          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+    }
+    return Scaffold(
+      appBar: AppBar(
+          title: new Text(
+            "Dashboard",
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: new Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 100,
+                backgroundColor: Color(0xFF965BC8),
+                child: CircleAvatar(
+                    backgroundImage: NetworkImage(profile) as ImageProvider,
+                    radius: 50,
+                    child: InkWell(onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Profile()));
+                    })),
+              )),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                  },
+                  child: Icon(
+                    Icons.arrow_forward_outlined,
+                    size: 30.0,
+                    color: Colors.black,
+                  ),
+                ))
+          ]),
+      body: PageView(
+        children: <Widget>[
+          ListView(children: <Widget>[
+            buildMealPlanner(context),
+            buildInventoryCard(context),
+            buildProgressIndicator(),
+            CarouselSlider(
+                options: CarouselOptions(
+                  aspectRatio: 1.2,
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: false,
+                ),
+                items: <Widget>[
+                  buildPercentagendicator(),
+                  buildBudgetcard(context),
+                ])
+          ]),
+        ],
       ),
     );
+  }
+
+  Widget buildMealPlanner(BuildContext context) {
+    return Container(
+        width: 180,
+        height: 360,
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+
+        //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
+        key: const ValueKey("Meal Planner"),
+        /* shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),*/
+        child: Stack(alignment: Alignment.topCenter, children: [
+          Container(
+              /*child: Text(
+                  'Meal Planner',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                ),*/
+              ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MealPage()));
+            },
+            child: MealWidget(
+                day: DateFormat('EEEE').format(DateTime.now()),
+                meal: getTimeofDay()),
+          ),
+        ]));
+  }
+
+  dynamic total = 0;
+  Widget buildProgressIndicator() {
+    return Container(
+        width: 150,
+        height: 150,
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+        child: Card(
+            key: const ValueKey("Meal Planner Dashboard"),
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.topCenter, children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text('Grocery List',
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center),
+              ),
+              InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroceryListPage()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
+                    height: 100,
+                    width: 400,
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(uid)
+                            .collection('GL totals')
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                          if (streamSnapshot.hasData) {
+                            bool exp = false;
+                            return ListView.builder(
+                                key: const Key('Inventory_ListView'),
+                                itemCount: streamSnapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
+
+                                  DateTime dateToday = new DateTime.now();
+                                  String date =
+                                      dateToday.toString().substring(0, 10);
+                                  total = documentSnapshot['estimated total'] +
+                                      documentSnapshot['shopping total'];
+
+                                  if (index == 0) {
+                                    //print(documentSnapshot['total']);
+                                    return LinearPercentIndicator(
+                                      width: MediaQuery.of(context).size.width -
+                                          210,
+                                      animation: true,
+                                      lineHeight: 22.0,
+                                      barRadius: const Radius.circular(16),
+                                      animationDuration: 2000,
+                                      leading: new Text("estimated \n total"),
+                                      trailing: new Text("shopping\n total"),
+                                      percent:
+                                          documentSnapshot['estimated total'] /
+                                              total,
+                                      // center: Text(percentageRemaining.toString() + "% remaining"),
+
+                                      progressColor:
+                                          Color.fromARGB(255, 167, 104, 223),
+                                    );
+                                  } else {
+                                    total +=
+                                        int.parse(documentSnapshot['total']);
+                                    return Text("");
+                                  }
+                                });
+                          }
+                          return Text("No items expire today.",
+                              textAlign: TextAlign.center);
+                        },
+                      ),
+                    ),
+                  ))
+            ])));
+  }
+
+  Widget buildInventoryCard(BuildContext context) {
+    return Container(
+        width: 150,
+        height: 150,
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+        child: Card(
+            key: const ValueKey("Inventory Dashboard"),
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.topCenter, children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text('Inventory',
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center),
+              ),
+              InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => IventoryPage()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 45, 10, 0),
+                    height: 200,
+                    width: 400,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Center(
+                      child: StreamBuilder(
+                        stream: _products.snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                          if (streamSnapshot.hasData) {
+                            bool exp = false;
+                            return ListView.builder(
+                                key: const Key('Inventory_ListView'),
+                                itemCount: streamSnapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
+
+                                  DateTime dateToday = new DateTime.now();
+                                  String date =
+                                      dateToday.toString().substring(0, 10);
+
+                                  if (documentSnapshot['expirationDate'] ==
+                                      date) {
+                                    exp = true;
+                                    return ListTile(
+                                      subtitle: Text(
+                                          documentSnapshot['quantity']
+                                                  .toString() +
+                                              ' \u{00D7} ' +
+                                              documentSnapshot['itemName'],
+                                          textAlign: TextAlign.center),
+                                    );
+                                  } else if (index ==
+                                          streamSnapshot.data!.docs.length -
+                                              1 &&
+                                      exp == false) {
+                                    return ListTile(
+                                      subtitle: Text("No items expire today",
+                                          textAlign: TextAlign.center),
+                                    );
+                                  } else {
+                                    return SizedBox(height: 0);
+                                  }
+                                });
+                          }
+                          return Text("No items expire today.",
+                              textAlign: TextAlign.center);
+                        },
+                      ),
+                    ),
+                  ))
+            ])));
   }
 
   Widget buildPercentagendicator() {
@@ -131,7 +380,7 @@ class DashboardState extends State<DashboardPage> {
         height: 150,
         margin: EdgeInsets.fromLTRB(0, 20, 0, 60),
         child: Card(
-            key: const ValueKey("Meal Planner"),
+            key: const ValueKey("Carousel 1"),
             shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
@@ -232,105 +481,6 @@ class DashboardState extends State<DashboardPage> {
             ])));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var profile = FirebaseAuth.instance.currentUser?.photoURL;
-    if (profile == null) {
-      profile ??=
-          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
-    }
-    return Scaffold(
-      appBar: AppBar(
-          title: new Text(
-            "Dashboard",
-            style: TextStyle(color: Colors.black),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          leading: new Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                radius: 100,
-                backgroundColor: Color(0xFF965BC8),
-                child: CircleAvatar(
-                    backgroundImage: NetworkImage(profile) as ImageProvider,
-                    radius: 50,
-                    child: InkWell(onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Profile()));
-                    })),
-              )),
-          actions: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()));
-                  },
-                  child: Icon(
-                    Icons.arrow_forward_outlined,
-                    size: 30.0,
-                    color: Colors.black,
-                  ),
-                ))
-          ]),
-      body: PageView(
-        children: <Widget>[
-          ListView(children: <Widget>[
-            buildMealPlanner(context),
-            buildInventoryCard(context),
-            buildProgressIndicator(),
-            CarouselSlider(
-                options: CarouselOptions(
-                  aspectRatio: 1.2,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                ),
-                items: <Widget>[
-                  buildPercentagendicator(),
-                  buildBudgetcard(context),
-                ])
-          ]),
-          //MyHomePage()
-        ],
-      ),
-    );
-  }
-
-  Widget buildMealPlanner(BuildContext context) {
-    return Container(
-        width: 180,
-        height: 360,
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-
-        //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
-        key: const ValueKey("Meal Planner"),
-        /* shadowColor: Color.fromARGB(255, 180, 181, 179),
-            elevation: 25,
-            clipBehavior: Clip.antiAlias,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),*/
-        child: Stack(alignment: Alignment.topCenter, children: [
-          Container(
-              /*child: Text(
-                  'Meal Planner',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                ),*/
-              ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MealPage()));
-            },
-            child: MealWidget(
-                day: DateFormat('EEEE').format(DateTime.now()),
-                meal: getTimeofDay()),
-          ),
-        ]));
-  }
-
   Widget buildBudgetcard(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
@@ -417,271 +567,6 @@ class DashboardState extends State<DashboardPage> {
                   ),
                 ),
               )
-            ])));
-  }
-
-  Widget buildGLcard(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('Users')
-          .doc(uid)
-          .collection('GL totals')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return CircularProgressIndicator();
-        } else {
-          List<GLValues> sales = snapshot.data!.docs
-              .map((content) => GLValues.fromMap(content))
-              .toList();
-          return _buildPieChart(context, sales);
-        }
-      },
-    );
-  }
-
-  Widget _buildPieChart(BuildContext context, List<GLValues> saledata) {
-    mypiedata = saledata;
-    _generatePieData(mypiedata);
-
-    return Container(
-        width: 400,
-        height: 250,
-        margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-        child: Card(
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
-            elevation: 25,
-            clipBehavior: Clip.antiAlias,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-            child: Stack(alignment: Alignment.center, children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GroceryListPage()));
-                },
-                child: Container(
-                  padding: EdgeInsets.all(20.0),
-                  //width: 50,
-                  height: 300,
-                  child: Center(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          'Grocery List',
-                          style: TextStyle(
-                              fontSize: 24.0, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Expanded(
-                          child: charts.PieChart<String>(
-                            _seriesPieData,
-                            animate: true,
-                            animationDuration: Duration(seconds: 1),
-                            behaviors: [
-                              new charts.DatumLegend(
-                                entryTextStyle: charts.TextStyleSpec(
-                                    color: charts.MaterialPalette.black,
-                                    fontFamily: 'Georgia',
-                                    fontSize: 18),
-                                position: charts.BehaviorPosition.start,
-                              )
-                            ],
-                            /*defaultRenderer: new charts.ArcRendererConfig(
-                                  arcWidth: 100,
-                                  arcRendererDecorators: [
-                                    new charts.ArcLabelDecorator(
-                                        labelPosition:
-                                            charts.ArcLabelPosition.inside)
-                                  ])*/
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ])));
-  }
-
-  dynamic total = 0;
-  Widget buildProgressIndicator() {
-    return Container(
-        width: 150,
-        height: 150,
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Card(
-            key: const ValueKey("Meal Planner"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
-            elevation: 25,
-            clipBehavior: Clip.antiAlias,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-            child: Stack(alignment: Alignment.topCenter, children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text('Grocery List',
-                    style:
-                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center),
-              ),
-              InkWell(
-                  onTap: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GroceryListPage()));
-                  },
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
-                    height: 100,
-                    width: 400,
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                      child: StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('GL totals')
-                            .snapshots(),
-                        builder: (context,
-                            AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                          if (streamSnapshot.hasData) {
-                            bool exp = false;
-                            return ListView.builder(
-                                key: const Key('Inventory_ListView'),
-                                itemCount: streamSnapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final DocumentSnapshot documentSnapshot =
-                                      streamSnapshot.data!.docs[index];
-
-                                  DateTime dateToday = new DateTime.now();
-                                  String date =
-                                      dateToday.toString().substring(0, 10);
-                                  total = documentSnapshot['estimated total'] +
-                                      documentSnapshot['shopping total'];
-
-                                  if (index == 0) {
-                                    //print(documentSnapshot['total']);
-                                    return LinearPercentIndicator(
-                                      width: MediaQuery.of(context).size.width -
-                                          210,
-                                      animation: true,
-                                      lineHeight: 22.0,
-                                      barRadius: const Radius.circular(16),
-                                      animationDuration: 2000,
-                                      leading: new Text("estimated \n total"),
-                                      trailing: new Text("shopping\n total"),
-                                      percent:
-                                          documentSnapshot['estimated total'] /
-                                              total,
-                                      // center: Text(percentageRemaining.toString() + "% remaining"),
-
-                                      progressColor:
-                                          Color.fromARGB(255, 167, 104, 223),
-                                    );
-                                  } else {
-                                    total +=
-                                        int.parse(documentSnapshot['total']);
-                                    return Text("");
-                                  }
-                                });
-                          }
-                          return Text("No items expire today.",
-                              textAlign: TextAlign.center);
-                        },
-                      ),
-                    ),
-                  ))
-            ])));
-  }
-
-  Widget buildInventoryCard(BuildContext context) {
-    return Container(
-        width: 150,
-        height: 150,
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Card(
-            key: const ValueKey("Meal Planner"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
-            elevation: 25,
-            clipBehavior: Clip.antiAlias,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-            child: Stack(alignment: Alignment.topCenter, children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text('Inventory',
-                    style:
-                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center),
-              ),
-              InkWell(
-                  onTap: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => IventoryPage()));
-                  },
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(10, 45, 10, 0),
-                    height: 200,
-                    width: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Center(
-                      child: StreamBuilder(
-                        stream: _products.snapshots(),
-                        builder: (context,
-                            AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                          if (streamSnapshot.hasData) {
-                            bool exp = false;
-                            return ListView.builder(
-                                key: const Key('Inventory_ListView'),
-                                itemCount: streamSnapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final DocumentSnapshot documentSnapshot =
-                                      streamSnapshot.data!.docs[index];
-
-                                  DateTime dateToday = new DateTime.now();
-                                  String date =
-                                      dateToday.toString().substring(0, 10);
-
-                                  if (documentSnapshot['expirationDate'] ==
-                                      date) {
-                                    exp = true;
-                                    return ListTile(
-                                      subtitle: Text(
-                                          documentSnapshot['quantity']
-                                                  .toString() +
-                                              ' \u{00D7} ' +
-                                              documentSnapshot['itemName'],
-                                          textAlign: TextAlign.center),
-                                    );
-                                  } else if (index ==
-                                          streamSnapshot.data!.docs.length -
-                                              1 &&
-                                      exp == false) {
-                                    return ListTile(
-                                      subtitle: Text("No items expire today",
-                                          textAlign: TextAlign.center),
-                                    );
-                                  } else {
-                                    return SizedBox(height: 0);
-                                  }
-                                });
-                          }
-                          return Text("No items expire today.",
-                              textAlign: TextAlign.center);
-                        },
-                      ),
-                    ),
-                  ))
             ])));
   }
 }
