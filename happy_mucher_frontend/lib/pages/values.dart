@@ -16,16 +16,3 @@ class Values {
   @override
   String toString() => "Record<$budget:$month>";
 }
-
-class GLValues {
-  final num total;
-  final String type;
-
-  GLValues(this.type, this.total);
-
-  GLValues.fromMap(dynamic map)
-      : assert(map['type'] != null),
-        assert(map['total'] != null),
-        type = map['type'],
-        total = map['total'];
-}
