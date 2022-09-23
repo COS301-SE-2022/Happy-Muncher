@@ -312,7 +312,6 @@ class CreateState extends State<Create> {
       listOfText.add(text);
     }
 
-    print(listOfText);
     return listOfText;
   }
 
