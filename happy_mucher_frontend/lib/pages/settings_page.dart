@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 import 'package:happy_mucher_frontend/provider/dark_theme_provider.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -11,9 +12,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text('Settings'),
-        ),
+        appBar: buildAppBar(context, "Settings"),
         body: SafeArea(
             child: ListView(
           padding: EdgeInsets.all(24),

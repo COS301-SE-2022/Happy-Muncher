@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/loginpage.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/changepassword.dart';
 import 'package:happy_mucher_frontend/pages/changeprofile.dart';
 import 'package:happy_mucher_frontend/pages/changeusername.dart';
-import 'package:happy_mucher_frontend/pages/homepage.dart';
+import 'package:happy_mucher_frontend/pages/display_image_widget.dart';
+import 'package:happy_mucher_frontend/pages/settings_page.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -14,14 +19,12 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
-  final email = FirebaseAuth.instance.currentUser!.email;
   final creationTime = FirebaseAuth.instance.currentUser!.metadata.creationTime;
 
   User? user = FirebaseAuth.instance.currentUser;
 
   verifyEmail() async {
-    print(uid);
+    //print(uid);
     if (user != null && !user!.emailVerified) {
       await user!.sendEmailVerification();
       print('Verification Email has been sent');
@@ -41,7 +44,7 @@ class ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     var uid = FirebaseAuth.instance.currentUser?.displayName;
     var profile = FirebaseAuth.instance.currentUser?.photoURL;
-    final email = FirebaseAuth.instance.currentUser?.email;
+    var email = FirebaseAuth.instance.currentUser?.email;
     final creationTime =
         FirebaseAuth.instance.currentUser?.metadata.creationTime;
     if (uid == null) {
@@ -51,102 +54,157 @@ class ProfileState extends State<Profile> {
       profile ??=
           'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
     }
+
     return Scaffold(
-      //appBar: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      appBar: AppBar(
-        title: Text('Profile'),
-        actions: <Widget>[
-          FlatButton(
-            child: Row(
-              children: <Widget>[Text('Home'), Icon(Icons.home)],
-            ),
-            textColor: Colors.white,
+      appBar: buildAppBar(context, "Profile"),
+      body: Column(
+        children: [
+          InkWell(
+              onTap: () {
+                navigateSecondPage(ChangeProfile());
+              },
+              child: DisplayImage(
+                imagePath: profile,
+                onPressed: () {},
+              )),
+          SizedBox(height: 40),
+          buildUserInfoDisplay(uid, Icons.person, ChangeUsername()),
+          buildUserInfoDisplay(email.toString(), Icons.email, ChangeEmail()),
+          buildUserInfoDisplay('Change Password', Icons.lock, ChangePassword()),
+          buildUserInfoDisplay('Settings', Icons.settings, SettingsPage()),
+          ElevatedButton(
             onPressed: () async => {
-              Navigator.of(context).pushReplacementNamed(MyHomePage.routeName)
+              await FirebaseAuth.instance.signOut(),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen())),
             },
+            child: const Text(
+              'Log out',
+              style: TextStyle(fontSize: 15),
+            ),
+            style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                shape: StadiumBorder(),
+                onPrimary: Colors.black),
           ),
+
+          /*Expanded(
+            child: buildAbout(user),
+            flex: 4,
+          )*/
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 30),
-            CircleAvatar(
-              radius: 100,
-              backgroundImage: NetworkImage(profile.toString()),
-            ),
-            /*BoxDecoration(
-              color: Colors.grey,
-              /*image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(
-                      'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg')),*/
-            ),*/
-            TextButton.icon(
-                onPressed: () async => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangeProfile()))
-                    },
-                icon: Icon(Icons.edit),
-                label: Text('')),
-            SizedBox(height: 60),
-            Row(
-              children: [
-                Text(
-                  'Username: $uid',
-                  style: TextStyle(fontSize: 25.0),
-                ),
-                TextButton.icon(
-                    onPressed: () => addUsernameDialog(context),
-                    icon: Icon(Icons.edit),
-                    label: Text(''))
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            SizedBox(height: 40),
-            Row(
-              children: [
-                Text(
-                  'Email:' + '$email',
-                  style: TextStyle(fontSize: 25.0),
-                ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            Row(
-              children: [
-                user!.emailVerified
-                    ? const Text(
-                        '  verified',
-                        style:
-                            TextStyle(fontSize: 18.0, color: Colors.blueGrey),
-                      )
-                    : TextButton(
-                        onPressed: () => {verifyEmail()},
-                        child: Text('  Verify Email')),
-                TextButton.icon(
-                    onPressed: () => addEmailDialog(context),
-                    icon: Icon(Icons.edit),
-                    label: Text(''))
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            SizedBox(height: 30),
-            TextButton.icon(
-                onPressed: () async => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChangePassword()))
-                    },
-                label:
-                    Text('Change Password', style: TextStyle(fontSize: 25.0)),
-                icon: Icon(Icons.edit)),
-          ],
-        ),
-      ),
     );
+  }
+
+  // Widget builds the display item with the proper formatting to display the user's info
+  Widget buildUserInfoDisplay(String getValue, IconData t, Widget editPage) =>
+      Padding(
+          padding: EdgeInsets.only(bottom: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Icon(
+                  t,
+                  color: Colors.grey,
+                ),
+                SizedBox(
+                  height: 1,
+                ),
+                Container(
+                    width: 350,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ))),
+                    child: Row(children: [
+                      Expanded(
+                          child: TextButton(
+                              onPressed: () {
+                                navigateSecondPage(editPage);
+                              },
+                              child: Text(
+                                getValue,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    height: 1.4,
+                                    color: Colors.black),
+                              ))),
+                      Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.grey,
+                        size: 30.0,
+                      )
+                    ]))
+              ])
+            ],
+          ));
+
+  // Widget builds the About Me Section
+  /*Widget buildAbout(User user) => Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Tell Us About Yourself',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 1),
+          Container(
+              width: 350,
+              height: 200,
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(
+                color: Colors.grey,
+                width: 1,
+              ))),
+              child: Row(children: [
+                Expanded(
+                    child: TextButton(
+                        onPressed: () {
+                          navigateSecondPage(EditDescriptionFormPage());
+                        },
+                        child: Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  user.aboutMeDescription,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    height: 1.4,
+                                  ),
+                                ))))),
+                Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.grey,
+                  size: 40.0,
+                )
+              ]))
+        ],
+      ));*/
+
+  // Refrshes the Page after updating user info.
+  FutureOr onGoBack(dynamic value) {
+    setState(() {});
+  }
+
+  // Handles navigation and prompts refresh.
+  void navigateSecondPage(Widget editForm) {
+    Route route = MaterialPageRoute(builder: (context) => editForm);
+    Navigator.push(context, route).then(onGoBack);
   }
 }

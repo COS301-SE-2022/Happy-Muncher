@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:happy_mucher_frontend/dialogs/add_recipe.dialog.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -17,9 +18,10 @@ class RecipeCard extends StatelessWidget {
   final List<tastyRecipe> recipes;
 //List<Recipe>? recipes;
   RecipeCard({this.recipes = const []});
-
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _meals => firestore.collection('Meal Planner');
+  CollectionReference get _meals =>
+      firestore.collection('Users').doc(uid).collection('Meal Planner');
   String name = "";
   String images = "";
   //this.recipeid = 0,

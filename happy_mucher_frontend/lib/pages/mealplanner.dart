@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'navbar.dart';
 import 'weekday.dart';
 import 'package:happy_mucher_frontend/weekcard_widget.dart';
@@ -12,55 +13,48 @@ class MealPage extends StatefulWidget {
 
 class _MealPageState extends State<MealPage> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: const Text('Meal Planner'),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 252, 95, 13),
-        ),
-        body: ListView(
-          key: Key("day"),
-          children: <Widget>[
-            const SizedBox(height: 10),
-            WeekCard(
-              day: "Monday",
-              inputText: "Monday",
-            ),
-            const SizedBox(height: 5),
-            WeekCard(
-              day: "Tuesday",
-              inputText: "Tuesday",
-            ),
-            const SizedBox(height: 5),
-            WeekCard(
-              day: "Wednesday",
-              inputText: "Wednesday",
-            ),
-            const SizedBox(height: 5),
-            WeekCard(
-              day: "Thursday",
-              inputText: "Thursday",
-            ),
-            const SizedBox(height: 5),
-            WeekCard(
-              day: "Friday",
-              inputText: "Friday",
-            ),
-            const SizedBox(height: 5),
-            WeekCard(
-              day: "Saturday",
-              inputText: "Saturday",
-            ),
-            const SizedBox(height: 5),
-            WeekCard(
-              day: "Sunday",
-              inputText: "Sunday",
-            ),
-            const SizedBox(height: 5),
-          ],
-        ));
-  }
+  Widget build(BuildContext context) => Scaffold(
+      key: Key("day"),
+      appBar: buildAppBar(context, "Meal Planner"),
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          buildCards(),
+          const SizedBox(height: 12),
+          buildCards1(),
+          const SizedBox(height: 12),
+          buildCards2(),
+          const SizedBox(height: 12),
+          buildCards3(),
+          const SizedBox(height: 12),
+        ],
+      ));
+
+  Widget buildCards() => Row(
+        children: [
+          Expanded(child: WeekCard(day: "Monday", inputText: "Mon")),
+          const SizedBox(width: 12),
+          Expanded(child: WeekCard(day: "Tuesday", inputText: "Tue")),
+        ],
+      );
+
+  Widget buildCards1() => Row(
+        children: [
+          Expanded(child: WeekCard(day: "Wednesday", inputText: "Wed")),
+          const SizedBox(width: 12),
+          Expanded(child: WeekCard(day: "Thursday", inputText: "Thu")),
+        ],
+      );
+  Widget buildCards2() => Row(
+        children: [
+          Expanded(child: WeekCard(day: "Friday", inputText: "Fri")),
+          const SizedBox(width: 12),
+          Expanded(child: WeekCard(day: "Saturday", inputText: "Sat")),
+        ],
+      );
+  Widget buildCards3() => Row(
+        children: [
+          Expanded(child: WeekCard(day: "Sunday", inputText: "Sun")),
+        ],
+      );
 }

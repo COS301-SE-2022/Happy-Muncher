@@ -49,53 +49,68 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Change Password'),
-      ),
-      key: _formKey,
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: ListView(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: TextFormField(
-                autofocus: false,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'New Password: ',
-                  hintText: 'Enter New Password',
-                  labelStyle: TextStyle(fontSize: 20.0),
-                  border: OutlineInputBorder(),
-                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-                ),
-                controller: newPasswordController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter Password';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, otherwise false.
-                /*if (_formKey.currentState!.validate()) {
-                  setState(() {});
-                }*/
-                newPassword = newPasswordController.text;
-                print(newPassword);
-                changePassword();
-              },
-              child: Text(
-                'Change Password',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+              color: Colors
+                  .black), // set backbutton color here which will reflect in all screens.
+          leading: BackButton(),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-      ),
-    );
+        body: Form(
+          key: _formKey,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                    width: 320,
+                    child: const Text(
+                      "Change your Password?",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: SizedBox(
+                        height: 100,
+                        width: 320,
+                        child: TextFormField(
+                          obscureText: true,
+                          // Handles Form Validation
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter New Password';
+                            }
+                            return null;
+                          },
+                          controller: newPasswordController,
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                          ),
+                        ))),
+                Padding(
+                    padding: EdgeInsets.only(top: 150),
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          width: 320,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Validate returns true if the form is valid, or false otherwise.
+                              newPassword = newPasswordController.text;
+                              changePassword();
+                            },
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.black, shape: StadiumBorder()),
+                          ),
+                        )))
+              ]),
+        ));
   }
 }

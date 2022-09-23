@@ -8,7 +8,9 @@ import 'package:happy_mucher_frontend/ingredient_displaycard.dart';
 import 'package:happy_mucher_frontend/recipeInstruction_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 //search resource:
@@ -42,12 +44,13 @@ class IndividualRecipe extends StatefulWidget {
 class IndividualRecipeState extends State<IndividualRecipe> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference get _favourites =>
       firestore.collection('Users').doc(uid).collection('Recipes');
   //final FirebaseFirestore firestore = GetIt.I.get();
 
-  CollectionReference get _glItems => firestore.collection('GroceryList');
+  CollectionReference get _glItems =>
+      firestore.collection('Users').doc(uid).collection('GroceryList');
   String ing = "";
   String steps = "";
   String its = '';
@@ -69,6 +72,8 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   List<String> gl = [];
   getInventory() {
     FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
         .collection('Inventory')
         .get()
         .then((QuerySnapshot querySnapshot) {
@@ -311,7 +316,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
   toGL() async {
     gl.forEach((element) async {
-      await _glItems.add({"name": element, "price": 0, "bought": false});
+      await _glItems.add({"name": element, "price": 0.0, "bought": false});
     });
   }
 

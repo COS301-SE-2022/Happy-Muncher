@@ -7,6 +7,7 @@ import 'package:happy_mucher_frontend/pages/myRecipeBook.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:happy_mucher_frontend/pages/favourites.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -55,10 +56,7 @@ class RecipeBookState extends State<RecipeBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Recipe Book'),
-            centerTitle: true,
-            backgroundColor: Color.fromARGB(255, 252, 95, 13)),
+        appBar: buildAppBar(context, "Recipe Book"),
         body: Column(
           children: [
             ElevatedButton(

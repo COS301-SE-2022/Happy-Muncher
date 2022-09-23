@@ -23,17 +23,57 @@ void main() {
       await tester.tap(emailField);
       await tester.pumpAndSettle();
 
-      await tester.enterText(emailField, 'u20554240@tuks.co.za');
+      await tester.enterText(emailField, 'codeblooded301@gmail.com');
       await tester.pumpAndSettle();
 
       await tester.tap(passwordField);
       await tester.pumpAndSettle();
 
-      await tester.enterText(passwordField, '123456');
+      await tester.enterText(passwordField, 'cos301');
       await tester.pumpAndSettle();
 
       await tester.tap(submitButton);
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+
+      await tester.widget(find.byType(AppBar));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.arrow_forward_outlined));
+      await tester.pumpAndSettle();
+
+      // in grcoery list page
+      await tester.tap(find.byKey(Key('speed_dial_button')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(Key('speed_dial_button')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Inventory'));
+      await tester.pumpAndSettle();
+
+      //in budget page
+      await tester.tap(find.text('Budget'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(Key('January')));
+      await tester.pumpAndSettle();
+
+      /*await tester.tap(find.byIcon(Icons.dashboard));
+      await tester.pumpAndSettle();*/
+      await tester.tap(find.byKey(Key('editBudget')));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(Key('enterBudget')), "500");
+      await tester.pumpAndSettle();
+
+      final NavigatorState navigator = tester.state(find.byType(Navigator));
+      navigator.pop();
+      await tester.pump();
+
+      await tester.tap(find.text('Meal-Plan'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Recipe book'));
+      await tester.pumpAndSettle();
+      /*await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();*/
 
       //expect(GLbutton, findsOneWidget);
       // await tester.tap(GLbutton);

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:happy_mucher_frontend/pages/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart'
     as mPrefix;
@@ -58,7 +59,7 @@ class MyAppState extends State<MyApp> {
 
 // Assign widget based on availability of currentUser
     if (firebaseUser != null) {
-      firstWidget = MyHomePage();
+      firstWidget = DashboardPage();
     } else {
       firstWidget = LoginScreen();
     }
