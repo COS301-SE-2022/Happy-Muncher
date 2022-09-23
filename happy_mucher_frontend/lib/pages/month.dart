@@ -253,12 +253,12 @@ class MyMonthState extends State<Month> {
                 percent: percentageSpent,
                 center: Text(percentageRemaining.toString() + "% remaining"),
                 progressColor: percentageRemaining >= 75
-                    ? Color.fromARGB(255, 52, 108, 35)
+                    ? Color.fromARGB(255, 72, 216, 29)
                     : percentageRemaining < 75 && percentageRemaining >= 50
-                        ? Color.fromARGB(255, 239, 255, 12)
+                        ? Color.fromARGB(255, 248, 231, 6)
                         : percentageRemaining < 50 && percentageRemaining >= 25
-                            ? Color.fromARGB(255, 238, 150, 19)
-                            : Color.fromARGB(255, 250, 27, 11),
+                            ? Color.fromARGB(255, 248, 141, 10)
+                            : Color.fromARGB(255, 236, 17, 2),
               )
             ]))));
   }
