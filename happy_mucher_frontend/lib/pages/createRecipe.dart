@@ -230,21 +230,22 @@ class CreateState extends State<Create> {
     }
 
     final ingredients = await getRecognisedTextIngredients(croppedImagePath);
-    print(ingredients);
     return ingredients;
   }
 
-  void captureImageReceiptRecipe(ImageSource imageSource) async {
+  Future<List<String>> captureImageReceiptRecipe(
+      ImageSource imageSource) async {
     final image = await _picker.pickImage(source: imageSource);
     if (image == null) {
-      return;
+      return [];
     }
     final croppedImagePath = await cropImage(image.path);
     if (croppedImagePath == null) {
-      return;
+      return [];
     }
 
     final steps = await getRecognisedTextRecipe(croppedImagePath);
+    return steps;
   }
 
   Future<String?> cropImage(String path) async {
@@ -266,14 +267,31 @@ class CreateState extends State<Create> {
     await textDetector.close();
     //final listOfItems = <ReceiptItem>[];
     final listOfText = <String>[];
+    final listOfTempItems = <String>[];
 
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        if (line.boundingBox.left / image.width * 100 < 10) {
-          listOfText.add(line.text);
-        }
+        final textLower = line.text.toLowerCase();
+        listOfTempItems.add(textLower);
       }
     }
+
+    for (final text in listOfTempItems) {
+      if (text.contains('•')) {
+        final newName = text.replaceAll(' ', '');
+        listOfText.add(newName);
+        continue;
+      }
+      if (text.contains('optional')) {
+        continue;
+      }
+      if (text.contains('method')) {
+        continue;
+      }
+      listOfText.add(text);
+    }
+
+    print(listOfText);
     return listOfText;
   }
 
@@ -287,11 +305,7 @@ class CreateState extends State<Create> {
     final listOfText = <String>[];
 
     for (TextBlock block in recognizedText.blocks) {
-      for (TextLine line in block.lines) {
-        if (line.boundingBox.left / image.width * 100 < 10) {
-          listOfText.add(line.text);
-        }
-      }
+      listOfText.add(block.text);
     }
     return listOfText;
   }
