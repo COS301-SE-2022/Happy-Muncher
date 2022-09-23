@@ -61,7 +61,6 @@ dependencies:
   google_mlkit_text_recognition: ^0.3.0
   cached_network_image: ^3.2.1
   flutter_bloc: ^8.0.1
-  flutter_native_splash: ^2.2.6
   carousel_slider: ^4.1.1
   integration_test:
     sdk: flutter
@@ -74,6 +73,25 @@ dev_dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^2.2.6
+  flutter_lints: ^1.0.4
+
+flutter_native_splash:
+  image: assets/images/app_icon.png
+  color: "#96429a"
+  color_on_dark: "#96429a" 
+
+
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/app_icon.png"
+  adaptive_icon_background: "#96429a"
+  adaptive_icon_foreground: "assets/images/logo_foreground.png"
+
+
   mockito:
   test:
 
@@ -82,10 +100,6 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
-flutter_native_splash:
-  color: "#FAF9F6"
-  image: assets/images/splash.png
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -99,11 +113,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/google_logo.png
-    - assets/images/bottom1.png
-    - assets/images/bottom2.png
-    - assets/images/top1.png
-    - assets/images/top2.png
-    - assets/images/splash.png
+    - assets/images/app_icon.png
+    - assets/images/logo_foreground.png
     - secrets.env
   #   - images/a_dot_ham.jpeg
 

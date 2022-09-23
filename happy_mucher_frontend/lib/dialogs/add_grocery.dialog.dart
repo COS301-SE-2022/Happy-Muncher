@@ -74,53 +74,43 @@ class GLDialogState extends State<_GLDialog> {
             final price = priceController.text;
             final priceDouble = double.tryParse(price);
 
+            var docSnapshot = await _gltotals.doc('Totals').get();
+
+            if (docSnapshot.exists) {
+              final currentTotals =
+                  ((await _gltotals.doc("Totals").get()).data() as Map);
+              final estimatedTotals = currentTotals["estimated total"] as num;
+              final shoppingTotals = currentTotals["shopping total"] as num;
+
+              _gltotals.doc("Totals").set({
+                'estimated total': estimatedTotals,
+                'shopping total': shoppingTotals + num.parse(price)
+              });
+            } else {
+              await _gltotals
+                  .doc("Totals")
+                  .set({"estimated total": 0, "shopping total": 0});
+
+              _gltotals.doc("Totals").set({
+                'estimated total': 0,
+                'shopping total': 0 + num.parse(price)
+              });
+            }
+
             if (priceDouble != null) {
               await _items
                   .add({"name": name, "price": priceDouble, "bought": false});
 
               nameController.text = '';
               priceController.text = '';
-              UpdateGL(priceDouble);
               //GroceryListPageState().getTotals();
               Navigator.of(context).pop();
             }
-
-            final currentTotals =
-                ((await _gltotals.doc("Totals").get()).data() as Map);
-            final estimatedTotals = currentTotals["estimated total"] as num;
-            final shoppingTotals = currentTotals["shopping total"] as num;
-
-            _gltotals.doc("Totals").set({
-              'estimated total': estimatedTotals,
-              'shopping total': shoppingTotals + num.parse(price)
-            });
           },
           child: const Text('Add'),
         )
       ],
     );
-  }
-
-  void UpdateGL(double price) async {
-    String? e = '';
-    double estimate = 0.0;
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('GL totals');
-    //userUid is the current auth user
-    var docSnapshot = await collection.doc('Totals').get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data()!;
-
-      e = data['estimated total'].toString();
-    }
-    estimate = double.parse(e);
-    estimate += price;
-
-    await _gltotals
-        .doc('Totals')
-        .set({"estimated total": estimate, "shopping total": 0});
   }
 }
 
