@@ -18,6 +18,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:happy_mucher_frontend/dailymeal_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -70,21 +71,28 @@ class DashboardState extends State<DashboardPage> {
     _seriesBarData.add(
       charts.Series(
         domainFn: (Values budgetVal, _) => budgetVal.month,
-        measureFn: (Values budgetVal, _) => (budgetVal.budget),
+        measureFn: (Values budgetVal, _) => (budgetVal.totalSpent),
         colorFn: (Values budgetVal, _) {
-          if (budgetVal.budget > 5000) {
-            first = false;
+          if (budgetVal.totalSpent / budgetVal.budget < 0.25) {
             return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 252, 95, 13));
+                Color.fromARGB(255, 72, 216, 29));
+          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.25 &&
+              budgetVal.totalSpent / budgetVal.budget < 0.5) {
+            return charts.ColorUtil.fromDartColor(
+                Color.fromARGB(255, 239, 255, 12));
+          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.5 &&
+              budgetVal.totalSpent / budgetVal.budget < 0.75) {
+            return charts.ColorUtil.fromDartColor(
+                Color.fromARGB(255, 248, 141, 10));
           } else {
             return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 55, 190, 15));
+                Color.fromARGB(255, 236, 17, 2));
           }
           ;
         },
         id: 'Dashboard',
         data: mydata,
-        labelAccessorFn: (Values row, _) => "${row.budget}",
+        labelAccessorFn: (Values row, _) => "${row.month}",
       ),
     );
   }
@@ -115,6 +123,113 @@ class DashboardState extends State<DashboardPage> {
         labelAccessorFn: (GLValues row, _) => "${row.type}",
       ),
     );
+  }
+
+  Widget buildPercentagendicator() {
+    return Container(
+        width: 400,
+        height: 150,
+        margin: EdgeInsets.fromLTRB(0, 20, 0, 60),
+        child: Card(
+            key: const ValueKey("Meal Planner"),
+            shadowColor: Color.fromARGB(255, 180, 181, 179),
+            elevation: 25,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Stack(alignment: Alignment.topCenter, children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text(
+                    'Shopping Sprees for ' +
+                        DateFormat('MMMM').format(DateTime.now()),
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center),
+              ),
+              InkWell(
+                onTap: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyBudget()));
+                },
+                /*margin: EdgeInsets.fromLTRB(20, 50, 10, 0),
+                    height: 100,
+                    width: 400,*/
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(25, 130, 0, 50),
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Users')
+                        .doc(uid)
+                        .collection('Budget')
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                      if (streamSnapshot.hasData) {
+                        bool exp = false;
+                        return ListView.builder(
+                            key: const Key('Inventory_ListView'),
+                            itemCount: streamSnapshot.data?.size,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
+
+                              if (documentSnapshot.id ==
+                                  DateFormat('MMMM').format(DateTime.now())) {
+                                return LinearPercentIndicator(
+                                  width:
+                                      MediaQuery.of(context).size.width - 150,
+                                  animation: true,
+                                  lineHeight: 25.0,
+                                  animationDuration: 2000,
+                                  barRadius: const Radius.circular(16),
+                                  percent: documentSnapshot['total spent'] /
+                                      documentSnapshot['budget'],
+                                  center: Text(
+                                      (documentSnapshot['total remaining'] /
+                                                  documentSnapshot['budget'] *
+                                                  100)
+                                              .toString() +
+                                          "% remaining"),
+                                  progressColor: documentSnapshot[
+                                                  'total remaining'] /
+                                              documentSnapshot['budget'] >=
+                                          0.75
+                                      ? Color.fromARGB(255, 52, 108, 35)
+                                      : documentSnapshot['total remaining'] /
+                                                      documentSnapshot[
+                                                          'budget'] <
+                                                  0.75 &&
+                                              documentSnapshot['total remaining'] /
+                                                      documentSnapshot[
+                                                          'budget'] >=
+                                                  0.50
+                                          ? Color.fromARGB(255, 239, 255, 12)
+                                          : documentSnapshot['total remaining'] /
+                                                          documentSnapshot[
+                                                              'budget'] <
+                                                      0.5 &&
+                                                  documentSnapshot['total remaining'] /
+                                                          documentSnapshot[
+                                                              'budget'] >=
+                                                      0.25
+                                              ? Color.fromARGB(255, 238, 150, 19)
+                                              : Color.fromARGB(255, 250, 27, 11),
+                                );
+                              } else {
+                                return SizedBox(
+                                  height: 0,
+                                );
+                              }
+                            });
+                      }
+                      return Text("No items expire today.",
+                          textAlign: TextAlign.center);
+                    },
+                  ),
+                ),
+              )
+            ])));
   }
 
   @override
@@ -166,7 +281,16 @@ class DashboardState extends State<DashboardPage> {
             buildMealPlanner(context),
             buildInventoryCard(context),
             buildProgressIndicator(),
-            buildBudgetcard(context),
+            CarouselSlider(
+                options: CarouselOptions(
+                  aspectRatio: 1.2,
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: false,
+                ),
+                items: <Widget>[
+                  buildPercentagendicator(),
+                  buildBudgetcard(context),
+                ])
           ]),
           //MyHomePage()
         ],
@@ -231,9 +355,9 @@ class DashboardState extends State<DashboardPage> {
     mydata = saledata;
     _generateData(mydata);
     return Container(
-        width: 250,
+        width: 400,
         height: 300,
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: Card(
             shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
@@ -249,15 +373,22 @@ class DashboardState extends State<DashboardPage> {
                 child: Container(
                   padding: EdgeInsets.all(20.0),
                   //width: 50,
-                  height: 300,
+                  height: 500,
                   child: Center(
                     child: Column(
                       children: <Widget>[
-                        Text(
-                          'Monthly budget',
-                          style: TextStyle(
-                              fontSize: 24.0, fontWeight: FontWeight.bold),
+                        Text('Total spent each month',
+                            style: TextStyle(
+                                fontSize: 22.0, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 10.0,
                         ),
+                        Text(
+                            'The colour of each bar varies accroding to the percentage spent of your total budget',
+                            style: TextStyle(
+                                fontSize: 10.0, fontWeight: FontWeight.normal),
+                            textAlign: TextAlign.center),
                         SizedBox(
                           height: 10.0,
                         ),
@@ -267,15 +398,18 @@ class DashboardState extends State<DashboardPage> {
                             animate: true,
                             animationDuration: Duration(seconds: 1),
                             vertical: false,
+                            defaultRenderer: new charts.BarRendererConfig(
+                                cornerStrategy:
+                                    const charts.ConstCornerStrategy(30)),
                             /*behaviors: [
-                          new charts.DatumLegend(
-                            entryTextStyle: charts.TextStyleSpec(
-                                color:
-                                    charts.MaterialPalette.purple.shadeDefault,
-                                fontFamily: 'Georgia',
-                                fontSize: 18),
-                          )
-                        ],*/
+                              new charts.DatumLegend(
+                                entryTextStyle: charts.TextStyleSpec(
+                                    color: charts
+                                        .MaterialPalette.purple.shadeDefault,
+                                    fontFamily: 'Georgia',
+                                    fontSize: 18),
+                              )
+                            ],*/
                           ),
                         ),
                       ],
@@ -374,7 +508,7 @@ class DashboardState extends State<DashboardPage> {
             ])));
   }
 
-  double total = 0;
+  dynamic total = 0;
   Widget buildProgressIndicator() {
     return Container(
         width: 150,
@@ -434,23 +568,22 @@ class DashboardState extends State<DashboardPage> {
                                   if (index == 0) {
                                     //print(documentSnapshot['total']);
                                     return LinearPercentIndicator(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                210,
-                                        animation: true,
-                                        lineHeight: 22.0,
-                                        animationDuration: 2000,
-                                        leading: new Text("estimated \n total"),
-                                        trailing: new Text("shopping\n total"),
-                                        percent: documentSnapshot[
-                                                'estimated total'] /
-                                            total,
-                                        // center: Text(percentageRemaining.toString() + "% remaining"),
+                                      width: MediaQuery.of(context).size.width -
+                                          210,
+                                      animation: true,
+                                      lineHeight: 22.0,
+                                      barRadius: const Radius.circular(16),
+                                      animationDuration: 2000,
+                                      leading: new Text("estimated \n total"),
+                                      trailing: new Text("shopping\n total"),
+                                      percent:
+                                          documentSnapshot['estimated total'] /
+                                              total,
+                                      // center: Text(percentageRemaining.toString() + "% remaining"),
 
-                                        backgroundColor:
-                                            Color.fromARGB(255, 252, 95, 13),
-                                        progressColor:
-                                            Color.fromARGB(255, 55, 190, 15));
+                                      progressColor:
+                                          Color.fromARGB(255, 167, 104, 223),
+                                    );
                                   } else {
                                     total +=
                                         int.parse(documentSnapshot['total']);
@@ -539,7 +672,7 @@ class DashboardState extends State<DashboardPage> {
                                           textAlign: TextAlign.center),
                                     );
                                   } else {
-                                    return Text("");
+                                    return SizedBox(height: 0);
                                   }
                                 });
                           }
