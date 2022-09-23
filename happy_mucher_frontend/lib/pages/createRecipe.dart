@@ -316,21 +316,6 @@ class CreateState extends State<Create> {
     return listOfText;
   }
 
-  // Future<List<String>> getRecognisedTextRecipe(String path) async {
-  //   final image = await decodeImageFromList(File(path).readAsBytesSync());
-  //   final inputImage = InputImage.fromFilePath(path);
-  //   final textDetector = TextRecognizer();
-  //   RecognizedText recognizedText = await textDetector.processImage(inputImage);
-  //   await textDetector.close();
-  //   //final listOfItems = <ReceiptItem>[];
-  //   final listOfText = <String>[];
-
-  //   for (TextBlock block in recognizedText.blocks) {
-  //     listOfText.add(block.text);
-  //   }
-  //   return listOfText;
-  // }
-
   Future<List<String>> getRecognisedTextRecipe(String path) async {
     final image = await decodeImageFromList(File(path).readAsBytesSync());
     final inputImage = InputImage.fromFilePath(path);
