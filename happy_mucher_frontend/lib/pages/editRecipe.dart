@@ -15,28 +15,30 @@ import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/myRecipeBook.dart';
 //import 'package:http/http.dart' as http;
 
-class Create extends StatefulWidget {
-  Create({
-    Key? key,
-    required this.title,
-    required this.calories,
-    required this.cookTime,
-    required this.description,
-    required this.ingredients,
-    required this.steps,
-  }) : super(key: key);
+class EditRecipe extends StatefulWidget {
+  EditRecipe(
+      {Key? key,
+      required this.title,
+      required this.calories,
+      required this.cookTime,
+      required this.description,
+      required this.ingredients,
+      required this.steps,
+      required this.document})
+      : super(key: key);
   String title;
   double calories = 0.0;
   String cookTime = "0";
   String description = "";
   List<String> ingredients = [];
   List<String> steps = [];
+  DocumentSnapshot document;
 
   @override
-  State<Create> createState() => CreateState();
+  State<EditRecipe> createState() => EditRecipeState();
 }
 
-class CreateState extends State<Create> {
+class EditRecipeState extends State<EditRecipe> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
@@ -72,7 +74,7 @@ class CreateState extends State<Create> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Create Recipe'),
+          title: const Text('Edit Recipe'),
           centerTitle: true,
           leading: TextButton(
             onPressed: () {
@@ -81,7 +83,7 @@ class CreateState extends State<Create> {
               myRecipe.add(widget.description);
               myRecipe.add(widget.calories.toString());
               myRecipe.add(widget.cookTime);
-              _customRecipe.add({
+              _customRecipe.doc(widget.document.id).update({
                 "details": myRecipe,
                 "instructions": widget.steps,
                 "ingredients": widget.ingredients
@@ -89,7 +91,7 @@ class CreateState extends State<Create> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MyRecipeBook()));
             },
-            child: const Text("Done"),
+            child: const Text("Update"),
           ),
           backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
       body: ListView(
@@ -184,9 +186,16 @@ class CreateState extends State<Create> {
                   leading: Text("\u2022 "),
                   trailing: IconButton(
                       onPressed: () {
+                        print('Deleting');
                         widget.ingredients.remove(item);
-                        print(widget.ingredients);
-                        setState(() {});
+                        _customRecipe.doc(widget.document.id).update({
+                          //"details": myRecipe,
+                          //"instructions": widget.steps,
+                          "ingredients": widget.ingredients
+                        });
+                        setState(() {
+                          print(widget.ingredients);
+                        });
                       },
                       icon: Icon(Icons.close)),
                 );
@@ -270,9 +279,16 @@ class CreateState extends State<Create> {
                   leading: Text("\u2022 "),
                   trailing: IconButton(
                       onPressed: () {
+                        print('Deleting');
                         widget.steps.remove(item);
-                        print(widget.steps);
-                        setState(() {});
+                        _customRecipe.doc(widget.document.id).update({
+                          //"details": myRecipe,
+                          //"instructions": widget.steps,
+                          "instructions": widget.steps
+                        });
+                        setState(() {
+                          print(widget.steps);
+                        });
                       },
                       icon: Icon(Icons.close)),
                 );

@@ -4,10 +4,13 @@ import 'package:happy_mucher_frontend/pages/recipebook.dart';
 import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
+import 'package:happy_mucher_frontend/ingredient_displaycard.dart';
+import 'package:happy_mucher_frontend/recipeInstruction_card.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 //search resource:
@@ -15,6 +18,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class IndividualRecipe extends StatefulWidget {
   const IndividualRecipe(
       {Key? key,
+      this.id = 0,
       this.recipe,
       this.description = "",
       this.name = "",
@@ -27,6 +31,7 @@ class IndividualRecipe extends StatefulWidget {
   final List<Recipe>? recipe;
   final String description;
   final String name;
+  final int id;
   final String image;
   final double calories;
   final List<String> ingredients;
@@ -37,14 +42,28 @@ class IndividualRecipe extends StatefulWidget {
 }
 
 class IndividualRecipeState extends State<IndividualRecipe> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  CollectionReference get _favourites =>
+      firestore.collection('Users').doc(uid).collection('Recipes');
+  //final FirebaseFirestore firestore = GetIt.I.get();
+
   CollectionReference get _glItems =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
   String ing = "";
   String steps = "";
   String its = '';
   String donts = '';
+
+  Color llGrey = Color(0xFF555555);
+  Color lightGrey = Color(0xFF2D2C31); //ingredients block
+  Color darkGrey = Color(0xFF212025); //ingredients background
+  Color mediumGrey = Color(0xFF39383D);
+  Color offWhite = Color(0xFFDFDEE3);
+  Color RRgreen = Color(0xFFACFF4E);
+  Color VSpurple = Color.fromARGB(255, 168, 76, 184);
+  Color crPurple = Color(0xFF965BC8);
 
   List<String> inventory = [];
 
@@ -71,11 +90,13 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     //
     super.initState();
     getInventory();
+
     for (int i = 0; i < widget.instructions.length; i++) {
       int x = i + 1;
 
       steps += x.toString() + ". " + widget.instructions[i] + '\n\n';
     }
+    print(widget.instructions);
     for (int i = 0; i < widget.ingredients.length; i++) {
       ing += "\u2022  " + widget.ingredients[i] + '\n';
     }
@@ -84,42 +105,143 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, widget.name),
+      appBar: AppBar(
+        backgroundColor: offWhite,
+        title: Text(widget.name,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
+        // centerTitle: true,
+        iconTheme: IconThemeData(color: Color.fromARGB(255, 168, 76, 184)),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () async {
+              final String id = widget.id.toString();
+              if (id != null) {
+                await _favourites.add({
+                  "ID": id,
+                });
+              }
+            },
+            icon: Icon(Icons.favorite),
+            color: Color.fromARGB(255, 83, 61, 207),
+          )
+        ],
+      ),
+      backgroundColor: darkGrey,
       body: ListView(padding: const EdgeInsets.all(32), children: [
-        Image(image: NetworkImage(widget.image)),
+        //const SizedBox(height: 12),
+        Text(widget.name,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
+        const SizedBox(height: 12),
+        if (widget.image != "") Image(image: NetworkImage(widget.image)),
+        //const SizedBox(height: 24),
+        if (widget.description != "") Description(),
         const SizedBox(height: 24),
-        Text("description", style: TextStyle(fontWeight: FontWeight.bold)),
-        Text(widget.description),
-        const SizedBox(height: 24),
-        Text(
-          "Calories",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(widget.calories.toString()),
-        const SizedBox(height: 24),
-        Text(
-          "Cook Time",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(widget.cookTime + " mins"),
+        Container(
+            padding: const EdgeInsets.all(15),
+            //color: lightGrey,
+            decoration: BoxDecoration(
+                border: Border.all(color: llGrey), color: lightGrey),
+            //Color(0xFF2D2C31),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      "Calories:  ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: offWhite,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      widget.calories.toString(),
+                      style: TextStyle(
+                        color: offWhite,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "Cook Time:  ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: offWhite,
+                      ),
+                    ),
+                    Text(
+                      widget.cookTime + " mins",
+                      style: TextStyle(
+                        color: offWhite,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            )),
+
         const SizedBox(height: 24),
         Text(
           "Ingredients",
-          style: TextStyle(fontWeight: FontWeight.bold),
-          key: Key('ingredients'),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: offWhite,
+            fontSize: 20,
+          ),
+          textAlign: TextAlign.left,
         ),
-        Text(ing),
+        //Text(ing),
+
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.ingredients.length,
+            itemBuilder: (context, index) {
+              return ingredientCard(ingredient: widget.ingredients[index]);
+            }),
+        const SizedBox(height: 18),
+
         ElevatedButton(
-            onPressed: () {
-              CompareInventory();
-            },
-            child: const Text("Compare to Inventory")),
+          onPressed: () {
+            CompareInventory();
+          },
+          child: Text(
+            "Compare to Inventory",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: offWhite,
+              fontSize: 18,
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+              primary: lightGrey,
+              side: BorderSide(
+                  width: 2, // the thickness
+                  color: lightGrey // the color of the border
+                  )),
+        ),
         const SizedBox(height: 24),
         Text(
           "Instructions",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: offWhite,
+          ),
         ),
-        Text(steps),
+
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.instructions.length,
+            itemBuilder: (context, index) {
+              return InstructionCard(
+                instruction: widget.instructions[index],
+                step: index,
+              );
+            }),
       ]),
     );
   }
@@ -197,4 +319,32 @@ class IndividualRecipeState extends State<IndividualRecipe> {
       await _glItems.add({"name": element, "price": 0.0, "bought": false});
     });
   }
+
+  Widget Description() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(height: 24),
+        Text(
+          "Description",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: offWhite,
+            fontSize: 20,
+          ),
+          textAlign: TextAlign.left,
+        ),
+        SizedBox(height: 24),
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: llGrey), color: lightGrey),
+          padding: const EdgeInsets.all(15),
+          //color: Color(0xFF2D2C31),
+          //color: lightGrey,
+          child: Text(
+            widget.description,
+            style: TextStyle(color: offWhite, fontSize: 18),
+            textAlign: TextAlign.left,
+          ),
+        ),
+        SizedBox(height: 24)
+      ]);
 }
