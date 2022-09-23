@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
@@ -13,7 +15,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 
 class FavouritesBook extends StatefulWidget {
-  FavouritesBook({Key? key}) : super(key: key);
+  FavouritesBook({Key? key, required this.ids}) : super(key: key);
+  final List<String> ids;
   @override
   State<FavouritesBook> createState() => FavouritesBookState();
 }
@@ -24,9 +27,9 @@ class FavouritesBookState extends State<FavouritesBook> {
 
   CollectionReference get _favourites =>
       firestore.collection('Users').doc(uid).collection('Recipes');
-  late List<tastyRecipe> recipes;
+  List<tastyRecipe> recipes = [];
   List<tastyRecipe> temp = [];
-  List<String> ids = [];
+  List<String> idee = [];
   String query = "";
   //Timer? debouncer;
   //List<tastyRecipe> tr = [];
@@ -34,52 +37,38 @@ class FavouritesBookState extends State<FavouritesBook> {
   @override
   void initState() {
     super.initState();
-    getDB(context);
 
-    if (ids.isNotEmpty) {
-      print("ids");
-      getRecipes();
+    for (var i in widget.ids) {
+      getRecipes(i);
     }
   }
 
-  void getDB(context) async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Recipes')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        ids.add(doc["ID"]);
-        //print(ids);
-      });
+  // void getDB(context) async {
+  //   FirebaseFirestore.instance
+  //       .collection('Users')
+  //       .doc(uid)
+  //       .collection('Recipes')
+  //       .get()
+  //       .then((QuerySnapshot querySnapshot) {
+  //     querySnapshot.docs.forEach((doc) {
+  //       //widget.ids.add(doc["ID"]);
+  //       idee.add(doc["ID"]);
+  //       //print(idee);
+  //       getRecipes(doc["ID"]);
+  //     });
+  //   });
+  // }
+
+  FutureOr<void> getRecipes(String id) async {
+    List<tastyRecipe> tr = await FavouritesAPI.getIDApi(id);
+    print(tr);
+    recipes.add(tr[0]);
+    temp.add(tr[0]);
+    setState(() {
+      loading = false;
+      this.recipes = recipes;
+      this.temp = temp;
     });
-    for (var i in ids) {
-      print(i);
-      List<tastyRecipe> tr = await FavouritesAPI.getIDApi(i);
-      print(tr[0].name);
-    }
-    // temp = List.from(recipes);
-    // if (mounted) {
-    //   setState(() {
-    //     loading = false;
-    //     this.recipes = recipes;
-    //     this.temp = temp;
-    //     // recipes.length? len = recipes.length
-    //   });
-    // }
-    if (mounted) {
-      setState(() {
-        //print(ids);
-      });
-    }
-  }
-
-  Future<void> getRecipes() async {
-    //recipes = await RecipeAPI.getRecipe();
-    //recipes = await FavouritesAPI.getIDApi(id);
-
-    //print(recipes[0].keywords);
   }
 
   @override

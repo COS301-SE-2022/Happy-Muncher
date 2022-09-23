@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class FavouritesAPI {
   static Future<List<tastyRecipe>> getIDApi(String id) async {
     //dotenv.env['JUWI_API_KEY'];
-    print("getting recipe by id");
+    print("getting recipe by id: " + id);
     await dotenv.load(fileName: "secrets.env");
 
     String key = dotenv.get('JUWI_API_KEY');
@@ -14,7 +14,7 @@ class FavouritesAPI {
     var uri =
         Uri.https('tasty.p.rapidapi.com', '/recipes/get-more-info', {"id": id});
     final resp = await http.get(uri, headers: {
-      "X-RapidAPI-Key": key,
+      "X-RapidAPI-Key": "282369d33bmsh7ef42e05ee4457ep10316fjsna59a1676c1de",
       "X-RapidAPI-Host": "tasty.p.rapidapi.com",
       "useQueryString": 'true'
     });
@@ -22,17 +22,17 @@ class FavouritesAPI {
     Map data = jsonDecode(utf8.decode(resp.bodyBytes));
     List temp = [];
     //List cals = [];
+    temp.add(data);
+    // for (var i in data['results']) {
+    //   if (i.length == 50) {
 
-    for (var i in data['results']) {
-      if (i.length == 50) {
-        temp.add(i);
-      }
-      // else if (i.length == 28) {
-      //   for (var j in i['recipes']) temp.add(j);
-      // }
+    //   }
+    //   // else if (i.length == 28) {
+    //   //   for (var j in i['recipes']) temp.add(j);
+    //   // }
 
-      //if (i['type'] == "single recipe") cals.add(i['content']['nutrition']);
-    }
+    //   //if (i['type'] == "single recipe") cals.add(i['content']['nutrition']);
+    // }
 
     // if (query == '') {
     //   print('empty');
