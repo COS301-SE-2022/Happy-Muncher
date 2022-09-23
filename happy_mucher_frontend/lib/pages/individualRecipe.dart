@@ -44,7 +44,7 @@ class IndividualRecipe extends StatefulWidget {
 class IndividualRecipeState extends State<IndividualRecipe> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  // final uid = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference get _favourites =>
       firestore.collection('Users').doc(uid).collection('Recipes');
   //final FirebaseFirestore firestore = GetIt.I.get();
