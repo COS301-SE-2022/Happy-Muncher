@@ -118,29 +118,34 @@ class GroceryListPageState extends State<GroceryListPage> {
                                 setState(() async {
                                   _products.doc(documentSnapshot.id).delete();
 
-                                  final currentTotals =
-                                      ((await _gltotals.doc("Totals").get())
-                                          .data() as Map);
-                                  final estimatedTotals =
-                                      currentTotals["estimated total"] as num;
-                                  final shoppingTotals =
-                                      currentTotals["shopping total"] as num;
+                                  var docSnapshot =
+                                      await _gltotals.doc('Totals').get();
 
-                                  final isBought = documentSnapshot['bought'];
+                                  if (docSnapshot.exists) {
+                                    final currentTotals =
+                                        ((await _gltotals.doc("Totals").get())
+                                            .data() as Map);
+                                    final estimatedTotals =
+                                        currentTotals["estimated total"] as num;
+                                    final shoppingTotals =
+                                        currentTotals["shopping total"] as num;
 
-                                  if (isBought == false) {
-                                    _gltotals.doc("Totals").set({
-                                      'estimated total': estimatedTotals,
-                                      'shopping total': shoppingTotals -
-                                          documentSnapshot['price']
-                                    });
-                                  } else {
-                                    _gltotals.doc("Totals").set({
-                                      'estimated total': estimatedTotals -
-                                          documentSnapshot['price'],
-                                      'shopping total': shoppingTotals -
-                                          documentSnapshot['price']
-                                    });
+                                    final isBought = documentSnapshot['bought'];
+
+                                    if (isBought == false) {
+                                      _gltotals.doc("Totals").set({
+                                        'estimated total': estimatedTotals,
+                                        'shopping total': shoppingTotals -
+                                            documentSnapshot['price']
+                                      });
+                                    } else {
+                                      _gltotals.doc("Totals").set({
+                                        'estimated total': estimatedTotals -
+                                            documentSnapshot['price'],
+                                        'shopping total': shoppingTotals -
+                                            documentSnapshot['price']
+                                      });
+                                    }
                                   }
 
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -202,26 +207,31 @@ class GroceryListPageState extends State<GroceryListPage> {
                               );
                             }
 
-                            final currentTotals =
-                                ((await _gltotals.doc("Totals").get()).data()
-                                    as Map);
-                            final estimatedTotals =
-                                currentTotals["estimated total"] as num;
-                            final shoppingTotals =
-                                currentTotals["shopping total"] as num;
+                            var docSnapshot =
+                                await _gltotals.doc('Totals').get();
 
-                            if (checkVal) {
-                              _gltotals.doc("Totals").set({
-                                'estimated total':
-                                    estimatedTotals + documentSnapshot['price'],
-                                'shopping total': shoppingTotals
-                              });
-                            } else {
-                              _gltotals.doc("Totals").set({
-                                'estimated total':
-                                    estimatedTotals - documentSnapshot['price'],
-                                'shopping total': shoppingTotals
-                              });
+                            if (docSnapshot.exists) {
+                              final currentTotals =
+                                  ((await _gltotals.doc("Totals").get()).data()
+                                      as Map);
+                              final estimatedTotals =
+                                  currentTotals["estimated total"] as num;
+                              final shoppingTotals =
+                                  currentTotals["shopping total"] as num;
+
+                              if (checkVal) {
+                                _gltotals.doc("Totals").set({
+                                  'estimated total': estimatedTotals +
+                                      documentSnapshot['price'],
+                                  'shopping total': shoppingTotals
+                                });
+                              } else {
+                                _gltotals.doc("Totals").set({
+                                  'estimated total': estimatedTotals -
+                                      documentSnapshot['price'],
+                                  'shopping total': shoppingTotals
+                                });
+                              }
                             }
                           },
                         ),
@@ -294,14 +304,24 @@ class GroceryListPageState extends State<GroceryListPage> {
     for (final item in listOfItemNames) {
       priceUpdate += item.itemPrice;
     }
-    final currentTotals = ((await _gltotals.doc("Totals").get()).data() as Map);
-    final estimatedTotals = currentTotals["estimated total"] as num;
-    final shoppingTotals = currentTotals["shopping total"] as num;
 
-    _gltotals.doc("Totals").set({
-      'estimated total': estimatedTotals,
-      'shopping total': shoppingTotals + priceUpdate
-    });
+    var docSnapshot = await _gltotals.doc('Totals').get();
+
+    if (docSnapshot.exists) {
+      final currentTotals =
+          ((await _gltotals.doc("Totals").get()).data() as Map);
+      final estimatedTotals = currentTotals["estimated total"] as num;
+      final shoppingTotals = currentTotals["shopping total"] as num;
+
+      _gltotals.doc("Totals").set({
+        'estimated total': estimatedTotals,
+        'shopping total': shoppingTotals + priceUpdate
+      });
+    } else {
+      _gltotals
+          .doc("Totals")
+          .set({'estimated total': 0, 'shopping total': 0 + priceUpdate});
+    }
 
     final futures = listOfItemNames.map((item) {
       return _products.add(
