@@ -90,6 +90,11 @@ class GLDialogState extends State<_GLDialog> {
               await _gltotals
                   .doc("Totals")
                   .set({"estimated total": 0, "shopping total": 0});
+
+              _gltotals.doc("Totals").set({
+                'estimated total': 0,
+                'shopping total': 0 + num.parse(price)
+              });
             }
 
             if (priceDouble != null) {
