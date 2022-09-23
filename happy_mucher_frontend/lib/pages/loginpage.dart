@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _authData['email']!, password: _authData['password']!);
 
       Timer(Duration(seconds: 2), () {
+        CircularProgressIndicator();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DashboardPage()));
       });

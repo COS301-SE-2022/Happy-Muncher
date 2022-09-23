@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'navbar.dart';
 import 'weekday.dart';
 import 'package:happy_mucher_frontend/weekcard_widget.dart';
@@ -14,13 +15,7 @@ class _MealPageState extends State<MealPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
       key: Key("day"),
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: const Text('Meal Planner'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-      ),
+      appBar: buildAppBar(context, "Meal Planner"),
       body: ListView(
         padding: EdgeInsets.all(16),
         children: [

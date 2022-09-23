@@ -94,7 +94,9 @@ abstract class Styles {
           buttonColor: isDarkTheme ? Colors.blue : Colors.orange,
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: isDarkTheme ? Colors.white : Colors.black,
+          backgroundColor: isDarkTheme
+              ? Colors.white.withOpacity(0.9)
+              : Colors.white.withOpacity(0.9),
         ),
         appBarTheme: AppBarTheme(
           elevation: 0.0,
