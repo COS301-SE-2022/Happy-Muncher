@@ -16,22 +16,22 @@ import 'package:happy_mucher_frontend/pages/myRecipeBook.dart';
 //import 'package:http/http.dart' as http;
 
 class Create extends StatefulWidget {
-  Create(
-      {Key? key,
-      required this.title,
-      required this.calories,
-      required this.cookTime,
-      required this.description,
-      required this.ingredients,
-      required this.steps,})
-      : super(key: key);
+  Create({
+    Key? key,
+    required this.title,
+    required this.calories,
+    required this.cookTime,
+    required this.description,
+    required this.ingredients,
+    required this.steps,
+  }) : super(key: key);
   String title;
   double calories = 0.0;
   String cookTime = "0";
   String description = "";
   List<String> ingredients = [];
   List<String> steps = [];
-  
+
   @override
   State<Create> createState() => CreateState();
 }
@@ -74,24 +74,23 @@ class CreateState extends State<Create> {
       appBar: AppBar(
           title: const Text('Create Recipe'),
           centerTitle: true,
-          leading: 
-            TextButton(
-              onPressed: () {
-                myRecipe = [];
-                myRecipe.add(widget.title);
-                myRecipe.add(widget.description);
-                myRecipe.add(widget.calories.toString());
-                myRecipe.add(widget.cookTime);
-                _customRecipe.add({
-                  "details": myRecipe,
-                  "instructions": widget.steps,
-                  "ingredients": widget.ingredients
-                });
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyRecipeBook()));
-              },
-              child: const Text("Done"),
-            ),
+          leading: TextButton(
+            onPressed: () {
+              myRecipe = [];
+              myRecipe.add(widget.title);
+              myRecipe.add(widget.description);
+              myRecipe.add(widget.calories.toString());
+              myRecipe.add(widget.cookTime);
+              _customRecipe.add({
+                "details": myRecipe,
+                "instructions": widget.steps,
+                "ingredients": widget.ingredients
+              });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyRecipeBook()));
+            },
+            child: const Text("Done"),
+          ),
           backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -180,8 +179,16 @@ class CreateState extends State<Create> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: widget.ingredients.map((String item) {
-                return ComponentCard(
-                  ingredient: item,
+                return ListTile(
+                  title: Text(item),
+                  leading: Text("\u2022 "),
+                  trailing: IconButton(
+                      onPressed: () {
+                        widget.ingredients.remove(item);
+                        print(widget.ingredients);
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.close)),
                 );
               }).toList(),
             ),
@@ -258,8 +265,16 @@ class CreateState extends State<Create> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: widget.steps.map((String item) {
-                return ComponentCard(
-                  ingredient: item,
+                return ListTile(
+                  title: Text(item),
+                  leading: Text("\u2022 "),
+                  trailing: IconButton(
+                      onPressed: () {
+                        widget.steps.remove(item);
+                        print(widget.steps);
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.close)),
                 );
               }).toList(),
             ),

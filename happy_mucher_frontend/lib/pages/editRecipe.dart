@@ -181,8 +181,23 @@ class EditRecipeState extends State<EditRecipe> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: widget.ingredients.map((String item) {
-                return ComponentCard(
-                  ingredient: item,
+                return ListTile(
+                  title: Text(item),
+                  leading: Text("\u2022 "),
+                  trailing: IconButton(
+                      onPressed: () {
+                        print('Deleting');
+                        widget.ingredients.remove(item);
+                        _customRecipe.doc(widget.document.id).update({
+                          //"details": myRecipe,
+                          //"instructions": widget.steps,
+                          "ingredients": widget.ingredients
+                        });
+                        setState(() {
+                          print(widget.ingredients);
+                        });
+                      },
+                      icon: Icon(Icons.close)),
                 );
               }).toList(),
             ),
@@ -259,8 +274,23 @@ class EditRecipeState extends State<EditRecipe> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: widget.steps.map((String item) {
-                return ComponentCard(
-                  ingredient: item,
+                return ListTile(
+                  title: Text(item),
+                  leading: Text("\u2022 "),
+                  trailing: IconButton(
+                      onPressed: () {
+                        print('Deleting');
+                        widget.steps.remove(item);
+                        _customRecipe.doc(widget.document.id).update({
+                          //"details": myRecipe,
+                          //"instructions": widget.steps,
+                          "instructions": widget.steps
+                        });
+                        setState(() {
+                          print(widget.steps);
+                        });
+                      },
+                      icon: Icon(Icons.close)),
                 );
               }).toList(),
             ),
