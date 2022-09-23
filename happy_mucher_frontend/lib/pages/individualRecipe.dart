@@ -129,7 +129,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
         const SizedBox(height: 12),
-        Image(image: NetworkImage(widget.image)),
+        if (widget.image != "") Image(image: NetworkImage(widget.image)),
         //const SizedBox(height: 24),
         if (widget.description != "") Description(),
         const SizedBox(height: 24),

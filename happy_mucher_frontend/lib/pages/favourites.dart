@@ -64,11 +64,13 @@ class FavouritesBookState extends State<FavouritesBook> {
     print(tr);
     recipes.add(tr[0]);
     temp.add(tr[0]);
-    setState(() {
-      loading = false;
-      this.recipes = recipes;
-      this.temp = temp;
-    });
+    if (mounted) {
+      setState(() {
+        loading = false;
+        this.recipes = recipes;
+        this.temp = temp;
+      });
+    }
   }
 
   @override

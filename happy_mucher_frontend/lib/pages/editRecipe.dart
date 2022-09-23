@@ -15,15 +15,16 @@ import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/myRecipeBook.dart';
 //import 'package:http/http.dart' as http;
 
-class Create extends StatefulWidget {
-  Create(
+class EditRecipe extends StatefulWidget {
+  EditRecipe(
       {Key? key,
       required this.title,
       required this.calories,
       required this.cookTime,
       required this.description,
       required this.ingredients,
-      required this.steps,})
+      required this.steps,
+      required this.document})
       : super(key: key);
   String title;
   double calories = 0.0;
@@ -31,12 +32,13 @@ class Create extends StatefulWidget {
   String description = "";
   List<String> ingredients = [];
   List<String> steps = [];
-  
+  DocumentSnapshot document;
+
   @override
-  State<Create> createState() => CreateState();
+  State<EditRecipe> createState() => EditRecipeState();
 }
 
-class CreateState extends State<Create> {
+class EditRecipeState extends State<EditRecipe> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
@@ -72,26 +74,25 @@ class CreateState extends State<Create> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Create Recipe'),
+          title: const Text('Edit Recipe'),
           centerTitle: true,
-          leading: 
-            TextButton(
-              onPressed: () {
-                myRecipe = [];
-                myRecipe.add(widget.title);
-                myRecipe.add(widget.description);
-                myRecipe.add(widget.calories.toString());
-                myRecipe.add(widget.cookTime);
-                _customRecipe.add({
-                  "details": myRecipe,
-                  "instructions": widget.steps,
-                  "ingredients": widget.ingredients
-                });
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyRecipeBook()));
-              },
-              child: const Text("Done"),
-            ),
+          leading: TextButton(
+            onPressed: () {
+              myRecipe = [];
+              myRecipe.add(widget.title);
+              myRecipe.add(widget.description);
+              myRecipe.add(widget.calories.toString());
+              myRecipe.add(widget.cookTime);
+              _customRecipe.doc(widget.document.id).update({
+                "details": myRecipe,
+                "instructions": widget.steps,
+                "ingredients": widget.ingredients
+              });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyRecipeBook()));
+            },
+            child: const Text("Update"),
+          ),
           backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
