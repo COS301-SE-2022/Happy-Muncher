@@ -71,7 +71,7 @@ class ProfileState extends State<Profile> {
           buildUserInfoDisplay(uid, Icons.person, ChangeUsername()),
           buildUserInfoDisplay(email.toString(), Icons.email, ChangeEmail()),
           buildUserInfoDisplay('Change Password', Icons.lock, ChangePassword()),
-          buildUserInfoDisplay('View settings', Icons.settings, SettingsPage()),
+          buildUserInfoDisplay('Settings', Icons.settings, SettingsPage()),
           ElevatedButton(
             onPressed: () async => {
               await FirebaseAuth.instance.signOut(),
