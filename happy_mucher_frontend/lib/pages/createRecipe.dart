@@ -351,7 +351,6 @@ class CreateState extends State<Create> {
       listOfText.removeLast();
     }
 
-    print(listOfText);
     RegExp numbers = RegExp("^[0-9]");
 
     for (var item in listOfText) {
@@ -368,7 +367,6 @@ class CreateState extends State<Create> {
       listOfFinalText.add(item);
     }
 
-    print(listOfFinalText);
     return listOfFinalText;
   }
 }
