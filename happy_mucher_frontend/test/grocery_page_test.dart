@@ -80,17 +80,24 @@ void main() {
                   .collection('Users')
                   .doc('abc')
                   .collection('GroceryList')
-                  .add({"name": 'juice', "price": '1', "bought": false});
+                  .add({"name": 'juice', "price": 1, "bought": false});
               await firestore
                   .collection('Users')
                   .doc('abc')
                   .collection('GroceryList')
-                  .add({"name": 'apples', "price": '2', "bought": false});
+                  .add({"name": 'apples', "price": 2, "bought": false});
               await firestore
                   .collection('Users')
                   .doc('abc')
                   .collection('GroceryList')
-                  .add({"name": 'bread', "price": '3', "bought": false});
+                  .add({"name": 'bread', "price": 3, "bought": false});
+
+              await firestore
+                  .collection('Users')
+                  .doc('abc')
+                  .collection('GL totals')
+                  .doc('Totals')
+                  .set({'estimated total': 0, 'shopping total': 6});
 
               await tester.pumpWidget(testApp);
 
@@ -111,6 +118,8 @@ void main() {
             //test to see if the adding functionality works
             //adds the object ['apples', '10']
             await tester.pumpWidget(testApp);
+
+            await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
             final speedDialButton = find.byKey(const Key('speed_dial_button'));
             expect(speedDialButton, findsOneWidget);
@@ -166,13 +175,20 @@ void main() {
                 .collection('Users')
                 .doc('abc')
                 .collection('GroceryList')
-                .add({"name": 'bread', "price": '3', "bought": false});
+                .add({"name": 'bread', "price": 3, "bought": false});
+
+            await firestore
+                .collection('Users')
+                .doc('abc')
+                .collection('GL totals')
+                .doc('Totals')
+                .set({'estimated total': 0, 'shopping total': 3});
 
             await tester.pumpWidget(testApp);
 
             await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-            final itemListTile = find.byType(ListTile);
+            final itemListTile = find.byType(CheckboxListTile);
 
             await tester.drag(itemListTile, const Offset(200, 0));
 
@@ -196,13 +212,20 @@ void main() {
                 .collection('Users')
                 .doc('abc')
                 .collection('GroceryList')
-                .add({"name": 'bread', "price": '3', "bought": false});
+                .add({"name": 'bread', "price": 3, "bought": false});
+
+            await firestore
+                .collection('Users')
+                .doc('abc')
+                .collection('GL totals')
+                .doc('Totals')
+                .set({'estimated total': 0, 'shopping total': 3});
 
             await tester.pumpWidget(testApp);
 
             await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-            final itemListTile = find.byType(ListTile);
+            final itemListTile = find.byType(CheckboxListTile);
 
             await tester.drag(itemListTile, const Offset(200, 0));
 
