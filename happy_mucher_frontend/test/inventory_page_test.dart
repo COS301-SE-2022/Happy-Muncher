@@ -52,20 +52,21 @@ void main() {
         return await Future.wait(futures);
       });
 
-      // testWidgets(
-      //   'Testing if page is empty on start up',
-      //   (WidgetTester tester) async {
-      //     //test to see if the list is empty on initial start up
-      //     //runs the app and checks the list to see if it has 0 list tile widgets
-      //     //success if finds 0 widgets
-      //     await tester.pumpWidget(testApp);
+      testWidgets(
+        'Testing if page is empty on start up',
+        (WidgetTester tester) async {
+          //test to see if the list is empty on initial start up
+          //runs the app and checks the list to see if it has 0 list tile widgets
+          //success if finds 0 widgets
+          await tester.pumpWidget(testApp);
 
-      //     await tester.pumpAndSettle(const Duration(milliseconds: 300));
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      //     final inventoryList = find.byKey(const Key('Inventory_ListView'));
-      //     expect(inventoryList, findsNothing);
-      //   },
-      // );
+          final listviews = find.byType(ListTile);
+
+          expect(listviews, findsNWidgets(0));
+        },
+      );
 
       testWidgets(
         'Testing page filling from database',
