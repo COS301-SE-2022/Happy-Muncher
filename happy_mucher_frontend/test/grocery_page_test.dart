@@ -5,6 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/grocerylist.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
 void main() {
   group(
@@ -12,6 +15,19 @@ void main() {
     () {
       final firestore = FakeFirebaseFirestore();
       GetIt.I.registerSingleton<FirebaseFirestore>(firestore);
+      final user = MockUser(
+        isAnonymous: false,
+        uid: 'abc',
+        email: 'bob@somedomain.com',
+        displayName: 'Bob',
+        photoURL:
+            'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png',
+      );
+      final auth = MockFirebaseAuth(
+        mockUser: user,
+        signedIn: true,
+      );
+      GetIt.I.registerSingleton<FirebaseAuth>(auth);
       const testApp = MaterialApp(
         home: Scaffold(
           body: GroceryListPage(),
@@ -19,10 +35,24 @@ void main() {
       );
 
       setUp(() async {
-        final query = await firestore.collection('GroceryList').get();
-        await firestore.collection('GL totals').doc('Totals').set({});
+        final query = await firestore
+            .collection('Users')
+            .doc('abc')
+            .collection('GroceryList')
+            .get();
+        await firestore
+            .collection('Users')
+            .doc('abc')
+            .collection('GL totals')
+            .doc('Totals')
+            .set({});
         final futures = query.docs.map((e) {
-          return firestore.collection('GroceryList').doc(e.id).delete();
+          return firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('GroceryList')
+              .doc(e.id)
+              .delete();
         });
         return await Future.wait(futures);
       });
@@ -47,12 +77,18 @@ void main() {
           await tester.runAsync(
             () async {
               await firestore
+                  .collection('Users')
+                  .doc('abc')
                   .collection('GroceryList')
                   .add({"name": 'juice', "price": '1', "bought": false});
               await firestore
+                  .collection('Users')
+                  .doc('abc')
                   .collection('GroceryList')
                   .add({"name": 'apples', "price": '2', "bought": false});
               await firestore
+                  .collection('Users')
+                  .doc('abc')
                   .collection('GroceryList')
                   .add({"name": 'bread', "price": '3', "bought": false});
 
