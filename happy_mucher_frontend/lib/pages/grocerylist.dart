@@ -114,47 +114,52 @@ class GroceryListPageState extends State<GroceryListPage> {
                           children: [
                             SlidableAction(
                               onPressed: (context) {
-                                setState(() async {
-                                  _products.doc(documentSnapshot.id).delete();
+                                setState(
+                                  () async {
+                                    _products.doc(documentSnapshot.id).delete();
 
-                                  var docSnapshot =
-                                      await _gltotals.doc('Totals').get();
+                                    var docSnapshot =
+                                        await _gltotals.doc('Totals').get();
 
-                                  if (docSnapshot.exists) {
-                                    final currentTotals =
-                                        ((await _gltotals.doc("Totals").get())
-                                            .data() as Map);
-                                    final estimatedTotals =
-                                        currentTotals["estimated total"] as num;
-                                    final shoppingTotals =
-                                        currentTotals["shopping total"] as num;
+                                    if (docSnapshot.exists) {
+                                      final currentTotals =
+                                          ((await _gltotals.doc("Totals").get())
+                                              .data() as Map);
+                                      final estimatedTotals =
+                                          currentTotals["estimated total"]
+                                              as num;
+                                      final shoppingTotals =
+                                          currentTotals["shopping total"]
+                                              as num;
 
-                                    final isBought = documentSnapshot['bought'];
+                                      final isBought =
+                                          documentSnapshot['bought'];
 
-                                    if (isBought == false) {
-                                      _gltotals.doc("Totals").set({
-                                        'estimated total': estimatedTotals,
-                                        'shopping total': shoppingTotals -
-                                            documentSnapshot['price']
-                                      });
-                                    } else {
-                                      _gltotals.doc("Totals").set({
-                                        'estimated total': estimatedTotals -
-                                            documentSnapshot['price'],
-                                        'shopping total': shoppingTotals -
-                                            documentSnapshot['price']
-                                      });
+                                      if (isBought == false) {
+                                        _gltotals.doc("Totals").set({
+                                          'estimated total': estimatedTotals,
+                                          'shopping total': shoppingTotals -
+                                              documentSnapshot['price']
+                                        });
+                                      } else {
+                                        _gltotals.doc("Totals").set({
+                                          'estimated total': estimatedTotals -
+                                              documentSnapshot['price'],
+                                          'shopping total': shoppingTotals -
+                                              documentSnapshot['price']
+                                        });
+                                      }
                                     }
-                                  }
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'You have successfully deleted a grocery list item',
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'You have successfully deleted a grocery list item',
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                });
+                                    );
+                                  },
+                                );
                               },
                               backgroundColor: Colors.red,
                               foregroundColor: Colors.white,
