@@ -29,12 +29,14 @@ class _IventoryPageState extends State<IventoryPage> {
   String? imagepath;
   // text fields' controllers
   // text fields' controllers
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
+
   String _scanBarcode = 'Unknown';
 
   final BarcodeScanner _barcodeScanner = BarcodeScanner();
