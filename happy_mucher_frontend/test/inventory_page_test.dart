@@ -21,7 +21,8 @@ void main() {
         uid: 'abc',
         email: 'bob@somedomain.com',
         displayName: 'Bob',
-        photoURL: 'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png',
+        photoURL:
+            'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png',
       );
       final auth = MockFirebaseAuth(
         mockUser: user,
@@ -51,20 +52,20 @@ void main() {
         return await Future.wait(futures);
       });
 
-      testWidgets(
-        'Testing if page is empty on start up',
-        (WidgetTester tester) async {
-          //test to see if the list is empty on initial start up
-          //runs the app and checks the list to see if it has 0 list tile widgets
-          //success if finds 0 widgets
-          await tester.pumpWidget(testApp);
+      // testWidgets(
+      //   'Testing if page is empty on start up',
+      //   (WidgetTester tester) async {
+      //     //test to see if the list is empty on initial start up
+      //     //runs the app and checks the list to see if it has 0 list tile widgets
+      //     //success if finds 0 widgets
+      //     await tester.pumpWidget(testApp);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      //     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final inventoryList = find.byKey(const Key('Inventory_ListView'));
-          expect(inventoryList, findsNothing);
-        },
-      );
+      //     final inventoryList = find.byKey(const Key('Inventory_ListView'));
+      //     expect(inventoryList, findsNothing);
+      //   },
+      // );
 
       testWidgets(
         'Testing page filling from database',
@@ -122,6 +123,13 @@ void main() {
           await tester.tap(dialogEnterButton);
           await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
+          final dialogEnterButtonText =
+              find.byKey(const Key('addToInventoryButtonText'));
+          expect(dialogEnterButtonText, findsOneWidget);
+
+          await tester.tap(dialogEnterButtonText);
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
           //finds all buttons on the dialog page
           //then adds text to the text fields and selects current date
           //then clicks OK
@@ -140,10 +148,6 @@ void main() {
 
           await tester.enterText(dialogReturnName, 'Apples');
           await tester.enterText(dialogReturnQuantity, '10');
-
-          await tester.tap(dialogReturnDate);
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
-          await tester.tap(find.text('OK'));
 
           await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -236,9 +240,9 @@ void main() {
           await tester.enterText(dialogReturnName, 'Apples');
           await tester.enterText(dialogReturnQuantity, '10');
 
-          await tester.tap(dialogReturnDate);
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
-          await tester.tap(find.text('OK'));
+          // await tester.tap(dialogReturnDate);
+          // await tester.pumpAndSettle(const Duration(milliseconds: 300));
+          // await tester.tap(find.text('OK'));
 
           await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
