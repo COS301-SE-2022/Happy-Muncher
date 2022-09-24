@@ -25,7 +25,8 @@ class GroceryListPageState extends State<GroceryListPage> {
   // text fields' controllers
   // text fields' controllers
   final ImagePicker _picker = ImagePicker();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   int shoppingPrices = 0;
   int estimatePrices = 0;
