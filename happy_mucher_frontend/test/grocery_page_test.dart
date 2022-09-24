@@ -45,7 +45,7 @@ void main() {
             .doc('abc')
             .collection('GL totals')
             .doc('Totals')
-            .set({});
+            .get();
         final futures = query.docs.map((e) {
           return firestore
               .collection('Users')
@@ -96,7 +96,7 @@ void main() {
 
               await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-              final listviews = find.byType(ListTile);
+              final listviews = find.byType(CheckboxListTile);
 
               expect(listviews, findsNWidgets(3));
             },
@@ -163,6 +163,8 @@ void main() {
         (WidgetTester tester) async {
           await tester.runAsync(() async {
             await firestore
+                .collection('Users')
+                .doc('abc')
                 .collection('GroceryList')
                 .add({"name": 'bread', "price": '3', "bought": false});
 
@@ -191,6 +193,8 @@ void main() {
         (WidgetTester tester) async {
           await tester.runAsync(() async {
             await firestore
+                .collection('Users')
+                .doc('abc')
                 .collection('GroceryList')
                 .add({"name": 'bread', "price": '3', "bought": false});
 
