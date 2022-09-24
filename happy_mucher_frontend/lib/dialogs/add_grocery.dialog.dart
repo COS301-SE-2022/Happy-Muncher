@@ -20,7 +20,8 @@ class GLDialogState extends State<_GLDialog> {
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final dateFieldController = TextEditingController();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _gltotals =>
