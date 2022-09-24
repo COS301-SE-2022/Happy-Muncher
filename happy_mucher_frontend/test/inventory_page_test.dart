@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   group(
@@ -12,6 +15,19 @@ void main() {
     () {
       final firestore = FakeFirebaseFirestore();
       GetIt.I.registerSingleton<FirebaseFirestore>(firestore);
+      //Firebase.initializeApp();
+      final user = MockUser(
+        isAnonymous: false,
+        uid: 'abc',
+        email: 'bob@somedomain.com',
+        displayName: 'Bob',
+        photoURL: 'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png',
+      );
+      final auth = MockFirebaseAuth(
+        mockUser: user,
+        signedIn: true,
+      );
+      GetIt.I.registerSingleton<FirebaseAuth>(auth);
       const testApp = MaterialApp(
         home: Scaffold(
           body: IventoryPage(),
@@ -19,9 +35,18 @@ void main() {
       );
 
       setUp(() async {
-        final query = await firestore.collection('Inventory').get();
+        final query = await firestore
+            .collection('Users')
+            .doc('abc')
+            .collection('Inventory')
+            .get();
         final futures = query.docs.map((e) {
-          return firestore.collection('Inventory').doc(e.id).delete();
+          return firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('Inventory')
+              .doc(e.id)
+              .delete();
         });
         return await Future.wait(futures);
       });
@@ -34,6 +59,8 @@ void main() {
           //success if finds 0 widgets
           await tester.pumpWidget(testApp);
 
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
           final inventoryList = find.byKey(const Key('Inventory_ListView'));
           expect(inventoryList, findsNothing);
         },
@@ -42,17 +69,29 @@ void main() {
       testWidgets(
         'Testing page filling from database',
         (WidgetTester tester) async {
-          await firestore.collection('Inventory').add({
+          await firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('Inventory')
+              .add({
             "itemName": 'juice',
             "quantity": 1,
             "expirationDate": DateTime.now().toString(),
           });
-          await firestore.collection('Inventory').add({
+          await firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('Inventory')
+              .add({
             "itemName": 'apple',
             "quantity": 2,
             "expirationDate": DateTime.now().toString(),
           });
-          await firestore.collection('Inventory').add({
+          await firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('Inventory')
+              .add({
             "itemName": 'grape',
             "quantity": 3,
             "expirationDate": DateTime.now().toString(),
@@ -125,7 +164,11 @@ void main() {
       testWidgets(
         'Testing deleting',
         (WidgetTester tester) async {
-          await firestore.collection('Inventory').add({
+          await firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('Inventory')
+              .add({
             "itemName": 'juice',
             "quantity": 1,
             "expirationDate": DateTime.now().toString(),
@@ -153,7 +196,11 @@ void main() {
       testWidgets(
         'Testing editing',
         (WidgetTester tester) async {
-          await firestore.collection('Inventory').add({
+          await firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('Inventory')
+              .add({
             "itemName": 'juice',
             "quantity": 1,
             "expirationDate": DateTime.now().toString(),
