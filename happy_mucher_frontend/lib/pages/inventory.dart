@@ -29,12 +29,14 @@ class _IventoryPageState extends State<IventoryPage> {
   String? imagepath;
   // text fields' controllers
   // text fields' controllers
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
 
   final FirebaseFirestore firestore = GetIt.I.get();
+
   String _scanBarcode = 'Unknown';
 
   final BarcodeScanner _barcodeScanner = BarcodeScanner();
@@ -140,9 +142,11 @@ class _IventoryPageState extends State<IventoryPage> {
 
 // Add new product
       floatingActionButton: SpeedDial(
-        key: const Key('inventory_speed_dial_button'),
         icon: Icons.add,
+        key: const Key('addToInventoryButton'),
+        iconTheme: IconThemeData(color: Color(0xFF965BC8)),
         backgroundColor: Color.fromARGB(255, 150, 66, 154),
+
         children: [
           SpeedDialChild(
             onTap: () => addInventoryDialog(context),
