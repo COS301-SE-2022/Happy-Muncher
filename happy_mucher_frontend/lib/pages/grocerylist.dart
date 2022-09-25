@@ -133,15 +133,17 @@ class GroceryListPageState extends State<GroceryListPage> {
                                     if (isBought == false) {
                                       _gltotals.doc("Totals").set({
                                         'estimated total': estimatedTotals,
-                                        'shopping total': shoppingTotals -
-                                            documentSnapshot['price']
+                                        'shopping total': (shoppingTotals -
+                                                documentSnapshot['price'])
+                                            .clamp(0, double.infinity)
                                       });
                                     } else {
                                       _gltotals.doc("Totals").set({
                                         'estimated total': estimatedTotals -
                                             documentSnapshot['price'],
-                                        'shopping total': shoppingTotals -
-                                            documentSnapshot['price']
+                                        'shopping total': (shoppingTotals -
+                                                documentSnapshot['price'])
+                                            .clamp(0, double.infinity)
                                       });
                                     }
                                   }
