@@ -77,27 +77,24 @@ class CreateState extends State<Create> {
             style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
-          leading: Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                myRecipe = [];
-                myRecipe.add(widget.title);
-                myRecipe.add(widget.description);
-                myRecipe.add(widget.calories.toString());
-                myRecipe.add(widget.cookTime);
-                _customRecipe.add({
-                  "details": myRecipe,
-                  "instructions": widget.steps,
-                  "ingredients": widget.ingredients
-                });
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyRecipeBook()));
-              },
-              child: const Text(
-                "Done",
-                textAlign: TextAlign.right,
-              ),
+          leading: TextButton(
+            onPressed: () {
+              myRecipe = [];
+              myRecipe.add(widget.title);
+              myRecipe.add(widget.description);
+              myRecipe.add(widget.calories.toString());
+              myRecipe.add(widget.cookTime);
+              _customRecipe.add({
+                "details": myRecipe,
+                "instructions": widget.steps,
+                "ingredients": widget.ingredients
+              });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyRecipeBook()));
+            },
+            child: const Text(
+              "Done",
+              textAlign: TextAlign.right,
             ),
           ),
           backgroundColor: Colors.transparent),
