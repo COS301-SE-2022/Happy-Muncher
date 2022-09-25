@@ -131,38 +131,58 @@ class _SignupScreenState extends State<SignupScreen> {
                         onSaved: (value) {},
                       ),
                       SizedBox(height: size.height * 0.03),
-                      RaisedButton(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color.fromARGB(255, 150, 66, 154),
+                          shape: const StadiumBorder(),
+                          minimumSize: const Size(300, 50),
+                          onPrimary: Colors.white,
+                          side: const BorderSide(
+                              color: Color.fromARGB(255, 150, 66, 154),
+                              width: 3.0),
+                        ),
                         key: const ValueKey("Submit"),
                         child: Container(
                           alignment: Alignment.center,
                           height: 50.0,
                           width: size.width * 0.5,
-                          decoration: new BoxDecoration(
-                            borderRadius: BorderRadius.circular(80.0),
-                            color: Color.fromARGB(255, 252, 95, 13),
-                          ),
-                          padding: const EdgeInsets.all(0),
-                          child: Text(
-                            'Submit',
+                          child: const Text(
+                            'Sign up',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),
                         onPressed: () {
                           _submit();
                         },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80),
-                        ),
-                        color: Colors.blue,
-                        textColor: Colors.white,
-                        padding: const EdgeInsets.all(0),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       //Text("Sign in with Google"),
-                      TextButton.icon(
+                      Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 10),
+                        child: const Text(
+                          "OR",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color.fromARGB(255, 150, 66, 154)),
+                        ),
+                      ),
+                      //Text("Sign in with Google"),
+                      ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            shape: StadiumBorder(),
+                            minimumSize: Size(300, 50),
+                            onPrimary: Color.fromARGB(255, 150, 66, 154),
+                            side: const BorderSide(
+                                color: Color.fromARGB(255, 150, 66, 154),
+                                width: 3.0),
+                          ),
                           onPressed: () {
                             signup(context);
                           },
@@ -171,7 +191,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             height: 30,
                             width: 30,
                           ),
-                          label: Text("Sign in with Google",
+                          label: const Text("Sign in with Google",
                               style: TextStyle(fontSize: 20))),
 
                       SizedBox(height: size.height * 0.03),
@@ -179,12 +199,16 @@ class _SignupScreenState extends State<SignupScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
+                              style: TextButton.styleFrom(
+                                primary:
+                                    const Color.fromARGB(255, 150, 66, 154),
+                              ),
                               onPressed: () => Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (context) => LoginScreen()),
                                   ),
-                              child:
-                                  Text("Already have an account? Log in here"))
+                              child: const Text(
+                                  "Already have an account? Log in here"))
                         ],
                       )
                     ],

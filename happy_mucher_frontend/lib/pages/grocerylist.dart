@@ -113,38 +113,40 @@ class GroceryListPageState extends State<GroceryListPage> {
                           motion: const ScrollMotion(),
                           children: [
                             SlidableAction(
-                              onPressed: (context) async {
-                                await _products
-                                    .doc(documentSnapshot.id)
-                                    .delete();
+                              onPressed: (context) {
+                                setState(() async {
+                                  _products.doc(documentSnapshot.id).delete();
 
-                                var docSnapshot =
-                                    await _gltotals.doc('Totals').get();
+                                  var docSnapshot =
+                                      await _gltotals.doc('Totals').get();
 
-                                if (docSnapshot.exists) {
-                                  final currentTotals =
-                                      ((await _gltotals.doc("Totals").get())
-                                          .data() as Map);
-                                  final estimatedTotals =
-                                      currentTotals["estimated total"] as num;
-                                  final shoppingTotals =
-                                      currentTotals["shopping total"] as num;
+                                  if (docSnapshot.exists) {
+                                    final currentTotals =
+                                        ((await _gltotals.doc("Totals").get())
+                                            .data() as Map);
+                                    final estimatedTotals =
+                                        currentTotals["estimated total"] as num;
+                                    final shoppingTotals =
+                                        currentTotals["shopping total"] as num;
 
-                                  final isBought = documentSnapshot['bought'];
+                                    final isBought = documentSnapshot['bought'];
 
-                                  if (isBought == false) {
-                                    _gltotals.doc("Totals").set({
-                                      'estimated total': estimatedTotals,
-                                      'shopping total': shoppingTotals -
-                                          documentSnapshot['price']
-                                    });
-                                  } else {
-                                    _gltotals.doc("Totals").set({
-                                      'estimated total': estimatedTotals -
-                                          documentSnapshot['price'],
-                                      'shopping total': shoppingTotals -
-                                          documentSnapshot['price']
-                                    });
+                                    if (isBought == false) {
+                                      _gltotals.doc("Totals").set({
+                                        'estimated total': estimatedTotals,
+                                        'shopping total': (shoppingTotals -
+                                                documentSnapshot['price'])
+                                            .clamp(0, double.infinity)
+                                      });
+                                    } else {
+                                      _gltotals.doc("Totals").set({
+                                        'estimated total': estimatedTotals -
+                                            documentSnapshot['price'],
+                                        'shopping total': (shoppingTotals -
+                                                documentSnapshot['price'])
+                                            .clamp(0, double.infinity)
+                                      });
+                                    }
                                   }
                                 }
 
@@ -253,16 +255,16 @@ class GroceryListPageState extends State<GroceryListPage> {
       floatingActionButton: SpeedDial(
         key: const Key('speed_dial_button'),
         icon: Icons.add,
-        iconTheme: IconThemeData(color: Color(0xFF965BC8)),
+        backgroundColor: Color.fromARGB(255, 150, 66, 154),
         children: [
           SpeedDialChild(
             onTap: () => addGLDialog(context),
             key: const Key('addToInventoryButtonText'),
             child: const Icon(
               Icons.abc,
-              color: Colors.white,
+              color: Color.fromARGB(255, 150, 66, 154),
             ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
+            backgroundColor: Color.fromARGB(100, 150, 66, 154),
           ),
           SpeedDialChild(
             key: const Key('addToInventoryButtonGallery'),
@@ -271,9 +273,9 @@ class GroceryListPageState extends State<GroceryListPage> {
             },
             child: const Icon(
               Icons.collections,
-              color: Colors.white,
+              color: Color.fromARGB(255, 150, 66, 154),
             ),
-            backgroundColor: Color.fromARGB(255, 158, 72, 233),
+            backgroundColor: Color.fromARGB(100, 150, 66, 154),
           ),
           SpeedDialChild(
             key: const Key('addToInventoryButtonCamera'),
@@ -282,9 +284,9 @@ class GroceryListPageState extends State<GroceryListPage> {
             },
             child: const Icon(
               Icons.photo_camera,
-              color: Colors.white,
+              color: Color.fromARGB(255, 150, 66, 154),
             ),
-            backgroundColor: Color.fromARGB(255, 123, 1, 230),
+            backgroundColor: Color.fromARGB(100, 150, 66, 154),
           )
         ],
       ),

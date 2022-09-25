@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
@@ -6,18 +8,30 @@ import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/search_widget.dart';
-import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
+import 'package:happy_mucher_frontend/models/favourites.api.dart';
 //import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get_it/get_it.dart';
 
-class TastyBook extends StatefulWidget {
-  TastyBook({Key? key}) : super(key: key);
+import '../widgets/appbar_widget.dart';
+
+class FavouritesBook extends StatefulWidget {
+  FavouritesBook({Key? key, required this.ids}) : super(key: key);
+  final List<String> ids;
   @override
-  State<TastyBook> createState() => TastyBookState();
+  State<FavouritesBook> createState() => FavouritesBookState();
 }
 
-class TastyBookState extends State<TastyBook> {
-  late List<tastyRecipe> recipes;
+class FavouritesBookState extends State<FavouritesBook> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseFirestore firestore = GetIt.I.get();
+
+  CollectionReference get _favourites =>
+      firestore.collection('Users').doc(uid).collection('Recipes');
+  List<tastyRecipe> recipes = [];
   List<tastyRecipe> temp = [];
+  List<String> idee = [];
   String query = "";
   //Timer? debouncer;
   //List<tastyRecipe> tr = [];
@@ -25,29 +39,46 @@ class TastyBookState extends State<TastyBook> {
   @override
   void initState() {
     super.initState();
-    getRecipes();
+
+    for (var i in widget.ids) {
+      getRecipes(i);
+    }
   }
 
-  Future<void> getRecipes() async {
-    //recipes = await RecipeAPI.getRecipe();
-    recipes = await TastyRecipeAPI.getTastyApi();
-    temp = List.from(recipes);
+  // void getDB(context) async {
+  //   FirebaseFirestore.instance
+  //       .collection('Users')
+  //       .doc(uid)
+  //       .collection('Recipes')
+  //       .get()
+  //       .then((QuerySnapshot querySnapshot) {
+  //     querySnapshot.docs.forEach((doc) {
+  //       //widget.ids.add(doc["ID"]);
+  //       idee.add(doc["ID"]);
+  //       //print(idee);
+  //       getRecipes(doc["ID"]);
+  //     });
+  //   });
+  // }
+
+  FutureOr<void> getRecipes(String id) async {
+    List<tastyRecipe> tr = await FavouritesAPI.getIDApi(id);
+    print(tr);
+    recipes.add(tr[0]);
+    temp.add(tr[0]);
     if (mounted) {
       setState(() {
         loading = false;
         this.recipes = recipes;
         this.temp = temp;
-        // recipes.length? len = recipes.length
       });
     }
-
-    //print(recipes[0].keywords);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, "Tasty Recipe Book"),
+      appBar: buildAppBar(context, "My Favourites"),
       body: SingleChildScrollView(
           child: Column(
         children: [
@@ -106,7 +137,6 @@ class TastyBookState extends State<TastyBook> {
       this.recipes = recipes;
     });
   }
-
   // void Reset() async {
   //   // recipes = List.from(temp);
   //   initState();

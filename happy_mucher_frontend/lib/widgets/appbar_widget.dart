@@ -17,13 +17,14 @@ AppBar buildAppBar(BuildContext context, String title) {
   return AppBar(
       title: new Text(
         title,
-        style: TextStyle(color: Colors.black),
+        //style: TextStyle(color: Colors.black),
       ),
       centerTitle: true,
       backgroundColor: Colors.transparent,
       leading: new Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
+            key: Key('Profile'),
             radius: 100,
             backgroundColor: Color(0xFF965BC8),
             child: CircleAvatar(
@@ -45,7 +46,6 @@ AppBar buildAppBar(BuildContext context, String title) {
               child: Icon(
                 Icons.dashboard,
                 size: 26.0,
-                color: Colors.black,
               ),
             ))
       ]);

@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:happy_mucher_frontend/addIngredient_widget.dart';
 import 'package:happy_mucher_frontend/models/myRecipe.dart';
 
-Future<String?> showAddIngredientDialog(
+Future<String?> showAddInstructionDialog(
   BuildContext context,
-  List<String> ingredients,
+  List<String> instructions,
 ) async {
   return await showDialog(
     context: context,
-    builder: (_) => AddIngredientDialog(
-      ingredients: ingredients,
+    builder: (_) => AddinstructionsDialog(
+      instructions: instructions,
     ),
   );
 }
 
-class AddIngredientDialog extends StatefulWidget {
-  List<String> ingredients = [];
+class AddinstructionsDialog extends StatefulWidget {
+  List<String> instructions = [];
 
-  AddIngredientDialog({required this.ingredients});
+  AddinstructionsDialog({required this.instructions});
   @override
-  _AddIngredientDialogState createState() => _AddIngredientDialogState();
+  _AddinstructionsDialogState createState() => _AddinstructionsDialogState();
 }
 
-class _AddIngredientDialogState extends State<AddIngredientDialog> {
+class _AddinstructionsDialogState extends State<AddinstructionsDialog> {
   //final _formKey = GlobalKey<FormState>();
-  String ingredient = '';
+  String instructions = '';
   final input = TextEditingController();
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -34,7 +34,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Add Ingredient',
+              'Add instructions',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
