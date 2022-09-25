@@ -21,6 +21,7 @@ AppBar buildAppBar(BuildContext context, String title) {
       leading: new Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
+            key: Key('Profile'),
             radius: 100,
             backgroundColor: Color(0xFF965BC8),
             child: CircleAvatar(
