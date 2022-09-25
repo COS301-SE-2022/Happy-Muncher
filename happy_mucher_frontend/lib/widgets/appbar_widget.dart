@@ -14,7 +14,7 @@ AppBar buildAppBar(BuildContext context, String title) {
   return AppBar(
       title: new Text(
         title,
-        style: TextStyle(color: Colors.black),
+        //style: TextStyle(color: Colors.black),
       ),
       centerTitle: true,
       backgroundColor: Colors.transparent,
@@ -43,7 +43,6 @@ AppBar buildAppBar(BuildContext context, String title) {
               child: Icon(
                 Icons.dashboard,
                 size: 26.0,
-                color: Colors.black,
               ),
             ))
       ]);

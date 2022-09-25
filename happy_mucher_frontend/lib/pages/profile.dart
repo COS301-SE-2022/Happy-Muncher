@@ -138,9 +138,9 @@ class ProfileState extends State<Profile> {
                                 child: Text(
                                   getValue,
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      height: 1.4,
-                                      color: Colors.black),
+                                    fontSize: 20,
+                                    height: 1.4,
+                                  ),
                                 ))),
                         Icon(
                           Icons.keyboard_arrow_right,
