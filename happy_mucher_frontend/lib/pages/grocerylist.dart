@@ -148,7 +148,7 @@ class GroceryListPageState extends State<GroceryListPage> {
                                       });
                                     }
                                   }
-                                }
+                                });
 
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
