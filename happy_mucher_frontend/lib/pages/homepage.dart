@@ -8,6 +8,7 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:happy_mucher_frontend/pages/inventory.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 import 'package:happy_mucher_frontend/pages/navbar.dart';
+import 'package:happy_mucher_frontend/pages/recipebook.dart';
 import 'package:happy_mucher_frontend/pages/tasty_book.dart';
 import 'package:happy_mucher_frontend/pages/values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,7 +29,7 @@ class HomePageState extends State<MyHomePage> {
     IventoryPage(),
     MyBudget(),
     MealPage(),
-    TastyBook(),
+    RecipeBook(),
   ];
 
   @override
@@ -38,12 +39,14 @@ class HomePageState extends State<MyHomePage> {
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
-              indicatorColor: Colors.orange.shade100,
+              indicatorColor: Color.fromARGB(100, 150, 66, 154),
               labelTextStyle: MaterialStateProperty.all(
-                TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
               )),
           child: NavigationBar(
               height: 60,
+              labelBehavior:
+                  NavigationDestinationLabelBehavior.onlyShowSelected,
               selectedIndex: index,
               animationDuration: Duration(seconds: 3),
               onDestinationSelected: (index) =>
@@ -67,7 +70,7 @@ class HomePageState extends State<MyHomePage> {
                 NavigationDestination(
                   icon: Icon(Icons.edit_calendar_outlined),
                   selectedIcon: Icon(Icons.edit_calendar),
-                  label: 'Meal-Plan',
+                  label: 'Meal Planner',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.book_outlined),
