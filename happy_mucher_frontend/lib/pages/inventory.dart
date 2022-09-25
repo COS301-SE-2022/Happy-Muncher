@@ -144,9 +144,7 @@ class _IventoryPageState extends State<IventoryPage> {
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         key: const Key('addToInventoryButton'),
-        iconTheme: IconThemeData(color: Color(0xFF965BC8)),
         backgroundColor: Color.fromARGB(255, 150, 66, 154),
-
         children: [
           SpeedDialChild(
             onTap: () => addInventoryDialog(context),
