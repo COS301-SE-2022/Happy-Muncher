@@ -110,7 +110,6 @@ class DashboardState extends State<DashboardPage> {
       appBar: AppBar(
           title: new Text(
             "Dashboard",
-            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
           backgroundColor: Colors.transparent,
@@ -138,7 +137,6 @@ class DashboardState extends State<DashboardPage> {
                   child: Icon(
                     Icons.arrow_forward_outlined,
                     size: 30.0,
-                    color: Colors.black,
                   ),
                 ))
           ]),

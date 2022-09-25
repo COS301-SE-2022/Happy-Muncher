@@ -76,7 +76,8 @@ abstract class Styles {
         //* Custom Google Font
         //  fontFamily: Devfest.google_sans_family,
         //primarySwatch: Colors.red,
-        primaryColor: isDarkTheme ? Colors.black : Colors.white,
+
+        primaryColor: isDarkTheme ? Colors.white : Colors.black,
         backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
         indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
         buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
@@ -99,7 +100,11 @@ abstract class Styles {
               : Colors.white.withOpacity(0.9),
         ),
         appBarTheme: AppBarTheme(
+          titleTextStyle:
+              TextStyle(color: isDarkTheme ? Colors.white : Colors.black),
           elevation: 0.0,
+          actionsIconTheme:
+              IconThemeData(color: isDarkTheme ? Colors.white : Colors.black),
         ));
   }
 }
