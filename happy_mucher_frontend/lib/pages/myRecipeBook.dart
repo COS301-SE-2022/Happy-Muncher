@@ -15,6 +15,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 
+import '../widgets/appbar_widget.dart';
+
 class MyRecipeBook extends StatefulWidget {
   MyRecipeBook({Key? key}) : super(key: key);
   @override
@@ -50,10 +52,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text('MY recipe book'),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 252, 95, 13)),
+      appBar: buildAppBar(context, "My Recipes"),
       body: Row(
         children: <Widget>[
           Expanded(

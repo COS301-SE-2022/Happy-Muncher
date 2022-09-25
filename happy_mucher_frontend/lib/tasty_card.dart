@@ -137,7 +137,7 @@ class TastyRecipeCard extends StatelessWidget {
               key: const Key('dots'),
               direction: SpeedDialDirection.down,
               icon: Icons.more_vert,
-              backgroundColor: Color.fromARGB(255, 172, 255, 78),
+              backgroundColor: Color.fromARGB(255, 150, 66, 154),
               buttonSize: const Size(45.0, 45.0),
               children: [
                 SpeedDialChild(
@@ -156,18 +156,18 @@ class TastyRecipeCard extends StatelessWidget {
                   key: const Key('info'),
                   child: const Icon(
                     Icons.info_outline,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
                 SpeedDialChild(
                   onTap: () => showAlertDialog(context),
                   key: const Key('add'),
                   child: const Icon(
                     Icons.add,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
               ],
             ),

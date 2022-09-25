@@ -44,6 +44,13 @@ class _MyBudgetState extends State<MyBudget> {
       body: Column(
         children: [
           TableCalendar(
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: true,
+              todayDecoration: BoxDecoration(
+                color: Color.fromARGB(255, 150, 66, 154),
+                shape: BoxShape.circle,
+              ),
+            ),
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
             lastDay: DateTime(2050),
@@ -62,80 +69,27 @@ class _MyBudgetState extends State<MyBudget> {
               });
             },
           ),
-          MonthNav(buttonValue)
+          SizedBox(height: 150),
+          MonthNav(buttonValue),
         ],
-      )
-      // ListView(
-      //   padding: EdgeInsets.all(16),
-      //   children: [
-      //     buildCards(),
-      //     const SizedBox(height: 12),
-      //     buildCards1(),
-      //     const SizedBox(height: 12),
-      //     buildCards2(),
-      //     const SizedBox(height: 12),
-      //     buildCards3(),
-      //     const SizedBox(height: 12),
-      //     buildCards4(),
-      //     const SizedBox(height: 12),
-      //     buildCards5(),
-      //   ],
-      // )
-      );
-
-  Widget buildCards() => Row(
-        children: [
-          Expanded(child: MonthCard(month: "January", inputText: "Jan")),
-          const SizedBox(width: 12),
-          Expanded(child: MonthCard(month: "February", inputText: "Feb")),
-        ],
-      );
-
-  Widget buildCards1() => Row(
-        children: [
-          Expanded(child: MonthCard(month: "March", inputText: "Mar")),
-          const SizedBox(width: 12),
-          Expanded(child: MonthCard(month: "April", inputText: "Apr")),
-        ],
-      );
-
-  Widget buildCards2() => Row(
-        children: [
-          Expanded(child: MonthCard(month: "May", inputText: "May")),
-          const SizedBox(width: 12),
-          Expanded(child: MonthCard(month: "June", inputText: "Jun")),
-        ],
-      );
-
-  Widget buildCards3() => Row(
-        children: [
-          Expanded(child: MonthCard(month: "July", inputText: "Jul")),
-          const SizedBox(width: 12),
-          Expanded(child: MonthCard(month: "August", inputText: "Aug")),
-        ],
-      );
-
-  Widget buildCards4() => Row(
-        children: [
-          Expanded(child: MonthCard(month: "September", inputText: "Sep")),
-          const SizedBox(width: 12),
-          Expanded(child: MonthCard(month: "October", inputText: "Oct")),
-        ],
-      );
-
-  Widget buildCards5() => Row(
-        children: [
-          Expanded(child: MonthCard(month: "November", inputText: "Nov")),
-          const SizedBox(width: 12),
-          Expanded(child: MonthCard(month: "December", inputText: "Dec")),
-        ],
-      );
-
+      ));
+  //SizedBox(height: 32),
   Widget MonthNav(String month) => ElevatedButton(
-      onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Month(month: month),
-        ));
-      },
-      child: Text(month));
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Month(month: month),
+          ));
+        },
+        child: const Text("View budget"),
+        style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            onPrimary: Color.fromARGB(255, 150, 66, 154),
+            padding: EdgeInsets.all(10.0),
+            minimumSize: Size(300, 50),
+            textStyle: const TextStyle(fontSize: 20),
+            side: BorderSide(
+                color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+      );
 }
