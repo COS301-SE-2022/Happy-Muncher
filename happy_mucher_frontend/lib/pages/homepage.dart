@@ -58,6 +58,7 @@ class HomePageState extends State<MyHomePage> {
                   label: 'Grocery List',
                 ),
                 NavigationDestination(
+                  key: Key('Inventory'),
                   icon: Icon(Icons.receipt_outlined),
                   selectedIcon: Icon(Icons.receipt),
                   label: 'Inventory',
