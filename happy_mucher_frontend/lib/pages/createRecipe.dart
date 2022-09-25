@@ -79,11 +79,15 @@ class CreateState extends State<Create> {
           centerTitle: true,
           leading: TextButton(
             onPressed: () {
-              myRecipe = [];
-              myRecipe.add(widget.title);
-              myRecipe.add(widget.description);
-              myRecipe.add(widget.calories.toString());
-              myRecipe.add(widget.cookTime);
+              setState(() {
+                myRecipe = [];
+                myRecipe.add(titleController.text);
+                myRecipe.add(descriptionController.text);
+                print(myRecipe);
+                myRecipe.add(widget.calories.toString());
+                myRecipe.add(widget.cookTime);
+              });
+
               _customRecipe.add({
                 "details": myRecipe,
                 "instructions": widget.steps,
@@ -104,23 +108,27 @@ class CreateState extends State<Create> {
           const Text('Enter your Recipe Title ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           TextField(
-              key: const Key("enterTitle"),
-              controller: titleController,
-              decoration: const InputDecoration(
-                hintText: ('Title'),
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.done,
-              onSubmitted: ((value) {
-                setState(() {
-                  widget.title = titleController.text;
-                });
-
-                //print(title);
-              })
-              // autofocus: true,
-              ),
+            key: const Key("enterTitle"),
+            controller: titleController,
+            decoration: const InputDecoration(
+              hintText: ('Title'),
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            // onChanged:((value) {
+            //   setState(() {
+            //     widget.title = titleController.text;
+            //   });
+            // }),
+            onSubmitted: ((value) {
+              setState(() {
+                widget.title = titleController.text;
+              });
+            }
+                // autofocus: true,
+                ),
+          ),
           const SizedBox(height: 14),
           TextField(
               key: const Key("description"),
