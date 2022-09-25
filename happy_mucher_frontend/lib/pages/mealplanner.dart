@@ -16,9 +16,30 @@ class MealPage extends StatefulWidget {
 class _MealPageState extends State<MealPage> {
   // var day = DateTime.now();
   var day = DateFormat('EEEE').format(DateTime.now());
+  int initial = 0;
   @override
   void initState() {
-    print(day);
+    if (day == "Monday") {
+      initial = 0;
+    }
+    if (day == "Tuesday") {
+      initial = 1;
+    }
+    if (day == "Wednesday") {
+      initial = 2;
+    }
+    if (day == "Thursday") {
+      initial = 3;
+    }
+    if (day == "Friday") {
+      initial = 4;
+    }
+    if (day == "Saturday") {
+      initial = 5;
+    }
+    if (day == "Sunday") {
+      initial = 6;
+    }
   }
 
   @override
@@ -36,7 +57,7 @@ class _MealPageState extends State<MealPage> {
                   alignment: Alignment.center,
                   child: CarouselSlider(
                     options: CarouselOptions(
-                        initialPage: 6,
+                        initialPage: initial,
                         aspectRatio: 0.5,
                         enlargeCenterPage: true,
                         enableInfiniteScroll: false,
