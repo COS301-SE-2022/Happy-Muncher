@@ -264,7 +264,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.abc,
               color: Color.fromARGB(255, 150, 66, 154),
             ),
-            backgroundColor: Color.fromARGB(100, 150, 66, 154),
+            backgroundColor: Color.fromARGB(255, 185, 141, 223),
           ),
           SpeedDialChild(
             key: const Key('addToInventoryButtonGallery'),
@@ -275,7 +275,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.collections,
               color: Color.fromARGB(255, 150, 66, 154),
             ),
-            backgroundColor: Color.fromARGB(100, 150, 66, 154),
+            backgroundColor: Color.fromARGB(255, 185, 141, 223),
           ),
           SpeedDialChild(
             key: const Key('addToInventoryButtonCamera'),
@@ -286,7 +286,7 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.photo_camera,
               color: Color.fromARGB(255, 150, 66, 154),
             ),
-            backgroundColor: Color.fromARGB(100, 150, 66, 154),
+            backgroundColor: Color.fromARGB(255, 185, 141, 223),
           )
         ],
       ),
