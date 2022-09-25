@@ -25,10 +25,10 @@ class MyHomePage extends StatefulWidget {
 class HomePageState extends State<MyHomePage> {
   int index = 0;
   final screens = [
-    const GroceryListPage(),
-    const IventoryPage(),
+    GroceryListPage(),
+    IventoryPage(),
     MyBudget(),
-    const MealPage(),
+    MealPage(),
     RecipeBook(),
   ];
 
@@ -51,7 +51,7 @@ class HomePageState extends State<MyHomePage> {
               animationDuration: const Duration(seconds: 3),
               onDestinationSelected: (index) =>
                   setState(() => this.index = index),
-              destinations: const [
+              destinations: [
                 NavigationDestination(
                   icon: Icon(Icons.local_grocery_store_outlined),
                   selectedIcon: Icon(Icons.local_grocery_store),
