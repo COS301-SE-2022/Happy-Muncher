@@ -55,31 +55,75 @@ class RecipeBookState extends State<RecipeBook> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: buildAppBar(context, "Recipe Book"),
-        body: Column(
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => TastyBook()));
-                },
-                child: Text("Tasty Recipe Book")),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyRecipeBook()));
-                },
-                child: Text("MY Recipe Book")),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FavouritesBook(ids: ids)));
-                },
-                child: Text("My Favourites")),
-          ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    shape: const StadiumBorder(),
+                    minimumSize: const Size(300, 100),
+                    onPrimary: const Color.fromARGB(255, 150, 66, 154),
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => TastyBook()));
+                  },
+                  child: Text(
+                    "Tasty Recipe Book",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30),
+                  )),
+              SizedBox(height: size.height * 0.03),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    shape: const StadiumBorder(),
+                    minimumSize: const Size(300, 100),
+                    onPrimary: const Color.fromARGB(255, 150, 66, 154),
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyRecipeBook()));
+                  },
+                  child: Text(
+                    "My Recipe Book",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30),
+                  )),
+              SizedBox(height: size.height * 0.03),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    shape: const StadiumBorder(),
+                    minimumSize: const Size(300, 100),
+                    onPrimary: const Color.fromARGB(255, 150, 66, 154),
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FavouritesBook(ids: ids)));
+                  },
+                  child: Text(
+                    "My Favourites",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30),
+                  )),
+            ],
+          ),
         ));
   }
 }
