@@ -72,7 +72,10 @@ class CreateState extends State<Create> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Create Recipe'),
+          title: const Text(
+            'Create Recipe',
+            style: TextStyle(color: Colors.black),
+          ),
           centerTitle: true,
           leading: TextButton(
             onPressed: () {
@@ -91,7 +94,7 @@ class CreateState extends State<Create> {
             },
             child: const Text("Done"),
           ),
-          backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
+          backgroundColor: Colors.transparent),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -194,10 +197,11 @@ class CreateState extends State<Create> {
             ),
           ),
           Align(
-            alignment: Alignment.center,
+            alignment: Alignment.centerRight,
             child: SpeedDial(
               key: const Key('speed_dial_button'),
               icon: Icons.add,
+              backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
                   onTap: () async {
@@ -215,9 +219,9 @@ class CreateState extends State<Create> {
                   key: const Key('addToIngredientsyButtonText'),
                   child: const Icon(
                     Icons.abc,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
                 SpeedDialChild(
                   key: const Key('addToIngredientsButtonGallery'),
@@ -233,9 +237,9 @@ class CreateState extends State<Create> {
                   },
                   child: const Icon(
                     Icons.collections,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
                 SpeedDialChild(
                   key: const Key('addToIngredientsButtonCamera'),
@@ -251,9 +255,9 @@ class CreateState extends State<Create> {
                   },
                   child: const Icon(
                     Icons.photo_camera,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 )
               ],
             ),
@@ -284,6 +288,7 @@ class CreateState extends State<Create> {
             child: SpeedDial(
               //key: const Key('speed_dial_button'),
               icon: Icons.add,
+              backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
                   onTap: () async {
