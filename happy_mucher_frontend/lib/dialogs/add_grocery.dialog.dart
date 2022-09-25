@@ -4,6 +4,7 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happy_mucher_frontend/backend/prices.dart';
 
 Future<GroceryItemParams?> addGLDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const _GLDialog());
@@ -32,6 +33,11 @@ class GLDialogState extends State<_GLDialog> {
 
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
+  double suggested = 0.0;
+  double actual = 0.0;
+  List<double> cpi = [];
+  List<String> dates = [];
+  double current = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +55,11 @@ class GLDialogState extends State<_GLDialog> {
                 isDense: true,
                 label: Text('name'),
               ),
+              // onChanged: (value) {
+              //   setState(() {
+              //     nameController.text = nameController.text;
+              //   });
+              // },
             ),
           ),
           Padding(
@@ -63,8 +74,61 @@ class GLDialogState extends State<_GLDialog> {
                 isDense: true,
                 label: Text('Price'),
               ),
+              // onChanged: (value) {
+              //   setState(() {
+              //     priceController.text = priceController.text;
+              //   });
+              // },
             ),
           ),
+          TextButton(
+              onPressed: () {
+                String date = DateTime.now().month.toString();
+                if (date.length == 1) {
+                  String temp = '0' + date;
+                  date = temp;
+                }
+                //print(date);
+                FirebaseFirestore.instance
+                    .collection('Prices')
+                    .doc(nameController.text)
+                    .get()
+                    .then((DocumentSnapshot documentSnapshot) {
+                  if (documentSnapshot.exists) {
+                    //print('Document data: ${documentSnapshot.data()}');
+                    //print('Document data: ${documentSnapshot.data()}');
+                    Map<String, dynamic> data =
+                        documentSnapshot.data() as Map<String, dynamic>;
+                    actual = data['actual'];
+                    for (var i in data['cpi']) {
+                      cpi.add(i as double);
+                    }
+                    for (var i in data['dates']) {
+                      String date = i as String;
+                      final splitted = date.split('-');
+                      date = splitted[1];
+                      //date += "/";
+                      //date += splitted[0];
+                      //dates.add(new DateFormat('MM/yyyy').parse(date) as String);
+                      dates.add(date);
+                    }
+                    int index = getToday(date);
+                    //print('index ' + index.toString());
+
+                    double c = cpi[index] / 100;
+                    //print(c);
+                    current = (c * actual) + actual;
+                    setState(() {
+                      priceController.text = current.toStringAsFixed(2);
+                    });
+                    //return current;
+                  } else {
+                    print('Document does not exist on the database');
+                    //return current;
+                  }
+                });
+              },
+              child: Text("suggest"))
         ],
       ),
       actions: [
@@ -112,6 +176,22 @@ class GLDialogState extends State<_GLDialog> {
         )
       ],
     );
+  }
+
+  int getToday(String today) {
+    // print("actual");
+    // print(actual);
+    // print("cpi");
+    // print(cpi);
+    // print("dates");
+    // print(dates);
+
+    for (int i = 0; i < dates.length; i++) {
+      if (dates[i] == today) {
+        return i;
+      }
+    }
+    return (dates.length + 1);
   }
 }
 

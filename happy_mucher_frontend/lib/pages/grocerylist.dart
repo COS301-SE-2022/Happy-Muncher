@@ -13,6 +13,7 @@ import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happy_mucher_frontend/backend/prices.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -47,6 +48,7 @@ class GroceryListPageState extends State<GroceryListPage> {
     service = LocalNotificationService();
     service.intialize();
     listenToNotification();
+
   }
 
   void listenToNotification() =>
