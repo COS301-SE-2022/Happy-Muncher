@@ -77,12 +77,12 @@ dev_dependencies:
   flutter_launcher_icons: ^0.9.2
   flutter_native_splash: ^2.2.6
   flutter_lints: ^1.0.4
+  firebase_auth_mocks: ^0.8.6
 
 flutter_native_splash:
   image: assets/images/app_icon.png
   color: "#96429a"
-  color_on_dark: "#96429a" 
-
+  color_on_dark: "#96429a"
 
 flutter_icons:
   android: true
@@ -91,7 +91,6 @@ flutter_icons:
   image_path: "assets/images/app_icon.png"
   adaptive_icon_background: "#96429a"
   adaptive_icon_foreground: "assets/images/logo_foreground.png"
-
 
   mockito:
   test:
@@ -144,4 +143,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
