@@ -109,7 +109,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         backgroundColor: offWhite,
         title: Text(widget.name,
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 14)),
         // centerTitle: true,
         iconTheme: IconThemeData(color: Color.fromARGB(255, 168, 76, 184)),
         actions: <Widget>[
@@ -123,18 +125,22 @@ class IndividualRecipeState extends State<IndividualRecipe> {
               }
             },
             icon: Icon(Icons.favorite),
-            color: Color.fromARGB(255, 83, 61, 207),
+            color: Color.fromARGB(255, 150, 66, 154),
           )
         ],
       ),
-      backgroundColor: darkGrey,
       body: ListView(padding: const EdgeInsets.all(32), children: [
         //const SizedBox(height: 12),
         Text(widget.name,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         const SizedBox(height: 12),
-        if (widget.image != "") Image(image: NetworkImage(widget.image)),
+        if (widget.image != "")
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image(
+              image: NetworkImage(widget.image),
+            ),
+          ),
         //const SizedBox(height: 24),
         if (widget.description != "") Description(),
         const SizedBox(height: 24),
@@ -142,7 +148,11 @@ class IndividualRecipeState extends State<IndividualRecipe> {
             padding: const EdgeInsets.all(15),
             //color: lightGrey,
             decoration: BoxDecoration(
-                border: Border.all(color: llGrey), color: lightGrey),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Color.fromARGB(255, 150, 66, 154),
+                  width: 3.0,
+                )),
             //Color(0xFF2D2C31),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,15 +163,12 @@ class IndividualRecipeState extends State<IndividualRecipe> {
                       "Calories:  ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: offWhite,
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       widget.calories.toString(),
-                      style: TextStyle(
-                        color: offWhite,
-                      ),
+                      style: TextStyle(),
                     ),
                   ],
                 ),
@@ -171,14 +178,11 @@ class IndividualRecipeState extends State<IndividualRecipe> {
                       "Cook Time:  ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: offWhite,
                       ),
                     ),
                     Text(
                       widget.cookTime + " mins",
-                      style: TextStyle(
-                        color: offWhite,
-                      ),
+                      style: TextStyle(),
                     ),
                   ],
                 )
@@ -190,10 +194,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           "Ingredients",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: offWhite,
             fontSize: 20,
           ),
-          textAlign: TextAlign.left,
+          textAlign: TextAlign.center,
         ),
         //Text(ing),
 
@@ -201,7 +204,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
             shrinkWrap: true,
             itemCount: widget.ingredients.length,
             itemBuilder: (context, index) {
-              return ingredientCard(ingredient: widget.ingredients[index]);
+              return ingredientCard(
+                ingredient: widget.ingredients[index],
+              );
             }),
         const SizedBox(height: 18),
 
@@ -218,19 +223,22 @@ class IndividualRecipeState extends State<IndividualRecipe> {
             ),
           ),
           style: ElevatedButton.styleFrom(
-              primary: lightGrey,
-              side: BorderSide(
-                  width: 2, // the thickness
-                  color: lightGrey // the color of the border
-                  )),
+            primary: const Color.fromARGB(255, 150, 66, 154),
+            shape: const StadiumBorder(),
+            minimumSize: const Size(300, 50),
+            onPrimary: Colors.white,
+            side: const BorderSide(
+                color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+          ),
         ),
         const SizedBox(height: 24),
         Text(
           "Instructions",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: offWhite,
+            fontSize: 20,
           ),
+          textAlign: TextAlign.center,
         ),
 
         ListView.builder(
@@ -249,6 +257,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
+      style: TextButton.styleFrom(
+        primary: Color.fromARGB(255, 150, 66, 154),
+      ),
       child: Text("Cancel"),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop();
@@ -256,6 +267,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     );
 
     Widget glButton = TextButton(
+      style: TextButton.styleFrom(
+        primary: Color.fromARGB(255, 150, 66, 154),
+      ),
       child: Text("Add missing ingredients to Grocery List"),
       onPressed: () {
         toGL();
@@ -327,7 +341,6 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           "Description",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: offWhite,
             fontSize: 20,
           ),
           textAlign: TextAlign.left,
@@ -335,7 +348,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         SizedBox(height: 24),
         Container(
           decoration: BoxDecoration(
-              border: Border.all(color: llGrey), color: lightGrey),
+              border: Border.all(
+            color: Color.fromARGB(255, 150, 66, 154),
+          )),
           padding: const EdgeInsets.all(15),
           //color: Color(0xFF2D2C31),
           //color: lightGrey,
