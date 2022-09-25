@@ -77,22 +77,28 @@ class CreateState extends State<Create> {
             style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
-          leading: TextButton(
-            onPressed: () {
-              myRecipe = [];
-              myRecipe.add(widget.title);
-              myRecipe.add(widget.description);
-              myRecipe.add(widget.calories.toString());
-              myRecipe.add(widget.cookTime);
-              _customRecipe.add({
-                "details": myRecipe,
-                "instructions": widget.steps,
-                "ingredients": widget.ingredients
-              });
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyRecipeBook()));
-            },
-            child: const Text("Done"),
+          leading: Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () {
+                myRecipe = [];
+                myRecipe.add(widget.title);
+                myRecipe.add(widget.description);
+                myRecipe.add(widget.calories.toString());
+                myRecipe.add(widget.cookTime);
+                _customRecipe.add({
+                  "details": myRecipe,
+                  "instructions": widget.steps,
+                  "ingredients": widget.ingredients
+                });
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyRecipeBook()));
+              },
+              child: const Text(
+                "Done",
+                textAlign: TextAlign.right,
+              ),
+            ),
           ),
           backgroundColor: Colors.transparent),
       body: ListView(
@@ -284,7 +290,7 @@ class CreateState extends State<Create> {
             ),
           ),
           Align(
-            alignment: Alignment.center,
+            alignment: Alignment.centerRight,
             child: SpeedDial(
               //key: const Key('speed_dial_button'),
               icon: Icons.add,
@@ -306,9 +312,9 @@ class CreateState extends State<Create> {
                   //key: const Key('addToInventoryButtonText'),
                   child: const Icon(
                     Icons.abc,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
                 SpeedDialChild(
                   //key: const Key('addToInventoryButtonGallery'),
@@ -324,9 +330,9 @@ class CreateState extends State<Create> {
                   },
                   child: const Icon(
                     Icons.collections,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
                 SpeedDialChild(
                   //key: const Key('addToInventoryButtonCamera'),
@@ -342,9 +348,9 @@ class CreateState extends State<Create> {
                   },
                   child: const Icon(
                     Icons.photo_camera,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 150, 66, 154),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 )
               ],
             ),
