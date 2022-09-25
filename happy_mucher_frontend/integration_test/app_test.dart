@@ -26,13 +26,13 @@ void main() {
       await tester.tap(emailField);
       await tester.pumpAndSettle();
 
-      await tester.enterText(emailField, 'u20554240@tuks.co.za');
+      await tester.enterText(emailField, 'codeblooded301@gmail.com');
       await tester.pumpAndSettle();
 
       await tester.tap(passwordField);
       await tester.pumpAndSettle();
 
-      await tester.enterText(passwordField, '123456');
+      await tester.enterText(passwordField, 'cos301');
       await tester.pumpAndSettle();
 
       await tester.tap(submitButton);
@@ -45,7 +45,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // in grocery list page
-      await tester.tap(find.byKey(Key('speed_dial_button')));
+      /*await tester.tap(find.byKey(Key('speed_dial_button')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('addToInventoryButtonText')));
       await tester.pumpAndSettle();
@@ -60,14 +60,14 @@ void main() {
       await tester.enterText(
           find.byKey(Key('groceryListDialogPriceField')), '10');
       await tester.pump();
-      await tester.tap(find.byKey(Key('groceryListDialogAddButton')));
+      await tester.tap(find.byKey(Key('groceryListDialogAddButton')));*/
       /*await tester.pumpAndSettle();
       await tester.tap(find.byType(CheckboxListTile)); */
 
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      //await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       //in inventory page
-      await tester.tap(find.byIcon(Icons.receipt_outlined));
+      await tester.tap(find.byKey(Key('Inventory')));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(Key('inventory_speed_dial_button')));
