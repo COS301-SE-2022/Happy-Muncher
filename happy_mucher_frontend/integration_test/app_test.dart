@@ -70,7 +70,7 @@ void main() {
       await tester.tap(find.byKey(Key('Inventory')));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(Key('inventory_speed_dial_button')));
+      await tester.tap(find.byKey(Key('addToInventoryButton')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('addToInventoryButtonText')));
       await tester.pumpAndSettle();
@@ -78,7 +78,7 @@ void main() {
       await tester.tap(find.byKey(Key('inventoryDialogNameField')));
       await tester.pumpAndSettle();
       await tester.enterText(
-          find.byKey(Key('inventoryDialogNameField')), 'juice');
+          find.byKey(Key('inventoryDialogNameField')), 'ice cream');
       await tester.pump();
       await tester.tap(find.byKey(Key('inventoryDialogQuantityField')));
       await tester.pumpAndSettle();
@@ -86,19 +86,23 @@ void main() {
           find.byKey(Key('inventoryDialogQuantityField')), '1');
       await tester.pump();
       await tester.tap(find.byKey(Key('inventoryDialogAddButton')));
+      await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
-
-      await tester.dragUntilVisible(find.byIcon(Icons.delete),
-          find.byType(SlidableAction), const Offset(-300, 0));
-      await tester.tap(find.byIcon(Icons.delete));
-      await tester.pumpAndSettle();
+      final NavigatorState nav = tester.state(find.byType(Navigator));
+      nav.pop();
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
+      /*await tester.dragUntilVisible(find.byIcon(Icons.delete),
+          find.byKey(Key('ice cream')), const Offset(-300, 0));
+      await tester.tap(find.byIcon(Icons.delete));
+      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));*/
+
       //in budget page
-      await tester.tap(find.text('Budget'));
+      await tester.tap(find.byKey(Key('Budget')));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(ElevatedButton));
+      /* await tester.tap(find.byType(ElevatedButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('editBudget')));
       await tester.pumpAndSettle();
@@ -135,11 +139,19 @@ void main() {
 
       final NavigatorState navigator = tester.state(find.byType(Navigator));
       navigator.pop();
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));*/
 
-      await tester.tap(find.text('Meal-Plan'));
+      // await tester.tap(find.text('Meal-Plan'));
+      //await tester.pumpAndSettle();
+      await tester.tap(find.byKey(Key('Recipe book')));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Recipe book'));
+      await tester.tap(find.byKey(Key('dots')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(Key('add')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Yes'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Monday'));
       await tester.pumpAndSettle();
 
       await tester.widget(find.byType(AppBar));
