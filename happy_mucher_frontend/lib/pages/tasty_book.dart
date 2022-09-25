@@ -47,7 +47,7 @@ class TastyBookState extends State<TastyBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, "Recipe Book"),
+      appBar: buildAppBar(context, "Tasty Recipe Book"),
       body: SingleChildScrollView(
           child: Column(
         children: [

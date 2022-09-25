@@ -177,6 +177,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
                       )));
         },
         child: Icon(Icons.add),
+        backgroundColor: Color.fromARGB(255, 150, 66, 154),
       ),
     );
   }

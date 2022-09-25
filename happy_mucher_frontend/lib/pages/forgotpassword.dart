@@ -14,7 +14,11 @@ class ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset Password'),
+        backgroundColor: Colors.transparent,
+        leading: BackButton(
+          color: Colors.black,
+        ),
+        title: Text('Reset Password', style: TextStyle(color: Colors.black)),
       ),
       body: Column(
         children: [
@@ -33,7 +37,15 @@ class ForgotPasswordState extends State<ForgotPassword> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              RaisedButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color.fromARGB(255, 150, 66, 154),
+                  shape: const StadiumBorder(),
+                  minimumSize: const Size(300, 50),
+                  onPrimary: Colors.white,
+                  side: const BorderSide(
+                      color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+                ),
                 child: Text('Send Request'),
                 onPressed: () {
                   auth.sendPasswordResetEmail(email: _email);
@@ -48,7 +60,6 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   );
                 },
-                color: Theme.of(context).accentColor,
               ),
             ],
           ),

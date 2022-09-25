@@ -25,10 +25,10 @@ class MyHomePage extends StatefulWidget {
 class HomePageState extends State<MyHomePage> {
   int index = 0;
   final screens = [
-    GroceryListPage(),
-    IventoryPage(),
+    const GroceryListPage(),
+    const IventoryPage(),
     MyBudget(),
-    MealPage(),
+    const MealPage(),
     RecipeBook(),
   ];
 
@@ -39,19 +39,19 @@ class HomePageState extends State<MyHomePage> {
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
-              indicatorColor: Color.fromARGB(100, 150, 66, 154),
+              indicatorColor: const Color.fromARGB(100, 150, 66, 154),
               labelTextStyle: MaterialStateProperty.all(
-                TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
               )),
           child: NavigationBar(
               height: 60,
               labelBehavior:
                   NavigationDestinationLabelBehavior.onlyShowSelected,
               selectedIndex: index,
-              animationDuration: Duration(seconds: 3),
+              animationDuration: const Duration(seconds: 3),
               onDestinationSelected: (index) =>
                   setState(() => this.index = index),
-              destinations: [
+              destinations: const [
                 NavigationDestination(
                   icon: Icon(Icons.local_grocery_store_outlined),
                   selectedIcon: Icon(Icons.local_grocery_store),
