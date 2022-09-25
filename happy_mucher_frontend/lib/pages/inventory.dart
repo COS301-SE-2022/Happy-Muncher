@@ -140,6 +140,7 @@ class _IventoryPageState extends State<IventoryPage> {
 
 // Add new product
       floatingActionButton: SpeedDial(
+        key: const Key('inventory_speed_dial_button'),
         icon: Icons.add,
         backgroundColor: Color.fromARGB(255, 150, 66, 154),
         children: [

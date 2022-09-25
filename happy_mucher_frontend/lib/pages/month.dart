@@ -278,6 +278,7 @@ class MyMonthState extends State<Month> {
           //WeekOne(),
           Container(
               child: CarouselSlider(
+                  key: Key('Week1 carousel'),
                   options: CarouselOptions(
                     aspectRatio: 1.4,
                     enlargeCenterPage: true,
@@ -610,6 +611,7 @@ class MyMonthState extends State<Month> {
               Text("R " + rem1 + "   "),
             ]),
             IconButton(
+              key: Key('Week1 edit'),
               alignment: Alignment.bottomRight,
               //color: Colors.green,
               //hoverColor: Colors.green,
@@ -984,6 +986,7 @@ class MyMonthState extends State<Month> {
 
   //double update = 0;
   Widget EstTotal() => ElevatedButton(
+        key: Key("Compare"),
         onPressed: () async {
           est = 0;
           var totals = FirebaseFirestore.instance
