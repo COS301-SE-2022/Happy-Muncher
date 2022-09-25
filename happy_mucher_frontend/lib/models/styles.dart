@@ -76,7 +76,6 @@ abstract class Styles {
         //* Custom Google Font
         //  fontFamily: Devfest.google_sans_family,
         //primarySwatch: Colors.red,
-
         primaryColor: isDarkTheme ? Colors.white : Colors.black,
         backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
         indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
