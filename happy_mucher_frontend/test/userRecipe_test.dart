@@ -42,23 +42,29 @@ void main() {
       );
 
       setUp(() async {
-        final query = await firestore.collection('Inventory').get();
+        final query = await firestore
+            .collection('Users')
+            .doc('abc')
+            .collection('CustomRecipe')
+            .get();
         final futures = query.docs.map((e) {
-          return firestore.collection('Inventory').doc(e.id).delete();
+          return firestore
+              .collection('Users')
+              .doc('abc')
+              .collection('CustomRecipe')
+              .doc(e.id)
+              .delete();
         });
         return await Future.wait(futures);
       });
 
       testWidgets(
-        'Testing if page is empty on start up',
+        'Testing if text boxes are empty on start up',
         (WidgetTester tester) async {
           //test to see if the list is empty on initial start up
           //runs the app and checks the list to see if it has 0 list tile widgets
           //success if finds 0 widgets
           await tester.pumpWidget(testApp);
-
-          final inventoryList = find.byKey(const Key('Inventory_ListView'));
-          expect(inventoryList, findsNothing);
         },
       );
     },
