@@ -4,7 +4,7 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:happy_mucher_frontend/backend/prices.dart';
+//import 'package:happy_mucher_frontend/backend/prices.dart';
 
 Future<GroceryItemParams?> addGLDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const _GLDialog());
