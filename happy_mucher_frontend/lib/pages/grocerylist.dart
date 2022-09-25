@@ -113,52 +113,50 @@ class GroceryListPageState extends State<GroceryListPage> {
                           motion: const ScrollMotion(),
                           children: [
                             SlidableAction(
-                              onPressed: (context) {
+                              onPressed: (context) async {
+                                await _products
+                                    .doc(documentSnapshot.id)
+                                    .delete();
+
+                                var docSnapshot =
+                                    await _gltotals.doc('Totals').get();
+
+                                if (docSnapshot.exists) {
+                                  final currentTotals =
+                                      ((await _gltotals.doc("Totals").get())
+                                          .data() as Map);
+                                  final estimatedTotals =
+                                      currentTotals["estimated total"] as num;
+                                  final shoppingTotals =
+                                      currentTotals["shopping total"] as num;
+
+                                  final isBought = documentSnapshot['bought'];
+
+                                  if (isBought == false) {
+                                    _gltotals.doc("Totals").set({
+                                      'estimated total': estimatedTotals,
+                                      'shopping total': shoppingTotals -
+                                          documentSnapshot['price']
+                                    });
+                                  } else {
+                                    _gltotals.doc("Totals").set({
+                                      'estimated total': estimatedTotals -
+                                          documentSnapshot['price'],
+                                      'shopping total': shoppingTotals -
+                                          documentSnapshot['price']
+                                    });
+                                  }
+                                }
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'You have successfully deleted a grocery list item',
+                                    ),
+                                  ),
+                                );
                                 setState(
-                                  () async {
-                                    _products.doc(documentSnapshot.id).delete();
-
-                                    var docSnapshot =
-                                        await _gltotals.doc('Totals').get();
-
-                                    if (docSnapshot.exists) {
-                                      final currentTotals =
-                                          ((await _gltotals.doc("Totals").get())
-                                              .data() as Map);
-                                      final estimatedTotals =
-                                          currentTotals["estimated total"]
-                                              as num;
-                                      final shoppingTotals =
-                                          currentTotals["shopping total"]
-                                              as num;
-
-                                      final isBought =
-                                          documentSnapshot['bought'];
-
-                                      if (isBought == false) {
-                                        _gltotals.doc("Totals").set({
-                                          'estimated total': estimatedTotals,
-                                          'shopping total': shoppingTotals -
-                                              documentSnapshot['price']
-                                        });
-                                      } else {
-                                        _gltotals.doc("Totals").set({
-                                          'estimated total': estimatedTotals -
-                                              documentSnapshot['price'],
-                                          'shopping total': shoppingTotals -
-                                              documentSnapshot['price']
-                                        });
-                                      }
-                                    }
-
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          'You have successfully deleted a grocery list item',
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                  () async {},
                                 );
                               },
                               backgroundColor: Colors.red,
