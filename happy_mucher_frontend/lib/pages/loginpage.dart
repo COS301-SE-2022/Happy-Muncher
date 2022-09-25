@@ -110,8 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       //password
                       TextFormField(
                         key: const ValueKey("Password"),
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(labelText: 'Password'),
+                        style: const TextStyle(fontSize: 20),
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
                         obscureText: true,
                         validator: (value) {
                           if (value!.isEmpty || value.length <= 5) {
