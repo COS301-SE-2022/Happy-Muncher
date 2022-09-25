@@ -79,13 +79,16 @@ class ProfileState extends State<Profile> {
                   MaterialPageRoute(builder: (context) => LoginScreen())),
             },
             child: const Text(
-              'Log out',
+              "Log out",
               style: TextStyle(fontSize: 15),
             ),
             style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                shape: StadiumBorder(),
-                onPrimary: Colors.black),
+              primary: Colors.white,
+              shape: StadiumBorder(),
+              onPrimary: Color.fromARGB(255, 150, 66, 154),
+              side: BorderSide(
+                  color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+            ),
           ),
 
           /*Expanded(
@@ -115,34 +118,36 @@ class ProfileState extends State<Profile> {
                 SizedBox(
                   height: 1,
                 ),
-                Container(
-                    width: 350,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                      color: Colors.grey,
-                      width: 1,
-                    ))),
-                    child: Row(children: [
-                      Expanded(
-                          child: TextButton(
-                              onPressed: () {
-                                navigateSecondPage(editPage);
-                              },
-                              child: Text(
-                                getValue,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    height: 1.4,
-                                    color: Colors.black),
-                              ))),
-                      Icon(
-                        Icons.keyboard_arrow_right,
+                Expanded(
+                  child: Container(
+                      width: 350,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
                         color: Colors.grey,
-                        size: 30.0,
-                      )
-                    ]))
+                        width: 1,
+                      ))),
+                      child: Row(children: [
+                        Expanded(
+                            child: TextButton(
+                                onPressed: () {
+                                  navigateSecondPage(editPage);
+                                },
+                                child: Text(
+                                  getValue,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      height: 1.4,
+                                      color: Colors.black),
+                                ))),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Colors.grey,
+                          size: 30.0,
+                        )
+                      ])),
+                )
               ])
             ],
           ));
