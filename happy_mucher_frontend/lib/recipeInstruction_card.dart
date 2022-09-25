@@ -16,11 +16,17 @@ class InstructionCard extends StatelessWidget {
 
     return Flexible(
         child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Color.fromARGB(255, 150, 66, 154),
+                  width: 3.0,
+                )),
             margin: EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
             // decoration: BoxDecoration(
             //     border: Border(bottom: BorderSide(color: llGrey, width: 2))),
-            color: lightGrey,
+
             child: Row(
               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +34,6 @@ class InstructionCard extends StatelessWidget {
                 Text(
                   " " + step.toString() + "   ",
                   style: TextStyle(
-                    color: offWhite,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -36,7 +41,7 @@ class InstructionCard extends StatelessWidget {
                 Expanded(
                     child: Text(
                   instruction,
-                  style: TextStyle(color: offWhite, fontSize: 15),
+                  style: TextStyle(fontSize: 15),
                 ))
               ],
             )));
