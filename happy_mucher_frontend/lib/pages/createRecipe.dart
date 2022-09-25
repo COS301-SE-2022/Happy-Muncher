@@ -130,6 +130,8 @@ class CreateState extends State<Create> {
                 ),
           ),
           const SizedBox(height: 14),
+          const Text('Description ', style: TextStyle(height: 3.2)),
+          const SizedBox(height: 14),
           TextField(
               key: const Key("description"),
               controller: descriptionController,
@@ -149,6 +151,8 @@ class CreateState extends State<Create> {
               // autofocus: true,
               ),
           const SizedBox(height: 14),
+          const Text('Calories ', style: TextStyle(height: 3.2)),
+          const SizedBox(height: 14),
           TextField(
               key: const Key("entercalories"),
               controller: caloriesController,
@@ -167,6 +171,8 @@ class CreateState extends State<Create> {
               })
               // autofocus: true,
               ),
+          const SizedBox(height: 14),
+          const Text('Cooktime ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           TextField(
               key: const Key("entertime"),
