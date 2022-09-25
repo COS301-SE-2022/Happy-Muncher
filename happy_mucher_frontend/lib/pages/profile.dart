@@ -80,10 +80,11 @@ class ProfileState extends State<Profile> {
             },
             child: const Text(
               "Log out",
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 20),
             ),
             style: ElevatedButton.styleFrom(
               primary: Colors.white,
+              minimumSize: Size(150, 50),
               shape: StadiumBorder(),
               onPrimary: Color.fromARGB(255, 150, 66, 154),
               side: BorderSide(
