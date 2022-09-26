@@ -82,7 +82,6 @@ class _MyBudgetState extends State<MyBudget> {
         },
         child: const Text("View budget"),
         style: ElevatedButton.styleFrom(
-            primary: Colors.white,
             onPrimary: Color.fromARGB(255, 150, 66, 154),
             padding: EdgeInsets.all(10.0),
             minimumSize: Size(300, 80),
