@@ -217,7 +217,7 @@ class CreateState extends State<Create> {
           Align(
             alignment: Alignment.centerRight,
             child: SpeedDial(
-              key: const Key('speed_dial_button'),
+              key: const Key('speed_dial_button_ingredients'),
               icon: Icons.add,
               backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
@@ -304,11 +304,12 @@ class CreateState extends State<Create> {
           Align(
             alignment: Alignment.centerRight,
             child: SpeedDial(
-              //key: const Key('speed_dial_button'),
+              key: const Key('speed_dial_button_steps'),
               icon: Icons.add,
               backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
+                  key: const Key('speed_dial_button_steps_text'),
                   onTap: () async {
                     final newInstruction = await showAddInstructionDialog(
                       context,
@@ -329,7 +330,7 @@ class CreateState extends State<Create> {
                   backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
                 SpeedDialChild(
-                  //key: const Key('addToInventoryButtonGallery'),
+                  key: const Key('speed_dial_button_steps_gallery'),
                   onTap: () async {
                     final newSteps =
                         await captureImageReceiptRecipe(ImageSource.gallery);
@@ -347,7 +348,7 @@ class CreateState extends State<Create> {
                   backgroundColor: Color.fromARGB(100, 150, 66, 154),
                 ),
                 SpeedDialChild(
-                  //key: const Key('addToInventoryButtonCamera'),
+                  key: const Key('camera'),
                   onTap: () async {
                     final newSteps =
                         await captureImageReceiptRecipe(ImageSource.camera);
