@@ -63,7 +63,7 @@ void main() {
       return await Future.wait(futures);
     });
     testWidgets(
-      'Testing if page is empty on start up',
+      'Testing page has buttons',
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(testApp);
