@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
@@ -28,7 +29,9 @@ class _ChangeProfileState extends State<ChangeProfile> {
     super.dispose();
   }
 
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  User? get currentUser => firebaseAuth.currentUser;
+
   changeProfilePic() async {
     try {
       await currentUser!.updatePhotoURL(newPhotoURL);
@@ -37,7 +40,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
         MaterialPageRoute(builder: (context) => Profile()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             backgroundColor: Colors.grey,
             content: Text(
               'Your Profile has been Changed',
