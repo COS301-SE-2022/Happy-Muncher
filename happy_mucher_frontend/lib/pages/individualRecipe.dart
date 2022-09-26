@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:happy_mucher_frontend/pages/recipebook.dart';
 import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
@@ -105,31 +106,23 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: offWhite,
-        title: Text(widget.name,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14)),
-        // centerTitle: true,
-        iconTheme: IconThemeData(color: Color.fromARGB(255, 168, 76, 184)),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () async {
-              final String id = widget.id.toString();
-              if (id != null) {
-                await _favourites.add({
-                  "ID": id,
-                });
-              }
-            },
-            icon: Icon(Icons.favorite),
-            color: Color.fromARGB(255, 150, 66, 154),
-          )
-        ],
-      ),
+      appBar: buildAppBar(context, widget.name),
+      // centerTitle: true,
       body: ListView(padding: const EdgeInsets.all(32), children: [
+        IconButton(
+          onPressed: () async {
+            final String id = widget.id.toString();
+            if (id != null) {
+              await _favourites.add({
+                "ID": id,
+              });
+            }
+          },
+          alignment: Alignment.topRight,
+          icon: Icon(Icons.favorite),
+          color: Color.fromARGB(255, 150, 66, 154),
+        ),
+
         //const SizedBox(height: 12),
         Text(widget.name,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),

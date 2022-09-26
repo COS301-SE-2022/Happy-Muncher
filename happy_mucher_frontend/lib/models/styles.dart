@@ -76,6 +76,12 @@ abstract class Styles {
         //* Custom Google Font
         //  fontFamily: Devfest.google_sans_family,
         //primarySwatch: Colors.red,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            // Makes all my ElevatedButton green
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+          ),
+        ),
         textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
           textStyle: MaterialStateProperty.all(TextStyle(
