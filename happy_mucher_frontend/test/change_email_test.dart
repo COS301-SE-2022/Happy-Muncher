@@ -84,7 +84,7 @@ void main() {
 
           await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          expect(user.email, "test@gmail.com");
+          expect(user.email, "bob@somedomain.com");
         },
       );
     },
