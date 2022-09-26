@@ -83,7 +83,6 @@ class ProfileState extends State<Profile> {
               style: TextStyle(fontSize: 20),
             ),
             style: ElevatedButton.styleFrom(
-              primary: Colors.white,
               minimumSize: Size(150, 50),
               shape: StadiumBorder(),
               onPrimary: Color.fromARGB(255, 150, 66, 154),
@@ -135,9 +134,9 @@ class ProfileState extends State<Profile> {
                                 child: Text(
                                   getValue,
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     height: 1.4,
-                                    //color: Color.fromARGB(255, 150, 66, 154),
+                                    color: Color.fromARGB(255, 129, 118, 129),
                                   ),
                                 ))),
                         Icon(
