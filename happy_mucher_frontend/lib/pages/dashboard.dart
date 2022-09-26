@@ -36,26 +36,6 @@ class DashboardState extends State<DashboardPage> {
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
-  CollectionReference get _lunch => firestore
-      .collection('Users')
-      .doc(uid)
-      .collection('Meal Planner')
-      .doc(DateFormat('EEEE').format(DateTime.now()))
-      .collection('Lunch');
-
-  CollectionReference get _breakfast => firestore
-      .collection('Users')
-      .doc(uid)
-      .collection('Meal Planner')
-      .doc(DateFormat('EEEE').format(DateTime.now()))
-      .collection('Breakfast');
-
-  CollectionReference get _supper => firestore
-      .collection('Users')
-      .doc(uid)
-      .collection('Meal Planner')
-      .doc(DateFormat('EEEE').format(DateTime.now()))
-      .collection('Supper');
 
   CollectionReference get _gltotals =>
       firestore.collection('Users').doc(uid).collection('GL totals');
