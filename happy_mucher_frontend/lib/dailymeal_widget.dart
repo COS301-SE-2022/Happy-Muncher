@@ -14,7 +14,8 @@ class MealWidget extends StatefulWidget {
 }
 
 class MealWidgetState extends State<MealWidget> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _meals =>
       firestore.collection('Users').doc(uid).collection('Meal Planner');
