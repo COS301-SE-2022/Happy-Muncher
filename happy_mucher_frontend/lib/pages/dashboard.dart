@@ -104,7 +104,7 @@ class DashboardState extends State<DashboardPage> {
     var profile = FirebaseAuth.instance.currentUser?.photoURL;
     if (profile == null) {
       profile ??=
-          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+          'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png';
     }
     return Scaffold(
       appBar: AppBar(
@@ -387,9 +387,7 @@ class DashboardState extends State<DashboardPage> {
             child: Stack(alignment: Alignment.topCenter, children: [
               Container(
                 margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text(
-                    'Shopping Sprees for ' +
-                        DateFormat('MMMM').format(DateTime.now()),
+                child: Text(DateFormat('MMMM').format(DateTime.now()),
                     style:
                         TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center),
@@ -525,7 +523,7 @@ class DashboardState extends State<DashboardPage> {
                   child: Center(
                     child: Column(
                       children: <Widget>[
-                        Text('Total spent each month',
+                        Text('Shopping Sprees',
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center),
