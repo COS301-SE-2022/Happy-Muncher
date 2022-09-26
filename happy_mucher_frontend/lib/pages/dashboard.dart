@@ -29,7 +29,10 @@ class DashboardPage extends StatefulWidget {
 
 class DashboardState extends State<DashboardPage> {
   final FirebaseFirestore firestore = GetIt.I.get();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
+  User? get user => firebaseAuth.currentUser;
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
@@ -53,6 +56,12 @@ class DashboardState extends State<DashboardPage> {
       .collection('Meal Planner')
       .doc(DateFormat('EEEE').format(DateTime.now()))
       .collection('Supper');
+
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
+
+  CollectionReference get _budget =>
+      firestore.collection('Users').doc(uid).collection('Budget');
 
   String getTimeofDay() {
     int h = DateTime.now().hour;
@@ -101,7 +110,7 @@ class DashboardState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    var profile = FirebaseAuth.instance.currentUser?.photoURL;
+    var profile = user?.photoURL;
     if (profile == null) {
       profile ??=
           'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png';
@@ -230,11 +239,7 @@ class DashboardState extends State<DashboardPage> {
                     child: Container(
                       margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
                       child: StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('GL totals')
-                            .snapshots(),
+                        stream: _gltotals.snapshots(),
                         builder: (context,
                             AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                           if (streamSnapshot.hasData) {
@@ -403,11 +408,7 @@ class DashboardState extends State<DashboardPage> {
                 child: Container(
                   margin: EdgeInsets.fromLTRB(25, 130, 0, 50),
                   child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('Users')
-                        .doc(uid)
-                        .collection('Budget')
-                        .snapshots(),
+                    stream: _budget.snapshots(),
                     builder:
                         (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                       if (streamSnapshot.hasData) {
@@ -479,11 +480,7 @@ class DashboardState extends State<DashboardPage> {
 
   Widget buildBudgetcard(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('Users')
-          .doc(uid)
-          .collection('Budget')
-          .snapshots(),
+      stream: _budget.snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return CircularProgressIndicator();
