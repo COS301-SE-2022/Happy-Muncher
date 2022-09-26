@@ -52,6 +52,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
             const SizedBox(height: 8),
             const SizedBox(height: 32),
             SizedBox(
+              key: const Key('addButton'),
               width: double.infinity,
               child: ElevatedButton(
                 style: ButtonStyle(
