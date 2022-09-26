@@ -30,13 +30,11 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
   final FirebaseAuth firebaseAuth = GetIt.I.get();
 
-  //final currentUser = FirebaseAuth.instance.currentUser;
   User? get currentUser => firebaseAuth.currentUser;
   changeEmail() async {
     try {
       await currentUser!.updateEmail(newEmail);
       firebaseAuth.signOut();
-      //FirebaseAuth.instance.signOut();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
