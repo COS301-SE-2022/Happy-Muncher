@@ -76,8 +76,14 @@ abstract class Styles {
         //* Custom Google Font
         //  fontFamily: Devfest.google_sans_family,
         //primarySwatch: Colors.red,
+        textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+          textStyle: MaterialStateProperty.all(TextStyle(
+            color: isDarkTheme ? Colors.white : Colors.black,
+          )),
+        )),
         primaryColor: isDarkTheme ? Colors.white : Colors.black,
-        backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
+        backgroundColor: isDarkTheme ? Colors.grey : Color(0xffF1F5FB),
         indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
         buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
         hintColor:
@@ -88,7 +94,7 @@ abstract class Styles {
         disabledColor: Colors.grey,
         textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
         cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
-        canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
+        canvasColor: isDarkTheme ? Color(0xFF212025) : Color(0xFFDFDEE3),
         brightness: isDarkTheme ? Brightness.dark : Brightness.light,
         buttonTheme: ButtonThemeData(
           buttonColor: isDarkTheme ? Colors.blue : Colors.orange,
@@ -100,7 +106,9 @@ abstract class Styles {
         ),
         appBarTheme: AppBarTheme(
           titleTextStyle: TextStyle(
-              color: isDarkTheme ? Colors.white : Colors.black, fontSize: 18),
+              color: isDarkTheme ? Colors.white : Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
           elevation: 0.0,
           actionsIconTheme:
               IconThemeData(color: isDarkTheme ? Colors.white : Colors.black),
