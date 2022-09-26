@@ -111,9 +111,9 @@ class MealWidgetState extends State<MealWidget> {
                     child: Text(
                       widget.meal,
                       style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 0, 0, 0)),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.left,
                     ),
                   ),
