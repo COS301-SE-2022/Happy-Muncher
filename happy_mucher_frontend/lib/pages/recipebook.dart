@@ -65,7 +65,9 @@ class RecipeBookState extends State<RecipeBook> {
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
-                    shape: const StadiumBorder(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     minimumSize: const Size(300, 100),
                     onPrimary: const Color.fromARGB(255, 150, 66, 154),
                     side: const BorderSide(
@@ -80,11 +82,13 @@ class RecipeBookState extends State<RecipeBook> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 30),
                   )),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: size.height * 0.06),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
-                    shape: const StadiumBorder(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     minimumSize: const Size(300, 100),
                     onPrimary: const Color.fromARGB(255, 150, 66, 154),
                     side: const BorderSide(
@@ -101,11 +105,13 @@ class RecipeBookState extends State<RecipeBook> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 30),
                   )),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: size.height * 0.06),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
-                    shape: const StadiumBorder(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     minimumSize: const Size(300, 100),
                     onPrimary: const Color.fromARGB(255, 150, 66, 154),
                     side: const BorderSide(
