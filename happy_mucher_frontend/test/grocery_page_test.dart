@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +31,7 @@ void main() {
       email: 'bob@somedomain.com',
       displayName: 'Bob',
       photoURL:
-          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png',
+          'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png',
     );
     final auth = MockFirebaseAuth(
       mockUser: user,
@@ -41,6 +43,7 @@ void main() {
         body: GroceryListPage(),
       ),
     );
+    setUpAll(() => HttpOverrides.global = null);
 
     setUp(() async {
       final query = await firestore
