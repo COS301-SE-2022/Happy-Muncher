@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -21,7 +22,7 @@ void main() {
         email: 'bob@somedomain.com',
         displayName: 'Bob',
         photoURL:
-            'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png',
+            'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png',
       );
       final auth = MockFirebaseAuth(
         mockUser: user,
@@ -59,7 +60,7 @@ void main() {
       });
 
       testWidgets(
-        'Testing if page on starts up correctly',
+        'Testing if text fields on starts up correctly',
         (WidgetTester tester) async {
           //test if page starts properly
           await tester.pumpWidget(testApp);
@@ -72,15 +73,47 @@ void main() {
       );
 
       testWidgets(
-        'Testing if page on starts up correctly',
+        'Testing if first buttons on starts up correctly',
         (WidgetTester tester) async {
           //test if page starts properly
           await tester.pumpWidget(testApp);
 
           await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-          final textboxes = find.byType(TextField);
-          expect(textboxes, findsNWidgets(4));
+          final lastTextField = find.byKey(const Key('entercalories'));
+
+          expect(lastTextField, findsOneWidget);
+
+          await tester.drag(lastTextField, const Offset(0.0, -300));
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final speeddials =
+              find.byKey(const Key('speed_dial_button_ingredients'));
+
+          expect(speeddials, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'Testing if second buttons on starts up correctly',
+        (WidgetTester tester) async {
+          //test if page starts properly
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final lastTextField = find.byKey(const Key('entercalories'));
+
+          expect(lastTextField, findsOneWidget);
+
+          await tester.drag(lastTextField, const Offset(0.0, -300));
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final speeddials = find.byKey(const Key('speed_dial_button_steps'));
+
+          expect(speeddials, findsOneWidget);
         },
       );
     },
