@@ -99,8 +99,8 @@ abstract class Styles {
               : Colors.white.withOpacity(0.9),
         ),
         appBarTheme: AppBarTheme(
-          titleTextStyle:
-              TextStyle(color: isDarkTheme ? Colors.white : Colors.black),
+          titleTextStyle: TextStyle(
+              color: isDarkTheme ? Colors.white : Colors.black, fontSize: 18),
           elevation: 0.0,
           actionsIconTheme:
               IconThemeData(color: isDarkTheme ? Colors.white : Colors.black),
