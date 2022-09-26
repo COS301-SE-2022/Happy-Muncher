@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -8,7 +9,7 @@ class ForgotPassword extends StatefulWidget {
 
 class ForgotPasswordState extends State<ForgotPassword> {
   String _email = '';
-  final auth = FirebaseAuth.instance;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 ),
                 child: Text('Send Request'),
                 onPressed: () {
-                  auth.sendPasswordResetEmail(email: _email);
+                  firebaseAuth.sendPasswordResetEmail(email: _email);
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
