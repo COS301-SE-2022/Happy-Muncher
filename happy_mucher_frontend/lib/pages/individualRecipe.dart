@@ -43,12 +43,11 @@ class IndividualRecipe extends StatefulWidget {
 }
 
 class IndividualRecipeState extends State<IndividualRecipe> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  // final uid = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference get _favourites =>
       firestore.collection('Users').doc(uid).collection('Recipes');
-  //final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _glItems =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
@@ -72,7 +71,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
   List<String> gl = [];
   getInventory() {
-    FirebaseFirestore.instance
+    firestore
         .collection('Users')
         .doc(uid)
         .collection('Inventory')
