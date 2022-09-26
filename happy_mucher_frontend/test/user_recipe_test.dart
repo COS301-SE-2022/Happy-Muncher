@@ -116,6 +116,21 @@ void main() {
           expect(speeddials, findsOneWidget);
         },
       );
+
+      testWidgets(
+        'Testing typing in text field 1',
+        (WidgetTester tester) async {
+          //test if page starts properly
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final textboxes = find.byKey(const Key('enterTitle'));
+          expect(textboxes, findsOneWidget);
+
+          await tester.enterText(textboxes, 'Test recipe');
+        },
+      );
     },
   );
 }
