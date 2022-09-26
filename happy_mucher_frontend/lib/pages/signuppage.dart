@@ -175,7 +175,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       //Text("Sign in with Google"),
                       ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
                             shape: StadiumBorder(),
                             minimumSize: Size(300, 50),
                             onPrimary: Color.fromARGB(255, 150, 66, 154),

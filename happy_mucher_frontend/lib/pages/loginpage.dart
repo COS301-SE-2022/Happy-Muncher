@@ -187,7 +187,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
                             shape: const StadiumBorder(),
                             minimumSize: const Size(300, 50),
                             onPrimary: const Color.fromARGB(255, 150, 66, 154),
