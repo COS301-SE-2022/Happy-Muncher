@@ -21,7 +21,8 @@ class Month extends StatefulWidget {
 }
 
 class MyMonthState extends State<Month> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final budgetController = TextEditingController();
   double bud = 0;
   String input = "0"; //input taken for budget
@@ -88,10 +89,8 @@ class MyMonthState extends State<Month> {
     totBudget = 0;
     //print("START");
 
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Budget');
+    var collection =
+        firestore.collection('Users').doc(uid).collection('Budget');
     var docSnapshot = await collection.doc(widget.month).get();
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
@@ -102,7 +101,7 @@ class MyMonthState extends State<Month> {
 
     //totRem -= totSpent;
     //print(totBudget);
-    FirebaseFirestore.instance
+    firestore
         .collection('Users')
         .doc(uid)
         .collection('Budget')
@@ -166,10 +165,7 @@ class MyMonthState extends State<Month> {
     bought = [];
     double update = 0;
 
-    var totals = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('GL totals');
+    var totals = firestore.collection('Users').doc(uid).collection('GL totals');
     var ds = await totals.doc('Totals').get();
     if (ds.exists) {
       Map<String, dynamic> data = ds.data()!;
@@ -277,7 +273,6 @@ class MyMonthState extends State<Month> {
   @override
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getDB(context));
-// WidgetsBinding.instance.addPostFrameCallback((_) => yourFunc(context));
 
     return Scaffold(
       appBar: buildAppBar(context, widget.month),
@@ -596,7 +591,7 @@ class MyMonthState extends State<Month> {
     }
     //print(date);
     //print("item " + item + " for: " + date);
-    FirebaseFirestore.instance
+    firestore
         .collection('Prices')
         .doc(item)
         .get()
@@ -1116,10 +1111,8 @@ class MyMonthState extends State<Month> {
         key: Key("Compare"),
         onPressed: () async {
           est = 0;
-          var totals = FirebaseFirestore.instance
-              .collection('Users')
-              .doc(uid)
-              .collection('GL totals');
+          var totals =
+              firestore.collection('Users').doc(uid).collection('GL totals');
           var ds = await totals.doc('Totals').get();
           if (ds.exists) {
             Map<String, dynamic> data = ds.data()!;
@@ -1130,10 +1123,8 @@ class MyMonthState extends State<Month> {
             //est
           }
           double tr = 0;
-          var collection = FirebaseFirestore.instance
-              .collection('Users')
-              .doc(uid)
-              .collection('Budget');
+          var collection =
+              firestore.collection('Users').doc(uid).collection('Budget');
           var docSnapshot = await collection.doc(widget.month).get();
           if (docSnapshot.exists) {
             Map<String, dynamic> data = docSnapshot.data()!;
