@@ -51,7 +51,7 @@ class HomePageState extends State<MyHomePage> {
               animationDuration: const Duration(seconds: 3),
               onDestinationSelected: (index) =>
                   setState(() => this.index = index),
-              destinations: [
+              destinations: const [
                 NavigationDestination(
                   icon: Icon(Icons.local_grocery_store_outlined),
                   selectedIcon: Icon(Icons.local_grocery_store),
