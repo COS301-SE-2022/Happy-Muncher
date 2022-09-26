@@ -146,6 +146,21 @@ void main() {
           await tester.enterText(textboxes, 'Test recipe');
         },
       );
+
+      testWidgets(
+        'Testing typing in text field 3',
+        (WidgetTester tester) async {
+          //test if page starts properly
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final textboxes = find.byKey(const Key('entercalories'));
+          expect(textboxes, findsOneWidget);
+
+          await tester.enterText(textboxes, '10');
+        },
+      );
     },
   );
 }
