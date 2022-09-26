@@ -11,7 +11,8 @@ import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TastyRecipeCard extends StatelessWidget {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final String name;
   final String images;
   final int recipeid;
