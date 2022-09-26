@@ -94,7 +94,7 @@ class GLDialogState extends State<_GLDialog> {
                   date = temp;
                 }
                 //print(date);
-                FirebaseFirestore.instance
+                firestore
                     .collection('Prices')
                     .doc(nameController.text)
                     .get()
