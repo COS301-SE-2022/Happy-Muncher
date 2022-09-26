@@ -85,7 +85,7 @@ class _MyBudgetState extends State<MyBudget> {
             primary: Colors.white,
             onPrimary: Color.fromARGB(255, 150, 66, 154),
             padding: EdgeInsets.all(10.0),
-            minimumSize: Size(300, 50),
+            minimumSize: Size(300, 80),
             textStyle: const TextStyle(fontSize: 20),
             side: BorderSide(
                 color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
