@@ -31,11 +31,11 @@ class _IventoryPageState extends State<IventoryPage> {
   // text fields' controllers
   final FirebaseAuth firebaseAuth = GetIt.I.get();
   String get uid => firebaseAuth.currentUser!.uid;
+  final FirebaseFirestore firestore = GetIt.I.get();
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
-
-  final FirebaseFirestore firestore = GetIt.I.get();
 
   String _scanBarcode = 'Unknown';
 
@@ -56,6 +56,7 @@ class _IventoryPageState extends State<IventoryPage> {
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
+
   late final LocalNotificationService service;
   void initState() {
     super.initState();
