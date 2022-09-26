@@ -52,7 +52,7 @@ class ProfileState extends State<Profile> {
     }
     if (profile == null) {
       profile ??=
-          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+          'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png';
     }
 
     return Scaffold(
@@ -112,10 +112,7 @@ class ProfileState extends State<Profile> {
                 SizedBox(
                   width: 20,
                 ),
-                Icon(
-                  t,
-                  color: Colors.grey,
-                ),
+                Icon(t, color: Color.fromARGB(255, 150, 66, 154)),
                 SizedBox(
                   height: 1,
                 ),
@@ -126,7 +123,7 @@ class ProfileState extends State<Profile> {
                       decoration: BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
-                        color: Colors.grey,
+                        color: Color.fromARGB(255, 150, 66, 154),
                         width: 1,
                       ))),
                       child: Row(children: [
@@ -140,11 +137,12 @@ class ProfileState extends State<Profile> {
                                   style: TextStyle(
                                     fontSize: 20,
                                     height: 1.4,
+                                    //color: Color.fromARGB(255, 150, 66, 154),
                                   ),
                                 ))),
                         Icon(
                           Icons.keyboard_arrow_right,
-                          color: Colors.grey,
+                          color: Color.fromARGB(255, 150, 66, 154),
                           size: 30.0,
                         )
                       ])),
