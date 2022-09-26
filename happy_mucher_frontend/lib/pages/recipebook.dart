@@ -22,7 +22,8 @@ class RecipeBook extends StatefulWidget {
 }
 
 class RecipeBookState extends State<RecipeBook> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _favourites =>
@@ -40,12 +41,7 @@ class RecipeBookState extends State<RecipeBook> {
   }
 
   void getIDs() async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Recipes')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
+    _favourites.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         ids.add(doc["ID"]);
       });
