@@ -161,6 +161,21 @@ void main() {
           await tester.enterText(textboxes, '10');
         },
       );
+
+      testWidgets(
+        'Testing typing in text field 4',
+        (WidgetTester tester) async {
+          //test if page starts properly
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final textboxes = find.byKey(const Key('entertime'));
+          expect(textboxes, findsOneWidget);
+
+          await tester.enterText(textboxes, '10');
+        },
+      );
     },
   );
 }
