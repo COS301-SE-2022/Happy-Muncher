@@ -42,6 +42,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
             ),
             const SizedBox(height: 8),
             TextFormField(
+              key: const Key('dialog_ingredient'),
               //maxLines: 1,
               controller: input,
               decoration: const InputDecoration(
