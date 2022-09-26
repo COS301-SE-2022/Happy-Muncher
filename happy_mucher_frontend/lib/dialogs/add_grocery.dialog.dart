@@ -31,6 +31,11 @@ class GLDialogState extends State<_GLDialog> {
   CollectionReference get _items =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
 
+  CollectionReference get _frequent =>
+      firestore.collection('Users').doc(uid).collection('Frequency');
+
+  List<String> frequentItems = [];
+  List<int> frequency = [];
   static final dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? expirationDate;
   double suggested = 0.0;
@@ -119,7 +124,7 @@ class GLDialogState extends State<_GLDialog> {
                     //print(c);
                     current = (c * actual) + actual;
                     setState(() {
-                      priceController.text = current.toStringAsFixed(2);
+                      priceController.text = actual.toString();
                     });
                     //return current;
                   } else {
@@ -162,6 +167,49 @@ class GLDialogState extends State<_GLDialog> {
               });
             }
 
+            var ds = await _frequent.doc('items').get();
+            if (ds.exists) {
+              print('Frequent');
+              bool hasitem = false;
+              Map<String, dynamic> data = ds.data() as Map<String, dynamic>;
+
+              frequentItems = data['itemNames'].cast<String>();
+              frequency = data['frequency'].cast<int>();
+              int index = 0;
+              for (int i = 0; i < frequentItems.length; i++) {
+                if (frequentItems[i] == name) {
+                  print(frequentItems[i]);
+                  index = i;
+                  hasitem = true;
+                }
+              }
+
+              if (hasitem) {
+                print('hasitem');
+                frequency[index] = frequency[index] + 1;
+              } else {
+                print('new');
+                frequentItems.add(name);
+                frequency.add(1);
+              }
+              setState(() {});
+              _frequent
+                  .doc("items")
+                  .set({"itemNames": frequentItems, "frequency": frequency});
+              print(frequentItems[0] + "," + frequency[0].toString());
+            } else {
+              // frequentItems = [];
+              // frequency = [];
+              await _frequent
+                  .doc("items")
+                  .set({"itemNames": [], "frequency": []});
+              frequency.add(1);
+              frequentItems.add(name);
+              _frequent
+                  .doc("items")
+                  .set({"itemNames": frequentItems, "frequency": frequency});
+            }
+
             if (priceDouble != null) {
               await _items
                   .add({"name": name, "price": priceDouble, "bought": false});
@@ -179,13 +227,6 @@ class GLDialogState extends State<_GLDialog> {
   }
 
   int getToday(String today) {
-    // print("actual");
-    // print(actual);
-    // print("cpi");
-    // print(cpi);
-    // print("dates");
-    // print(dates);
-
     for (int i = 0; i < dates.length; i++) {
       if (dates[i] == today) {
         return i;
