@@ -76,10 +76,19 @@ abstract class Styles {
         //* Custom Google Font
         //  fontFamily: Devfest.google_sans_family,
         //primarySwatch: Colors.red,
+        // elevatedButtonTheme: ElevatedButtonThemeData(
+        //     style: TextButton.styleFrom(
+        //         backgroundColor: isDarkTheme ? Colors.white : Colors.black)),
+        // elevatedButtonTheme: ElevatedButtonThemeData(
+        //   style: ButtonStyle(
+        //     // Makes all my ElevatedButton green
+        //     backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+        //   ),
+        // ),
+
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            // Makes all my ElevatedButton green
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+          style: ElevatedButton.styleFrom(
+            primary: isDarkTheme ? Color(0xFF151515) : Colors.white,
           ),
         ),
         textButtonTheme: TextButtonThemeData(
