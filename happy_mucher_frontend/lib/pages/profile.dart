@@ -20,8 +20,6 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
-  final creationTime = FirebaseAuth.instance.currentUser!.metadata.creationTime;
-
   final FirebaseAuth firebaseAuth = GetIt.I.get();
 
   User? get user => firebaseAuth.currentUser;

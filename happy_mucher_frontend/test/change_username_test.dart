@@ -78,8 +78,6 @@ void main() {
 
           await tester.tap(button);
 
-          await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
           expect(user.displayName, "Bobby");
         },
       );
