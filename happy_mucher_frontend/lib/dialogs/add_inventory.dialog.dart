@@ -20,12 +20,11 @@ class _InventoryDialog extends StatefulWidget {
 class _InventoryDialogState extends State<_InventoryDialog> {
   final FirebaseAuth firebaseAuth = GetIt.I.get();
   String get uid => firebaseAuth.currentUser!.uid;
+  final FirebaseFirestore firestore = GetIt.I.get();
 
   final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
-
-  final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
