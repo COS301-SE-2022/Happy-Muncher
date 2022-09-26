@@ -26,7 +26,6 @@ class _ChangeUsernameState extends State<ChangeUsername> {
 
   final FirebaseAuth firebaseAuth = GetIt.I.get();
   User? get currentUser => firebaseAuth.currentUser;
-//  final currentUser = FirebaseAuth.instance.currentUser;
 
   changeUsername() async {
     try {
