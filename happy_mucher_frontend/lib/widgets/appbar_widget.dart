@@ -10,7 +10,7 @@ AppBar buildAppBar(BuildContext context, String title) {
   var profile = firebaseAuth.currentUser?.photoURL;
   if (profile == null) {
     profile ??=
-        'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+        'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png';
   }
   ;
 
@@ -26,9 +26,9 @@ AppBar buildAppBar(BuildContext context, String title) {
           child: CircleAvatar(
             key: Key('Profile'),
             radius: 100,
-            backgroundColor: Color(0xFF965BC8),
+            backgroundColor: Color.fromARGB(255, 150, 66, 154),
             child: CircleAvatar(
-                // backgroundImage: NetworkImage(profile) as ImageProvider,
+                backgroundImage: NetworkImage(profile) as ImageProvider,
                 radius: 50,
                 child: InkWell(onTap: () {
                   Navigator.push(context,
