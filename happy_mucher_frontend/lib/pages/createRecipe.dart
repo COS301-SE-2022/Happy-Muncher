@@ -234,7 +234,7 @@ class CreateState extends State<Create> {
                       });
                     }
                   },
-                  key: const Key('addToIngredientsyButtonText'),
+                  key: const Key('addToIngredientsButtonText'),
                   child: const Icon(
                     Icons.abc,
                     color: Color.fromARGB(255, 150, 66, 154),
