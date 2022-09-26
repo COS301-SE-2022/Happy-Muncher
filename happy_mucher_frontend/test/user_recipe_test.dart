@@ -226,6 +226,55 @@ void main() {
           expect(ingredient, findsOneWidget);
         },
       );
+
+      testWidgets(
+        'Testing adding to steps',
+        (WidgetTester tester) async {
+          //test if page starts properly
+          await tester.pumpWidget(testApp);
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final lastTextField = find.byKey(const Key('entercalories'));
+
+          expect(lastTextField, findsOneWidget);
+
+          await tester.drag(lastTextField, const Offset(0.0, -300));
+
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final speeddials = find.byKey(const Key('speed_dial_button_steps'));
+
+          expect(speeddials, findsOneWidget);
+
+          await tester.tap(speeddials);
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final textButton =
+              find.byKey(const Key('speed_dial_button_steps_text'));
+
+          expect(textButton, findsOneWidget);
+
+          await tester.tap(textButton);
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final dialogText = find.byKey(const Key('dialog_steps'));
+
+          expect(dialogText, findsOneWidget);
+
+          await tester.enterText(dialogText, "test step");
+
+          final dialogButton = find.byKey(const Key('addButton'));
+
+          expect(dialogButton, findsOneWidget);
+
+          await tester.tap(dialogButton);
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final ingredient = find.text("test step");
+          expect(ingredient, findsOneWidget);
+        },
+      );
     },
   );
 }
