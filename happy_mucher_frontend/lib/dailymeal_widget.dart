@@ -46,10 +46,8 @@ class MealWidgetState extends State<MealWidget> {
   }
 
   Future<void> getMeals() async {
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Meal Planner');
+    var collection =
+        firestore.collection('Users').doc(uid).collection('Meal Planner');
     var docSnapshot = await collection
         .doc(widget.day)
         .collection(widget.meal)
@@ -160,7 +158,7 @@ class MealWidgetState extends State<MealWidget> {
                 iconSize: 44.0,
                 onPressed: () async {
                   if (hasrecipe == false) {
-                    var collection = FirebaseFirestore.instance
+                    var collection = firestore
                         .collection('Users')
                         .doc(uid)
                         .collection('Meal Planner');
