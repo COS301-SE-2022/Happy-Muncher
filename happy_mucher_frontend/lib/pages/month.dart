@@ -624,15 +624,24 @@ class MyMonthState extends State<Month> {
         }
         int index = getToday(date);
         //print('index ' + index.toString());
+        double prev = 0;
+        if (index > 0) {
+          prev = cpi[index - 1];
+        }
+        double now = cpi[index];
 
-        double c = cpi[index] / 100;
+        double change = now - prev; //get the percentage change
+
+        double c = change / 100;
+        print(prev);
+        print(now);
         //print("cpi: ");
         //print(cpi);
         current = (c * actual) + actual;
-        //print("current: " + current.toString());
+        print(item + "  current: " + current.toString());
         setState(() {
           suggested += current;
-          print(suggested);
+          //print(suggested);
           this.suggested = suggested;
           budgetController.text = suggested.toStringAsFixed(2);
         });
