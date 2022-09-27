@@ -235,9 +235,9 @@ class MyMonthState extends State<Month> {
                     child: Text(
                       '${w}',
                       style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -365,9 +365,9 @@ class MyMonthState extends State<Month> {
         children: [
           Text('Your Budget for ' + '${widget.month}' + ' is: ',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 0, 0, 0))),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )),
           SizedBox(height: 25),
           Container(
             height: 60,
@@ -387,9 +387,9 @@ class MyMonthState extends State<Month> {
                 Text(
                   '   R ' + totBudget.toString(),
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -404,7 +404,6 @@ class MyMonthState extends State<Month> {
                 budgetSet = true;
               });
             },
-            color: Colors.black,
             child: const Text("Edit Budget",
                 style: TextStyle(color: Colors.white)),
           )
@@ -416,9 +415,9 @@ class MyMonthState extends State<Month> {
         children: [
           Text('Enter Your budget for ' + '${widget.month}',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 0, 0, 0))),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )),
           TextField(
             key: const Key("enterBudget"),
             controller: budgetController,
@@ -517,7 +516,6 @@ class MyMonthState extends State<Month> {
                 }
               });
             },
-            color: Colors.black,
             child:
                 const Text("Set Budget", style: TextStyle(color: Colors.white)),
           ),
@@ -544,9 +542,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 1',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -645,9 +643,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 2',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -749,9 +747,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 3',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -853,9 +851,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 4',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -947,9 +945,9 @@ class MyMonthState extends State<Month> {
                       child: Text(
                         'Totals',
                         style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -1035,8 +1033,7 @@ class MyMonthState extends State<Month> {
           });
           showAlertDialog(context);
         },
-        style: ElevatedButton.styleFrom(
-            primary: Colors.black, shape: StadiumBorder()),
+        style: ElevatedButton.styleFrom(shape: StadiumBorder()),
         child: const Text("Compare to Grocery List"),
       );
 
