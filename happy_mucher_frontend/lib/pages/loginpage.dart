@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
+    const CircularProgressIndicator();
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -56,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _authData['email']!, password: _authData['password']!);
 
       Timer(Duration(seconds: 2), () {
-        CircularProgressIndicator();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DashboardPage()));
       });
