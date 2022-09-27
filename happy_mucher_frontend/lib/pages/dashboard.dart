@@ -62,15 +62,11 @@ class DashboardState extends State<DashboardPage> {
         domainFn: (Values budgetVal, _) => budgetVal.month,
         measureFn: (Values budgetVal, _) => (budgetVal.totalSpent),
         colorFn: (Values budgetVal, _) {
-          if (budgetVal.totalSpent / budgetVal.budget < 0.25) {
+          if (budgetVal.totalSpent / budgetVal.budget < 0.3) {
             return charts.ColorUtil.fromDartColor(
                 Color.fromARGB(255, 72, 216, 29));
-          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.25 &&
-              budgetVal.totalSpent / budgetVal.budget < 0.5) {
-            return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 239, 255, 12));
-          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.5 &&
-              budgetVal.totalSpent / budgetVal.budget < 0.75) {
+          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.3 &&
+              budgetVal.totalSpent / budgetVal.budget < 0.6) {
             return charts.ColorUtil.fromDartColor(
                 Color.fromARGB(255, 248, 141, 10));
           } else {
@@ -423,8 +419,8 @@ class DashboardState extends State<DashboardPage> {
                               if (percentageSpent < 0 || percentageSpent > 1) {
                                 percentageSpent = 0;
                               }
-                              if (percentageRem > 0 || percentageRem < 1) {
-                                percentageRem = 0;
+                              if (percentageRem < 0 || percentageRem > 1) {
+                                percentageRem = 100;
                               }
 
                               if (documentSnapshot.id ==
@@ -442,27 +438,19 @@ class DashboardState extends State<DashboardPage> {
                                   progressColor: documentSnapshot[
                                                   'total remaining'] /
                                               documentSnapshot['budget'] >=
-                                          0.75
-                                      ? Color.fromARGB(255, 52, 108, 35)
+                                          0.6
+                                      ? Color.fromARGB(255, 72, 216, 29)
                                       : documentSnapshot['total remaining'] /
                                                       documentSnapshot[
                                                           'budget'] <
-                                                  0.75 &&
-                                              documentSnapshot['total remaining'] /
+                                                  0.6 &&
+                                              documentSnapshot[
+                                                          'total remaining'] /
                                                       documentSnapshot[
                                                           'budget'] >=
-                                                  0.50
-                                          ? Color.fromARGB(255, 239, 255, 12)
-                                          : documentSnapshot['total remaining'] /
-                                                          documentSnapshot[
-                                                              'budget'] <
-                                                      0.5 &&
-                                                  documentSnapshot['total remaining'] /
-                                                          documentSnapshot[
-                                                              'budget'] >=
-                                                      0.25
-                                              ? Color.fromARGB(255, 238, 150, 19)
-                                              : Color.fromARGB(255, 250, 27, 11),
+                                                  0.3
+                                          ? Color.fromARGB(255, 238, 150, 19)
+                                          : Color.fromARGB(255, 250, 27, 11),
                                 );
                               } else {
                                 return SizedBox(
