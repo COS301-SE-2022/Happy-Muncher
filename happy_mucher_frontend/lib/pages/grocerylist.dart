@@ -82,13 +82,13 @@ class GroceryListPageState extends State<GroceryListPage> {
                       Text(
                         'Estimated Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                         ),
                       ),
                       Text(
                         'Actual Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                         ),
                       ),
                     ],
