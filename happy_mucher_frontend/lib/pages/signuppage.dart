@@ -40,6 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _submit() async {
+    const CircularProgressIndicator();
     if (!_formKey.currentState!.validate()) {
       return;
     }
