@@ -75,7 +75,7 @@ abstract class Styles {
     return ThemeData(
         //* Custom Google Font
         //  fontFamily: Devfest.google_sans_family,
-        //primarySwatch: Colors.red,
+        primarySwatch: Colors.purple,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             // Makes all my ElevatedButton green
@@ -83,11 +83,12 @@ abstract class Styles {
           ),
         ),
         textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(TextStyle(
-            color: isDarkTheme ? Colors.white : Colors.black,
-          )),
-        )),
+          style: TextButton.styleFrom(
+            primary: isDarkTheme
+                ? Colors.white
+                : Colors.black, // This is a custom color variable
+          ),
+        ),
         primaryColor: isDarkTheme ? Colors.white : Colors.black,
         backgroundColor: isDarkTheme ? Colors.grey : Color(0xffF1F5FB),
         indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
@@ -99,11 +100,12 @@ abstract class Styles {
         focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
         disabledColor: Colors.grey,
         textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
-        cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
+        cardColor: isDarkTheme ? Color.fromARGB(153, 0, 0, 0) : Colors.white,
         canvasColor: isDarkTheme ? Color(0xFF212025) : Color(0xFFDFDEE3),
         brightness: isDarkTheme ? Brightness.dark : Brightness.light,
         buttonTheme: ButtonThemeData(
-          buttonColor: isDarkTheme ? Colors.blue : Colors.orange,
+          buttonColor:
+              isDarkTheme ? Color.fromARGB(255, 6, 143, 255) : Colors.orange,
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: isDarkTheme
