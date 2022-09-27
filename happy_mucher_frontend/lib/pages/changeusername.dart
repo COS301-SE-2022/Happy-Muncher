@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class ChangeUsername extends StatefulWidget {
   const ChangeUsername({Key? key}) : super(key: key);
@@ -48,14 +49,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(
-              color: Colors
-                  .black), // set backbutton color here which will reflect in all screens.
-          leading: BackButton(),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
+        appBar: buildAppBar(context, "Change Username"),
         body: Form(
           key: _formKey,
           child: Column(
@@ -63,12 +57,8 @@ class _ChangeUsernameState extends State<ChangeUsername> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(
-                    width: 320,
-                    child: Text(
-                      "Change your Username?",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    )),
+                  width: 320,
+                ),
                 Padding(
                     padding: const EdgeInsets.only(top: 40),
                     child: SizedBox(
@@ -96,19 +86,24 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                           width: 320,
                           height: 50,
                           child: ElevatedButton(
-                            key: const Key('usernameButton'),
-                            onPressed: () {
-                              // Validate returns true if the form is valid, or false otherwise.
-                              newUsername = newUsernameController.text;
-                              changeUsername();
+                            onPressed: () async => {
+                              newUsername = newUsernameController.text,
+                              changeUsername(),
                             },
                             child: const Text(
                               'Change',
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 20),
                             ),
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.black,
-                                shape: const StadiumBorder()),
+                              minimumSize: Size(150, 50),
+                              shape: const StadiumBorder(),
+                              onPrimary:
+                                  const Color.fromARGB(255, 150, 66, 154),
+                              side: BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 150, 66, 154),
+                                  width: 3.0),
+                            ),
                           ),
                         )))
               ]),
