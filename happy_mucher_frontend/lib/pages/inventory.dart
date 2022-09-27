@@ -152,26 +152,17 @@ class _IventoryPageState extends State<IventoryPage> {
             key: const Key('addToInventoryButtonText'),
             child: const Icon(
               Icons.abc,
-              color: Color.fromARGB(255, 150, 66, 154),
+              color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
+            backgroundColor: Color.fromARGB(255, 158, 115, 198),
           ),
           SpeedDialChild(
-            onTap: () => getImage(ImageSource.camera),
-            child: const Icon(
-              Icons.photo_camera,
-              color: Color.fromARGB(255, 150, 66, 154),
-            ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
-          ),
-          SpeedDialChild(
-            onTap: () => showInputDialog(context),
-            child: const Icon(
-              CupertinoIcons.barcode_viewfinder,
-              color: Color.fromARGB(255, 150, 66, 154),
-            ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
-          )
+              onTap: () => getImage(ImageSource.camera),
+              child: const Icon(
+                CupertinoIcons.barcode_viewfinder,
+                color: Colors.white,
+              ),
+              backgroundColor: Color.fromARGB(255, 185, 141, 223)),
         ],
       ),
 
