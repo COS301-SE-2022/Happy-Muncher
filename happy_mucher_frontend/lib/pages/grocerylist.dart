@@ -270,6 +270,7 @@ class GroceryListPageState extends State<GroceryListPage> {
           SpeedDialChild(
             key: const Key('addToInventoryButtonGallery'),
             onTap: () async {
+              //showAlertDialog(context);
               captureImageReceipt(ImageSource.gallery);
             },
             child: const Icon(
@@ -300,6 +301,7 @@ class GroceryListPageState extends State<GroceryListPage> {
     if (image == null) {
       return;
     }
+
     final croppedImagePath = await cropImage(image.path);
     if (croppedImagePath == null) {
       return;
@@ -339,6 +341,7 @@ class GroceryListPageState extends State<GroceryListPage> {
   }
 
   Future<String?> cropImage(String path) async {
+    showAlertDialog(context);
     final cropped =
         await ImageCropper().cropImage(sourcePath: path, uiSettings: [
       AndroidUiSettings(
@@ -346,6 +349,7 @@ class GroceryListPageState extends State<GroceryListPage> {
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false)
     ]);
+
     return cropped?.path;
   }
 
@@ -445,6 +449,34 @@ class GroceryListPageState extends State<GroceryListPage> {
     }
 
     return mapOfItems;
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Remember!"),
+      content: Text(
+          "Crop the image to contain only the item names and instructions"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 
