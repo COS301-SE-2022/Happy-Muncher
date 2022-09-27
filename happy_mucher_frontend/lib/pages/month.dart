@@ -333,7 +333,7 @@ class MyMonthState extends State<Month> {
           Container(
               child: CarouselSlider(
                   options: CarouselOptions(
-                    aspectRatio: 1.6,
+                    aspectRatio: 1.5,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: false,
                   ),

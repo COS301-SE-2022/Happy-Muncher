@@ -249,7 +249,7 @@ class DashboardState extends State<DashboardPage> {
                                     //print(documentSnapshot['total']);
                                     return LinearPercentIndicator(
                                       width: MediaQuery.of(context).size.width -
-                                          210,
+                                          230,
                                       animation: true,
                                       lineHeight: 22.0,
                                       barRadius: const Radius.circular(16),
