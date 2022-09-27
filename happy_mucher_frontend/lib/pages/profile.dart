@@ -136,7 +136,6 @@ class ProfileState extends State<Profile> {
                                   style: TextStyle(
                                     fontSize: 18,
                                     height: 1.4,
-                                    color: Color.fromARGB(255, 129, 118, 129),
                                   ),
                                 ))),
                         Icon(
