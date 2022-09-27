@@ -377,7 +377,7 @@ class MyMonthState extends State<Month> {
           SizedBox(height: 25),
           Container(
             height: 60,
-            width: 150,
+            width: 200,
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.grey,
