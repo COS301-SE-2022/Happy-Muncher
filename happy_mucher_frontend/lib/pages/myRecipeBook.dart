@@ -94,7 +94,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
                                 );
                               });
                             },
-                            backgroundColor: Colors.red,
+                            backgroundColor: Color.fromARGB(255, 150, 66, 154),
                             foregroundColor: Colors.white,
                             icon: Icons.delete,
                             label: 'Delete',
@@ -123,7 +123,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
                                                     .cast<String>(),
                                           )));
                             },
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Color.fromARGB(255, 198, 158, 234),
                             foregroundColor: Colors.white,
                             icon: Icons.edit,
                             label: 'Edit',

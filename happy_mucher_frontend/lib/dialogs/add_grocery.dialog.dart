@@ -44,6 +44,8 @@ class GLDialogState extends State<_GLDialog> {
   List<String> dates = [];
   double current = 0.0;
 
+  bool suggest = false;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -51,22 +53,34 @@ class GLDialogState extends State<_GLDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: TextField(
-              key: const Key('groceryListDialogNameField'),
-              controller: nameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                isDense: true,
-                label: Text('name'),
-              ),
-              // onChanged: (value) {
-              //   setState(() {
-              //     nameController.text = nameController.text;
-              //   });
-              // },
-            ),
-          ),
+              padding: const EdgeInsets.only(bottom: 8),
+              child: TextField(
+                  key: const Key('groceryListDialogNameField'),
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    label: Text('name'),
+                  ),
+                  onChanged: (value) {
+                    firestore
+                        .collection('Prices')
+                        .doc(nameController.text)
+                        .get()
+                        .then(
+                      (DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists) {
+                          setState(() {
+                            suggest = true;
+                          });
+                        } else {
+                          print('Document does not exist on the database');
+                          suggest = false;
+                          //return current;
+                        }
+                      },
+                    );
+                  })),
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: TextField(
@@ -86,54 +100,55 @@ class GLDialogState extends State<_GLDialog> {
               // },
             ),
           ),
-          TextButton(
-              onPressed: () {
-                String date = DateTime.now().month.toString();
-                if (date.length == 1) {
-                  String temp = '0' + date;
-                  date = temp;
-                }
-                //print(date);
-                firestore
-                    .collection('Prices')
-                    .doc(nameController.text)
-                    .get()
-                    .then((DocumentSnapshot documentSnapshot) {
-                  if (documentSnapshot.exists) {
-                    //print('Document data: ${documentSnapshot.data()}');
-                    //print('Document data: ${documentSnapshot.data()}');
-                    Map<String, dynamic> data =
-                        documentSnapshot.data() as Map<String, dynamic>;
-                    actual = data['actual'];
-                    for (var i in data['cpi']) {
-                      cpi.add(i as double);
-                    }
-                    for (var i in data['dates']) {
-                      String date = i as String;
-                      final splitted = date.split('-');
-                      date = splitted[1];
-                      //date += "/";
-                      //date += splitted[0];
-                      //dates.add(new DateFormat('MM/yyyy').parse(date) as String);
-                      dates.add(date);
-                    }
-                    int index = getToday(date);
-                    //print('index ' + index.toString());
-
-                    double c = cpi[index] / 100;
-                    //print(c);
-                    current = (c * actual) + actual;
-                    setState(() {
-                      priceController.text = actual.toString();
-                    });
-                    //return current;
-                  } else {
-                    print('Document does not exist on the database');
-                    //return current;
+          if (suggest)
+            TextButton(
+                onPressed: () {
+                  String date = DateTime.now().month.toString();
+                  if (date.length == 1) {
+                    String temp = '0' + date;
+                    date = temp;
                   }
-                });
-              },
-              child: Text("suggest"))
+                  //print(date);
+                  firestore
+                      .collection('Prices')
+                      .doc(nameController.text)
+                      .get()
+                      .then((DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists) {
+                      //print('Document data: ${documentSnapshot.data()}');
+                      //print('Document data: ${documentSnapshot.data()}');
+                      Map<String, dynamic> data =
+                          documentSnapshot.data() as Map<String, dynamic>;
+                      actual = data['actual'];
+                      for (var i in data['cpi']) {
+                        cpi.add(i as double);
+                      }
+                      for (var i in data['dates']) {
+                        String date = i as String;
+                        final splitted = date.split('-');
+                        date = splitted[1];
+                        //date += "/";
+                        //date += splitted[0];
+                        //dates.add(new DateFormat('MM/yyyy').parse(date) as String);
+                        dates.add(date);
+                      }
+                      int index = getToday(date);
+                      //print('index ' + index.toString());
+
+                      double c = cpi[index] / 100;
+                      //print(c);
+                      current = (c * actual) + actual;
+                      setState(() {
+                        priceController.text = actual.toString();
+                      });
+                      //return current;
+                    } else {
+                      print('Document does not exist on the database');
+                      //return current;
+                    }
+                  });
+                },
+                child: Text("suggest"))
         ],
       ),
       actions: [

@@ -17,9 +17,13 @@ class SettingsPage extends StatelessWidget {
             child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            SettingsGroup(title: 'GENERAL', children: <Widget>[
-              buildDarkMode(context),
-            ])
+            SettingsGroup(
+                title: 'GENERAL',
+                titleTextStyle:
+                    const TextStyle(color: Color.fromARGB(255, 150, 66, 154)),
+                children: <Widget>[
+                  buildDarkMode(context),
+                ])
           ],
         )),
       );

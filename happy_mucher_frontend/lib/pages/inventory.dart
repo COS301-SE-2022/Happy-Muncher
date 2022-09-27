@@ -106,7 +106,7 @@ class _IventoryPageState extends State<IventoryPage> {
                           });
                           service.cancel(LocalNotificationService.getID());
                         },
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color.fromARGB(255, 150, 66, 154),
                         foregroundColor: Colors.white,
                         icon: Icons.delete,
                         label: 'Delete',
@@ -115,7 +115,7 @@ class _IventoryPageState extends State<IventoryPage> {
                         onPressed: (context) {
                           showUpdateDialog(context, documentSnapshot);
                         },
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Color.fromARGB(255, 198, 158, 234),
                         foregroundColor: Colors.white,
                         icon: Icons.edit,
                         label: 'Edit',
