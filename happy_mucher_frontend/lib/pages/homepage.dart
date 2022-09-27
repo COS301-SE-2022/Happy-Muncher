@@ -53,6 +53,7 @@ class HomePageState extends State<MyHomePage> {
                   setState(() => this.index = index),
               destinations: [
                 NavigationDestination(
+                  key: Key('Grocery List'),
                   icon: Icon(Icons.local_grocery_store_outlined),
                   selectedIcon: Icon(Icons.local_grocery_store),
                   label: 'Grocery List',
@@ -64,16 +65,19 @@ class HomePageState extends State<MyHomePage> {
                   label: 'Inventory',
                 ),
                 NavigationDestination(
+                  key: Key('Budget'),
                   icon: Icon(Icons.monetization_on_outlined),
                   selectedIcon: Icon(Icons.monetization_on),
                   label: 'Budget',
                 ),
                 NavigationDestination(
+                  key: Key('Meal Planner'),
                   icon: Icon(Icons.edit_calendar_outlined),
                   selectedIcon: Icon(Icons.edit_calendar),
                   label: 'Meal Planner',
                 ),
                 NavigationDestination(
+                  key: Key('Recipe book'),
                   icon: Icon(Icons.book_outlined),
                   selectedIcon: Icon(Icons.book),
                   label: 'Recipe book',
