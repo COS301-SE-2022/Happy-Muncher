@@ -152,7 +152,7 @@ class DashboardState extends State<DashboardPage> {
   Widget buildMealPlanner(BuildContext context) {
     return Container(
         width: 180,
-        height: 360,
+        height: 380,
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
 
         //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
@@ -339,7 +339,8 @@ class DashboardState extends State<DashboardPage> {
                                           documentSnapshot['quantity']
                                                   .toString() +
                                               ' \u{00D7} ' +
-                                              documentSnapshot['itemName'],
+                                              documentSnapshot['itemName'] +
+                                              'expires today!',
                                           textAlign: TextAlign.center),
                                     );
                                   } else if (index ==
