@@ -382,7 +382,7 @@ class MyMonthState extends State<Month> {
               border: Border.all(
                 color: Colors.grey,
               ),
-              borderRadius: BorderRadius.zero,
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
               children: [
@@ -431,6 +431,9 @@ class MyMonthState extends State<Month> {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               )),
+          const SizedBox(
+            height: 25,
+          ),
           TextField(
             key: const Key("enterBudget"),
             controller: budgetController,
@@ -445,7 +448,8 @@ class MyMonthState extends State<Month> {
             // autofocus: true,
           ),
           MaterialButton(
-            shape: StadiumBorder(),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             key: const Key("setBudget"),
             onPressed: () {
               setState(() {
