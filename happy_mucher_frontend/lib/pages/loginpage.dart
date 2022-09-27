@@ -168,10 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _submit();
                         },
                       ),
-
-                      const SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(height: size.height * 0.02),
                       //Text("Sign in with Google"),
                       Container(
                         alignment: Alignment.center,
@@ -185,6 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
+                      SizedBox(height: size.height * 0.02),
                       ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder(),
