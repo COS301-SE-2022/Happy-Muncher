@@ -154,16 +154,15 @@ class _IventoryPageState extends State<IventoryPage> {
               Icons.abc,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
+            backgroundColor: Color.fromARGB(255, 158, 115, 198),
           ),
           SpeedDialChild(
-            onTap: () => getImage(ImageSource.camera),
-            child: const Icon(
-              CupertinoIcons.barcode_viewfinder,
-              color: Colors.white,
-            ),
-            backgroundColor: Color.fromARGB(255, 158, 72, 233),
-          ),
+              onTap: () => getImage(ImageSource.camera),
+              child: const Icon(
+                CupertinoIcons.barcode_viewfinder,
+                color: Colors.white,
+              ),
+              backgroundColor: Color.fromARGB(255, 185, 141, 223)),
         ],
       ),
 
