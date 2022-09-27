@@ -402,17 +402,24 @@ class MyMonthState extends State<Month> {
             alignment: Alignment.centerLeft,
           ),
           SizedBox(height: 25),
-          MaterialButton(
-            shape: StadiumBorder(),
+          ElevatedButton(
             key: const Key("editBudget"),
-            onPressed: () {
+            onPressed: () async => {
               setState(() {
                 budgetSet = true;
-              });
+              })
             },
-            child: const Text("Edit Budget",
-                style: TextStyle(color: Colors.white)),
-          )
+            child: const Text(
+              'Edit Budget',
+            ),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(150, 50),
+              shape: const StadiumBorder(),
+              onPrimary: const Color.fromARGB(255, 150, 66, 154),
+              side: BorderSide(
+                  color: const Color.fromARGB(255, 150, 66, 154), width: 3.0),
+            ),
+          ),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       );
@@ -1151,7 +1158,13 @@ class MyMonthState extends State<Month> {
           });
           showAlertDialog(context);
         },
-        style: ElevatedButton.styleFrom(shape: StadiumBorder()),
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(150, 50),
+          shape: const StadiumBorder(),
+          onPrimary: const Color.fromARGB(255, 150, 66, 154),
+          side: BorderSide(
+              color: const Color.fromARGB(255, 150, 66, 154), width: 3.0),
+        ),
         child: const Text("Compare to Grocery List"),
       );
 
