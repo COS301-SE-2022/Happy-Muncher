@@ -182,7 +182,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
               ],
             )),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 30),
         Text(
           "Ingredients",
           style: TextStyle(
@@ -192,7 +192,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           textAlign: TextAlign.center,
         ),
         //Text(ing),
-
+        const SizedBox(height: 30),
         ListView.builder(
             shrinkWrap: true,
             itemCount: widget.ingredients.length,
@@ -201,7 +201,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
                 ingredient: widget.ingredients[index],
               );
             }),
-        const SizedBox(height: 18),
+        const SizedBox(height: 30),
 
         ElevatedButton(
           onPressed: () {
@@ -224,7 +224,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
                 color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 35),
         Text(
           "Instructions",
           style: TextStyle(
@@ -233,16 +233,24 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           ),
           textAlign: TextAlign.center,
         ),
-
-        ListView.builder(
-            shrinkWrap: true,
-            itemCount: widget.instructions.length,
-            itemBuilder: (context, index) {
-              return InstructionCard(
-                instruction: widget.instructions[index],
-                step: index,
-              );
-            }),
+        const SizedBox(height: 30),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: Color.fromARGB(255, 150, 66, 154),
+                width: 3.0,
+              )),
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.instructions.length,
+              itemBuilder: (context, index) {
+                return InstructionCard(
+                  instruction: widget.instructions[index],
+                  step: index,
+                );
+              }),
+        ),
       ]),
     );
   }
