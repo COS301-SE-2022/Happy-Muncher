@@ -259,36 +259,33 @@ class GroceryListPageState extends State<GroceryListPage> {
         backgroundColor: Color.fromARGB(255, 150, 66, 154),
         children: [
           SpeedDialChild(
-            onTap: () => addGLDialog(context),
-            key: const Key('addToInventoryButtonText'),
-            child: const Icon(
-              Icons.abc,
-              color: Color.fromARGB(255, 150, 66, 154),
-            ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
-          ),
-          SpeedDialChild(
-            key: const Key('addToInventoryButtonGallery'),
-            onTap: () async {
-              captureImageReceipt(ImageSource.gallery);
-            },
-            child: const Icon(
-              Icons.collections,
-              color: Color.fromARGB(255, 150, 66, 154),
-            ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
-          ),
-          SpeedDialChild(
             key: const Key('addToInventoryButtonCamera'),
             onTap: () async {
               captureImageReceipt(ImageSource.camera);
             },
             child: const Icon(
               Icons.photo_camera,
-              color: Color.fromARGB(255, 150, 66, 154),
+              color: Colors.white,
             ),
+            backgroundColor: Color.fromARGB(255, 158, 115, 198),
+          ),
+          SpeedDialChild(
+            key: const Key('addToInventoryButtonGallery'),
+            onTap: () async {
+              captureImageReceipt(ImageSource.gallery);
+            },
+            child: const Icon(Icons.collections, color: Colors.white),
             backgroundColor: Color.fromARGB(255, 185, 141, 223),
-          )
+          ),
+          SpeedDialChild(
+            onTap: () => addGLDialog(context),
+            key: const Key('addToInventoryButtonText'),
+            child: const Icon(
+              Icons.abc,
+              color: Colors.white,
+            ),
+            backgroundColor: Color.fromARGB(255, 198, 158, 234),
+          ),
         ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
