@@ -120,8 +120,10 @@ class DashboardState extends State<DashboardPage> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyHomePage(index: 0)));
                   },
                   child: Icon(
                     Icons.arrow_forward_outlined,
@@ -175,7 +177,11 @@ class DashboardState extends State<DashboardPage> {
           InkWell(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MealPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyHomePage(
+                            index: 3,
+                          )));
             },
             child: MealWidget(
                 day: DateFormat('EEEE').format(DateTime.now()),
@@ -210,7 +216,9 @@ class DashboardState extends State<DashboardPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => GroceryListPage()));
+                            builder: (context) => MyHomePage(
+                                  index: 0,
+                                )));
                   },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
@@ -236,7 +244,12 @@ class DashboardState extends State<DashboardPage> {
                                       dateToday.toString().substring(0, 10);
                                   total = documentSnapshot['estimated total'] +
                                       documentSnapshot['shopping total'];
-
+                                  double percentage =
+                                      documentSnapshot['estimated total'] /
+                                          total;
+                                  if (percentage < 0 || percentage > 1) {
+                                    percentage = 0;
+                                  }
                                   if (index == 0) {
                                     //print(documentSnapshot['total']);
                                     return LinearPercentIndicator(
@@ -248,9 +261,7 @@ class DashboardState extends State<DashboardPage> {
                                       animationDuration: 2000,
                                       leading: new Text("estimated \n total"),
                                       trailing: new Text("shopping\n total"),
-                                      percent:
-                                          documentSnapshot['estimated total'] /
-                                              total,
+                                      percent: percentage,
                                       // center: Text(percentageRemaining.toString() + "% remaining"),
 
                                       progressColor:
@@ -297,7 +308,9 @@ class DashboardState extends State<DashboardPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => IventoryPage()));
+                            builder: (context) => MyHomePage(
+                                  index: 1,
+                                )));
                   },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(10, 45, 10, 0),
@@ -379,8 +392,12 @@ class DashboardState extends State<DashboardPage> {
               ),
               InkWell(
                 onTap: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyBudget()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(
+                                index: 2,
+                              )));
                 },
                 /*margin: EdgeInsets.fromLTRB(20, 50, 10, 0),
                     height: 100,
@@ -399,6 +416,19 @@ class DashboardState extends State<DashboardPage> {
                             itemBuilder: (context, index) {
                               final DocumentSnapshot documentSnapshot =
                                   streamSnapshot.data!.docs[index];
+                              double percentageSpent =
+                                  documentSnapshot['total spent'] /
+                                      documentSnapshot['budget'];
+                              double percentageRem =
+                                  documentSnapshot['total remaining'] /
+                                      documentSnapshot['budget'] *
+                                      100;
+                              if (percentageSpent < 0 || percentageSpent > 1) {
+                                percentageSpent = 0;
+                              }
+                              if (percentageRem > 0 || percentageRem < 1) {
+                                percentageRem = 0;
+                              }
 
                               if (documentSnapshot.id ==
                                   DateFormat('MMMM').format(DateTime.now())) {
@@ -409,14 +439,9 @@ class DashboardState extends State<DashboardPage> {
                                   lineHeight: 25.0,
                                   animationDuration: 2000,
                                   barRadius: const Radius.circular(16),
-                                  percent: documentSnapshot['total spent'] /
-                                      documentSnapshot['budget'],
+                                  percent: percentageSpent,
                                   center: Text(
-                                      (documentSnapshot['total remaining'] /
-                                                  documentSnapshot['budget'] *
-                                                  100)
-                                              .toString() +
-                                          "% remaining"),
+                                      percentageRem.toString() + "% remaining"),
                                   progressColor: documentSnapshot[
                                                   'total remaining'] /
                                               documentSnapshot['budget'] >=
@@ -490,8 +515,12 @@ class DashboardState extends State<DashboardPage> {
             child: Stack(alignment: Alignment.center, children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyBudget()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(
+                                index: 2,
+                              )));
                 },
                 child: Container(
                   padding: EdgeInsets.all(20.0),
