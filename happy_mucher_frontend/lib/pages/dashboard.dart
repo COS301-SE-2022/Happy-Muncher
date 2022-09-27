@@ -192,7 +192,6 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             key: const ValueKey("Meal Planner Dashboard"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -279,7 +278,6 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             key: const ValueKey("Inventory Dashboard"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -364,7 +362,6 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(0, 20, 0, 60),
         child: Card(
             key: const ValueKey("Carousel 1"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -482,7 +479,6 @@ class DashboardState extends State<DashboardPage> {
         height: 300,
         margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: Card(
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
