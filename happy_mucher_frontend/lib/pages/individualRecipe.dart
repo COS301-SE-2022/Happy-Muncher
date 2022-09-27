@@ -115,6 +115,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
               await _favourites.add({
                 "ID": id,
               });
+              showFavouritesDialog(context);
             }
           },
           alignment: Alignment.topRight,
@@ -354,4 +355,31 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         ),
         SizedBox(height: 24)
       ]);
+
+  showFavouritesDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Liked!"),
+      content: Text(widget.name + " has been added to your favourites"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }
