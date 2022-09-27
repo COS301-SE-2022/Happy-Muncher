@@ -24,7 +24,8 @@ class MyRecipeBook extends StatefulWidget {
 }
 
 class MyRecipeBookState extends State<MyRecipeBook> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   int shoppingPrices = 0;
   int estimatePrices = 0;
@@ -36,7 +37,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
     // TODO: implement initState
     super.initState();
     print("here");
-    FirebaseFirestore.instance
+    firestore
         .collection('Users')
         .doc(uid)
         .collection('CustomRecipe')
@@ -177,7 +178,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
                       )));
         },
         child: Icon(Icons.add),
-        backgroundColor: Color.fromARGB(255, 150, 66, 154),
+        backgroundColor: Color.fromARGB(255, 185, 141, 223),
       ),
     );
   }

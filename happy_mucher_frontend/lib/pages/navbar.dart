@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/budget.dart';
 import 'package:happy_mucher_frontend/pages/changemail.dart';
 import 'package:happy_mucher_frontend/pages/changepassword.dart';
@@ -13,11 +14,11 @@ import 'package:happy_mucher_frontend/pages/settings_page.dart';
 class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var uid = FirebaseAuth.instance.currentUser?.displayName;
-    var profile = FirebaseAuth.instance.currentUser?.photoURL;
-    final email = FirebaseAuth.instance.currentUser?.email;
-    final creationTime =
-        FirebaseAuth.instance.currentUser?.metadata.creationTime;
+    final FirebaseAuth firebaseAuth = GetIt.I.get();
+    var uid = firebaseAuth.currentUser?.displayName;
+    var profile = firebaseAuth.currentUser?.photoURL;
+    final email = firebaseAuth.currentUser?.email;
+    final creationTime = firebaseAuth.currentUser?.metadata.creationTime;
     if (uid == null) {
       uid = "User";
     }
@@ -78,7 +79,7 @@ class NavBar extends StatelessWidget {
               title: Text('Logout'),
               leading: Icon(Icons.exit_to_app),
               onTap: () async => {
-                    await FirebaseAuth.instance.signOut(),
+                    await firebaseAuth.signOut(),
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen())),
                   }),

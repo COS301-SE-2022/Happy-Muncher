@@ -15,7 +15,8 @@ class Weekday extends StatefulWidget {
 }
 
 class MyWeekdayState extends State<Weekday> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _meals =>
       firestore.collection('Users').doc(uid).collection('Meal Planner');
@@ -41,10 +42,8 @@ class MyWeekdayState extends State<Weekday> {
   }
 
   Future<void> getMeals() async {
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Meal Planner');
+    var collection =
+        firestore.collection('Users').doc(uid).collection('Meal Planner');
     var docSnapshot = await collection.doc('Place Holder').get();
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
@@ -197,7 +196,7 @@ class MyWeekdayState extends State<Weekday> {
           iconSize: 44.0,
           onPressed: () async {
             if (hasrecipe == false) {
-              var collection = FirebaseFirestore.instance
+              var collection = firestore
                   .collection('Users')
                   .doc(uid)
                   .collection('Meal Planner');
@@ -332,7 +331,7 @@ class MyWeekdayState extends State<Weekday> {
           iconSize: 44.0,
           onPressed: () async {
             if (hasrecipe == false) {
-              var collection = FirebaseFirestore.instance
+              var collection = firestore
                   .collection('Users')
                   .doc(uid)
                   .collection('Meal Planner');
@@ -432,7 +431,7 @@ class MyWeekdayState extends State<Weekday> {
           iconSize: 44.0,
           onPressed: () async {
             if (hasrecipe == false) {
-              var collection = FirebaseFirestore.instance
+              var collection = firestore
                   .collection('Users')
                   .doc(uid)
                   .collection('Meal Planner');

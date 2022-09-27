@@ -60,7 +60,7 @@ class RecipeBookState extends State<RecipeBook> {
             children: [
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
+                    //primary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
@@ -81,7 +81,6 @@ class RecipeBookState extends State<RecipeBook> {
               SizedBox(height: size.height * 0.06),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
@@ -104,7 +103,7 @@ class RecipeBookState extends State<RecipeBook> {
               SizedBox(height: size.height * 0.06),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
+                    //primary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),

@@ -21,7 +21,8 @@ class Month extends StatefulWidget {
 }
 
 class MyMonthState extends State<Month> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final budgetController = TextEditingController();
   double bud = 0;
   String input = "0"; //input taken for budget
@@ -63,6 +64,17 @@ class MyMonthState extends State<Month> {
   CollectionReference get _groceryList =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
 
+  CollectionReference get _frequent =>
+      firestore.collection('Users').doc(uid).collection('Frequency');
+  List<String> frequentItems = [];
+  List<int> frequency = [];
+  double current = 0.0;
+  double actual = 0.0;
+  List<double> cpi = [];
+  List<String> dates = [];
+  double suggested = 0;
+  List<String> items = [];
+
   List<int> bought = [];
   List<String> estimate = [];
   List<double> budgetM = [];
@@ -77,10 +89,8 @@ class MyMonthState extends State<Month> {
     totBudget = 0;
     //print("START");
 
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Budget');
+    var collection =
+        firestore.collection('Users').doc(uid).collection('Budget');
     var docSnapshot = await collection.doc(widget.month).get();
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
@@ -91,7 +101,7 @@ class MyMonthState extends State<Month> {
 
     //totRem -= totSpent;
     //print(totBudget);
-    FirebaseFirestore.instance
+    firestore
         .collection('Users')
         .doc(uid)
         .collection('Budget')
@@ -155,10 +165,7 @@ class MyMonthState extends State<Month> {
     bought = [];
     double update = 0;
 
-    var totals = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('GL totals');
+    var totals = firestore.collection('Users').doc(uid).collection('GL totals');
     var ds = await totals.doc('Totals').get();
     if (ds.exists) {
       Map<String, dynamic> data = ds.data()!;
@@ -266,7 +273,6 @@ class MyMonthState extends State<Month> {
   @override
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getDB(context));
-// WidgetsBinding.instance.addPostFrameCallback((_) => yourFunc(context));
 
     return Scaffold(
       appBar: buildAppBar(context, widget.month),
@@ -519,10 +525,126 @@ class MyMonthState extends State<Month> {
             child:
                 const Text("Set Budget", style: TextStyle(color: Colors.white)),
           ),
+          TextButton(
+              onPressed: () {
+                //suggested = 0.0;
+
+                getMostFrequent(items);
+                //print(items);
+
+                setState(() {
+                  //print(suggested);
+                  budgetController.text = suggested.toString();
+                });
+              },
+              child: Text("Suggest"))
         ],
       );
   double percentageSpent = 0;
   double percentageRemaining = 0;
+
+  getMostFrequent(List<String> items) async {
+    var ds = await _frequent.doc('items').get();
+    if (ds.exists) {
+      Map<String, dynamic> data = ds.data() as Map<String, dynamic>;
+
+      frequentItems = data['itemNames'].cast<String>();
+      frequency = data['frequency'].cast<int>();
+      List<int> indexes = [];
+      //get indexes of items with a frequency greater than 2
+      for (int i = 0; i < frequency.length; i++) {
+        if (frequency[i] > 2) {
+          indexes.add(i);
+        }
+      }
+      for (int i = 0; i < indexes.length; i++) {
+        indexes[i] = indexes[i] - 1;
+      }
+      //print(indexes);
+      //print(frequentItems);
+      //get items with frequency greater than 2 using the indexes.
+      for (int i = 0; i < indexes.length; i++) {
+        //print(frequentItems[indexes[i]]);
+        items.add(frequentItems[indexes[i]]);
+      }
+
+      setState(() {
+        this.items = items;
+        for (int i = 0; i < items.length; i++) {
+          //print(items[i]);
+
+          getSuggestion(items[i]);
+        }
+      });
+    }
+  }
+
+  getSuggestion(String item) {
+    current = 0;
+
+    String date = DateTime.now().month.toString();
+    if (date.length == 1) {
+      String temp = '0' + date;
+      date = temp;
+    }
+    //print(date);
+    //print("item " + item + " for: " + date);
+    firestore
+        .collection('Prices')
+        .doc(item)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        //print('Document data: ${documentSnapshot.data()}');
+        //print('Document data: ${documentSnapshot.data()}');
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        actual = data['actual'];
+        //print("actual: " + actual.toString());
+        cpi = [];
+        for (var i in data['cpi']) {
+          cpi.add(i as double);
+        }
+        dates = [];
+        for (var i in data['dates']) {
+          String date = i as String;
+          final splitted = date.split('-');
+          date = splitted[1];
+          //date += "/";
+          //date += splitted[0];
+          //dates.add(new DateFormat('MM/yyyy').parse(date) as String);
+          dates.add(date);
+        }
+        int index = getToday(date);
+        //print('index ' + index.toString());
+
+        double c = cpi[index] / 100;
+        //print("cpi: ");
+        //print(cpi);
+        current = (c * actual) + actual;
+        //print("current: " + current.toString());
+        setState(() {
+          suggested += current;
+          print(suggested);
+          this.suggested = suggested;
+          budgetController.text = suggested.toStringAsFixed(2);
+        });
+        //return current;
+      } else {
+        print('Document does not exist on the database');
+        //return current;
+      }
+    });
+  }
+
+  int getToday(String today) {
+    for (int i = 0; i < dates.length; i++) {
+      if (dates[i] == today) {
+        return i;
+      }
+    }
+    return (dates.length + 1);
+  }
 
   Widget Indicator(String s, String r, String b, String week) => Container(
       child: Center(
@@ -987,10 +1109,8 @@ class MyMonthState extends State<Month> {
         key: Key("Compare"),
         onPressed: () async {
           est = 0;
-          var totals = FirebaseFirestore.instance
-              .collection('Users')
-              .doc(uid)
-              .collection('GL totals');
+          var totals =
+              firestore.collection('Users').doc(uid).collection('GL totals');
           var ds = await totals.doc('Totals').get();
           if (ds.exists) {
             Map<String, dynamic> data = ds.data()!;
@@ -1001,10 +1121,8 @@ class MyMonthState extends State<Month> {
             //est
           }
           double tr = 0;
-          var collection = FirebaseFirestore.instance
-              .collection('Users')
-              .doc(uid)
-              .collection('Budget');
+          var collection =
+              firestore.collection('Users').doc(uid).collection('Budget');
           var docSnapshot = await collection.doc(widget.month).get();
           if (docSnapshot.exists) {
             Map<String, dynamic> data = docSnapshot.data()!;
