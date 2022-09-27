@@ -341,9 +341,11 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         SizedBox(height: 24),
         Container(
           decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
               border: Border.all(
-            color: Color.fromARGB(255, 150, 66, 154),
-          )),
+                color: Color.fromARGB(255, 150, 66, 154),
+                width: 3.0,
+              )),
           padding: const EdgeInsets.all(15),
           //color: Color(0xFF2D2C31),
           //color: lightGrey,
