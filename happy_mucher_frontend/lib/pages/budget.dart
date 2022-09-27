@@ -51,6 +51,8 @@ class _MyBudgetState extends State<MyBudget> {
                 shape: BoxShape.circle,
               ),
             ),
+            headerStyle:
+                HeaderStyle(formatButtonVisible: false, titleCentered: true),
             focusedDay: _focusedDay,
             firstDay: DateTime(2020),
             lastDay: DateTime(2050),
