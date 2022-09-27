@@ -190,19 +190,19 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.byIcon(Icons.dashboard));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       await tester.tap(find.text('Inventory'));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       await tester.widget(find.byType(AppBar));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       await tester.tap(find.byKey(Key('Profile')));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       await tester.tap(find.text('User'));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
       final NavigatorState nav8 = tester.state(find.byType(Navigator));
       nav8.pop();
       await tester.pumpAndSettle();
