@@ -62,7 +62,7 @@ class _MealPageState extends State<MealPage> {
                         enlargeCenterPage: true,
                         enableInfiniteScroll: false,
                         scrollDirection: Axis.vertical,
-                        viewportFraction: 0.35), // required
+                        viewportFraction: 0.30), // required
 
                     items: <Widget>[
                       //Breakfast(),

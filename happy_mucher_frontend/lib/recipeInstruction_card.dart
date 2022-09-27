@@ -16,12 +16,12 @@ class InstructionCard extends StatelessWidget {
 
     return Flexible(
         child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Color.fromARGB(255, 150, 66, 154),
-                  width: 3.0,
-                )),
+            // decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(15),
+            //     border: Border.all(
+            //       color: Color.fromARGB(255, 150, 66, 154),
+            //       width: 3.0,
+            //     )),
             margin: EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
             // decoration: BoxDecoration(
