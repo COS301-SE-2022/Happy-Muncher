@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //email
                       SizedBox(height: size.height * 0.03),
                       TextFormField(
-                        key: const ValueKey("Email"),
+                        key: const Key("Email"),
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       //password
                       TextFormField(
-                        key: const ValueKey("Password"),
+                        key: const Key("Password"),
                         style: const TextStyle(fontSize: 20),
                         decoration:
                             const InputDecoration(labelText: 'Password'),
