@@ -75,7 +75,6 @@ class CreateState extends State<Create> {
       appBar: AppBar(
           title: const Text(
             'Create Recipe',
-            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
           leading: TextButton(
@@ -222,24 +221,22 @@ class CreateState extends State<Create> {
               backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
+                  key: const Key('addToIngredientsButtonCamera'),
                   onTap: () async {
-                    final newIngredient = await showAddIngredientDialog(
-                      context,
-                      widget.ingredients,
-                    );
-                    if (newIngredient != null) {
-                      setState(() {
-                        //used to refresh list
-                        widget.ingredients.add(newIngredient);
-                      });
-                    }
+                    final newIngredients = await captureImageReceiptIngredients(
+                        ImageSource.camera);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newIngredients.length; i++) {
+                        widget.ingredients.add(newIngredients[i]);
+                      }
+                    });
                   },
-                  key: const Key('addToIngredientsButtonText'),
                   child: const Icon(
-                    Icons.abc,
-                    color: Color.fromARGB(255, 150, 66, 154),
+                    Icons.photo_camera,
+                    color: Colors.white,
                   ),
-                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
+                  backgroundColor: Color.fromARGB(255, 158, 115, 198),
                 ),
                 SpeedDialChild(
                   key: const Key('addToIngredientsButtonGallery'),
@@ -255,27 +252,29 @@ class CreateState extends State<Create> {
                   },
                   child: const Icon(
                     Icons.collections,
-                    color: Color.fromARGB(255, 150, 66, 154),
+                    color: Colors.white,
                   ),
-                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
+                  backgroundColor: Color.fromARGB(255, 185, 141, 223),
                 ),
                 SpeedDialChild(
-                  key: const Key('addToIngredientsButtonCamera'),
                   onTap: () async {
-                    final newIngredients = await captureImageReceiptIngredients(
-                        ImageSource.camera);
-                    setState(() {
-                      //used to refresh list
-                      for (int i = 0; i < newIngredients.length; i++) {
-                        widget.ingredients.add(newIngredients[i]);
-                      }
-                    });
+                    final newIngredient = await showAddIngredientDialog(
+                      context,
+                      widget.ingredients,
+                    );
+                    if (newIngredient != null) {
+                      setState(() {
+                        //used to refresh list
+                        widget.ingredients.add(newIngredient);
+                      });
+                    }
                   },
+                  key: const Key('addToIngredientsButtonText'),
                   child: const Icon(
-                    Icons.photo_camera,
-                    color: Color.fromARGB(255, 150, 66, 154),
+                    Icons.abc,
+                    color: Colors.white,
                   ),
-                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
+                  backgroundColor: Color.fromARGB(255, 198, 158, 234),
                 )
               ],
             ),
@@ -309,6 +308,42 @@ class CreateState extends State<Create> {
               backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
+                  key: const Key('camera'),
+                  onTap: () async {
+                    final newSteps =
+                        await captureImageReceiptRecipe(ImageSource.camera);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newSteps.length; i++) {
+                        widget.steps.add(newSteps[i]);
+                      }
+                    });
+                  },
+                  child: const Icon(
+                    Icons.photo_camera,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Color.fromARGB(255, 158, 115, 198),
+                ),
+                SpeedDialChild(
+                  key: const Key('speed_dial_button_steps_gallery'),
+                  onTap: () async {
+                    final newSteps =
+                        await captureImageReceiptRecipe(ImageSource.gallery);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newSteps.length; i++) {
+                        widget.steps.add(newSteps[i]);
+                      }
+                    });
+                  },
+                  child: const Icon(
+                    Icons.collections,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Color.fromARGB(255, 185, 141, 223),
+                ),
+                SpeedDialChild(
                   key: const Key('speed_dial_button_steps_text'),
                   onTap: () async {
                     final newInstruction = await showAddInstructionDialog(
@@ -325,46 +360,10 @@ class CreateState extends State<Create> {
                   //key: const Key('addToInventoryButtonText'),
                   child: const Icon(
                     Icons.abc,
-                    color: Color.fromARGB(255, 150, 66, 154),
+                    color: Colors.white,
                   ),
-                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
+                  backgroundColor: Color.fromARGB(255, 198, 158, 234),
                 ),
-                SpeedDialChild(
-                  key: const Key('speed_dial_button_steps_gallery'),
-                  onTap: () async {
-                    final newSteps =
-                        await captureImageReceiptRecipe(ImageSource.gallery);
-                    setState(() {
-                      //used to refresh list
-                      for (int i = 0; i < newSteps.length; i++) {
-                        widget.steps.add(newSteps[i]);
-                      }
-                    });
-                  },
-                  child: const Icon(
-                    Icons.collections,
-                    color: Color.fromARGB(255, 150, 66, 154),
-                  ),
-                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
-                ),
-                SpeedDialChild(
-                  key: const Key('camera'),
-                  onTap: () async {
-                    final newSteps =
-                        await captureImageReceiptRecipe(ImageSource.camera);
-                    setState(() {
-                      //used to refresh list
-                      for (int i = 0; i < newSteps.length; i++) {
-                        widget.steps.add(newSteps[i]);
-                      }
-                    });
-                  },
-                  child: const Icon(
-                    Icons.photo_camera,
-                    color: Color.fromARGB(255, 150, 66, 154),
-                  ),
-                  backgroundColor: Color.fromARGB(100, 150, 66, 154),
-                )
               ],
             ),
           ),
