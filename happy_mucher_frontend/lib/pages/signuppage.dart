@@ -131,7 +131,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
                         onSaved: (value) {},
                       ),
-                      SizedBox(height: size.height * 0.03),
+                      SizedBox(height: size.height * 0.06),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: const Color.fromARGB(255, 150, 66, 154),
@@ -158,9 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           _submit();
                         },
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(height: size.height * 0.02),
                       //Text("Sign in with Google"),
                       Container(
                         alignment: Alignment.center,
@@ -174,6 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       //Text("Sign in with Google"),
+                      SizedBox(height: size.height * 0.02),
                       ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             shape: StadiumBorder(),

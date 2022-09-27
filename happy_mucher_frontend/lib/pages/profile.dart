@@ -138,10 +138,13 @@ class ProfileState extends State<Profile> {
                                     height: 1.4,
                                   ),
                                 ))),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: Color.fromARGB(255, 150, 66, 154),
-                          size: 30.0,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.keyboard_arrow_right,
+                            color: Color.fromARGB(255, 150, 66, 154),
+                            size: 30.0,
+                          ),
                         )
                       ])),
                 )
