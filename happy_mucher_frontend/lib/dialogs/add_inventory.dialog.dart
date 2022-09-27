@@ -147,6 +147,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
               quantityController.text = '';
               dateFieldController.text = '';
             }
+            Navigator.of(context).pop();
           },
           child: const Text('Add'),
         )

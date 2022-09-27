@@ -259,13 +259,11 @@ class MyMonthState extends State<Month> {
                 barRadius: const Radius.circular(16),
                 percent: percentageSpent,
                 center: Text(percentageRemaining.toString() + "% remaining"),
-                progressColor: percentageRemaining >= 75
+                progressColor: percentageRemaining >= 60
                     ? Color.fromARGB(255, 72, 216, 29)
-                    : percentageRemaining < 75 && percentageRemaining >= 50
-                        ? Color.fromARGB(255, 248, 231, 6)
-                        : percentageRemaining < 50 && percentageRemaining >= 25
-                            ? Color.fromARGB(255, 248, 141, 10)
-                            : Color.fromARGB(255, 236, 17, 2),
+                    : percentageRemaining < 60 && percentageRemaining >= 30
+                        ? Color.fromARGB(255, 248, 141, 10)
+                        : Color.fromARGB(255, 236, 17, 2),
               )
             ]))));
   }
@@ -447,9 +445,8 @@ class MyMonthState extends State<Month> {
             textInputAction: TextInputAction.done,
             // autofocus: true,
           ),
-          MaterialButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          SizedBox(height: 10),
+          ElevatedButton(
             key: const Key("setBudget"),
             onPressed: () {
               setState(() {
@@ -533,8 +530,14 @@ class MyMonthState extends State<Month> {
                 }
               });
             },
-            child:
-                const Text("Set Budget", style: TextStyle(color: Colors.white)),
+            child: const Text("Set Budget"),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(150, 50),
+              shape: const StadiumBorder(),
+              onPrimary: const Color.fromARGB(255, 150, 66, 154),
+              side: BorderSide(
+                  color: const Color.fromARGB(255, 150, 66, 154), width: 3.0),
+            ),
           ),
           TextButton(
               onPressed: () {
@@ -548,7 +551,11 @@ class MyMonthState extends State<Month> {
                   budgetController.text = suggested.toString();
                 });
               },
-              child: Text("Suggest"))
+              child: Text("Suggest",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: const Color.fromARGB(255, 150, 66, 154),
+                  )))
         ],
       );
   double percentageSpent = 0;
@@ -628,15 +635,24 @@ class MyMonthState extends State<Month> {
         }
         int index = getToday(date);
         //print('index ' + index.toString());
+        double prev = 0;
+        if (index > 0) {
+          prev = cpi[index - 1];
+        }
+        double now = cpi[index];
 
-        double c = cpi[index] / 100;
+        double change = now - prev; //get the percentage change
+
+        double c = change / 100;
+        print(prev);
+        print(now);
         //print("cpi: ");
         //print(cpi);
         current = (c * actual) + actual;
-        //print("current: " + current.toString());
+        print(item + "  current: " + current.toString());
         setState(() {
           suggested += current;
-          print(suggested);
+          //print(suggested);
           this.suggested = suggested;
           budgetController.text = suggested.toStringAsFixed(2);
         });
