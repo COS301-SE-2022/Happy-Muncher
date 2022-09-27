@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -52,14 +53,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(
-              color: Colors
-                  .black), // set backbutton color here which will reflect in all screens.
-          leading: BackButton(),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
+        appBar: buildAppBar(context, "Change Password"),
         body: Form(
           key: _formKey,
           child: Column(
@@ -67,12 +61,8 @@ class _ChangePasswordState extends State<ChangePassword> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
-                    width: 320,
-                    child: const Text(
-                      "Change your Password?",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    )),
+                  width: 320,
+                ),
                 Padding(
                     padding: EdgeInsets.only(top: 40),
                     child: SizedBox(
@@ -100,17 +90,24 @@ class _ChangePasswordState extends State<ChangePassword> {
                           width: 320,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {
-                              // Validate returns true if the form is valid, or false otherwise.
-                              newPassword = newPasswordController.text;
-                              changePassword();
+                            onPressed: () async => {
+                              newPassword = newPasswordController.text,
+                              changePassword(),
                             },
                             child: const Text(
                               'Change',
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 20),
                             ),
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.black, shape: StadiumBorder()),
+                              minimumSize: Size(150, 50),
+                              shape: const StadiumBorder(),
+                              onPrimary:
+                                  const Color.fromARGB(255, 150, 66, 154),
+                              side: BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 150, 66, 154),
+                                  width: 3.0),
+                            ),
                           ),
                         )))
               ]),
