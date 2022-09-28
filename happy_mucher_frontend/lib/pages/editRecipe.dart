@@ -105,7 +105,7 @@ class EditRecipeState extends State<EditRecipe> {
           const Text('Enter your Recipe Title ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           TextField(
-              key: const Key("enterTitle"),
+              key: const Key("enterTitleEdit"),
               controller: titleController,
               decoration: const InputDecoration(
                 hintText: ('Title'),
@@ -124,7 +124,7 @@ class EditRecipeState extends State<EditRecipe> {
               ),
           const SizedBox(height: 14),
           TextField(
-              key: const Key("description"),
+              key: const Key("descriptionEdit"),
               controller: descriptionController,
               decoration: const InputDecoration(
                 hintText: ('Description'),
@@ -143,7 +143,7 @@ class EditRecipeState extends State<EditRecipe> {
               ),
           const SizedBox(height: 14),
           TextField(
-              key: const Key("entercalories"),
+              key: const Key("entercaloriesEdit"),
               controller: caloriesController,
               decoration: const InputDecoration(
                 hintText: ('Calories'),
@@ -162,7 +162,7 @@ class EditRecipeState extends State<EditRecipe> {
               ),
           const SizedBox(height: 14),
           TextField(
-              key: const Key("entertime"),
+              key: const Key("entertimeEdit"),
               controller: cooktimeController,
               decoration: const InputDecoration(
                 hintText: ('Cook Time'),
@@ -210,12 +210,12 @@ class EditRecipeState extends State<EditRecipe> {
           Align(
             alignment: Alignment.centerRight,
             child: SpeedDial(
-              key: const Key('speed_dial_button'),
+              key: const Key('speed_dial_buttonEdit'),
               icon: Icons.add,
               backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
-                  key: const Key('addToIngredientsButtonCamera'),
+                  key: const Key('addToIngredientsButtonCameraEdit'),
                   onTap: () async {
                     final newIngredients = await captureImageReceiptIngredients(
                         ImageSource.camera);
@@ -233,7 +233,7 @@ class EditRecipeState extends State<EditRecipe> {
                   backgroundColor: Color.fromARGB(255, 158, 115, 198),
                 ),
                 SpeedDialChild(
-                  key: const Key('addToIngredientsButtonGallery'),
+                  key: const Key('addToIngredientsButtonGalleryEdit'),
                   onTap: () async {
                     final newIngredients = await captureImageReceiptIngredients(
                         ImageSource.gallery);
@@ -263,7 +263,7 @@ class EditRecipeState extends State<EditRecipe> {
                       });
                     }
                   },
-                  key: const Key('addToIngredientsyButtonText'),
+                  key: const Key('addToIngredientsyButtonTextEdit'),
                   child: const Icon(
                     Icons.abc,
                     color: Colors.white,
@@ -304,12 +304,12 @@ class EditRecipeState extends State<EditRecipe> {
           Align(
             alignment: Alignment.centerRight,
             child: SpeedDial(
-              //key: const Key('speed_dial_button'),
+              key: const Key('speed_dial_button_steps_edit'),
               icon: Icons.add,
               backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
-                  //key: const Key('addToInventoryButtonCamera'),
+                  key: const Key('editIngredientsButtonCamera'),
                   onTap: () async {
                     final newSteps =
                         await captureImageReceiptRecipe(ImageSource.camera);
@@ -327,7 +327,7 @@ class EditRecipeState extends State<EditRecipe> {
                   backgroundColor: Color.fromARGB(255, 158, 115, 198),
                 ),
                 SpeedDialChild(
-                  //key: const Key('addToInventoryButtonGallery'),
+                  key: const Key('editIngredientsButtonGallery'),
                   onTap: () async {
                     final newSteps =
                         await captureImageReceiptRecipe(ImageSource.gallery);
@@ -357,7 +357,7 @@ class EditRecipeState extends State<EditRecipe> {
                       });
                     }
                   },
-                  //key: const Key('addToInventoryButtonText'),
+                  key: const Key('editIngredientsButtonText'),
                   child: const Icon(
                     Icons.abc,
                     color: Colors.white,
