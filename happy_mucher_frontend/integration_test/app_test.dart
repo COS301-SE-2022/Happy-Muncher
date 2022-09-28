@@ -156,7 +156,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 15));
       final NavigatorState nav7 = tester.state(find.byType(Navigator));
       nav7.pop();*/
-      /*await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(find.text('Tasty Recipe Book'));
       await tester.pumpAndSettle(const Duration(seconds: 10));
       await tester.tapAt(const Offset(379.0, 195.8));
@@ -224,7 +224,7 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(ElevatedButton));
-      await tester.pumpAndSettle();*/
+      await tester.pumpAndSettle();
 
       /*await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();*/
