@@ -110,10 +110,10 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent1 = doc["amount spent"].toString();
+        spent1 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        mybudget = doc["budget"].toString();
-        rem1 = doc["amount remaining"].toString();
+        mybudget = doc["budget"].toStringAsFixed(2);
+        rem1 = doc["amount remaining"].toStringAsFixed(2);
       });
     });
 
@@ -126,8 +126,8 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent2 = doc["amount spent"].toString();
-        rem2 = doc["amount remaining"].toString();
+        spent2 = doc["amount spent"].toStringAsFixed(2);
+        rem2 = doc["amount remaining"].toStringAsFixed(2);
         //print(doc["amount spent"]);
       });
     });
@@ -141,9 +141,9 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent3 = doc["amount spent"].toString();
+        spent3 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem3 = doc["amount remaining"].toString();
+        rem3 = doc["amount remaining"].toStringAsFixed(2);
       });
     });
 
@@ -156,9 +156,9 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent4 = doc["amount spent"].toString();
+        spent4 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem4 = doc["amount remaining"].toString();
+        rem4 = doc["amount remaining"].toStringAsFixed(2);
       });
     });
 
@@ -172,7 +172,7 @@ class MyMonthState extends State<Month> {
       //print(data['shopping total']);
       // You can then retrieve the value from the Map like this:
       //bought.add(data['shopping total']);
-      String st = data['shopping total'].toString();
+      String st = data['estimated total'].toStringAsFixed(2);
       //String estimates = data['estimated total'].toString();
       update += double.parse(st);
       //est += double.parse(estimates);
@@ -218,6 +218,9 @@ class MyMonthState extends State<Month> {
       double b = double.parse(budget);
       percentageSpent = spent / b;
       percentageRemaining = rem / b * 100;
+      percentageSpent = double.parse(percentageSpent.toStringAsFixed(2));
+      percentageRemaining =
+          double.parse(percentageRemaining.toStringAsFixed(2));
     }
     if (percentageSpent > 1 || percentageRemaining == double.negativeInfinity) {
       percentageSpent = 0;
@@ -257,7 +260,7 @@ class MyMonthState extends State<Month> {
                 lineHeight: 25.0,
                 animationDuration: 2000,
                 barRadius: const Radius.circular(16),
-                percent: percentageSpent,
+                percent: double.parse(percentageSpent.toStringAsFixed(2)),
                 center: Text(percentageRemaining.toString() + "% remaining"),
                 progressColor: percentageRemaining >= 60
                     ? Color.fromARGB(255, 72, 216, 29)
@@ -475,11 +478,11 @@ class MyMonthState extends State<Month> {
                 double updateSpent = 0;
 
                 bud = bud / 4;
-                mybudget = bud.toString();
+                mybudget = bud.toStringAsFixed(2);
                 rem1 = mybudget;
                 updateSpent = double.parse(rem1);
                 updateSpent -= double.parse(spent1);
-                rem1 = updateSpent.toString();
+                rem1 = updateSpent.toStringAsFixed(2);
                 // print("rem1");
                 // print(rem1);
                 //update DB for week 1
@@ -492,7 +495,7 @@ class MyMonthState extends State<Month> {
                 rem2 = mybudget;
                 updateSpent = double.parse(rem2);
                 updateSpent -= double.parse(spent2);
-                rem2 = updateSpent.toString();
+                rem2 = updateSpent.toStringAsFixed(2);
                 //update DB for week 2
                 _budget.doc(widget.month).collection('Week2').doc('Week2').set({
                   'budget': double.parse(mybudget),
@@ -502,7 +505,7 @@ class MyMonthState extends State<Month> {
                 rem3 = mybudget;
                 updateSpent = double.parse(rem3);
                 updateSpent -= double.parse(spent3);
-                rem3 = updateSpent.toString();
+                rem3 = updateSpent.toStringAsFixed(2);
                 //update DB for week 3
                 _budget.doc(widget.month).collection('Week3').doc('Week3').set({
                   'budget': double.parse(mybudget),
@@ -512,7 +515,7 @@ class MyMonthState extends State<Month> {
                 rem4 = mybudget;
                 updateSpent = double.parse(rem4);
                 updateSpent -= double.parse(spent4);
-                rem4 = updateSpent.toString();
+                rem4 = updateSpent.toStringAsFixed(2);
                 //update DB for week 4
                 _budget.doc(widget.month).collection('Week4').doc('Week4').set({
                   'budget': double.parse(mybudget),
@@ -779,7 +782,7 @@ class MyMonthState extends State<Month> {
 
   Widget WeekTwo() => Container(
       child: Card(
-          elevation: 25,
+          elevation: 10,
           clipBehavior: Clip.antiAlias,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -1142,7 +1145,7 @@ class MyMonthState extends State<Month> {
           if (ds.exists) {
             Map<String, dynamic> data = ds.data()!;
 
-            String estimates = data['estimated total'].toString();
+            String estimates = data['shopping total'].toString();
 
             est += double.parse(estimates);
             //est
@@ -1167,7 +1170,7 @@ class MyMonthState extends State<Month> {
             message = "Your Grocery List is within budget. ";
             comp = tr - comp;
             message += "You will have R " +
-                comp.toString() +
+                comp.toStringAsFixed(2) +
                 " remaining after shopping.";
           } else {
             comp = comp - tr;
