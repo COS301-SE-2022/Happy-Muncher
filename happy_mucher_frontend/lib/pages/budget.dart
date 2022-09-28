@@ -65,13 +65,13 @@ class _MyBudgetState extends State<MyBudget> {
             },
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
-              print(_focusedDay.month);
+              //print(_focusedDay.month);
               setState(() {
                 buttonValue = months[_focusedDay.month - 1];
               });
             },
           ),
-          SizedBox(height: 150),
+          SizedBox(height: 130),
           MonthNav(buttonValue),
         ],
       ));

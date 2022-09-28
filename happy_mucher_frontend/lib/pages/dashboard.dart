@@ -417,6 +417,10 @@ class DashboardState extends State<DashboardPage> {
                                   documentSnapshot['total remaining'] /
                                       documentSnapshot['budget'] *
                                       100;
+                              percentageSpent = double.parse(
+                                  percentageSpent.toStringAsFixed(2));
+                              percentageRem = double.parse(
+                                  percentageRem.toStringAsFixed(2));
                               if (percentageSpent < 0 || percentageSpent > 1) {
                                 percentageSpent = 0;
                               }

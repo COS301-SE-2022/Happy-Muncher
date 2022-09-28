@@ -80,13 +80,13 @@ class GroceryListPageState extends State<GroceryListPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Estimated Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
+                        'Shopping Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 15,
                         ),
                       ),
                       Text(
-                        'Actual Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
+                        'Estimated Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 15,
                         ),
