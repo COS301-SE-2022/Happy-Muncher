@@ -49,42 +49,40 @@ class _MealPageState extends State<MealPage> {
       body: SafeArea(
         //padding: const EdgeInsets.all(32),
 
-        child: Expanded(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                        initialPage: initial,
-                        aspectRatio: 0.5,
-                        enlargeCenterPage: true,
-                        enableInfiniteScroll: false,
-                        scrollDirection: Axis.vertical,
-                        viewportFraction: 0.30), // required
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                      initialPage: initial,
+                      aspectRatio: 0.5,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+                      scrollDirection: Axis.vertical,
+                      viewportFraction: 0.30), // required
 
-                    items: <Widget>[
-                      //Breakfast(),
-                      buildCards(),
-                      buildCards1(),
-                      buildCards2(),
-                      buildCards3(),
-                      buildCards4(),
-                      buildCards5(),
-                      buildCards6(),
-                      //MealWidget(day: widget.day, meal: "Breakfast"),
-                      //const SizedBox(height: 24),
-                      // MealWidget(day: widget.day, meal: "Lunch"),
-                      // //const SizedBox(height: 24),
-                      // MealWidget(day: widget.day, meal: "Supper"),
-                    ],
-                    //const SizedBox(height: 24) ], // required
-                  ),
+                  items: <Widget>[
+                    //Breakfast(),
+                    buildCards(),
+                    buildCards1(),
+                    buildCards2(),
+                    buildCards3(),
+                    buildCards4(),
+                    buildCards5(),
+                    buildCards6(),
+                    //MealWidget(day: widget.day, meal: "Breakfast"),
+                    //const SizedBox(height: 24),
+                    // MealWidget(day: widget.day, meal: "Lunch"),
+                    // //const SizedBox(height: 24),
+                    // MealWidget(day: widget.day, meal: "Supper"),
+                  ],
+                  //const SizedBox(height: 24) ], // required
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ));
 
