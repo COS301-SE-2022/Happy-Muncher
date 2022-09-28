@@ -16,14 +16,16 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
 class MyHomePage extends StatefulWidget {
+  final int index;
   static const routeName = '/home';
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key, required this.index}) : super(key: key);
   @override
   State<MyHomePage> createState() => HomePageState();
 }
 
 class HomePageState extends State<MyHomePage> {
   int index = 0;
+
   final screens = [
     GroceryListPage(),
     IventoryPage(),
@@ -31,10 +33,21 @@ class HomePageState extends State<MyHomePage> {
     MealPage(),
     RecipeBook(),
   ];
+  int getIndex() {
+    return widget.index;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    index = widget.index;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         //drawer: NavBar(),
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(

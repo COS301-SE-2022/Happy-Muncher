@@ -26,15 +26,15 @@ void main() {
       await tester.tap(emailField);
       await tester.pumpAndSettle();
 
-      await tester.enterText(emailField, 'u20554240@tuks.co.za');
-      //await tester.enterText(emailField, 'codeblooded301@gmail.com');
+      //await tester.enterText(emailField, 'u20554240@tuks.co.za');
+      await tester.enterText(emailField, 'codeblooded301@gmail.com');
       await tester.pumpAndSettle();
 
       await tester.tap(passwordField);
       await tester.pumpAndSettle();
 
-      await tester.enterText(passwordField, '123456');
-      //await tester.enterText(passwordField, 'cos301');
+      //await tester.enterText(passwordField, '123456');
+      await tester.enterText(passwordField, 'cos301');
       await tester.pumpAndSettle();
 
       await tester.tap(submitButton);
@@ -72,7 +72,7 @@ void main() {
       await tester.tap(find.byKey(Key('Inventory')));
       await tester.pumpAndSettle();
 
-      /*await tester.tap(find.byKey(Key('addToInventoryButton')));
+      await tester.tap(find.byKey(Key('addToInventoryButton')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('addToInventoryButtonText')));
       await tester.pumpAndSettle();
@@ -92,7 +92,7 @@ void main() {
       await tester.pumpAndSettle();
       final NavigatorState nav = tester.state(find.byType(Navigator));
       nav.pop();
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));*/
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       /*await tester.dragUntilVisible(find.byIcon(Icons.delete),
           find.byKey(Key('ice cream')), const Offset(-300, 0));
@@ -104,7 +104,7 @@ void main() {
       await tester.tap(find.byKey(Key('Budget')));
       await tester.pumpAndSettle();
 
-      /* await tester.tap(find.byType(ElevatedButton));
+      await tester.tap(find.byType(ElevatedButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('editBudget')));
       await tester.pumpAndSettle();
@@ -141,7 +141,7 @@ void main() {
 
       final NavigatorState navigator = tester.state(find.byType(Navigator));
       navigator.pop();
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));*/
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       // await tester.tap(find.text('Meal-Plan'));
       //await tester.pumpAndSettle();
@@ -165,7 +165,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Yes'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Monday'));
+      await tester.tap(find.text('Wednesday'));
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       //await tester.tap(find.byType(IconButton));//not working
 
@@ -201,12 +201,12 @@ void main() {
       await tester.tap(find.byKey(Key('Profile')));
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
-      await tester.tap(find.text('User'));
+      await tester.tap(find.text('Code Blooded'));
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       final NavigatorState nav8 = tester.state(find.byType(Navigator));
       nav8.pop();
       await tester.pumpAndSettle();
-      await tester.tap(find.text('u20554240@tuks.co.za'));
+      await tester.tap(find.text('codeblooded301@gmail.com'));
       await tester.pumpAndSettle();
       final NavigatorState nav9 = tester.state(find.byType(Navigator));
       nav9.pop();

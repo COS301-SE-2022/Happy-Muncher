@@ -82,7 +82,9 @@ class MyAppState extends State<MyApp> {
           routes: {
             SignupScreen.routeName: (ctx) => SignupScreen(),
             LoginScreen.routeName: (ctx) => LoginScreen(),
-            MyHomePage.routeName: (ctx) => MyHomePage()
+            MyHomePage.routeName: (ctx) => MyHomePage(
+                  index: 0,
+                )
           },
         ),
       ),
