@@ -406,7 +406,7 @@ class CreateState extends State<Create> {
     final cropped =
         await ImageCropper().cropImage(sourcePath: path, uiSettings: [
       AndroidUiSettings(
-          toolbarTitle: 'Croppper',
+          toolbarTitle: 'Cropper',
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false)
     ]);
