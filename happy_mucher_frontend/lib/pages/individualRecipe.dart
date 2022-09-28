@@ -234,23 +234,15 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 30),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                color: Color.fromARGB(255, 150, 66, 154),
-                width: 3.0,
-              )),
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: widget.instructions.length,
-              itemBuilder: (context, index) {
-                return InstructionCard(
-                  instruction: widget.instructions[index],
-                  step: index,
-                );
-              }),
-        ),
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.instructions.length,
+            itemBuilder: (context, index) {
+              return InstructionCard(
+                instruction: widget.instructions[index],
+                step: index,
+              );
+            }),
       ]),
     );
   }
@@ -359,7 +351,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           //color: lightGrey,
           child: Text(
             widget.description,
-            style: TextStyle(color: offWhite, fontSize: 18),
+            style: TextStyle(fontSize: 18),
             textAlign: TextAlign.left,
           ),
         ),
