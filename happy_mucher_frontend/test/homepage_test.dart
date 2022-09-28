@@ -37,7 +37,11 @@ void main() {
 
       setUp(() async {});
 
-      const testApp = MaterialApp(home: Scaffold(body: MyHomePage()));
+      const testApp = MaterialApp(
+          home: Scaffold(
+              body: MyHomePage(
+        index: 1,
+      )));
 
       testWidgets(
         'Testing if text fields on starts up correctly',
