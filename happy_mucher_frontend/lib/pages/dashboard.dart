@@ -413,20 +413,13 @@ class DashboardState extends State<DashboardPage> {
                               double percentageSpent =
                                   documentSnapshot['total spent'] /
                                       documentSnapshot['budget'];
-                              double percentageRem =
-                                  documentSnapshot['total remaining'] /
-                                      documentSnapshot['budget'] *
-                                      100;
-                              percentageSpent = double.parse(
-                                  percentageSpent.toStringAsFixed(2));
-                              percentageRem = double.parse(
-                                  percentageRem.toStringAsFixed(2));
+
                               if (percentageSpent < 0 || percentageSpent > 1) {
                                 percentageSpent = 0;
                               }
-                              if (percentageRem < 0 || percentageRem > 1) {
-                                percentageRem = 100;
-                              }
+
+                              double percentageRem =
+                                  (1 - percentageSpent) * 100;
 
                               if (documentSnapshot.id ==
                                   DateFormat('MMMM').format(DateTime.now())) {
@@ -439,7 +432,8 @@ class DashboardState extends State<DashboardPage> {
                                   barRadius: const Radius.circular(16),
                                   percent: percentageSpent,
                                   center: Text(
-                                      percentageRem.toString() + "% remaining"),
+                                      percentageRem.toStringAsFixed(2) +
+                                          "% remaining"),
                                   progressColor: documentSnapshot[
                                                   'total remaining'] /
                                               documentSnapshot['budget'] >=
