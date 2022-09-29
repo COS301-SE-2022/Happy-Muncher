@@ -340,7 +340,7 @@ class DashboardState extends State<DashboardPage> {
                                                   .toString() +
                                               ' \u{00D7} ' +
                                               documentSnapshot['itemName'] +
-                                              'expires today!',
+                                              ' expires today!',
                                           textAlign: TextAlign.center),
                                     );
                                   } else if (index ==
