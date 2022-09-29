@@ -178,11 +178,12 @@ class MyMonthState extends State<Month> {
       "November",
       "December"
     ];
-    String currMonth = DateFormat('EEEE').format(DateTime.now());
-    if (currMonth == widget.month) {
-      var totals =
-          firestore.collection('Users').doc(uid).collection('GL totals');
-      var ds = await totals.doc('Totals').get();
+    var totals = firestore.collection('Users').doc(uid).collection('GL totals');
+    var ds = await totals.doc('Totals').get();
+    DateTime _focusedDay = DateTime.now();
+    String currMonth = months[_focusedDay.month - 1];
+    print(currMonth);
+    if (currMonth.toLowerCase() == widget.month.toLowerCase()) {
       if (ds.exists) {
         Map<String, dynamic> data = ds.data()!;
         //print(data['shopping total']);
