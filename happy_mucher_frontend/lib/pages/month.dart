@@ -7,6 +7,7 @@ import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -164,19 +165,36 @@ class MyMonthState extends State<Month> {
 
     bought = [];
     double update = 0;
+    List<String> months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "November",
+      "December"
+    ];
+    String currMonth = DateFormat('EEEE').format(DateTime.now());
+    if (currMonth == widget.month) {
+      var totals =
+          firestore.collection('Users').doc(uid).collection('GL totals');
+      var ds = await totals.doc('Totals').get();
+      if (ds.exists) {
+        Map<String, dynamic> data = ds.data()!;
+        //print(data['shopping total']);
+        // You can then retrieve the value from the Map like this:
+        //bought.add(data['shopping total']);
+        String st = data['estimated total'].toStringAsFixed(2);
+        //String estimates = data['estimated total'].toString();
 
-    var totals = firestore.collection('Users').doc(uid).collection('GL totals');
-    var ds = await totals.doc('Totals').get();
-    if (ds.exists) {
-      Map<String, dynamic> data = ds.data()!;
-      //print(data['shopping total']);
-      // You can then retrieve the value from the Map like this:
-      //bought.add(data['shopping total']);
-      String st = data['estimated total'].toStringAsFixed(2);
-      //String estimates = data['estimated total'].toString();
-      update += double.parse(st);
-      //est += double.parse(estimates);
-      //est
+        update += double.parse(st);
+        //est += double.parse(estimates);
+        //est
+      }
     }
 
     totSpent = 0;
