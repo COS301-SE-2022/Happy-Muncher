@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
-
-Future addUsernameDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const ChangeUsername());
-}
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class ChangeUsername extends StatefulWidget {
   const ChangeUsername({Key? key}) : super(key: key);
@@ -17,21 +15,19 @@ class ChangeUsername extends StatefulWidget {
 
 class _ChangeUsernameState extends State<ChangeUsername> {
   final _formKey = GlobalKey<FormState>();
-
   var newUsername = "";
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
-
-  final newUsernameController = TextEditingController();
+  final newUsernameController =
+      TextEditingController(); // var user = UserData.myUser;
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     newUsernameController.dispose();
     super.dispose();
   }
 
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  User? get currentUser => firebaseAuth.currentUser;
+
   changeUsername() async {
     try {
       await currentUser!.updateDisplayName(newUsername);
@@ -40,7 +36,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
         MaterialPageRoute(builder: (context) => Profile()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             backgroundColor: Colors.grey,
             content: Text(
               'Your Username has been Changed',
@@ -52,56 +48,65 @@ class _ChangeUsernameState extends State<ChangeUsername> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      /*appBar: AppBar(
-        title: Text('Change Username'),
-      ),*/
-      key: _formKey,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: EdgeInsets.zero,
-            child: TextFormField(
-              autofocus: false,
-              obscureText: false,
-              decoration: InputDecoration(
-                labelText: 'New Username: ',
-                hintText: 'Enter New Username',
-                labelStyle: TextStyle(fontSize: 20.0),
-                border: OutlineInputBorder(),
-                errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-              ),
-              controller: newUsernameController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please Enter Username';
-                }
-                return null;
-              },
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        ElevatedButton(
-          onPressed: () {
-            // Validate returns true if the form is valid, otherwise false.
-            /*if (_formKey.currentState!.validate()) {
-                  setState(() {
-                    newUsername = newUsernameController.text;
-                  });
-                  
-                }*/
-            newUsername = newUsernameController.text;
-            changeUsername();
-          },
-          child: Text(
-            'Change',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-      ],
-    );
+    return Scaffold(
+        appBar: buildAppBar(context, "Change Username"),
+        body: Form(
+          key: _formKey,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(
+                  width: 320,
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: SizedBox(
+                        height: 100,
+                        width: 320,
+                        child: TextFormField(
+                          key: const Key('usernameText'),
+                          // Handles Form Validation
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Username';
+                            }
+                            return null;
+                          },
+                          controller: newUsernameController,
+                          decoration: const InputDecoration(
+                            labelText: 'Username',
+                          ),
+                        ))),
+                Padding(
+                    padding: const EdgeInsets.only(top: 150),
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          width: 320,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () async => {
+                              newUsername = newUsernameController.text,
+                              changeUsername(),
+                            },
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(150, 50),
+                              shape: const StadiumBorder(),
+                              onPrimary:
+                                  const Color.fromARGB(255, 150, 66, 154),
+                              side: BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 150, 66, 154),
+                                  width: 3.0),
+                            ),
+                          ),
+                        )))
+              ]),
+        ));
   }
 }

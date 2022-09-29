@@ -73,34 +73,63 @@ abstract class Styles {
 
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
-      //* Custom Google Font
-      //  fontFamily: Devfest.google_sans_family,
-      //primarySwatch: Colors.red,
-      primaryColor: isDarkTheme ? Colors.black : Colors.white,
+        //* Custom Google Font
+        //  fontFamily: Devfest.google_sans_family,
+        primarySwatch: Colors.purple,
+        //primarySwatch: Colors.red,
+        // elevatedButtonTheme: ElevatedButtonThemeData(
+        //     style: TextButton.styleFrom(
+        //         backgroundColor: isDarkTheme ? Colors.white : Colors.black)),
+        // elevatedButtonTheme: ElevatedButtonThemeData(
+        //   style: ButtonStyle(
+        //     // Makes all my ElevatedButton green
+        //     backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+        //   ),
+        // ),
 
-      backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
-
-      indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
-      buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
-
-      hintColor: isDarkTheme ? Colors.grey : Color.fromARGB(255, 107, 105, 106),
-
-      highlightColor: isDarkTheme ? Color(0xff372901) : Color(0xffFCE192),
-      hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
-
-      focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
-      disabledColor: Colors.grey,
-      textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
-      cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
-      canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
-      brightness: isDarkTheme ? Brightness.dark : Brightness.light,
-      buttonTheme: ButtonThemeData(
-        buttonColor: isDarkTheme ? Colors.blue : Colors.orange,
-      ),
-
-      appBarTheme: AppBarTheme(
-        elevation: 0.0,
-      ),
-    );
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: isDarkTheme ? Color(0xFF151515) : Colors.white,
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: isDarkTheme
+                ? Colors.white
+                : Colors.black, // This is a custom color variable
+          ),
+        ),
+        primaryColor: isDarkTheme ? Colors.white : Colors.black,
+        backgroundColor: isDarkTheme ? Colors.grey : Color(0xffF1F5FB),
+        indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
+        buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
+        hintColor:
+            isDarkTheme ? Colors.grey : Color.fromARGB(255, 107, 105, 106),
+        highlightColor: isDarkTheme ? Color(0xff372901) : Color(0xffFCE192),
+        hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
+        focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
+        disabledColor: Colors.grey,
+        textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
+        cardColor: isDarkTheme ? Color.fromARGB(153, 0, 0, 0) : Colors.white,
+        canvasColor: isDarkTheme ? Color(0xFF212025) : Color(0xFFDFDEE3),
+        brightness: isDarkTheme ? Brightness.dark : Brightness.light,
+        buttonTheme: ButtonThemeData(
+          buttonColor:
+              isDarkTheme ? Color.fromARGB(255, 6, 143, 255) : Colors.orange,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: isDarkTheme
+              ? Colors.white.withOpacity(0.9)
+              : Colors.white.withOpacity(0.9),
+        ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+              color: isDarkTheme ? Colors.white : Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
+          elevation: 0.0,
+          actionsIconTheme:
+              IconThemeData(color: isDarkTheme ? Colors.white : Colors.black),
+        ));
   }
 }

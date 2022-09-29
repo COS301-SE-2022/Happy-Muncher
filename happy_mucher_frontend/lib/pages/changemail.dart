@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
-
-Future addEmailDialog(BuildContext context) {
-  return showDialog(context: context, builder: (_) => const ChangeEmail());
-}
+import 'package:happy_mucher_frontend/pages/profile.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class ChangeEmail extends StatefulWidget {
   const ChangeEmail({Key? key}) : super(key: key);
@@ -29,18 +29,19 @@ class _ChangeEmailState extends State<ChangeEmail> {
     super.dispose();
   }
 
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
 
+  User? get currentUser => firebaseAuth.currentUser;
   changeEmail() async {
     try {
       await currentUser!.updateEmail(newEmail);
-      FirebaseAuth.instance.signOut();
+      firebaseAuth.signOut();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Colors.grey,
           content: Text(
             'Your Email has been Changed. Login again!',
@@ -53,49 +54,66 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-        key: _formKey,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: TextFormField(
-                autofocus: false,
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: 'New Email: ',
-                  hintText: 'Enter New Email',
-                  labelStyle: TextStyle(fontSize: 20.0),
-                  border: OutlineInputBorder(),
-                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
+    return Scaffold(
+        appBar: buildAppBar(context, "Change Email"),
+        body: Form(
+          key: _formKey,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(
+                  width: 320,
                 ),
-                controller: newEmailController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter Email';
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              // Validate returns true if the form is valid, otherwise false.
-              /*if (_formKey.currentState.validate()) {
-                  setState(() {});
-                }*/
-              newEmail = newEmailController.text;
-              changeEmail();
-            },
-            child: Text(
-              'Change',
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ),
-        ]);
+                Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: SizedBox(
+                        height: 100,
+                        width: 320,
+                        child: TextFormField(
+                          key: const Key('emailText'),
+                          // Handles Form Validation
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Email';
+                            }
+                            return null;
+                          },
+                          controller: newEmailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                          ),
+                        ))),
+                Padding(
+                    padding: const EdgeInsets.only(top: 150),
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          key: const Key('emailButton'),
+                          width: 320,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () async => {
+                              newEmail = newEmailController.text,
+                              changeEmail(),
+                            },
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(150, 50),
+                              shape: const StadiumBorder(),
+                              onPrimary:
+                                  const Color.fromARGB(255, 150, 66, 154),
+                              side: BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 150, 66, 154),
+                                  width: 3.0),
+                            ),
+                          ),
+                        )))
+              ]),
+        ));
   }
 }

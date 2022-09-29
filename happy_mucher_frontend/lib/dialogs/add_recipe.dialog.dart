@@ -3,30 +3,32 @@ import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<RecipeItemParams?> addRecipeDialog(BuildContext context) {
   return showDialog(context: context, builder: (_) => const AddRecipe());
 }
 
 class AddRecipe extends StatefulWidget {
-  const AddRecipe(
-      {Key? key,
-      });
-  
+  const AddRecipe({
+    Key? key,
+  });
+
   @override
   State<AddRecipe> createState() => AddRecipeState();
 }
 
 class AddRecipeState extends State<AddRecipe> {
   final FirebaseFirestore firestore = GetIt.I.get();
-
-  CollectionReference get _mealPlanner => firestore.collection('Meal Planner');
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
+  CollectionReference get _mealPlanner =>
+      firestore.collection('Users').doc(uid).collection('Meal Planner');
   @override
   Widget build(BuildContext context) {
     Widget yesButton = TextButton(
       child: Text("Yes"),
       onPressed: () {
-       
         Navigator.of(context, rootNavigator: true).pop();
       },
     );
@@ -65,14 +67,13 @@ class RecipeItemParams {
   final int calories;
   final List<String> ingredients;
   final List<String> instructions;
-  RecipeItemParams({
-    this.name = "",
+  RecipeItemParams(
+      {this.name = "",
       this.images = "",
       this.recipeid = 0,
       this.totTime = "",
       this.description = "",
       this.calories = 0,
       this.ingredients = const [''],
-      this.instructions = const ['']
-  });
+      this.instructions = const ['']});
 }

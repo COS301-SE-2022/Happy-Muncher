@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -25,17 +27,19 @@ class _ChangePasswordState extends State<ChangePassword> {
     super.dispose();
   }
 
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  User? get currentUser => firebaseAuth.currentUser;
+
   changePassword() async {
     try {
       await currentUser!.updatePassword(newPassword);
-      FirebaseAuth.instance.signOut();
+      firebaseAuth.signOut();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Colors.grey,
           content: Text(
             'Your Password has been Changed. Login again!',
@@ -49,53 +53,64 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Change Password'),
-      ),
-      key: _formKey,
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: ListView(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: TextFormField(
-                autofocus: false,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'New Password: ',
-                  hintText: 'Enter New Password',
-                  labelStyle: TextStyle(fontSize: 20.0),
-                  border: OutlineInputBorder(),
-                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
+        appBar: buildAppBar(context, "Change Password"),
+        body: Form(
+          key: _formKey,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: 320,
                 ),
-                controller: newPasswordController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter Password';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, otherwise false.
-                /*if (_formKey.currentState!.validate()) {
-                  setState(() {});
-                }*/
-                newPassword = newPasswordController.text;
-                print(newPassword);
-                changePassword();
-              },
-              child: Text(
-                'Change Password',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: SizedBox(
+                        height: 100,
+                        width: 320,
+                        child: TextFormField(
+                          obscureText: true,
+                          // Handles Form Validation
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter New Password';
+                            }
+                            return null;
+                          },
+                          controller: newPasswordController,
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                          ),
+                        ))),
+                Padding(
+                    padding: EdgeInsets.only(top: 150),
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          width: 320,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () async => {
+                              newPassword = newPasswordController.text,
+                              changePassword(),
+                            },
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(150, 50),
+                              shape: const StadiumBorder(),
+                              onPrimary:
+                                  const Color.fromARGB(255, 150, 66, 154),
+                              side: BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 150, 66, 154),
+                                  width: 3.0),
+                            ),
+                          ),
+                        )))
+              ]),
+        ));
   }
 }

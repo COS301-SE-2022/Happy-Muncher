@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class ChangeProfile extends StatefulWidget {
   const ChangeProfile({Key? key}) : super(key: key);
@@ -28,7 +30,9 @@ class _ChangeProfileState extends State<ChangeProfile> {
     super.dispose();
   }
 
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  User? get currentUser => firebaseAuth.currentUser;
+
   changeProfilePic() async {
     try {
       await currentUser!.updatePhotoURL(newPhotoURL);
@@ -37,7 +41,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
         MaterialPageRoute(builder: (context) => Profile()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             backgroundColor: Colors.grey,
             content: Text(
               'Your Profile has been Changed',
@@ -49,11 +53,14 @@ class _ChangeProfileState extends State<ChangeProfile> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text('Change Profile Picture'),
-        ),
+        appBar: buildAppBar(context, "Change Profile"),
         body: ListView(
           children: [
+            SizedBox(height: 30),
+            buildListTile(
+                image:
+                    'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png'),
+            SizedBox(height: 30),
             SizedBox(height: 30),
             buildListTile(
                 image:

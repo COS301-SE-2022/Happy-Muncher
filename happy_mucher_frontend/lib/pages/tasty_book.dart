@@ -6,6 +6,7 @@ import 'package:happy_mucher_frontend/models/tastyRecipe.dart';
 import 'package:happy_mucher_frontend/recipe_card.dart';
 import 'package:happy_mucher_frontend/tasty_card.dart';
 import 'package:happy_mucher_frontend/search_widget.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 //import 'package:http/http.dart' as http;
 
 class TastyBook extends StatefulWidget {
@@ -46,11 +47,7 @@ class TastyBookState extends State<TastyBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recipe Book'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-      ),
+      appBar: buildAppBar(context, "Tasty Recipe Book"),
       body: SingleChildScrollView(
           child: Column(
         children: [

@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:happy_mucher_frontend/dialogs/add_recipe.dialog.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -15,14 +16,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class RecipeCard extends StatelessWidget {
   final List<tastyRecipe> recipes;
-
-  final _dummyImage =
-      'https://i1.wp.com/butwhythopodcast.com/wp-content/uploads/2020/09/maxresdefault-28.jpg?fit=1280%2C720&ssl=1';
-  //List<Recipe>? recipes;
+//List<Recipe>? recipes;
   RecipeCard({this.recipes = const []});
-
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _meals => firestore.collection('Meal Planner');
+  CollectionReference get _meals =>
+      firestore.collection('Users').doc(uid).collection('Meal Planner');
   String name = "";
   String images = "";
   //this.recipeid = 0,

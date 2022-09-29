@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:happy_mucher_frontend/pages/dashboard.dart';
 import 'package:happy_mucher_frontend/pages/forgotpassword.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +10,7 @@ import '../models/authentication.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -37,20 +41,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
+    const CircularProgressIndicator();
     if (!_formKey.currentState!.validate()) {
       return;
     }
     _formKey.currentState!.save();
 
     try {
-      print(_authData['email']!);
-      print(_authData['password']!);
+      /*print(_authData['email']!);
+      print(_authData['password']!);*/
       await Provider.of<Authentication>(context, listen: false)
           .logIn(_authData['email']!, _authData['password']!);
+
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
 
-      Navigator.of(context).pushReplacementNamed(MyHomePage.routeName);
+      Timer(Duration(seconds: 2), () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DashboardPage()));
+      });
     } catch (error) {
       var errorMessage = 'Authentication Failed. Invalid email or password.';
       _showErrorDialog(errorMessage);
@@ -80,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //email
                       SizedBox(height: size.height * 0.03),
                       TextFormField(
-                        key: const ValueKey("Email"),
+                        key: const Key("Email"),
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -100,9 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       //password
                       TextFormField(
-                        key: const ValueKey("Password"),
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(labelText: 'Password'),
+                        key: const Key("Password"),
+                        style: const TextStyle(fontSize: 20),
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
                         obscureText: true,
                         validator: (value) {
                           if (value!.isEmpty || value.length <= 5) {
@@ -118,76 +128,47 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // TextButton(
-                          //   child: Text('Forgot Password?'),
-                          //   onPressed: () => Navigator.of(context).push(
-                          //     MaterialPageRoute(
-                          //         builder: (context) => ForgotPassword()),
-                          //   ),
-                          // )
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Color.fromARGB(255, 150, 66, 154),
+                            ),
+                            child: Text('Forgot Password?'),
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPassword()),
+                            ),
+                          ),
                         ],
                       ),
 
                       SizedBox(height: size.height * 0.03),
-                      RaisedButton(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color.fromARGB(255, 150, 66, 154),
+                          shape: const StadiumBorder(),
+                          minimumSize: const Size(300, 50),
+                          onPrimary: Colors.white,
+                          side: const BorderSide(
+                              color: Color.fromARGB(255, 150, 66, 154),
+                              width: 3.0),
+                        ),
                         key: const ValueKey("Submit"),
                         child: Container(
                           alignment: Alignment.center,
                           height: 50.0,
                           width: size.width * 0.5,
-                          decoration: new BoxDecoration(
-                              borderRadius: BorderRadius.circular(80.0),
-                              color: Color.fromARGB(255, 252, 95, 13)),
-                          padding: const EdgeInsets.all(0),
-                          child: Text(
+                          child: const Text(
                             'Log In',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           _submit();
                         },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80),
-                        ),
-                        color: Colors.blue,
-                        textColor: Colors.white,
-                        padding: const EdgeInsets.all(0),
                       ),
-                      TextButton(
-                        child: Text('Forgot Password?'),
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => ForgotPassword()),
-                        ),
-                      ),
-                      // ElevatedButton(
-                      //     key: Key('home'),
-                      //     child: Text('Home'),
-                      //     onPressed: () {
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: (context) => MyHomePage()));
-                      //     }),
-
-                      //SizedBox(height: 30, width: 80),
-                      /*Container(
-                        height: 30.0,
-                        width: 30.0,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage('assets/images/google_logo.png'),
-                              fit: BoxFit.cover),
-                          shape: BoxShape.circle,
-                        ),
-                      ),*/
-
-                      const SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(height: size.height * 0.02),
                       //Text("Sign in with Google"),
                       Container(
                         alignment: Alignment.center,
@@ -195,12 +176,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             horizontal: 40, vertical: 10),
                         child: const Text(
                           "OR",
-                          style:
-                              TextStyle(fontSize: 14, color: Color(0XFF2661FA)),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color.fromARGB(255, 150, 66, 154)),
                         ),
                       ),
 
-                      TextButton.icon(
+                      SizedBox(height: size.height * 0.02),
+                      ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder(),
+                            minimumSize: const Size(300, 50),
+                            onPrimary: const Color.fromARGB(255, 150, 66, 154),
+                            side: const BorderSide(
+                                color: Color.fromARGB(255, 150, 66, 154),
+                                width: 3.0),
+                          ),
                           onPressed: () {
                             signup(context);
                           },
@@ -209,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 30,
                             width: 30,
                           ),
-                          label: Text(
+                          label: const Text(
                             "Log in with Google",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 20),
@@ -220,12 +211,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
+                              style: TextButton.styleFrom(
+                                primary:
+                                    const Color.fromARGB(255, 150, 66, 154),
+                              ),
                               onPressed: () => Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (context) => SignupScreen()),
                                   ),
-                              child:
-                                  Text("Don't have an account? Sign up here"))
+                              child: const Text(
+                                  "Don't have an account? Sign up here"))
                         ],
                       )
 
@@ -301,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (result != null) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+            context, MaterialPageRoute(builder: (context) => DashboardPage()));
       } // if result not null we simply call the MaterialpageRoute,
       // for go to the HomePage screen
     }

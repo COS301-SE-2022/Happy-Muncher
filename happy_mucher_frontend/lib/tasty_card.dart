@@ -8,8 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:happy_mucher_frontend/dialogs/add_recipe.dialog.dart';
 import 'package:happy_mucher_frontend/pages/mealplanner.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TastyRecipeCard extends StatelessWidget {
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final String name;
   final String images;
   final int recipeid;
@@ -30,7 +33,8 @@ class TastyRecipeCard extends StatelessWidget {
       this.instructions = const ['']});
 
   final FirebaseFirestore firestore = GetIt.I.get();
-  CollectionReference get _meals => firestore.collection('Meal Planner');
+  CollectionReference get _meals =>
+      firestore.collection('Users').doc(uid).collection('Meal Planner');
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +138,7 @@ class TastyRecipeCard extends StatelessWidget {
               key: const Key('dots'),
               direction: SpeedDialDirection.down,
               icon: Icons.more_vert,
-              backgroundColor: Color.fromARGB(255, 172, 255, 78),
+              backgroundColor: Color.fromARGB(255, 150, 66, 154),
               buttonSize: const Size(45.0, 45.0),
               children: [
                 SpeedDialChild(
@@ -143,7 +147,7 @@ class TastyRecipeCard extends StatelessWidget {
                       name: name,
                       description: description,
                       image: images,
-                      //id: recipeid,
+                      id: recipeid,
                       ingredients: ingredients,
                       cookTime: totTime,
                       calories: calories.toDouble(),
@@ -155,7 +159,7 @@ class TastyRecipeCard extends StatelessWidget {
                     Icons.info_outline,
                     color: Colors.white,
                   ),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color.fromARGB(255, 158, 115, 198),
                 ),
                 SpeedDialChild(
                   onTap: () => showAlertDialog(context),
@@ -164,7 +168,7 @@ class TastyRecipeCard extends StatelessWidget {
                     Icons.add,
                     color: Colors.white,
                   ),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color.fromARGB(255, 185, 141, 223),
                 ),
               ],
             ),
@@ -184,7 +188,7 @@ class TastyRecipeCard extends StatelessWidget {
         ing = ingredients.join('\n');
         String instruc = "";
         instruc = instructions.join('\n');
-        _meals.doc('Place Holder').update({
+        _meals.doc('Place Holder').set({
           'Name': name,
           'Instructions': instruc,
           'Description': description,
