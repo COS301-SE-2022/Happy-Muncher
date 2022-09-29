@@ -136,26 +136,34 @@ void main() {
           ),
           const Offset(0, -600));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(Key('Compare')));
+      /*await tester.tap(find.byKey(Key('Compare')));
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(Key('okbutton')));*/
+
+      await tester.widget(find.byType(AppBar));
       await tester.pumpAndSettle();
 
-      final NavigatorState navigator = tester.state(find.byType(Navigator));
-      navigator.pop();
-      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byIcon(Icons.dashboard));
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+      await tester.tap(find.text('Inventory'));
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       // await tester.tap(find.text('Meal-Plan'));
       //await tester.pumpAndSettle();
-      await tester.tap(find.byKey(Key('Recipe book')), warnIfMissed: false);
+      await tester.tap(find.byKey(Key('Recipe book')));
       await tester.pumpAndSettle();
       await tester.tap(find.text('My Recipe Book'));
       await tester.pumpAndSettle();
       final NavigatorState nav6 = tester.state(find.byType(Navigator));
       nav6.pop();
-      /*await tester.pumpAndSettle();
+
+      await tester.pumpAndSettle();
       await tester.tap(find.text('My Favourites'));
       await tester.pumpAndSettle(const Duration(seconds: 15));
       final NavigatorState nav7 = tester.state(find.byType(Navigator));
-      nav7.pop();*/
+      nav7.pop();
+
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       await tester.tap(find.text('Tasty Recipe Book'));
       await tester.pumpAndSettle(const Duration(seconds: 10));
@@ -165,7 +173,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Yes'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Wednesday'));
+      await tester.tap(find.text('Thursday'));
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
       //await tester.tap(find.byType(IconButton));//not working
 
@@ -185,15 +193,6 @@ void main() {
       final NavigatorState nav7 = tester.state(find.byType(Navigator));
       nav7.pop();
       await tester.pumpAndSettle();*/
-
-      await tester.widget(find.byType(AppBar));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byIcon(Icons.dashboard));
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
-
-      await tester.tap(find.text('Inventory'));
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
       await tester.widget(find.byType(AppBar));
       await tester.pumpAndSettle(const Duration(milliseconds: 500));
