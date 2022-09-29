@@ -25,9 +25,9 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 ## Coding standards Document
 [Coding standards Document](https://drive.google.com/file/d/1YFDkelCUVaHnaCqa4YK2TMixYq0FU9Pc/view?usp=sharing)
 ## User Manual
-[User Manual](https://docs.google.com/document/d/1Uk-dOqGBEWcNDvXEmueoybrC05E2bhQG8wC4fsHDX1M/edit?usp=sharing)
+[User Manual](https://drive.google.com/file/d/1eCcusi1SJ0QwVBzzDOkcyZAXhJYb7U6b/view?usp=sharing)
 ## Technical Installation Manual
-[Technical Installation manual](https://docs.google.com/document/d/1xW80AoKxmvsrvOs4EEmh6WYjHZltmA2fwOW-XcOsPFo/edit?usp=sharing)
+[Technical Installation manual](https://drive.google.com/file/d/1fdteJyN7CWQUq0vehNhvfx_h3GnLyf1I/view?usp=sharing)
 ## Testing Policy
 [Testing Policy](https://drive.google.com/file/d/1sk1aM97NQaeZG-jt0UAPqZ6HYrmriLoQ/view?usp=sharing)
 ## Usability Test
