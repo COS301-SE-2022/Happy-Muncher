@@ -13,7 +13,7 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 
 [CodeBlooded-Demo3](https://drive.google.com/file/d/1HFU9CiN1slKBjAjXP9vxalan3Y2Gb98n/view?usp=sharing)
 
-[CodeBlooded-Demo3](https://drive.google.com/file/d/1HFU9CiN1slKBjAjXP9vxalan3Y2Gb98n/view?usp=sharing)
+[CodeBlooded-Demo4](https://drive.google.com/file/d/1HFU9CiN1slKBjAjXP9vxalan3Y2Gb98n/view?usp=sharing)
 ## System Requirement Specification
 [SRS Document DEMO 1](https://drive.google.com/file/d/1cj38yS1u46nPYsl6bdmmLr3X9dtbMNRl/view?usp=sharing)
 
@@ -25,9 +25,9 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 ## Coding standards Document
 [Coding standards Document](https://drive.google.com/file/d/1YFDkelCUVaHnaCqa4YK2TMixYq0FU9Pc/view?usp=sharing)
 ## User Manual
-[User Manual](https://drive.google.com/file/d/1eCcusi1SJ0QwVBzzDOkcyZAXhJYb7U6b/view?usp=sharing)
+[User Manual](https://docs.google.com/document/d/1Uk-dOqGBEWcNDvXEmueoybrC05E2bhQG8wC4fsHDX1M/edit?usp=sharing)
 ## Technical Installation Manual
-[User Manual](https://drive.google.com/file/d/1fdteJyN7CWQUq0vehNhvfx_h3GnLyf1I/view?usp=sharing)
+[Technical Installation manual](https://docs.google.com/document/d/1xW80AoKxmvsrvOs4EEmh6WYjHZltmA2fwOW-XcOsPFo/edit?usp=sharing)
 ## Testing Policy
 [Testing Policy](https://drive.google.com/file/d/1sk1aM97NQaeZG-jt0UAPqZ6HYrmriLoQ/view?usp=sharing)
 ## Usability Test
