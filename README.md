@@ -4,6 +4,8 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 
 <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/COS301-SE-2022/Happy-Muncher"> <a href = "https://github.com/COS301-SE-2022/Happy-Muncher/commits"><img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/w/COS301-SE-2022/Happy-Muncher?color=green&style=flat-square"></a> <a href = "https://github.com/COS301-SE-2022/Happy-Muncher/commits"><img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/COS301-SE-2022/Happy-Muncher?color=green&style=flat-square"></a> <img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/COS301-SE-2022/Happy-Muncher">
 
+## Download Link
+[Link](https://drive.google.com/file/d/1cfY_6KxZEpwNsV0Hnm4qIjy4Xzatc-8j/view)
 ## Demo Recordings
 [CodeBlooded-Demo1](https://drive.google.com/file/d/1HFU9CiN1slKBjAjXP9vxalan3Y2Gb98n/view?usp=sharing)
 
