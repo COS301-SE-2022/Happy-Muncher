@@ -73,7 +73,7 @@ class MyMonthState extends State<Month> {
   double actual = 0.0;
   List<double> cpi = [];
   List<String> dates = [];
-  double suggested = 0;
+  double suggested = 57.45;
   List<String> items = [];
 
   List<int> bought = [];
@@ -566,7 +566,8 @@ class MyMonthState extends State<Month> {
                 //suggested = 0.0;
 
                 getMostFrequent(items);
-                //print(items);
+
+                print(items);
 
                 setState(() {
                   //print(suggested);
