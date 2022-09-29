@@ -1194,6 +1194,7 @@ class MyMonthState extends State<Month> {
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
+      key: Key("okbutton"),
       child: const Text("OK"),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop('dialog');
