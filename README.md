@@ -32,6 +32,9 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 [Testing Policy](https://drive.google.com/file/d/1sk1aM97NQaeZG-jt0UAPqZ6HYrmriLoQ/view?usp=sharing)
 ## Usability Test
 [Usability Tests](https://drive.google.com/file/d/1Z9PljeBpSOoaTB8hNiz1ekuvu-eYYvhs/view?usp=sharing)
+## Presentations
+[Presentation](https://docs.google.com/presentation/d/1fv17issWGwWcOh5l9x09kJCaiMSahzME/edit?usp=sharing&ouid=103825104045648867447&rtpof=true&sd=true)
+[Machine Learning](https://docs.google.com/presentation/d/1KBuzgbySB4gZlmvZsk5-isN6fJXGjq2H/edit?usp=sharing&ouid=103825104045648867447&rtpof=true&sd=true)
 ## Project Board
 [CodeBlooded Project Board](https://github.com/COS301-SE-2022/Happy-Muncher/projects/1)
 ## Team Members
