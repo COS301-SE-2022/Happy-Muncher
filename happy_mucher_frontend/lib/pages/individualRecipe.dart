@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:happy_mucher_frontend/pages/recipebook.dart';
 import 'package:happy_mucher_frontend/models/recipe.api.dart';
 import 'package:happy_mucher_frontend/models/recipe.dart';
@@ -42,12 +43,11 @@ class IndividualRecipe extends StatefulWidget {
 }
 
 class IndividualRecipeState extends State<IndividualRecipe> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference get _favourites =>
       firestore.collection('Users').doc(uid).collection('Recipes');
-  //final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _glItems =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
@@ -71,7 +71,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
   List<String> gl = [];
   getInventory() {
-    FirebaseFirestore.instance
+    firestore
         .collection('Users')
         .doc(uid)
         .collection('Inventory')
@@ -105,36 +105,35 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: offWhite,
-        title: Text(widget.name,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
-        // centerTitle: true,
-        iconTheme: IconThemeData(color: Color.fromARGB(255, 168, 76, 184)),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () async {
-              final String id = widget.id.toString();
-              if (id != null) {
-                await _favourites.add({
-                  "ID": id,
-                });
-              }
-            },
-            icon: Icon(Icons.favorite),
-            color: Color.fromARGB(255, 83, 61, 207),
-          )
-        ],
-      ),
-      backgroundColor: darkGrey,
+      appBar: buildAppBar(context, widget.name),
+      // centerTitle: true,
       body: ListView(padding: const EdgeInsets.all(32), children: [
+        IconButton(
+          onPressed: () async {
+            final String id = widget.id.toString();
+            if (id != null) {
+              await _favourites.add({
+                "ID": id,
+              });
+              showFavouritesDialog(context);
+            }
+          },
+          alignment: Alignment.topRight,
+          icon: Icon(Icons.favorite),
+          color: Color.fromARGB(255, 150, 66, 154),
+        ),
+
         //const SizedBox(height: 12),
         Text(widget.name,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: offWhite, fontSize: 25)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         const SizedBox(height: 12),
-        if (widget.image != "") Image(image: NetworkImage(widget.image)),
+        if (widget.image != "")
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image(
+              image: NetworkImage(widget.image),
+            ),
+          ),
         //const SizedBox(height: 24),
         if (widget.description != "") Description(),
         const SizedBox(height: 24),
@@ -142,7 +141,11 @@ class IndividualRecipeState extends State<IndividualRecipe> {
             padding: const EdgeInsets.all(15),
             //color: lightGrey,
             decoration: BoxDecoration(
-                border: Border.all(color: llGrey), color: lightGrey),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Color.fromARGB(255, 150, 66, 154),
+                  width: 3.0,
+                )),
             //Color(0xFF2D2C31),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,15 +156,12 @@ class IndividualRecipeState extends State<IndividualRecipe> {
                       "Calories:  ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: offWhite,
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       widget.calories.toString(),
-                      style: TextStyle(
-                        color: offWhite,
-                      ),
+                      style: TextStyle(),
                     ),
                   ],
                 ),
@@ -171,39 +171,37 @@ class IndividualRecipeState extends State<IndividualRecipe> {
                       "Cook Time:  ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: offWhite,
                       ),
                     ),
                     Text(
                       widget.cookTime + " mins",
-                      style: TextStyle(
-                        color: offWhite,
-                      ),
+                      style: TextStyle(),
                     ),
                   ],
                 )
               ],
             )),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 30),
         Text(
           "Ingredients",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: offWhite,
             fontSize: 20,
           ),
-          textAlign: TextAlign.left,
+          textAlign: TextAlign.center,
         ),
         //Text(ing),
-
+        const SizedBox(height: 30),
         ListView.builder(
             shrinkWrap: true,
             itemCount: widget.ingredients.length,
             itemBuilder: (context, index) {
-              return ingredientCard(ingredient: widget.ingredients[index]);
+              return ingredientCard(
+                ingredient: widget.ingredients[index],
+              );
             }),
-        const SizedBox(height: 18),
+        const SizedBox(height: 30),
 
         ElevatedButton(
           onPressed: () {
@@ -218,21 +216,24 @@ class IndividualRecipeState extends State<IndividualRecipe> {
             ),
           ),
           style: ElevatedButton.styleFrom(
-              primary: lightGrey,
-              side: BorderSide(
-                  width: 2, // the thickness
-                  color: lightGrey // the color of the border
-                  )),
+            primary: const Color.fromARGB(255, 150, 66, 154),
+            shape: const StadiumBorder(),
+            minimumSize: const Size(300, 50),
+            onPrimary: Colors.white,
+            side: const BorderSide(
+                color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+          ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 35),
         Text(
           "Instructions",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: offWhite,
+            fontSize: 20,
           ),
+          textAlign: TextAlign.center,
         ),
-
+        const SizedBox(height: 30),
         ListView.builder(
             shrinkWrap: true,
             itemCount: widget.instructions.length,
@@ -249,6 +250,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
+      style: TextButton.styleFrom(
+        primary: Color.fromARGB(255, 150, 66, 154),
+      ),
       child: Text("Cancel"),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop();
@@ -256,6 +260,9 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     );
 
     Widget glButton = TextButton(
+      style: TextButton.styleFrom(
+        primary: Color.fromARGB(255, 150, 66, 154),
+      ),
       child: Text("Add missing ingredients to Grocery List"),
       onPressed: () {
         toGL();
@@ -327,7 +334,6 @@ class IndividualRecipeState extends State<IndividualRecipe> {
           "Description",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: offWhite,
             fontSize: 20,
           ),
           textAlign: TextAlign.left,
@@ -335,16 +341,47 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         SizedBox(height: 24),
         Container(
           decoration: BoxDecoration(
-              border: Border.all(color: llGrey), color: lightGrey),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: Color.fromARGB(255, 150, 66, 154),
+                width: 3.0,
+              )),
           padding: const EdgeInsets.all(15),
           //color: Color(0xFF2D2C31),
           //color: lightGrey,
           child: Text(
             widget.description,
-            style: TextStyle(color: offWhite, fontSize: 18),
+            style: TextStyle(fontSize: 18),
             textAlign: TextAlign.left,
           ),
         ),
         SizedBox(height: 24)
       ]);
+
+  showFavouritesDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Liked!"),
+      content: Text(widget.name + " has been added to your favourites"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

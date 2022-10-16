@@ -18,7 +18,8 @@ class RecipeCard extends StatelessWidget {
   final List<tastyRecipe> recipes;
 //List<Recipe>? recipes;
   RecipeCard({this.recipes = const []});
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   CollectionReference get _meals =>
       firestore.collection('Users').doc(uid).collection('Meal Planner');

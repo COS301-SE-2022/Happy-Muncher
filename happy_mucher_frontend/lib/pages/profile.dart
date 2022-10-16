@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:happy_mucher_frontend/pages/changemail.dart';
@@ -19,9 +20,9 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
-  final creationTime = FirebaseAuth.instance.currentUser!.metadata.creationTime;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
 
-  User? user = FirebaseAuth.instance.currentUser;
+  User? get user => firebaseAuth.currentUser;
 
   verifyEmail() async {
     //print(uid);
@@ -29,7 +30,7 @@ class ProfileState extends State<Profile> {
       await user!.sendEmailVerification();
       print('Verification Email has been sent');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Colors.grey,
           content: Text(
             'Verification Email has been sent',
@@ -42,17 +43,16 @@ class ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    var uid = FirebaseAuth.instance.currentUser?.displayName;
-    var profile = FirebaseAuth.instance.currentUser?.photoURL;
-    var email = FirebaseAuth.instance.currentUser?.email;
-    final creationTime =
-        FirebaseAuth.instance.currentUser?.metadata.creationTime;
+    var uid = user?.displayName;
+    var profile = user?.photoURL;
+    var email = user?.email;
+    final creationTime = user?.metadata.creationTime;
     if (uid == null) {
       uid = "User";
     }
     if (profile == null) {
       profile ??=
-          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+          'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png';
     }
 
     return Scaffold(
@@ -74,18 +74,21 @@ class ProfileState extends State<Profile> {
           buildUserInfoDisplay('Settings', Icons.settings, SettingsPage()),
           ElevatedButton(
             onPressed: () async => {
-              await FirebaseAuth.instance.signOut(),
+              await firebaseAuth.signOut(),
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LoginScreen())),
             },
             child: const Text(
-              'Log out',
-              style: TextStyle(fontSize: 15),
+              "Log out",
+              style: TextStyle(fontSize: 20),
             ),
             style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                shape: StadiumBorder(),
-                onPrimary: Colors.black),
+              minimumSize: Size(150, 50),
+              shape: const StadiumBorder(),
+              onPrimary: const Color.fromARGB(255, 150, 66, 154),
+              side: BorderSide(
+                  color: const Color.fromARGB(255, 150, 66, 154), width: 3.0),
+            ),
           ),
 
           /*Expanded(
@@ -108,41 +111,43 @@ class ProfileState extends State<Profile> {
                 SizedBox(
                   width: 20,
                 ),
-                Icon(
-                  t,
-                  color: Colors.grey,
-                ),
+                Icon(t, color: Color.fromARGB(255, 150, 66, 154)),
                 SizedBox(
                   height: 1,
                 ),
-                Container(
-                    width: 350,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                      color: Colors.grey,
-                      width: 1,
-                    ))),
-                    child: Row(children: [
-                      Expanded(
-                          child: TextButton(
-                              onPressed: () {
-                                navigateSecondPage(editPage);
-                              },
-                              child: Text(
-                                getValue,
-                                style: TextStyle(
-                                    fontSize: 20,
+                Expanded(
+                  child: Container(
+                      width: 350,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                        color: Color.fromARGB(255, 150, 66, 154),
+                        width: 1,
+                      ))),
+                      child: Row(children: [
+                        Expanded(
+                            child: TextButton(
+                                onPressed: () {
+                                  navigateSecondPage(editPage);
+                                },
+                                child: Text(
+                                  getValue,
+                                  style: TextStyle(
+                                    fontSize: 18,
                                     height: 1.4,
-                                    color: Colors.black),
-                              ))),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Colors.grey,
-                        size: 30.0,
-                      )
-                    ]))
+                                  ),
+                                ))),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.keyboard_arrow_right,
+                            color: Color.fromARGB(255, 150, 66, 154),
+                            size: 30.0,
+                          ),
+                        )
+                      ])),
+                )
               ])
             ],
           ));

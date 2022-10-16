@@ -17,10 +17,14 @@ class WeekCardState extends State<WeekCard> {
   }
 
   Widget buildWeekcard() => Card(
-      shadowColor: Color.fromARGB(255, 172, 255, 78),
+      shadowColor: Color.fromARGB(255, 150, 66, 154),
       elevation: 25,
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: const BorderSide(
+            color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+      ),
       child: Stack(alignment: Alignment.center, children: [
         InkWell(
             key: Key(widget.day),
@@ -40,7 +44,7 @@ class WeekCardState extends State<WeekCard> {
                   widget.inputText,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 172, 255, 78),
+                    color: Color.fromARGB(255, 150, 66, 154),
                     fontSize: 35,
                   ),
                 ),

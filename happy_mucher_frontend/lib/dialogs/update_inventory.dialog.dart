@@ -27,7 +27,8 @@ class IventoryDialog extends StatefulWidget {
 class _UpdateIventoryPageState extends State<IventoryDialog> {
   // text fields' controllers
   // text fields' controllers
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
 
   final nameController = TextEditingController();
   final quantityController = TextEditingController();

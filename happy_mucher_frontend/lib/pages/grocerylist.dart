@@ -13,6 +13,7 @@ import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:happy_mucher_frontend/backend/prices.dart';
 
 class GroceryListPage extends StatefulWidget {
   const GroceryListPage({Key? key}) : super(key: key);
@@ -25,7 +26,8 @@ class GroceryListPageState extends State<GroceryListPage> {
   // text fields' controllers
   // text fields' controllers
   final ImagePicker _picker = ImagePicker();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   int shoppingPrices = 0;
   int estimatePrices = 0;
@@ -78,15 +80,15 @@ class GroceryListPageState extends State<GroceryListPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Estimated Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
+                        'Shopping Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                         ),
                       ),
                       Text(
-                        'Actual Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
+                        'Estimated Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                         ),
                       ),
                     ],
@@ -133,29 +135,35 @@ class GroceryListPageState extends State<GroceryListPage> {
                                     if (isBought == false) {
                                       _gltotals.doc("Totals").set({
                                         'estimated total': estimatedTotals,
-                                        'shopping total': shoppingTotals -
-                                            documentSnapshot['price']
+                                        'shopping total': (shoppingTotals -
+                                                documentSnapshot['price'])
+                                            .clamp(0, double.infinity)
                                       });
                                     } else {
                                       _gltotals.doc("Totals").set({
                                         'estimated total': estimatedTotals -
                                             documentSnapshot['price'],
-                                        'shopping total': shoppingTotals -
-                                            documentSnapshot['price']
+                                        'shopping total': (shoppingTotals -
+                                                documentSnapshot['price'])
+                                            .clamp(0, double.infinity)
                                       });
                                     }
                                   }
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'You have successfully deleted a grocery list item',
-                                      ),
-                                    ),
-                                  );
                                 });
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'You have successfully deleted a grocery list item',
+                                    ),
+                                  ),
+                                );
+                                setState(
+                                  () async {},
+                                );
                               },
-                              backgroundColor: Colors.red,
+                              backgroundColor:
+                                  Color.fromARGB(255, 150, 66, 154),
                               foregroundColor: Colors.white,
                               icon: Icons.delete,
                               label: 'Delete',
@@ -165,7 +173,8 @@ class GroceryListPageState extends State<GroceryListPage> {
                                 showUpdateDialogGroceryList(
                                     context, documentSnapshot);
                               },
-                              backgroundColor: Colors.blue,
+                              backgroundColor:
+                                  Color.fromARGB(255, 198, 158, 234),
                               foregroundColor: Colors.white,
                               icon: Icons.edit,
                               label: 'Edit',
@@ -173,6 +182,7 @@ class GroceryListPageState extends State<GroceryListPage> {
                           ],
                         ),
                         child: CheckboxListTile(
+                          activeColor: Color.fromARGB(255, 150, 66, 154),
                           controlAffinity: ListTileControlAffinity.leading,
                           title: Text(documentSnapshot['name']),
                           value: documentSnapshot['bought'],
@@ -249,28 +259,8 @@ class GroceryListPageState extends State<GroceryListPage> {
       floatingActionButton: SpeedDial(
         key: const Key('speed_dial_button'),
         icon: Icons.add,
-        iconTheme: IconThemeData(color: Color(0xFF965BC8)),
+        backgroundColor: Color.fromARGB(255, 150, 66, 154),
         children: [
-          SpeedDialChild(
-            onTap: () => addGLDialog(context),
-            key: const Key('addToInventoryButtonText'),
-            child: const Icon(
-              Icons.abc,
-              color: Colors.white,
-            ),
-            backgroundColor: Color.fromARGB(255, 185, 141, 223),
-          ),
-          SpeedDialChild(
-            key: const Key('addToInventoryButtonGallery'),
-            onTap: () async {
-              captureImageReceipt(ImageSource.gallery);
-            },
-            child: const Icon(
-              Icons.collections,
-              color: Colors.white,
-            ),
-            backgroundColor: Color.fromARGB(255, 158, 72, 233),
-          ),
           SpeedDialChild(
             key: const Key('addToInventoryButtonCamera'),
             onTap: () async {
@@ -280,8 +270,26 @@ class GroceryListPageState extends State<GroceryListPage> {
               Icons.photo_camera,
               color: Colors.white,
             ),
-            backgroundColor: Color.fromARGB(255, 123, 1, 230),
-          )
+            backgroundColor: Color.fromARGB(255, 158, 115, 198),
+          ),
+          SpeedDialChild(
+            key: const Key('addToInventoryButtonGallery'),
+            onTap: () async {
+              //showAlertDialog(context);
+              captureImageReceipt(ImageSource.gallery);
+            },
+            child: const Icon(Icons.collections, color: Colors.white),
+            backgroundColor: Color.fromARGB(255, 185, 141, 223),
+          ),
+          SpeedDialChild(
+            onTap: () => addGLDialog(context),
+            key: const Key('addToInventoryButtonText'),
+            child: const Icon(
+              Icons.abc,
+              color: Colors.white,
+            ),
+            backgroundColor: Color.fromARGB(255, 198, 158, 234),
+          ),
         ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -293,6 +301,7 @@ class GroceryListPageState extends State<GroceryListPage> {
     if (image == null) {
       return;
     }
+
     final croppedImagePath = await cropImage(image.path);
     if (croppedImagePath == null) {
       return;
@@ -332,13 +341,15 @@ class GroceryListPageState extends State<GroceryListPage> {
   }
 
   Future<String?> cropImage(String path) async {
+    showAlertDialog(context);
     final cropped =
         await ImageCropper().cropImage(sourcePath: path, uiSettings: [
       AndroidUiSettings(
-          toolbarTitle: 'Croppper',
+          toolbarTitle: 'Cropper',
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false)
     ]);
+
     return cropped?.path;
   }
 
@@ -438,6 +449,34 @@ class GroceryListPageState extends State<GroceryListPage> {
     }
 
     return mapOfItems;
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Remember!"),
+      content: Text(
+          "Crop the image to contain only the item names and instructions"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 

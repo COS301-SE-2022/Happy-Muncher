@@ -11,7 +11,8 @@ import 'package:happy_mucher_frontend/pages/mealplanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TastyRecipeCard extends StatelessWidget {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final String name;
   final String images;
   final int recipeid;
@@ -137,7 +138,7 @@ class TastyRecipeCard extends StatelessWidget {
               key: const Key('dots'),
               direction: SpeedDialDirection.down,
               icon: Icons.more_vert,
-              backgroundColor: Color.fromARGB(255, 172, 255, 78),
+              backgroundColor: Color.fromARGB(255, 150, 66, 154),
               buttonSize: const Size(45.0, 45.0),
               children: [
                 SpeedDialChild(
@@ -158,7 +159,7 @@ class TastyRecipeCard extends StatelessWidget {
                     Icons.info_outline,
                     color: Colors.white,
                   ),
-                  backgroundColor: Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(255, 158, 115, 198),
                 ),
                 SpeedDialChild(
                   onTap: () => showAlertDialog(context),
@@ -167,7 +168,7 @@ class TastyRecipeCard extends StatelessWidget {
                     Icons.add,
                     color: Colors.white,
                   ),
-                  backgroundColor: Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(255, 185, 141, 223),
                 ),
               ],
             ),

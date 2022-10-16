@@ -14,7 +14,7 @@ class FavouritesAPI {
     var uri =
         Uri.https('tasty.p.rapidapi.com', '/recipes/get-more-info', {"id": id});
     final resp = await http.get(uri, headers: {
-      "X-RapidAPI-Key": "282369d33bmsh7ef42e05ee4457ep10316fjsna59a1676c1de",
+      "X-RapidAPI-Key": key,
       "X-RapidAPI-Host": "tasty.p.rapidapi.com",
       "useQueryString": 'true'
     });

@@ -29,12 +29,14 @@ class _IventoryPageState extends State<IventoryPage> {
   String? imagepath;
   // text fields' controllers
   // text fields' controllers
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
+  final FirebaseFirestore firestore = GetIt.I.get();
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _expController = TextEditingController();
 
-  final FirebaseFirestore firestore = GetIt.I.get();
   String _scanBarcode = 'Unknown';
 
   final BarcodeScanner _barcodeScanner = BarcodeScanner();
@@ -54,6 +56,7 @@ class _IventoryPageState extends State<IventoryPage> {
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
+
   late final LocalNotificationService service;
   void initState() {
     super.initState();
@@ -103,7 +106,7 @@ class _IventoryPageState extends State<IventoryPage> {
                           });
                           service.cancel(LocalNotificationService.getID());
                         },
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color.fromARGB(255, 150, 66, 154),
                         foregroundColor: Colors.white,
                         icon: Icons.delete,
                         label: 'Delete',
@@ -112,7 +115,7 @@ class _IventoryPageState extends State<IventoryPage> {
                         onPressed: (context) {
                           showUpdateDialog(context, documentSnapshot);
                         },
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Color.fromARGB(255, 198, 158, 234),
                         foregroundColor: Colors.white,
                         icon: Icons.edit,
                         label: 'Edit',
@@ -141,8 +144,16 @@ class _IventoryPageState extends State<IventoryPage> {
 // Add new product
       floatingActionButton: SpeedDial(
         icon: Icons.add,
-        iconTheme: IconThemeData(color: Color(0xFF965BC8)),
+        key: const Key('addToInventoryButton'),
+        backgroundColor: Color.fromARGB(255, 150, 66, 154),
         children: [
+          SpeedDialChild(
+              onTap: () => getImage(ImageSource.camera),
+              child: const Icon(
+                CupertinoIcons.barcode_viewfinder,
+                color: Colors.white,
+              ),
+              backgroundColor: Color.fromARGB(255, 158, 115, 198)),
           SpeedDialChild(
             onTap: () => addInventoryDialog(context),
             key: const Key('addToInventoryButtonText'),
@@ -152,22 +163,6 @@ class _IventoryPageState extends State<IventoryPage> {
             ),
             backgroundColor: Color.fromARGB(255, 185, 141, 223),
           ),
-          SpeedDialChild(
-            onTap: () => getImage(ImageSource.camera),
-            child: const Icon(
-              Icons.photo_camera,
-              color: Colors.white,
-            ),
-            backgroundColor: Color.fromARGB(255, 158, 72, 233),
-          ),
-          SpeedDialChild(
-            onTap: () => showInputDialog(context),
-            child: const Icon(
-              CupertinoIcons.barcode_viewfinder,
-              color: Colors.white,
-            ),
-            backgroundColor: Color.fromARGB(255, 123, 1, 230),
-          )
         ],
       ),
 

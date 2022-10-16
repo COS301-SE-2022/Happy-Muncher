@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:happy_mucher_frontend/pages/homepage.dart';
 import 'package:happy_mucher_frontend/pages/loginpage.dart';
 import 'package:happy_mucher_frontend/pages/profile.dart';
+import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 
 class ChangeUsername extends StatefulWidget {
   const ChangeUsername({Key? key}) : super(key: key);
@@ -23,7 +25,9 @@ class _ChangeUsernameState extends State<ChangeUsername> {
     super.dispose();
   }
 
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  User? get currentUser => firebaseAuth.currentUser;
+
   changeUsername() async {
     try {
       await currentUser!.updateDisplayName(newUsername);
@@ -32,7 +36,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
         MaterialPageRoute(builder: (context) => Profile()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             backgroundColor: Colors.grey,
             content: Text(
               'Your Username has been Changed',
@@ -45,33 +49,23 @@ class _ChangeUsernameState extends State<ChangeUsername> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(
-              color: Colors
-                  .black), // set backbutton color here which will reflect in all screens.
-          leading: BackButton(),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
+        appBar: buildAppBar(context, "Change Username"),
         body: Form(
           key: _formKey,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                    width: 320,
-                    child: const Text(
-                      "Change your Username?",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    )),
+                const SizedBox(
+                  width: 320,
+                ),
                 Padding(
-                    padding: EdgeInsets.only(top: 40),
+                    padding: const EdgeInsets.only(top: 40),
                     child: SizedBox(
                         height: 100,
                         width: 320,
                         child: TextFormField(
+                          key: const Key('usernameText'),
                           // Handles Form Validation
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -85,24 +79,31 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                           ),
                         ))),
                 Padding(
-                    padding: EdgeInsets.only(top: 150),
+                    padding: const EdgeInsets.only(top: 150),
                     child: Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(
                           width: 320,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {
-                              // Validate returns true if the form is valid, or false otherwise.
-                              newUsername = newUsernameController.text;
-                              changeUsername();
+                            onPressed: () async => {
+                              newUsername = newUsernameController.text,
+                              changeUsername(),
                             },
                             child: const Text(
                               'Change',
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 20),
                             ),
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.black, shape: StadiumBorder()),
+                              minimumSize: Size(150, 50),
+                              shape: const StadiumBorder(),
+                              onPrimary:
+                                  const Color.fromARGB(255, 150, 66, 154),
+                              side: BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 150, 66, 154),
+                                  width: 3.0),
+                            ),
                           ),
                         )))
               ]),

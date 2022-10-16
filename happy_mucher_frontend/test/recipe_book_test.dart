@@ -11,6 +11,7 @@ import 'package:happy_mucher_frontend/pages/grocerylist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:happy_mucher_frontend/pages/recipebook.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
@@ -38,9 +39,9 @@ void main() {
       signedIn: true,
     );
     GetIt.I.registerSingleton<FirebaseAuth>(auth);
-    const testApp = MaterialApp(
+    final testApp = MaterialApp(
       home: Scaffold(
-        body: GroceryListPage(),
+        body: RecipeBook(),
       ),
     );
     setUpAll(() => HttpOverrides.global = null);
@@ -49,76 +50,29 @@ void main() {
       final query = await firestore
           .collection('Users')
           .doc('abc')
-          .collection('GroceryList')
-          .get();
-      await firestore
-          .collection('Users')
-          .doc('abc')
-          .collection('GL totals')
-          .doc('Totals')
+          .collection('Recipes')
           .get();
       final futures = query.docs.map((e) {
         return firestore
             .collection('Users')
             .doc('abc')
-            .collection('GroceryList')
+            .collection('Recipes')
             .doc(e.id)
             .delete();
       });
       return await Future.wait(futures);
     });
     testWidgets(
-      'Testing if page is empty on start up',
+      'Testing page has buttons',
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(testApp);
 
-          final inventoryList = find.byKey(const Key('Grocery_ListView'));
-          expect(inventoryList, findsNothing);
+          await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+          final button = find.byType(ElevatedButton);
+          expect(button, findsNWidgets(3));
         });
-        //test to see if the list is empty on initial start up
-        //runs the app and checks the list to see if it has 0 list tile widgets
-        //success if finds 0 widgets
-      },
-    );
-
-    testWidgets(
-      'Testing page filling from database',
-      (WidgetTester tester) async {
-        await tester.runAsync(
-          () async {
-            await firestore
-                .collection('Users')
-                .doc('abc')
-                .collection('GroceryList')
-                .add({"name": 'juice', "price": 1, "bought": false});
-            await firestore
-                .collection('Users')
-                .doc('abc')
-                .collection('GroceryList')
-                .add({"name": 'apples', "price": 2, "bought": false});
-            await firestore
-                .collection('Users')
-                .doc('abc')
-                .collection('GroceryList')
-                .add({"name": 'bread', "price": 3, "bought": false});
-
-            await firestore
-                .collection('Users')
-                .doc('abc')
-                .collection('GL totals')
-                .doc('Totals')
-                .set({'estimated total': 0, 'shopping total': 6});
-
-            await tester.pumpWidget(testApp);
-
-            await tester.pumpAndSettle(const Duration(milliseconds: 300));
-
-            final listviews = find.byType(CheckboxListTile);
-
-            expect(listviews, findsNWidgets(3));
-          },
-        );
       },
     );
   });

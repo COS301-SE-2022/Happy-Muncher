@@ -7,21 +7,23 @@ import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
   static const keyDarkMode = 'key-dark-mode';
-  static const keyLocation = 'key-location';
-  static const keyLanguage = 'key-language';
+
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: buildAppBar(context, "Settings"),
         body: SafeArea(
             child: ListView(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           children: [
-            SettingsGroup(title: 'GENERAL', children: <Widget>[
-              buildDarkMode(context),
-              buildLanguage(),
-              buildLocation(),
-            ])
+            SettingsGroup(
+                title: 'GENERAL',
+                titleTextStyle:
+                    const TextStyle(color: Color.fromARGB(255, 150, 66, 154)),
+                children: <Widget>[
+                  buildDarkMode(context),
+                ])
           ],
         )),
       );
@@ -30,9 +32,9 @@ class SettingsPage extends StatelessWidget {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return SwitchSettingsTile(
       settingKey: keyDarkMode,
-      leading: Icon(
+      leading: const Icon(
         Icons.dark_mode,
-        color: Colors.deepPurpleAccent,
+        color: Color.fromARGB(255, 150, 66, 154),
       ),
       title: 'Dark Mode',
       onChange: (isDarkMode) {
@@ -41,25 +43,4 @@ class SettingsPage extends StatelessWidget {
       },
     );
   }
-
-  Widget buildLanguage() => DropDownSettingsTile(
-        title: 'Language',
-        leading: Icon(Icons.language),
-        settingKey: keyLanguage,
-        selected: 1,
-        values: <int, String>{
-          1: 'English',
-          2: 'Spanish',
-          3: 'Chinese',
-          4: 'Hindi',
-        },
-        onChange: (language) {/* NOOP */},
-      );
-
-  Widget buildLocation() => TextInputSettingsTile(
-        settingKey: keyLocation,
-        title: 'Location',
-        initialValue: 'South Africa',
-        onChange: (location) {/* NOOP */},
-      );
 }

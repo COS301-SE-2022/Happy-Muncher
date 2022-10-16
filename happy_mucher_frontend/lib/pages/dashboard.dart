@@ -29,30 +29,19 @@ class DashboardPage extends StatefulWidget {
 
 class DashboardState extends State<DashboardPage> {
   final FirebaseFirestore firestore = GetIt.I.get();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
+  User? get user => firebaseAuth.currentUser;
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
-  CollectionReference get _lunch => firestore
-      .collection('Users')
-      .doc(uid)
-      .collection('Meal Planner')
-      .doc(DateFormat('EEEE').format(DateTime.now()))
-      .collection('Lunch');
 
-  CollectionReference get _breakfast => firestore
-      .collection('Users')
-      .doc(uid)
-      .collection('Meal Planner')
-      .doc(DateFormat('EEEE').format(DateTime.now()))
-      .collection('Breakfast');
+  CollectionReference get _gltotals =>
+      firestore.collection('Users').doc(uid).collection('GL totals');
 
-  CollectionReference get _supper => firestore
-      .collection('Users')
-      .doc(uid)
-      .collection('Meal Planner')
-      .doc(DateFormat('EEEE').format(DateTime.now()))
-      .collection('Supper');
+  CollectionReference get _budget =>
+      firestore.collection('Users').doc(uid).collection('Budget');
 
   String getTimeofDay() {
     int h = DateTime.now().hour;
@@ -73,15 +62,11 @@ class DashboardState extends State<DashboardPage> {
         domainFn: (Values budgetVal, _) => budgetVal.month,
         measureFn: (Values budgetVal, _) => (budgetVal.totalSpent),
         colorFn: (Values budgetVal, _) {
-          if (budgetVal.totalSpent / budgetVal.budget < 0.25) {
+          if (budgetVal.totalSpent / budgetVal.budget < 0.3) {
             return charts.ColorUtil.fromDartColor(
                 Color.fromARGB(255, 72, 216, 29));
-          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.25 &&
-              budgetVal.totalSpent / budgetVal.budget < 0.5) {
-            return charts.ColorUtil.fromDartColor(
-                Color.fromARGB(255, 239, 255, 12));
-          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.5 &&
-              budgetVal.totalSpent / budgetVal.budget < 0.75) {
+          } else if (budgetVal.totalSpent / budgetVal.budget >= 0.3 &&
+              budgetVal.totalSpent / budgetVal.budget < 0.6) {
             return charts.ColorUtil.fromDartColor(
                 Color.fromARGB(255, 248, 141, 10));
           } else {
@@ -101,16 +86,15 @@ class DashboardState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    var profile = FirebaseAuth.instance.currentUser?.photoURL;
+    var profile = user?.photoURL;
     if (profile == null) {
       profile ??=
-          'https://www.seekpng.com/png/detail/115-1150053_avatar-png-transparent-png-royalty-free-default-user.png';
+          'https://blogifs.azureedge.net/wp-content/uploads/2019/03/Guest_Blogger_v1.png';
     }
     return Scaffold(
       appBar: AppBar(
           title: new Text(
             "Dashboard",
-            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
           backgroundColor: Colors.transparent,
@@ -132,13 +116,14 @@ class DashboardState extends State<DashboardPage> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyHomePage(index: 0)));
                   },
                   child: Icon(
                     Icons.arrow_forward_outlined,
                     size: 30.0,
-                    color: Colors.black,
                   ),
                 ))
           ]),
@@ -167,7 +152,7 @@ class DashboardState extends State<DashboardPage> {
   Widget buildMealPlanner(BuildContext context) {
     return Container(
         width: 180,
-        height: 360,
+        height: 380,
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
 
         //margin: EdgeInsets.fromLTRB(10, 10, 250, 0),
@@ -188,7 +173,11 @@ class DashboardState extends State<DashboardPage> {
           InkWell(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MealPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyHomePage(
+                            index: 3,
+                          )));
             },
             child: MealWidget(
                 day: DateFormat('EEEE').format(DateTime.now()),
@@ -205,7 +194,6 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             key: const ValueKey("Meal Planner Dashboard"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -223,7 +211,9 @@ class DashboardState extends State<DashboardPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => GroceryListPage()));
+                            builder: (context) => MyHomePage(
+                                  index: 0,
+                                )));
                   },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(10, 50, 10, 0),
@@ -232,11 +222,7 @@ class DashboardState extends State<DashboardPage> {
                     child: Container(
                       margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
                       child: StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(uid)
-                            .collection('GL totals')
-                            .snapshots(),
+                        stream: _gltotals.snapshots(),
                         builder: (context,
                             AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                           if (streamSnapshot.hasData) {
@@ -253,21 +239,24 @@ class DashboardState extends State<DashboardPage> {
                                       dateToday.toString().substring(0, 10);
                                   total = documentSnapshot['estimated total'] +
                                       documentSnapshot['shopping total'];
-
+                                  double percentage =
+                                      documentSnapshot['estimated total'] /
+                                          total;
+                                  if (percentage < 0 || percentage > 1) {
+                                    percentage = 0;
+                                  }
                                   if (index == 0) {
                                     //print(documentSnapshot['total']);
                                     return LinearPercentIndicator(
                                       width: MediaQuery.of(context).size.width -
-                                          210,
+                                          230,
                                       animation: true,
                                       lineHeight: 22.0,
                                       barRadius: const Radius.circular(16),
                                       animationDuration: 2000,
                                       leading: new Text("estimated \n total"),
                                       trailing: new Text("shopping\n total"),
-                                      percent:
-                                          documentSnapshot['estimated total'] /
-                                              total,
+                                      percent: percentage,
                                       // center: Text(percentageRemaining.toString() + "% remaining"),
 
                                       progressColor:
@@ -296,7 +285,6 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Card(
             key: const ValueKey("Inventory Dashboard"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -314,7 +302,9 @@ class DashboardState extends State<DashboardPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => IventoryPage()));
+                            builder: (context) => MyHomePage(
+                                  index: 1,
+                                )));
                   },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(10, 45, 10, 0),
@@ -349,7 +339,8 @@ class DashboardState extends State<DashboardPage> {
                                           documentSnapshot['quantity']
                                                   .toString() +
                                               ' \u{00D7} ' +
-                                              documentSnapshot['itemName'],
+                                              documentSnapshot['itemName'] +
+                                              ' expires today!',
                                           textAlign: TextAlign.center),
                                     );
                                   } else if (index ==
@@ -381,7 +372,6 @@ class DashboardState extends State<DashboardPage> {
         margin: EdgeInsets.fromLTRB(0, 20, 0, 60),
         child: Card(
             key: const ValueKey("Carousel 1"),
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -389,17 +379,19 @@ class DashboardState extends State<DashboardPage> {
             child: Stack(alignment: Alignment.topCenter, children: [
               Container(
                 margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text(
-                    'Shopping Sprees for ' +
-                        DateFormat('MMMM').format(DateTime.now()),
+                child: Text(DateFormat('MMMM').format(DateTime.now()),
                     style:
                         TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center),
               ),
               InkWell(
                 onTap: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyBudget()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(
+                                index: 2,
+                              )));
                 },
                 /*margin: EdgeInsets.fromLTRB(20, 50, 10, 0),
                     height: 100,
@@ -407,11 +399,7 @@ class DashboardState extends State<DashboardPage> {
                 child: Container(
                   margin: EdgeInsets.fromLTRB(25, 130, 0, 50),
                   child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('Users')
-                        .doc(uid)
-                        .collection('Budget')
-                        .snapshots(),
+                    stream: _budget.snapshots(),
                     builder:
                         (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                       if (streamSnapshot.hasData) {
@@ -422,6 +410,16 @@ class DashboardState extends State<DashboardPage> {
                             itemBuilder: (context, index) {
                               final DocumentSnapshot documentSnapshot =
                                   streamSnapshot.data!.docs[index];
+                              double percentageSpent =
+                                  documentSnapshot['total spent'] /
+                                      documentSnapshot['budget'];
+
+                              if (percentageSpent < 0 || percentageSpent > 1) {
+                                percentageSpent = 0;
+                              }
+
+                              double percentageRem =
+                                  (1 - percentageSpent) * 100;
 
                               if (documentSnapshot.id ==
                                   DateFormat('MMMM').format(DateTime.now())) {
@@ -432,38 +430,26 @@ class DashboardState extends State<DashboardPage> {
                                   lineHeight: 25.0,
                                   animationDuration: 2000,
                                   barRadius: const Radius.circular(16),
-                                  percent: documentSnapshot['total spent'] /
-                                      documentSnapshot['budget'],
+                                  percent: percentageSpent,
                                   center: Text(
-                                      (documentSnapshot['total remaining'] /
-                                                  documentSnapshot['budget'] *
-                                                  100)
-                                              .toString() +
+                                      percentageRem.toStringAsFixed(2) +
                                           "% remaining"),
                                   progressColor: documentSnapshot[
                                                   'total remaining'] /
                                               documentSnapshot['budget'] >=
-                                          0.75
-                                      ? Color.fromARGB(255, 52, 108, 35)
+                                          0.6
+                                      ? Color.fromARGB(255, 72, 216, 29)
                                       : documentSnapshot['total remaining'] /
                                                       documentSnapshot[
                                                           'budget'] <
-                                                  0.75 &&
-                                              documentSnapshot['total remaining'] /
+                                                  0.6 &&
+                                              documentSnapshot[
+                                                          'total remaining'] /
                                                       documentSnapshot[
                                                           'budget'] >=
-                                                  0.50
-                                          ? Color.fromARGB(255, 239, 255, 12)
-                                          : documentSnapshot['total remaining'] /
-                                                          documentSnapshot[
-                                                              'budget'] <
-                                                      0.5 &&
-                                                  documentSnapshot['total remaining'] /
-                                                          documentSnapshot[
-                                                              'budget'] >=
-                                                      0.25
-                                              ? Color.fromARGB(255, 238, 150, 19)
-                                              : Color.fromARGB(255, 250, 27, 11),
+                                                  0.3
+                                          ? Color.fromARGB(255, 238, 150, 19)
+                                          : Color.fromARGB(255, 250, 27, 11),
                                 );
                               } else {
                                 return SizedBox(
@@ -483,11 +469,7 @@ class DashboardState extends State<DashboardPage> {
 
   Widget buildBudgetcard(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('Users')
-          .doc(uid)
-          .collection('Budget')
-          .snapshots(),
+      stream: _budget.snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return CircularProgressIndicator();
@@ -509,7 +491,6 @@ class DashboardState extends State<DashboardPage> {
         height: 300,
         margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: Card(
-            shadowColor: Color.fromARGB(255, 180, 181, 179),
             elevation: 25,
             clipBehavior: Clip.antiAlias,
             shape:
@@ -517,8 +498,12 @@ class DashboardState extends State<DashboardPage> {
             child: Stack(alignment: Alignment.center, children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyBudget()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(
+                                index: 2,
+                              )));
                 },
                 child: Container(
                   padding: EdgeInsets.all(20.0),
@@ -527,7 +512,7 @@ class DashboardState extends State<DashboardPage> {
                   child: Center(
                     child: Column(
                       children: <Widget>[
-                        Text('Total spent each month',
+                        Text('Shopping Sprees',
                             style: TextStyle(
                                 fontSize: 22.0, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center),

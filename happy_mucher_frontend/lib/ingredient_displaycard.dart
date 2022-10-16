@@ -16,10 +16,12 @@ class ingredientCard extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: llGrey, width: 2))),
+            border: Border(
+                bottom: BorderSide(
+                    color: Color.fromARGB(255, 150, 66, 154), width: 2))),
         child: Text(
           ingredient,
-          style: TextStyle(color: offWhite, fontSize: 15),
+          style: TextStyle(fontSize: 15),
         ));
   }
 }

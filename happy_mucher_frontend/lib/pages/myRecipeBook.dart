@@ -15,6 +15,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 
+import '../widgets/appbar_widget.dart';
+
 class MyRecipeBook extends StatefulWidget {
   MyRecipeBook({Key? key}) : super(key: key);
   @override
@@ -22,7 +24,8 @@ class MyRecipeBook extends StatefulWidget {
 }
 
 class MyRecipeBookState extends State<MyRecipeBook> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
   int shoppingPrices = 0;
   int estimatePrices = 0;
@@ -34,7 +37,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
     // TODO: implement initState
     super.initState();
     print("here");
-    FirebaseFirestore.instance
+    firestore
         .collection('Users')
         .doc(uid)
         .collection('CustomRecipe')
@@ -50,10 +53,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text('MY recipe book'),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 252, 95, 13)),
+      appBar: buildAppBar(context, "My Recipes"),
       body: Row(
         children: <Widget>[
           Expanded(
@@ -94,7 +94,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
                                 );
                               });
                             },
-                            backgroundColor: Colors.red,
+                            backgroundColor: Color.fromARGB(255, 150, 66, 154),
                             foregroundColor: Colors.white,
                             icon: Icons.delete,
                             label: 'Delete',
@@ -123,7 +123,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
                                                     .cast<String>(),
                                           )));
                             },
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Color.fromARGB(255, 198, 158, 234),
                             foregroundColor: Colors.white,
                             icon: Icons.edit,
                             label: 'Edit',
@@ -178,6 +178,7 @@ class MyRecipeBookState extends State<MyRecipeBook> {
                       )));
         },
         child: Icon(Icons.add),
+        backgroundColor: Color.fromARGB(255, 150, 66, 154),
       ),
     );
   }

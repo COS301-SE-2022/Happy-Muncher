@@ -20,7 +20,8 @@ class AddRecipe extends StatefulWidget {
 
 class AddRecipeState extends State<AddRecipe> {
   final FirebaseFirestore firestore = GetIt.I.get();
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   CollectionReference get _mealPlanner =>
       firestore.collection('Users').doc(uid).collection('Meal Planner');
   @override

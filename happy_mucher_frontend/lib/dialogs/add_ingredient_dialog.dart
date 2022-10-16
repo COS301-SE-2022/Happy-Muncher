@@ -42,6 +42,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
             ),
             const SizedBox(height: 8),
             TextFormField(
+              key: const Key('dialog_ingredient'),
               //maxLines: 1,
               controller: input,
               decoration: const InputDecoration(
@@ -51,6 +52,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
             const SizedBox(height: 8),
             const SizedBox(height: 32),
             SizedBox(
+              key: const Key('addButton'),
               width: double.infinity,
               child: ElevatedButton(
                 style: ButtonStyle(

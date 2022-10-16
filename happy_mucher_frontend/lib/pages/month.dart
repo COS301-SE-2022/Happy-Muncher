@@ -7,6 +7,7 @@ import 'package:happy_mucher_frontend/dialogs/add_grocery.dialog.dart';
 import 'package:happy_mucher_frontend/dialogs/update_grocery.dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -21,7 +22,8 @@ class Month extends StatefulWidget {
 }
 
 class MyMonthState extends State<Month> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final budgetController = TextEditingController();
   double bud = 0;
   String input = "0"; //input taken for budget
@@ -63,6 +65,17 @@ class MyMonthState extends State<Month> {
   CollectionReference get _groceryList =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
 
+  CollectionReference get _frequent =>
+      firestore.collection('Users').doc(uid).collection('Frequency');
+  List<String> frequentItems = [];
+  List<int> frequency = [];
+  double current = 0.0;
+  double actual = 0.0;
+  List<double> cpi = [];
+  List<String> dates = [];
+  double suggested = 57.45;
+  List<String> items = [];
+
   List<int> bought = [];
   List<String> estimate = [];
   List<double> budgetM = [];
@@ -77,10 +90,8 @@ class MyMonthState extends State<Month> {
     totBudget = 0;
     //print("START");
 
-    var collection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Budget');
+    var collection =
+        firestore.collection('Users').doc(uid).collection('Budget');
     var docSnapshot = await collection.doc(widget.month).get();
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
@@ -91,7 +102,7 @@ class MyMonthState extends State<Month> {
 
     //totRem -= totSpent;
     //print(totBudget);
-    FirebaseFirestore.instance
+    firestore
         .collection('Users')
         .doc(uid)
         .collection('Budget')
@@ -100,10 +111,10 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent1 = doc["amount spent"].toString();
+        spent1 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        mybudget = doc["budget"].toString();
-        rem1 = doc["amount remaining"].toString();
+        mybudget = doc["budget"].toStringAsFixed(2);
+        rem1 = doc["amount remaining"].toStringAsFixed(2);
       });
     });
 
@@ -116,8 +127,8 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent2 = doc["amount spent"].toString();
-        rem2 = doc["amount remaining"].toString();
+        spent2 = doc["amount spent"].toStringAsFixed(2);
+        rem2 = doc["amount remaining"].toStringAsFixed(2);
         //print(doc["amount spent"]);
       });
     });
@@ -131,9 +142,9 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent3 = doc["amount spent"].toString();
+        spent3 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem3 = doc["amount remaining"].toString();
+        rem3 = doc["amount remaining"].toStringAsFixed(2);
       });
     });
 
@@ -146,30 +157,45 @@ class MyMonthState extends State<Month> {
         .get()
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
-        spent4 = doc["amount spent"].toString();
+        spent4 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem4 = doc["amount remaining"].toString();
+        rem4 = doc["amount remaining"].toStringAsFixed(2);
       });
     });
 
     bought = [];
     double update = 0;
-
-    var totals = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('GL totals');
+    List<String> months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "November",
+      "December"
+    ];
+    var totals = firestore.collection('Users').doc(uid).collection('GL totals');
     var ds = await totals.doc('Totals').get();
-    if (ds.exists) {
-      Map<String, dynamic> data = ds.data()!;
-      //print(data['shopping total']);
-      // You can then retrieve the value from the Map like this:
-      //bought.add(data['shopping total']);
-      String st = data['shopping total'].toString();
-      //String estimates = data['estimated total'].toString();
-      update += double.parse(st);
-      //est += double.parse(estimates);
-      //est
+    DateTime _focusedDay = DateTime.now();
+    String currMonth = months[_focusedDay.month - 1];
+    print(currMonth);
+    if (currMonth.toLowerCase() == widget.month.toLowerCase()) {
+      if (ds.exists) {
+        Map<String, dynamic> data = ds.data()!;
+        //print(data['shopping total']);
+        // You can then retrieve the value from the Map like this:
+        //bought.add(data['shopping total']);
+        String st = data['estimated total'].toStringAsFixed(2);
+        //String estimates = data['estimated total'].toString();
+
+        update += double.parse(st);
+        //est += double.parse(estimates);
+        //est
+      }
     }
 
     totSpent = 0;
@@ -211,6 +237,9 @@ class MyMonthState extends State<Month> {
       double b = double.parse(budget);
       percentageSpent = spent / b;
       percentageRemaining = rem / b * 100;
+      percentageSpent = double.parse(percentageSpent.toStringAsFixed(2));
+      percentageRemaining =
+          double.parse(percentageRemaining.toStringAsFixed(2));
     }
     if (percentageSpent > 1 || percentageRemaining == double.negativeInfinity) {
       percentageSpent = 0;
@@ -235,9 +264,9 @@ class MyMonthState extends State<Month> {
                     child: Text(
                       '${w}',
                       style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -250,15 +279,13 @@ class MyMonthState extends State<Month> {
                 lineHeight: 25.0,
                 animationDuration: 2000,
                 barRadius: const Radius.circular(16),
-                percent: percentageSpent,
+                percent: double.parse(percentageSpent.toStringAsFixed(2)),
                 center: Text(percentageRemaining.toString() + "% remaining"),
-                progressColor: percentageRemaining >= 75
+                progressColor: percentageRemaining >= 60
                     ? Color.fromARGB(255, 72, 216, 29)
-                    : percentageRemaining < 75 && percentageRemaining >= 50
-                        ? Color.fromARGB(255, 248, 231, 6)
-                        : percentageRemaining < 50 && percentageRemaining >= 25
-                            ? Color.fromARGB(255, 248, 141, 10)
-                            : Color.fromARGB(255, 236, 17, 2),
+                    : percentageRemaining < 60 && percentageRemaining >= 30
+                        ? Color.fromARGB(255, 248, 141, 10)
+                        : Color.fromARGB(255, 236, 17, 2),
               )
             ]))));
   }
@@ -266,7 +293,6 @@ class MyMonthState extends State<Month> {
   @override
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getDB(context));
-// WidgetsBinding.instance.addPostFrameCallback((_) => yourFunc(context));
 
     return Scaffold(
       appBar: buildAppBar(context, widget.month),
@@ -278,6 +304,7 @@ class MyMonthState extends State<Month> {
           //WeekOne(),
           Container(
               child: CarouselSlider(
+                  key: Key('Week1 carousel'),
                   options: CarouselOptions(
                     aspectRatio: 1.4,
                     enlargeCenterPage: true,
@@ -328,7 +355,7 @@ class MyMonthState extends State<Month> {
           Container(
               child: CarouselSlider(
                   options: CarouselOptions(
-                    aspectRatio: 1.6,
+                    aspectRatio: 1.5,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: false,
                   ),
@@ -364,18 +391,18 @@ class MyMonthState extends State<Month> {
         children: [
           Text('Your Budget for ' + '${widget.month}' + ' is: ',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 0, 0, 0))),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )),
           SizedBox(height: 25),
           Container(
             height: 60,
-            width: 150,
+            width: 200,
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.grey,
               ),
-              borderRadius: BorderRadius.zero,
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
               children: [
@@ -386,27 +413,33 @@ class MyMonthState extends State<Month> {
                 Text(
                   '   R ' + totBudget.toString(),
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             alignment: Alignment.centerLeft,
           ),
           SizedBox(height: 25),
-          MaterialButton(
-            shape: StadiumBorder(),
+          ElevatedButton(
             key: const Key("editBudget"),
-            onPressed: () {
+            onPressed: () async => {
               setState(() {
                 budgetSet = true;
-              });
+              })
             },
-            color: Colors.black,
-            child: const Text("Edit Budget",
-                style: TextStyle(color: Colors.white)),
-          )
+            child: const Text(
+              'Edit Budget',
+            ),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(150, 50),
+              shape: const StadiumBorder(),
+              onPrimary: const Color.fromARGB(255, 150, 66, 154),
+              side: BorderSide(
+                  color: const Color.fromARGB(255, 150, 66, 154), width: 3.0),
+            ),
+          ),
         ],
         mainAxisAlignment: MainAxisAlignment.start,
       );
@@ -415,9 +448,12 @@ class MyMonthState extends State<Month> {
         children: [
           Text('Enter Your budget for ' + '${widget.month}',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 0, 0, 0))),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )),
+          const SizedBox(
+            height: 25,
+          ),
           TextField(
             key: const Key("enterBudget"),
             controller: budgetController,
@@ -431,8 +467,8 @@ class MyMonthState extends State<Month> {
             textInputAction: TextInputAction.done,
             // autofocus: true,
           ),
-          MaterialButton(
-            shape: StadiumBorder(),
+          SizedBox(height: 10),
+          ElevatedButton(
             key: const Key("setBudget"),
             onPressed: () {
               setState(() {
@@ -461,11 +497,11 @@ class MyMonthState extends State<Month> {
                 double updateSpent = 0;
 
                 bud = bud / 4;
-                mybudget = bud.toString();
+                mybudget = bud.toStringAsFixed(2);
                 rem1 = mybudget;
                 updateSpent = double.parse(rem1);
                 updateSpent -= double.parse(spent1);
-                rem1 = updateSpent.toString();
+                rem1 = updateSpent.toStringAsFixed(2);
                 // print("rem1");
                 // print(rem1);
                 //update DB for week 1
@@ -478,7 +514,7 @@ class MyMonthState extends State<Month> {
                 rem2 = mybudget;
                 updateSpent = double.parse(rem2);
                 updateSpent -= double.parse(spent2);
-                rem2 = updateSpent.toString();
+                rem2 = updateSpent.toStringAsFixed(2);
                 //update DB for week 2
                 _budget.doc(widget.month).collection('Week2').doc('Week2').set({
                   'budget': double.parse(mybudget),
@@ -488,7 +524,7 @@ class MyMonthState extends State<Month> {
                 rem3 = mybudget;
                 updateSpent = double.parse(rem3);
                 updateSpent -= double.parse(spent3);
-                rem3 = updateSpent.toString();
+                rem3 = updateSpent.toStringAsFixed(2);
                 //update DB for week 3
                 _budget.doc(widget.month).collection('Week3').doc('Week3').set({
                   'budget': double.parse(mybudget),
@@ -498,7 +534,7 @@ class MyMonthState extends State<Month> {
                 rem4 = mybudget;
                 updateSpent = double.parse(rem4);
                 updateSpent -= double.parse(spent4);
-                rem4 = updateSpent.toString();
+                rem4 = updateSpent.toStringAsFixed(2);
                 //update DB for week 4
                 _budget.doc(widget.month).collection('Week4').doc('Week4').set({
                   'budget': double.parse(mybudget),
@@ -516,14 +552,149 @@ class MyMonthState extends State<Month> {
                 }
               });
             },
-            color: Colors.black,
-            child:
-                const Text("Set Budget", style: TextStyle(color: Colors.white)),
+            child: const Text("Set Budget"),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(150, 50),
+              shape: const StadiumBorder(),
+              onPrimary: const Color.fromARGB(255, 150, 66, 154),
+              side: BorderSide(
+                  color: const Color.fromARGB(255, 150, 66, 154), width: 3.0),
+            ),
           ),
+          TextButton(
+              onPressed: () {
+                //suggested = 0.0;
+
+                getMostFrequent(items);
+
+                print(items);
+
+                setState(() {
+                  //print(suggested);
+                  budgetController.text = suggested.toString();
+                });
+              },
+              child: Text("Suggest",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: const Color.fromARGB(255, 150, 66, 154),
+                  )))
         ],
       );
   double percentageSpent = 0;
   double percentageRemaining = 0;
+
+  getMostFrequent(List<String> items) async {
+    var ds = await _frequent.doc('items').get();
+    if (ds.exists) {
+      Map<String, dynamic> data = ds.data() as Map<String, dynamic>;
+
+      frequentItems = data['itemNames'].cast<String>();
+      frequency = data['frequency'].cast<int>();
+      List<int> indexes = [];
+      //get indexes of items with a frequency greater than 2
+      for (int i = 0; i < frequency.length; i++) {
+        if (frequency[i] > 2) {
+          indexes.add(i);
+        }
+      }
+      for (int i = 0; i < indexes.length; i++) {
+        indexes[i] = indexes[i] - 1;
+      }
+      //print(indexes);
+      //print(frequentItems);
+      //get items with frequency greater than 2 using the indexes.
+      for (int i = 0; i < indexes.length; i++) {
+        //print(frequentItems[indexes[i]]);
+        items.add(frequentItems[indexes[i]]);
+      }
+
+      setState(() {
+        this.items = items;
+        for (int i = 0; i < items.length; i++) {
+          //print(items[i]);
+
+          getSuggestion(items[i]);
+        }
+      });
+    }
+  }
+
+  getSuggestion(String item) {
+    current = 0;
+
+    String date = DateTime.now().month.toString();
+    if (date.length == 1) {
+      String temp = '0' + date;
+      date = temp;
+    }
+    //print(date);
+    //print("item " + item + " for: " + date);
+    firestore
+        .collection('Prices')
+        .doc(item)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        //print('Document data: ${documentSnapshot.data()}');
+        //print('Document data: ${documentSnapshot.data()}');
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        actual = data['actual'];
+        //print("actual: " + actual.toString());
+        cpi = [];
+        for (var i in data['cpi']) {
+          cpi.add(i as double);
+        }
+        dates = [];
+        for (var i in data['dates']) {
+          String date = i as String;
+          final splitted = date.split('-');
+          date = splitted[1];
+          //date += "/";
+          //date += splitted[0];
+          //dates.add(new DateFormat('MM/yyyy').parse(date) as String);
+          dates.add(date);
+        }
+        int index = getToday(date);
+        //print('index ' + index.toString());
+        double prev = 0;
+        if (index > 0) {
+          prev = cpi[index - 1];
+        }
+        double now = cpi[index];
+
+        double change = now - prev; //get the percentage change
+
+        double c = change / 100;
+        print(prev);
+        print(now);
+        //print("cpi: ");
+        //print(cpi);
+        current = (c * actual) + actual;
+        print(item + "  current: " + current.toString());
+        setState(() {
+          suggested += current;
+          //print(suggested);
+          this.suggested = suggested;
+          budgetController.text = suggested.toStringAsFixed(2);
+        });
+        //return current;
+      } else {
+        print('Document does not exist on the database');
+        //return current;
+      }
+    });
+  }
+
+  int getToday(String today) {
+    for (int i = 0; i < dates.length; i++) {
+      if (dates[i] == today) {
+        return i;
+      }
+    }
+    return (dates.length + 1);
+  }
 
   Widget Indicator(String s, String r, String b, String week) => Container(
       child: Center(
@@ -543,9 +714,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 1',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -610,6 +781,7 @@ class MyMonthState extends State<Month> {
               Text("R " + rem1 + "   "),
             ]),
             IconButton(
+              key: Key('Week1 edit'),
               alignment: Alignment.bottomRight,
               //color: Colors.green,
               //hoverColor: Colors.green,
@@ -630,7 +802,7 @@ class MyMonthState extends State<Month> {
 
   Widget WeekTwo() => Container(
       child: Card(
-          elevation: 25,
+          elevation: 10,
           clipBehavior: Clip.antiAlias,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -643,9 +815,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 2',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -747,9 +919,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 3',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -851,9 +1023,9 @@ class MyMonthState extends State<Month> {
                   child: Text(
                     'Week 4',
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -945,9 +1117,9 @@ class MyMonthState extends State<Month> {
                       child: Text(
                         'Totals',
                         style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -984,26 +1156,23 @@ class MyMonthState extends State<Month> {
 
   //double update = 0;
   Widget EstTotal() => ElevatedButton(
+        key: Key("Compare"),
         onPressed: () async {
           est = 0;
-          var totals = FirebaseFirestore.instance
-              .collection('Users')
-              .doc(uid)
-              .collection('GL totals');
+          var totals =
+              firestore.collection('Users').doc(uid).collection('GL totals');
           var ds = await totals.doc('Totals').get();
           if (ds.exists) {
             Map<String, dynamic> data = ds.data()!;
 
-            String estimates = data['estimated total'].toString();
+            String estimates = data['shopping total'].toString();
 
             est += double.parse(estimates);
             //est
           }
           double tr = 0;
-          var collection = FirebaseFirestore.instance
-              .collection('Users')
-              .doc(uid)
-              .collection('Budget');
+          var collection =
+              firestore.collection('Users').doc(uid).collection('Budget');
           var docSnapshot = await collection.doc(widget.month).get();
           if (docSnapshot.exists) {
             Map<String, dynamic> data = docSnapshot.data()!;
@@ -1021,7 +1190,7 @@ class MyMonthState extends State<Month> {
             message = "Your Grocery List is within budget. ";
             comp = tr - comp;
             message += "You will have R " +
-                comp.toString() +
+                comp.toStringAsFixed(2) +
                 " remaining after shopping.";
           } else {
             comp = comp - tr;
@@ -1033,13 +1202,19 @@ class MyMonthState extends State<Month> {
           showAlertDialog(context);
         },
         style: ElevatedButton.styleFrom(
-            primary: Colors.black, shape: StadiumBorder()),
+          minimumSize: Size(150, 50),
+          shape: const StadiumBorder(),
+          onPrimary: const Color.fromARGB(255, 150, 66, 154),
+          side: BorderSide(
+              color: const Color.fromARGB(255, 150, 66, 154), width: 3.0),
+        ),
         child: const Text("Compare to Grocery List"),
       );
 
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
+      key: Key("okbutton"),
       child: const Text("OK"),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop('dialog');

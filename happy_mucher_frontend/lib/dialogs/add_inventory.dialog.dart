@@ -18,13 +18,13 @@ class _InventoryDialog extends StatefulWidget {
 }
 
 class _InventoryDialogState extends State<_InventoryDialog> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
+  final FirebaseFirestore firestore = GetIt.I.get();
 
   final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final dateFieldController = TextEditingController();
-
-  final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('Inventory');
@@ -147,6 +147,7 @@ class _InventoryDialogState extends State<_InventoryDialog> {
               quantityController.text = '';
               dateFieldController.text = '';
             }
+            Navigator.of(context).pop();
           },
           child: const Text('Add'),
         )

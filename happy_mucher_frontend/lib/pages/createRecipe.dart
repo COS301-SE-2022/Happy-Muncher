@@ -37,7 +37,8 @@ class Create extends StatefulWidget {
 }
 
 class CreateState extends State<Create> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _customRecipe =>
@@ -72,15 +73,21 @@ class CreateState extends State<Create> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Create Recipe'),
+          title: const Text(
+            'Create Recipe',
+          ),
           centerTitle: true,
           leading: TextButton(
             onPressed: () {
-              myRecipe = [];
-              myRecipe.add(widget.title);
-              myRecipe.add(widget.description);
-              myRecipe.add(widget.calories.toString());
-              myRecipe.add(widget.cookTime);
+              setState(() {
+                myRecipe = [];
+                myRecipe.add(titleController.text);
+                myRecipe.add(descriptionController.text);
+                print(myRecipe);
+                myRecipe.add(widget.calories.toString());
+                myRecipe.add(widget.cookTime);
+              });
+
               _customRecipe.add({
                 "details": myRecipe,
                 "instructions": widget.steps,
@@ -89,32 +96,41 @@ class CreateState extends State<Create> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MyRecipeBook()));
             },
-            child: const Text("Done"),
+            child: const Text(
+              "Done",
+              textAlign: TextAlign.right,
+            ),
           ),
-          backgroundColor: const Color.fromARGB(255, 252, 95, 13)),
+          backgroundColor: Colors.transparent),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           const Text('Enter your Recipe Title ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           TextField(
-              key: const Key("enterTitle"),
-              controller: titleController,
-              decoration: const InputDecoration(
-                hintText: ('Title'),
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.done,
-              onSubmitted: ((value) {
-                setState(() {
-                  widget.title = titleController.text;
-                });
-
-                //print(title);
-              })
-              // autofocus: true,
-              ),
+            key: const Key("enterTitle"),
+            controller: titleController,
+            decoration: const InputDecoration(
+              hintText: ('Title'),
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            // onChanged:((value) {
+            //   setState(() {
+            //     widget.title = titleController.text;
+            //   });
+            // }),
+            onSubmitted: ((value) {
+              setState(() {
+                widget.title = titleController.text;
+              });
+            }
+                // autofocus: true,
+                ),
+          ),
+          const SizedBox(height: 14),
+          const Text('Description ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           TextField(
               key: const Key("description"),
@@ -135,6 +151,8 @@ class CreateState extends State<Create> {
               // autofocus: true,
               ),
           const SizedBox(height: 14),
+          const Text('Calories ', style: TextStyle(height: 3.2)),
+          const SizedBox(height: 14),
           TextField(
               key: const Key("entercalories"),
               controller: caloriesController,
@@ -153,6 +171,8 @@ class CreateState extends State<Create> {
               })
               // autofocus: true,
               ),
+          const SizedBox(height: 14),
+          const Text('Cooktime ', style: TextStyle(height: 3.2)),
           const SizedBox(height: 14),
           TextField(
               key: const Key("entertime"),
@@ -194,30 +214,29 @@ class CreateState extends State<Create> {
             ),
           ),
           Align(
-            alignment: Alignment.center,
+            alignment: Alignment.centerRight,
             child: SpeedDial(
-              key: const Key('speed_dial_button'),
+              key: const Key('speed_dial_button_ingredients'),
               icon: Icons.add,
+              backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
+                  key: const Key('addToIngredientsButtonCamera'),
                   onTap: () async {
-                    final newIngredient = await showAddIngredientDialog(
-                      context,
-                      widget.ingredients,
-                    );
-                    if (newIngredient != null) {
-                      setState(() {
-                        //used to refresh list
-                        widget.ingredients.add(newIngredient);
-                      });
-                    }
+                    final newIngredients = await captureImageReceiptIngredients(
+                        ImageSource.camera);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newIngredients.length; i++) {
+                        widget.ingredients.add(newIngredients[i]);
+                      }
+                    });
                   },
-                  key: const Key('addToIngredientsyButtonText'),
                   child: const Icon(
-                    Icons.abc,
+                    Icons.photo_camera,
                     color: Colors.white,
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(255, 158, 115, 198),
                 ),
                 SpeedDialChild(
                   key: const Key('addToIngredientsButtonGallery'),
@@ -235,25 +254,27 @@ class CreateState extends State<Create> {
                     Icons.collections,
                     color: Colors.white,
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(255, 185, 141, 223),
                 ),
                 SpeedDialChild(
-                  key: const Key('addToIngredientsButtonCamera'),
                   onTap: () async {
-                    final newIngredients = await captureImageReceiptIngredients(
-                        ImageSource.camera);
-                    setState(() {
-                      //used to refresh list
-                      for (int i = 0; i < newIngredients.length; i++) {
-                        widget.ingredients.add(newIngredients[i]);
-                      }
-                    });
+                    final newIngredient = await showAddIngredientDialog(
+                      context,
+                      widget.ingredients,
+                    );
+                    if (newIngredient != null) {
+                      setState(() {
+                        //used to refresh list
+                        widget.ingredients.add(newIngredient);
+                      });
+                    }
                   },
+                  key: const Key('addToIngredientsButtonText'),
                   child: const Icon(
-                    Icons.photo_camera,
+                    Icons.abc,
                     color: Colors.white,
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(255, 198, 158, 234),
                 )
               ],
             ),
@@ -280,12 +301,50 @@ class CreateState extends State<Create> {
             ),
           ),
           Align(
-            alignment: Alignment.center,
+            alignment: Alignment.centerRight,
             child: SpeedDial(
-              //key: const Key('speed_dial_button'),
+              key: const Key('speed_dial_button_steps'),
               icon: Icons.add,
+              backgroundColor: Color.fromARGB(255, 150, 66, 154),
               children: [
                 SpeedDialChild(
+                  key: const Key('camera'),
+                  onTap: () async {
+                    final newSteps =
+                        await captureImageReceiptRecipe(ImageSource.camera);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newSteps.length; i++) {
+                        widget.steps.add(newSteps[i]);
+                      }
+                    });
+                  },
+                  child: const Icon(
+                    Icons.photo_camera,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Color.fromARGB(255, 158, 115, 198),
+                ),
+                SpeedDialChild(
+                  key: const Key('speed_dial_button_steps_gallery'),
+                  onTap: () async {
+                    final newSteps =
+                        await captureImageReceiptRecipe(ImageSource.gallery);
+                    setState(() {
+                      //used to refresh list
+                      for (int i = 0; i < newSteps.length; i++) {
+                        widget.steps.add(newSteps[i]);
+                      }
+                    });
+                  },
+                  child: const Icon(
+                    Icons.collections,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: Color.fromARGB(255, 185, 141, 223),
+                ),
+                SpeedDialChild(
+                  key: const Key('speed_dial_button_steps_text'),
                   onTap: () async {
                     final newInstruction = await showAddInstructionDialog(
                       context,
@@ -303,44 +362,8 @@ class CreateState extends State<Create> {
                     Icons.abc,
                     color: Colors.white,
                   ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
+                  backgroundColor: Color.fromARGB(255, 198, 158, 234),
                 ),
-                SpeedDialChild(
-                  //key: const Key('addToInventoryButtonGallery'),
-                  onTap: () async {
-                    final newSteps =
-                        await captureImageReceiptRecipe(ImageSource.gallery);
-                    setState(() {
-                      //used to refresh list
-                      for (int i = 0; i < newSteps.length; i++) {
-                        widget.steps.add(newSteps[i]);
-                      }
-                    });
-                  },
-                  child: const Icon(
-                    Icons.collections,
-                    color: Colors.white,
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-                ),
-                SpeedDialChild(
-                  //key: const Key('addToInventoryButtonCamera'),
-                  onTap: () async {
-                    final newSteps =
-                        await captureImageReceiptRecipe(ImageSource.camera);
-                    setState(() {
-                      //used to refresh list
-                      for (int i = 0; i < newSteps.length; i++) {
-                        widget.steps.add(newSteps[i]);
-                      }
-                    });
-                  },
-                  child: const Icon(
-                    Icons.photo_camera,
-                    color: Colors.white,
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 78),
-                )
               ],
             ),
           ),
@@ -383,7 +406,7 @@ class CreateState extends State<Create> {
     final cropped =
         await ImageCropper().cropImage(sourcePath: path, uiSettings: [
       AndroidUiSettings(
-          toolbarTitle: 'Croppper',
+          toolbarTitle: 'Cropper',
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false)
     ]);

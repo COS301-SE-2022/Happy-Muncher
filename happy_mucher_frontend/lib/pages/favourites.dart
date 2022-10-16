@@ -14,6 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 
+import '../widgets/appbar_widget.dart';
+
 class FavouritesBook extends StatefulWidget {
   FavouritesBook({Key? key, required this.ids}) : super(key: key);
   final List<String> ids;
@@ -22,7 +24,8 @@ class FavouritesBook extends StatefulWidget {
 }
 
 class FavouritesBookState extends State<FavouritesBook> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final FirebaseFirestore firestore = GetIt.I.get();
 
   CollectionReference get _favourites =>
@@ -44,7 +47,6 @@ class FavouritesBookState extends State<FavouritesBook> {
   }
 
   // void getDB(context) async {
-  //   FirebaseFirestore.instance
   //       .collection('Users')
   //       .doc(uid)
   //       .collection('Recipes')
@@ -76,11 +78,7 @@ class FavouritesBookState extends State<FavouritesBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recipe Book'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 252, 95, 13),
-      ),
+      appBar: buildAppBar(context, "My Favourites"),
       body: SingleChildScrollView(
           child: Column(
         children: [

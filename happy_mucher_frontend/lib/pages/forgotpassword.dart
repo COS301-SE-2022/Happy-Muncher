@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -8,13 +9,17 @@ class ForgotPassword extends StatefulWidget {
 
 class ForgotPasswordState extends State<ForgotPassword> {
   String _email = '';
-  final auth = FirebaseAuth.instance;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset Password'),
+        backgroundColor: Colors.transparent,
+        leading: BackButton(
+          color: Colors.black,
+        ),
+        title: Text('Reset Password', style: TextStyle(color: Colors.black)),
       ),
       body: Column(
         children: [
@@ -33,10 +38,18 @@ class ForgotPasswordState extends State<ForgotPassword> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              RaisedButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color.fromARGB(255, 150, 66, 154),
+                  shape: const StadiumBorder(),
+                  minimumSize: const Size(300, 50),
+                  onPrimary: Colors.white,
+                  side: const BorderSide(
+                      color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+                ),
                 child: Text('Send Request'),
                 onPressed: () {
-                  auth.sendPasswordResetEmail(email: _email);
+                  firebaseAuth.sendPasswordResetEmail(email: _email);
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -48,7 +61,6 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   );
                 },
-                color: Theme.of(context).accentColor,
               ),
             ],
           ),

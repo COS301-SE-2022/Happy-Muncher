@@ -24,7 +24,8 @@ class GLDialog extends StatefulWidget {
 class _UpdateGLPageState extends State<GLDialog> {
   // text fields' controllers
   // text fields' controllers
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseAuth firebaseAuth = GetIt.I.get();
+  String get uid => firebaseAuth.currentUser!.uid;
   final nameController = TextEditingController();
   final priceController = TextEditingController();
   final dateFieldController = TextEditingController();
@@ -103,7 +104,8 @@ class _UpdateGLPageState extends State<GLDialog> {
               await _gltotals.doc("Totals").update({
                 'estimated total': estimatedTotals,
                 'shopping total':
-                    shoppingTotals - documentSnapshot['price'] + priceDouble
+                    (shoppingTotals - documentSnapshot['price'] + priceDouble)
+                        .clamp(0, double.infinity)
               });
 
               Navigator.of(context).pop();
