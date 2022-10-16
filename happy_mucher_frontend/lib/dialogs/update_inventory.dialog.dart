@@ -170,6 +170,7 @@ class _UpdateIventoryPageState extends State<IventoryDialog> {
               quantityController.text = '';
               dateFieldController.text = '';
             }
+             Navigator.of(context).pop();
           },
           child: const Text('Update'),
         )
