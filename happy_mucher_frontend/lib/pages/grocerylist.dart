@@ -76,19 +76,19 @@ class GroceryListPageState extends State<GroceryListPage> {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[0];
 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         'Shopping Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 15,
+                          fontSize: 18,
                         ),
                       ),
                       Text(
                         'Estimated Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 15,
+                          fontSize: 18,
                         ),
                       ),
                     ],
@@ -186,8 +186,8 @@ class GroceryListPageState extends State<GroceryListPage> {
                           controlAffinity: ListTileControlAffinity.leading,
                           title: Text(documentSnapshot['name']),
                           value: documentSnapshot['bought'],
-                          subtitle:
-                              Text('R' + documentSnapshot['price'].toString()),
+                          subtitle: Text('R' +
+                              documentSnapshot['price'].toStringAsFixed(2)),
                           onChanged: (checkVal) async {
                             if (checkVal == null) {
                               return;
