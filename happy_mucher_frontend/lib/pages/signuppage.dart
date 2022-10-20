@@ -40,7 +40,6 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _submit() async {
-    const CircularProgressIndicator();
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -56,7 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
 
-      Timer(Duration(seconds: 2), () {
+      Timer(Duration(seconds: 3), () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DashboardPage()));
       });
@@ -155,6 +154,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         onPressed: () {
+                          buildShowIndicator(context);
                           _submit();
                         },
                       ),
@@ -183,6 +183,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 width: 3.0),
                           ),
                           onPressed: () {
+                            buildShowIndicator(context);
                             signup(context);
                           },
                           icon: Image.asset(
@@ -278,4 +279,15 @@ class _SignupScreenState extends State<SignupScreen> {
       // for go to the HomePage screen
     }
   }
+}
+
+buildShowIndicator(BuildContext context) {
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      });
 }

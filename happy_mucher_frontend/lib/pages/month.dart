@@ -115,7 +115,7 @@ class MyMonthState extends State<Month> {
         spent1 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
         mybudget = doc["budget"].toStringAsFixed(2);
-        rem1 = doc["amount remaining"].toStringAsFixed(2);
+        rem1 = doc["amount remaining"];
       });
     });
 
@@ -129,7 +129,7 @@ class MyMonthState extends State<Month> {
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
         spent2 = doc["amount spent"].toStringAsFixed(2);
-        rem2 = doc["amount remaining"].toStringAsFixed(2);
+        rem2 = doc["amount remaining"];
         //print(doc["amount spent"]);
       });
     });
@@ -145,7 +145,7 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         spent3 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem3 = doc["amount remaining"].toStringAsFixed(2);
+        rem3 = doc["amount remaining"];
       });
     });
 
@@ -160,7 +160,7 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         spent4 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem4 = doc["amount remaining"].toStringAsFixed(2);
+        rem4 = doc["amount remaining"];
       });
     });
 
@@ -649,7 +649,7 @@ class MyMonthState extends State<Month> {
                             const Text("   Amount Spent"),
                             Flexible(
                                 child: !editOne
-                                    ? Text('R' + spent1 + "   ")
+                                    ? Text('R ' + spent1 + "   ")
                                     : TextField(
                                         key: const Key("spent1"),
                                         textAlign: TextAlign.right,
@@ -843,7 +843,7 @@ class MyMonthState extends State<Month> {
                             const Text("   Amount Spent"),
                             Flexible(
                                 child: !editTwo
-                                    ? Text('R' + spent2 + "   ")
+                                    ? Text('R ' + spent2 + "   ")
                                     : TextField(
                                         key: const Key("spent2"),
                                         textAlign: TextAlign.right,
@@ -1037,7 +1037,7 @@ class MyMonthState extends State<Month> {
                             const Text("   Amount Spent"),
                             Flexible(
                                 child: !editThree
-                                    ? Text('R' + spent3 + "   ")
+                                    ? Text('R ' + spent3 + "   ")
                                     : TextField(
                                         key: const Key("spent3"),
                                         textAlign: TextAlign.right,
@@ -1233,7 +1233,7 @@ class MyMonthState extends State<Month> {
                             const Text("   Amount Spent"),
                             Flexible(
                                 child: !editFour
-                                    ? Text('R' + spent4 + "   ")
+                                    ? Text('R ' + spent4 + "   ")
                                     : TextField(
                                         key: const Key("spent4"),
                                         textAlign: TextAlign.right,
@@ -1414,7 +1414,9 @@ class MyMonthState extends State<Month> {
                         bottom: BorderSide(color: Colors.grey, width: 3),
                       )),
                       child: Text(
-                        "   Total Amount Spent: " + totSpent.toString() + "   ",
+                        "   Total Amount Spent: R " +
+                            totSpent.toString() +
+                            "   ",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )),
                   const SizedBox(height: 10),
@@ -1425,7 +1427,7 @@ class MyMonthState extends State<Month> {
                       bottom: BorderSide(color: Colors.grey, width: 3),
                     )),
                     child: Text(
-                        "   Total Amount Remaining:  " +
+                        "   Total Amount Remaining:  R " +
                             totRem.toString() +
                             "   ",
                         style: TextStyle(fontWeight: FontWeight.bold)),
