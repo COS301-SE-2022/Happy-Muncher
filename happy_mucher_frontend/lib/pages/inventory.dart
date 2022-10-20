@@ -252,15 +252,17 @@ class _IventoryPageState extends State<IventoryPage> {
       scanResult = await BarcodeAPI.getBarcode(barcode);
       itemName = scanResult[0].name;
       fetchingBarcode = true;
+      addbarD(context, itemName);
     } catch (e) {
       //print("here");
       itemName = "unknown";
+      fetchingBarcode = true;
+      showResultDialog(context);
     }
 
     print(itemName);
-    //showResultDialog(context);
+    //
     setState(() {});
-    addbarD(context, itemName);
   }
 
   showInputDialog(BuildContext context) {
@@ -314,8 +316,8 @@ class _IventoryPageState extends State<IventoryPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Result"),
-      content: Text(itemName),
+      title: Text("Sorry!"),
+      content: Text("Item could not be identifed."),
       actions: [
         okButton,
       ],
