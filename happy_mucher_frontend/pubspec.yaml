@@ -67,6 +67,7 @@ dependencies:
   google_mlkit_barcode_scanning: ^0.4.0
   camera: ^0.10.0+1
   table_calendar: ^3.0.7
+  animate_icons: ^2.0.0
 
 dev_dependencies:
   flutter_driver:

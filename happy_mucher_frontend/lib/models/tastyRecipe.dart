@@ -45,28 +45,28 @@ class tastyRecipe {
     if (data['description'] != null) {
       desc = data['description'] as String;
     }
-    if (data['instructions'].length > 0) {
+    if (data['instructions'] != null && data['instructions'].length > 0) {
       for (var i in data['instructions']) {
         //print(i['wholeLine']);
         steps.add(i['display_text'] as String);
         //print(ing);
       }
     }
-    if (data['tags'].length > 0) {
+    if (data['tags'] != null && data['tags'].length > 0) {
       for (var i in data['tags']) {
         //print(i['wholeLine']);
         tags.add(i['display_name'] as String);
         //print(ing);
       }
     }
-    if (data['sections'].length > 0) {
+    if (data['sections'] != null && data['sections'].length > 0) {
       for (var i in data['sections']) {
         for (var j in i['components']) {
           ing.add(j['raw_text']);
         }
       }
     }
-    if (data['nutrition'].length > 0) {
+    if (data['nutrition'] != null && data['nutrition'].length > 0) {
       if (data['nutrition']['calories'] != null) {
         nutrition = data['nutrition']['calories'];
       }

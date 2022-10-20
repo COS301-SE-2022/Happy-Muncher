@@ -13,6 +13,7 @@ import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:animate_icons/animate_icons.dart';
 
 //search resource:
 //https://medium.com/@nishkarsh.makhija/implementing-searchable-list-view-in-flutter-using-data-from-network-d3aefffbd964
@@ -102,6 +103,7 @@ class IndividualRecipeState extends State<IndividualRecipe> {
     }
   }
 
+  AnimateIconController controller = AnimateIconController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,20 +112,51 @@ class IndividualRecipeState extends State<IndividualRecipe> {
       body: ListView(padding: const EdgeInsets.all(32),
           //shrinkWrap: true,
           children: [
-            IconButton(
-              onPressed: () async {
+            AnimateIcons(
+              startIcon: Icons.favorite_border_outlined,
+              endIcon: Icons.favorite,
+              size: 30.0,
+              controller: controller,
+              // add this tooltip for the start icon
+              startTooltip: 'Icons.add_circle',
+              // add this tooltip for the end icon
+              endTooltip: 'Icons.add_circle_outline',
+              //size: 60.0,
+              onStartIconPress: () {
                 final String id = widget.id.toString();
+                // ignore: unnecessary_null_comparison
                 if (id != null) {
-                  await _favourites.add({
+                  print(id);
+                  _favourites.add({
                     "ID": id,
                   });
                   showFavouritesDialog(context);
                 }
+                return true;
               },
-              alignment: Alignment.topRight,
-              icon: Icon(Icons.favorite),
-              color: Color.fromARGB(255, 150, 66, 154),
+              onEndIconPress: () {
+                print("Clicked on Close Icon");
+                return true;
+              },
+              duration: Duration(milliseconds: 500),
+              startIconColor: Color.fromARGB(255, 150, 66, 154),
+              endIconColor: Colors.red,
+              clockwise: false,
             ),
+            // IconButton(
+            //   onPressed: () async {
+            //     final String id = widget.id.toString();
+            //     if (id != null) {
+            //       await _favourites.add({
+            //         "ID": id,
+            //       });
+            //       showFavouritesDialog(context);
+            //     }
+            //   },
+            //   alignment: Alignment.topRight,
+            //   icon: Icon(Icons.favorite),
+            //   color: Color.fromARGB(255, 150, 66, 154),
+            // ),
 
             //const SizedBox(height: 12),
             Text(widget.name,
