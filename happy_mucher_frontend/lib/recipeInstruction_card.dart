@@ -14,36 +14,36 @@ class InstructionCard extends StatelessWidget {
     Color mediumGrey = Color(0xFF39383D);
     Color offWhite = Color(0xFFDFDEE3);
 
-    return Flexible(
-        child: Container(
-            // decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(15),
-            //     border: Border.all(
-            //       color: Color.fromARGB(255, 150, 66, 154),
-            //       width: 3.0,
-            //     )),
-            margin: EdgeInsets.symmetric(vertical: 10),
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
-            // decoration: BoxDecoration(
-            //     border: Border(bottom: BorderSide(color: llGrey, width: 2))),
+    return Container(
+        // decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(15),
+        //     border: Border.all(
+        //       color: Color.fromARGB(255, 150, 66, 154),
+        //       width: 3.0,
+        //     )),
+        margin: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
+        // decoration: BoxDecoration(
+        //     border: Border(bottom: BorderSide(color: llGrey, width: 2))),
 
-            child: Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  " " + step.toString() + "   ",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Expanded(
-                    child: Text(
-                  instruction,
-                  style: TextStyle(fontSize: 15),
-                ))
-              ],
-            )));
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              " " + step.toString() + "   ",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 150, 66, 154),
+              ),
+            ),
+            Expanded(
+                child: Text(
+              instruction,
+              style: TextStyle(fontSize: 15),
+            ))
+          ],
+        ));
   }
 }

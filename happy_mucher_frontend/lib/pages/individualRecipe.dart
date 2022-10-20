@@ -13,6 +13,7 @@ import 'package:happy_mucher_frontend/widgets/appbar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:animate_icons/animate_icons.dart';
 
 //search resource:
 //https://medium.com/@nishkarsh.makhija/implementing-searchable-list-view-in-flutter-using-data-from-network-d3aefffbd964
@@ -96,154 +97,188 @@ class IndividualRecipeState extends State<IndividualRecipe> {
 
       steps += x.toString() + ". " + widget.instructions[i] + '\n\n';
     }
-    print(widget.instructions);
+    //print(widget.instructions);
     for (int i = 0; i < widget.ingredients.length; i++) {
       ing += "\u2022  " + widget.ingredients[i] + '\n';
     }
   }
 
+  AnimateIconController controller = AnimateIconController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context, widget.name),
       // centerTitle: true,
-      body: ListView(padding: const EdgeInsets.all(32), children: [
-        IconButton(
-          onPressed: () async {
-            final String id = widget.id.toString();
-            if (id != null) {
-              await _favourites.add({
-                "ID": id,
-              });
-              showFavouritesDialog(context);
-            }
-          },
-          alignment: Alignment.topRight,
-          icon: Icon(Icons.favorite),
-          color: Color.fromARGB(255, 150, 66, 154),
-        ),
-
-        //const SizedBox(height: 12),
-        Text(widget.name,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        const SizedBox(height: 12),
-        if (widget.image != "")
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image(
-              image: NetworkImage(widget.image),
+      body: ListView(padding: const EdgeInsets.all(32),
+          //shrinkWrap: true,
+          children: [
+            AnimateIcons(
+              startIcon: Icons.favorite_border_outlined,
+              endIcon: Icons.favorite,
+              size: 30.0,
+              controller: controller,
+              // add this tooltip for the start icon
+              startTooltip: 'Icons.add_circle',
+              // add this tooltip for the end icon
+              endTooltip: 'Icons.add_circle_outline',
+              //size: 60.0,
+              onStartIconPress: () {
+                final String id = widget.id.toString();
+                // ignore: unnecessary_null_comparison
+                if (id != null) {
+                  print(id);
+                  _favourites.add({
+                    "ID": id,
+                  });
+                  showFavouritesDialog(context);
+                }
+                return true;
+              },
+              onEndIconPress: () {
+                print("Clicked on Close Icon");
+                return true;
+              },
+              duration: Duration(milliseconds: 500),
+              startIconColor: Color.fromARGB(255, 150, 66, 154),
+              endIconColor: Colors.red,
+              clockwise: false,
             ),
-          ),
-        //const SizedBox(height: 24),
-        if (widget.description != "") Description(),
-        const SizedBox(height: 24),
-        Container(
-            padding: const EdgeInsets.all(15),
-            //color: lightGrey,
-            decoration: BoxDecoration(
+            // IconButton(
+            //   onPressed: () async {
+            //     final String id = widget.id.toString();
+            //     if (id != null) {
+            //       await _favourites.add({
+            //         "ID": id,
+            //       });
+            //       showFavouritesDialog(context);
+            //     }
+            //   },
+            //   alignment: Alignment.topRight,
+            //   icon: Icon(Icons.favorite),
+            //   color: Color.fromARGB(255, 150, 66, 154),
+            // ),
+
+            //const SizedBox(height: 12),
+            Text(widget.name,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            const SizedBox(height: 12),
+            if (widget.image != "")
+              ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Color.fromARGB(255, 150, 66, 154),
-                  width: 3.0,
-                )),
-            //Color(0xFF2D2C31),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Calories:  ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      widget.calories.toString(),
-                      style: TextStyle(),
-                    ),
-                  ],
+                child: Image(
+                  image: NetworkImage(widget.image),
                 ),
-                Row(
+              ),
+            //const SizedBox(height: 24),
+            if (widget.description != "") Description(),
+            const SizedBox(height: 24),
+            Container(
+                padding: const EdgeInsets.all(15),
+                //color: lightGrey,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 150, 66, 154),
+                      width: 3.0,
+                    )),
+                //Color(0xFF2D2C31),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Cook Time:  ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "Calories:  ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          widget.calories.toString(),
+                          style: TextStyle(),
+                        ),
+                      ],
                     ),
-                    Text(
-                      widget.cookTime + " mins",
-                      style: TextStyle(),
-                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Cook Time:  ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          widget.cookTime + " mins",
+                          style: TextStyle(),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
-            )),
+                )),
 
-        const SizedBox(height: 30),
-        Text(
-          "Ingredients",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        //Text(ing),
-        const SizedBox(height: 30),
-        ListView.builder(
-            shrinkWrap: true,
-            itemCount: widget.ingredients.length,
-            itemBuilder: (context, index) {
-              return ingredientCard(
-                ingredient: widget.ingredients[index],
-              );
-            }),
-        const SizedBox(height: 30),
+            const SizedBox(height: 30),
+            if (widget.ingredients.isNotEmpty)
+              SingleChildScrollView(
+                  physics: ScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  child: Column(children: <Widget>[Ingredients()])),
 
-        ElevatedButton(
-          onPressed: () {
-            CompareInventory();
-          },
-          child: Text(
-            "Compare to Inventory",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: offWhite,
-              fontSize: 18,
+            // SingleChildScrollView(
+            //     physics: ScrollPhysics(),
+            //     scrollDirection: Axis.vertical,
+            //     child: Column(children: <Widget>[Ingredients()])),
+
+            const SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: () {
+                CompareInventory();
+              },
+              child: Text(
+                "Compare to Inventory",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: offWhite,
+                  fontSize: 18,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: const Color.fromARGB(255, 150, 66, 154),
+                shape: const StadiumBorder(),
+                minimumSize: const Size(300, 50),
+                onPrimary: Colors.white,
+                side: const BorderSide(
+                    color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
+              ),
             ),
-          ),
-          style: ElevatedButton.styleFrom(
-            primary: const Color.fromARGB(255, 150, 66, 154),
-            shape: const StadiumBorder(),
-            minimumSize: const Size(300, 50),
-            onPrimary: Colors.white,
-            side: const BorderSide(
-                color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
-          ),
-        ),
-        const SizedBox(height: 35),
-        Text(
-          "Instructions",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 30),
-        ListView.builder(
-            shrinkWrap: true,
-            itemCount: widget.instructions.length,
-            itemBuilder: (context, index) {
-              return InstructionCard(
-                instruction: widget.instructions[index],
-                step: index,
-              );
-            }),
-      ]),
+            const SizedBox(height: 35),
+
+            if (widget.instructions.isNotEmpty)
+              SingleChildScrollView(
+                  physics: ScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  child: Column(children: <Widget>[Instructions()])),
+
+            // Text(
+            //   "Instructions",
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 20,
+            //   ),
+            //   textAlign: TextAlign.center,
+            // ),
+            // const SizedBox(height: 30),
+            // ListView.builder(
+            //     shrinkWrap: true,
+            //     itemCount: widget.instructions.length,
+            // itemBuilder: (context, index) {
+            //   return InstructionCard(
+            //     instruction: widget.instructions[index],
+            //     step: index,
+            //   );
+            // }),
+          ]),
     );
   }
 
@@ -357,6 +392,56 @@ class IndividualRecipeState extends State<IndividualRecipe> {
         ),
         SizedBox(height: 24)
       ]);
+  Widget Ingredients() => Column(
+        children: [
+          Text(
+            "Ingredients",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          //Text(ing),
+          const SizedBox(height: 30),
+          ListView.builder(
+              physics: ScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: widget.ingredients.length,
+              itemBuilder: (context, index) {
+                return ingredientCard(
+                  ingredient: widget.ingredients[index],
+                );
+              }),
+        ],
+      );
+  Widget Instructions() => Column(
+        children: [
+          Text(
+            "Instructions",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          //Text(ing),
+          const SizedBox(height: 30),
+
+          ListView.builder(
+              physics: ScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: widget.instructions.length,
+              itemBuilder: (context, index) {
+                return
+                    //Text(widget.instructions[index]);
+                    InstructionCard(
+                  instruction: widget.instructions[index],
+                  step: index,
+                );
+              }),
+        ],
+      );
 
   showFavouritesDialog(BuildContext context) {
     // set up the button

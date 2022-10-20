@@ -74,7 +74,7 @@ class MyMonthState extends State<Month> {
   double actual = 0.0;
   List<double> cpi = [];
   List<String> dates = [];
-  double suggested = 57.45;
+  double suggested = 0;
   List<String> items = [];
 
   List<int> bought = [];
@@ -471,16 +471,19 @@ class MyMonthState extends State<Month> {
       frequency = data['frequency'].cast<int>();
       List<int> indexes = [];
       //get indexes of items with a frequency greater than 2
+      for (int i = 0; i < frequentItems.length; i++) {
+        frequentItems[i] = frequentItems[i].toLowerCase();
+      }
       for (int i = 0; i < frequency.length; i++) {
         if (frequency[i] > 2) {
           indexes.add(i);
         }
       }
       for (int i = 0; i < indexes.length; i++) {
-        indexes[i] = indexes[i] - 1;
+        indexes[i] = indexes[i];
       }
       //print(indexes);
-      //print(frequentItems);
+      print(frequentItems);
       //get items with frequency greater than 2 using the indexes.
       for (int i = 0; i < indexes.length; i++) {
         //print(frequentItems[indexes[i]]);
