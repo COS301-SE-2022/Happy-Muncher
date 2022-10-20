@@ -244,13 +244,13 @@ class MyMonthState extends State<Month> {
           if (budgetSet) setBudget() else viewBudget(),
           const SizedBox(height: 24),
 
-          WeekOne('Week 1', 'Week1'),
+          WeekOne(),
           const SizedBox(height: 24),
-          WeekTwo('Week 2', 'Week2'),
+          WeekTwo(),
           const SizedBox(height: 24),
-          WeekThree('Week 3', 'Week3'),
+          WeekThree(),
           const SizedBox(height: 24),
-          WeekFour('Week 4', 'Week4'),
+          WeekFour(),
           const SizedBox(height: 24),
 
           Totals(),
@@ -574,7 +574,7 @@ class MyMonthState extends State<Month> {
     return (dates.length + 1);
   }
 
-  Widget WeekOne(String week, String dbName) {
+  Widget WeekOne() {
     return Container(
         height: 320,
         child: Card(
@@ -588,7 +588,7 @@ class MyMonthState extends State<Month> {
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Center(
                     child: Text(
-                      week,
+                      'Week 1',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -600,7 +600,7 @@ class MyMonthState extends State<Month> {
               ),
               StreamBuilder(
                   stream:
-                      _budget.doc(widget.month).collection(dbName).snapshots(),
+                      _budget.doc(widget.month).collection('Week1').snapshots(),
                   builder:
                       (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                     String budget = "0";
@@ -676,8 +676,8 @@ class MyMonthState extends State<Month> {
                                               rem1 = left.toString();
                                               _budget
                                                   .doc(widget.month)
-                                                  .collection(dbName)
-                                                  .doc(dbName)
+                                                  .collection('Week1')
+                                                  .doc('Week1')
                                                   .set({
                                                 'budget': double.parse(budget),
                                                 'amount spent':
@@ -768,7 +768,7 @@ class MyMonthState extends State<Month> {
             ])));
   }
 
-  Widget WeekTwo(String week, String dbName) {
+  Widget WeekTwo() {
     return Container(
         height: 320,
         child: Card(
@@ -782,7 +782,7 @@ class MyMonthState extends State<Month> {
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Center(
                     child: Text(
-                      week,
+                      'Week 2',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -794,7 +794,7 @@ class MyMonthState extends State<Month> {
               ),
               StreamBuilder(
                   stream:
-                      _budget.doc(widget.month).collection(dbName).snapshots(),
+                      _budget.doc(widget.month).collection('Week2').snapshots(),
                   builder:
                       (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                     String budget = "0";
@@ -870,8 +870,8 @@ class MyMonthState extends State<Month> {
                                               rem2 = left.toString();
                                               _budget
                                                   .doc(widget.month)
-                                                  .collection(dbName)
-                                                  .doc(dbName)
+                                                  .collection('Week2')
+                                                  .doc('Week2')
                                                   .set({
                                                 'budget': double.parse(budget),
                                                 'amount spent':
@@ -962,7 +962,7 @@ class MyMonthState extends State<Month> {
             ])));
   }
 
-  Widget WeekThree(String week, String dbName) {
+  Widget WeekThree() {
     return Container(
         height: 320,
         child: Card(
@@ -976,7 +976,7 @@ class MyMonthState extends State<Month> {
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Center(
                     child: Text(
-                      week,
+                      'Week 3',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -988,7 +988,7 @@ class MyMonthState extends State<Month> {
               ),
               StreamBuilder(
                   stream:
-                      _budget.doc(widget.month).collection(dbName).snapshots(),
+                      _budget.doc(widget.month).collection('Week3').snapshots(),
                   builder:
                       (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                     String budget = "0";
@@ -1066,8 +1066,8 @@ class MyMonthState extends State<Month> {
                                               rem3 = left.toString();
                                               _budget
                                                   .doc(widget.month)
-                                                  .collection(dbName)
-                                                  .doc(dbName)
+                                                  .collection('Week3')
+                                                  .doc("Week3")
                                                   .set({
                                                 'budget': double.parse(budget),
                                                 'amount spent':
@@ -1158,7 +1158,7 @@ class MyMonthState extends State<Month> {
             ])));
   }
 
-  Widget WeekFour(String week, String dbName) {
+  Widget WeekFour() {
     return Container(
         height: 320,
         child: Card(
@@ -1172,7 +1172,7 @@ class MyMonthState extends State<Month> {
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Center(
                     child: Text(
-                      week,
+                      'Week 4',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -1184,7 +1184,7 @@ class MyMonthState extends State<Month> {
               ),
               StreamBuilder(
                   stream:
-                      _budget.doc(widget.month).collection(dbName).snapshots(),
+                      _budget.doc(widget.month).collection('Week4').snapshots(),
                   builder:
                       (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                     String budget = "0";
@@ -1260,8 +1260,8 @@ class MyMonthState extends State<Month> {
                                               rem4 = left.toString();
                                               _budget
                                                   .doc(widget.month)
-                                                  .collection(dbName)
-                                                  .doc(dbName)
+                                                  .collection('Week4')
+                                                  .doc('Week4')
                                                   .set({
                                                 'budget': double.parse(budget),
                                                 'amount spent':
@@ -1480,7 +1480,8 @@ class MyMonthState extends State<Month> {
           String message = "";
           double comp = 0;
           comp += est;
-          compMessage = " Your estimated total is R " + comp.toString() + ". ";
+          compMessage =
+              " Your estimated total is R " + comp.toStringAsFixed(2) + ". ";
           if (comp < tr) {
             message = "Your Grocery List is within budget. ";
             comp = tr - comp;
@@ -1489,7 +1490,7 @@ class MyMonthState extends State<Month> {
                 " remaining after shopping.";
           } else {
             comp = comp - tr;
-            message = "You are " + comp.toString() + " over budget.";
+            message = "You are " + comp.toStringAsFixed(2) + " over budget.";
           }
           setState(() {
             compMessage += message;
