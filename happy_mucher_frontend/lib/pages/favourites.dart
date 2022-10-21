@@ -37,16 +37,18 @@ class FavouritesBookState extends State<FavouritesBook> {
   //Timer? debouncer;
   //List<tastyRecipe> tr = [];
   bool loading = true;
-  List<String> ids = [];
+  final List<String> ids = [];
   @override
   void initState() {
-    //getIDs();
     super.initState();
-
-    for (var i in widget.ids) {
-      //print(i);
-      getRecipes(i);
-    }
+    getIDs();
+    // if (ids.isEmpty) {
+    //   loading = false;
+    // }
+    // for (var i in ids) {
+    //   print("ID: " + i);
+    //   getRecipes(i);
+    // }
   }
 
   // void getDB(context) async {
@@ -63,18 +65,27 @@ class FavouritesBookState extends State<FavouritesBook> {
   //     });
   //   });
   // }
+  void database() {
+    setState(() {});
+    getIDs();
+  }
+
   void getIDs() async {
     print("getting ids from db");
     _favourites.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        ids.add(doc["ID"]);
-        print(ids);
+        setState(() {
+          ids.add(doc["ID"]);
+          getRecipes(doc["ID"]);
+          //print(doc["ID"]);
+        });
+        //
       });
     });
-    setState(() {});
   }
 
   FutureOr<void> getRecipes(String id) async {
+    print("getRecipes");
     List<tastyRecipe> tr = await FavouritesAPI.getIDApi(id);
     print(tr);
     recipes.add(tr[0]);

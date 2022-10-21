@@ -125,7 +125,7 @@ class RecipeBookState extends State<RecipeBook> {
                   onPressed: () {
                     //ids = [];
                     setState(() {
-                      getIDs();
+                      //getIDs();
                       //print(ids);
                     });
                     Navigator.push(
