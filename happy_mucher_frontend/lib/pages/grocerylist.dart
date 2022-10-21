@@ -80,15 +80,15 @@ class GroceryListPageState extends State<GroceryListPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Shopping Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
+                        'SHOPPING TOTAL: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                       ),
                       Text(
-                        'Estimated Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
+                        'ESTIMATED TOTAL: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                       ),
                     ],
