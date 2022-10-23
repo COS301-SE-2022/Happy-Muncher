@@ -57,7 +57,7 @@ class ProfileState extends State<Profile> {
 
     return Scaffold(
       appBar: buildAppBar(context, "Profile"),
-      body: Column(
+      body: ListView(
         children: [
           InkWell(
               onTap: () {

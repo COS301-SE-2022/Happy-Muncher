@@ -151,6 +151,7 @@ class addbarState extends State<_addbarD> {
               quantityController.text = '';
               dateFieldController.text = '';
             }
+            Navigator.of(context).pop();
           },
           child: const Text('Add'),
         )

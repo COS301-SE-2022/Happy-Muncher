@@ -41,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    const CircularProgressIndicator();
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -55,8 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _authData['email']!, password: _authData['password']!);
-
-      Timer(Duration(seconds: 2), () {
+      Timer(Duration(seconds: 3), () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DashboardPage()));
       });
@@ -165,6 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: () async {
+                          buildShowIndicator(context);
                           _submit();
                         },
                       ),
@@ -193,6 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 width: 3.0),
                           ),
                           onPressed: () {
+                            buildShowIndicator(context);
                             signup(context);
                           },
                           icon: Image.asset(
@@ -327,4 +327,15 @@ class _LoginScreenState extends State<LoginScreen> {
           Center(child: CircularProgressIndicator()),
         ],
       );*/
+}
+
+buildShowIndicator(BuildContext context) {
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      });
 }

@@ -192,7 +192,7 @@ class GLDialogState extends State<_GLDialog> {
               frequency = data['frequency'].cast<int>();
               int index = 0;
               for (int i = 0; i < frequentItems.length; i++) {
-                if (frequentItems[i] == name) {
+                if (frequentItems[i] == name.toLowerCase()) {
                   print(frequentItems[i]);
                   index = i;
                   hasitem = true;
@@ -204,7 +204,7 @@ class GLDialogState extends State<_GLDialog> {
                 frequency[index] = frequency[index] + 1;
               } else {
                 print('new');
-                frequentItems.add(name);
+                frequentItems.add(name.toLowerCase());
                 frequency.add(1);
               }
               setState(() {});

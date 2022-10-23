@@ -32,6 +32,7 @@ class MyMonthState extends State<Month> {
   double totSpent = 0; //total amount spent for the entire month
   double totBudget = 0; //total budget for the entire month
   bool budgetSet = false;
+  bool edit = false;
 
   String compMessage = "";
 
@@ -73,7 +74,7 @@ class MyMonthState extends State<Month> {
   double actual = 0.0;
   List<double> cpi = [];
   List<String> dates = [];
-  double suggested = 57.45;
+  double suggested = 0;
   List<String> items = [];
 
   List<int> bought = [];
@@ -114,7 +115,7 @@ class MyMonthState extends State<Month> {
         spent1 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
         mybudget = doc["budget"].toStringAsFixed(2);
-        rem1 = doc["amount remaining"].toStringAsFixed(2);
+        rem1 = doc["amount remaining"];
       });
     });
 
@@ -128,7 +129,7 @@ class MyMonthState extends State<Month> {
         .then((QuerySnapshot qs) {
       qs.docs.forEach((doc) {
         spent2 = doc["amount spent"].toStringAsFixed(2);
-        rem2 = doc["amount remaining"].toStringAsFixed(2);
+        rem2 = doc["amount remaining"];
         //print(doc["amount spent"]);
       });
     });
@@ -144,7 +145,7 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         spent3 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem3 = doc["amount remaining"].toStringAsFixed(2);
+        rem3 = doc["amount remaining"];
       });
     });
 
@@ -159,7 +160,7 @@ class MyMonthState extends State<Month> {
       qs.docs.forEach((doc) {
         spent4 = doc["amount spent"].toStringAsFixed(2);
         //print(doc["amount spent"]);
-        rem4 = doc["amount remaining"].toStringAsFixed(2);
+        rem4 = doc["amount remaining"];
       });
     });
 
@@ -232,68 +233,9 @@ class MyMonthState extends State<Month> {
     getDB(context);
   }
 
-  percentIndicator(double spent, double rem, String budget, String w) {
-    if (budget != "") {
-      double b = double.parse(budget);
-      percentageSpent = spent / b;
-      percentageRemaining = rem / b * 100;
-      percentageSpent = double.parse(percentageSpent.toStringAsFixed(2));
-      percentageRemaining =
-          double.parse(percentageRemaining.toStringAsFixed(2));
-    }
-    if (percentageSpent > 1 || percentageRemaining == double.negativeInfinity) {
-      percentageSpent = 0;
-      percentageRemaining = 100;
-    }
-
-    return Container(
-        width: 400,
-        height: 250,
-        //margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        child: Card(
-            elevation: 10,
-            clipBehavior: Clip.antiAlias,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Container(
-                child: Column(children: [
-              Container(
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Center(
-                    child: Text(
-                      '${w}',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 65),
-              LinearPercentIndicator(
-                width: MediaQuery.of(context).size.width - 150,
-                animation: true,
-                lineHeight: 25.0,
-                animationDuration: 2000,
-                barRadius: const Radius.circular(16),
-                percent: double.parse(percentageSpent.toStringAsFixed(2)),
-                center: Text(percentageRemaining.toString() + "% remaining"),
-                progressColor: percentageRemaining >= 60
-                    ? Color.fromARGB(255, 72, 216, 29)
-                    : percentageRemaining < 60 && percentageRemaining >= 30
-                        ? Color.fromARGB(255, 248, 141, 10)
-                        : Color.fromARGB(255, 236, 17, 2),
-              )
-            ]))));
-  }
-
   @override
   Widget build(BuildContext context) {
     //Future.delayed(Duration.zero, () => getDB(context));
-
     return Scaffold(
       appBar: buildAppBar(context, widget.month),
       body: ListView(
@@ -301,87 +243,23 @@ class MyMonthState extends State<Month> {
         children: <Widget>[
           if (budgetSet) setBudget() else viewBudget(),
           const SizedBox(height: 24),
-          //WeekOne(),
-          Container(
-              child: CarouselSlider(
-                  key: Key('Week1 carousel'),
-                  options: CarouselOptions(
-                    aspectRatio: 1.4,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                  ),
-                  items: <Widget>[
-                Indicator(spent1, rem1, mybudget, 'Week 1'),
-                WeekOne(),
-              ])),
-          const SizedBox(height: 24),
-          Container(
-              child: CarouselSlider(
-                  options: CarouselOptions(
-                    aspectRatio: 1.4,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                  ),
-                  items: <Widget>[
-                Indicator(spent2, rem2, mybudget, 'Week 2'),
-                WeekTwo(),
-              ])),
 
+          WeekOne(),
           const SizedBox(height: 24),
-          Container(
-              child: CarouselSlider(
-                  options: CarouselOptions(
-                    aspectRatio: 1.4,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                  ),
-                  items: <Widget>[
-                Indicator(spent3, rem3, mybudget, 'Week 3'),
-                WeekThree(),
-              ])),
+          WeekTwo(),
           const SizedBox(height: 24),
-          Container(
-              child: CarouselSlider(
-                  options: CarouselOptions(
-                    aspectRatio: 1.4,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                  ),
-                  items: <Widget>[
-                Indicator(spent4, rem4, mybudget, 'Week 4'),
-                WeekFour(),
-              ])),
-          const SizedBox(height: 32),
-          Container(
-              child: CarouselSlider(
-                  options: CarouselOptions(
-                    aspectRatio: 1.5,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                  ),
-                  items: <Widget>[
-                Indicator(totSpent.toString(), totRem.toString(),
-                    totBudget.toString(), 'Totals'),
-                Totals(),
-              ])),
-          const SizedBox(height: 32),
+          WeekThree(),
+          const SizedBox(height: 24),
+          WeekFour(),
+          const SizedBox(height: 24),
+
+          Totals(),
+          const SizedBox(height: 24),
+
           EstTotal(),
 
-          /*Container(
-              child: CarouselSlider(
-                  options: CarouselOptions(
-                    disableCenter: true,
-                  ),
-                  items: <Widget>[
-                if (budgetSet) setBudget() else viewBudget(),
-                const SizedBox(height: 24),
-                WeekTwo(),
-                const SizedBox(height: 24),
-                Indicator(spent2, rem2),
-              ])),*/
-
           //Comparison(),
-          //showAlertDialog(context)
+          //showAlertDialog(context)*/
         ],
       ),
     );
@@ -593,16 +471,19 @@ class MyMonthState extends State<Month> {
       frequency = data['frequency'].cast<int>();
       List<int> indexes = [];
       //get indexes of items with a frequency greater than 2
+      for (int i = 0; i < frequentItems.length; i++) {
+        frequentItems[i] = frequentItems[i].toLowerCase();
+      }
       for (int i = 0; i < frequency.length; i++) {
         if (frequency[i] > 2) {
           indexes.add(i);
         }
       }
       for (int i = 0; i < indexes.length; i++) {
-        indexes[i] = indexes[i] - 1;
+        indexes[i] = indexes[i];
       }
       //print(indexes);
-      //print(frequentItems);
+      print(frequentItems);
       //get items with frequency greater than 2 using the indexes.
       for (int i = 0; i < indexes.length; i++) {
         //print(frequentItems[indexes[i]]);
@@ -696,463 +577,882 @@ class MyMonthState extends State<Month> {
     return (dates.length + 1);
   }
 
-  Widget Indicator(String s, String r, String b, String week) => Container(
-      child: Center(
-          child: percentIndicator(double.parse(s), double.parse(r), b, week)));
-
-  Widget WeekOne() => Container(
-      child: Card(
-          elevation: 10,
-          clipBehavior: Clip.antiAlias,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Column(children: [
-            Container(
-              child: Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: const Center(
-                  child: Text(
-                    'Week 1',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+  Widget WeekOne() {
+    return Container(
+        height: 320,
+        child: Card(
+            elevation: 10,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Column(children: [
+              Container(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Center(
+                    child: Text(
+                      'Week 1',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Budget"),
-              Text("R " + mybudget + "   ")
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Spent"),
-              Flexible(
-                  child: !editOne
-                      ? Text('R' + spent1 + "   ")
-                      : TextField(
-                          key: const Key("spent1"),
-                          textAlign: TextAlign.right,
-                          controller: spentOneController,
-                          decoration: const InputDecoration(
-                            hintText: 'R 0',
-                          ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: (value) {
-                            setState(() {
-                              if (double.parse(spent1) !=
-                                  double.parse(spentOneController.text)) {
-                                print("same");
-                                totSpent -= double.parse(spent1);
-                                totRem += double.parse(spent1);
-                                spent1 = spentOneController.text;
-                                totRem -= double.parse(spent1);
-                                double left = double.parse(spent1);
+              StreamBuilder(
+                  stream:
+                      _budget.doc(widget.month).collection('Week1').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    String budget = "0";
+                    if (streamSnapshot.hasData &&
+                        streamSnapshot.data!.size > 0) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[0];
+                      spent1 = documentSnapshot['amount spent'].toString();
+                      budget = documentSnapshot['budget'].toString();
+                      rem1 = documentSnapshot['amount remaining'].toString();
+                    }
 
-                                totSpent += double.parse(spent1);
-                                left = double.parse(mybudget) -
-                                    double.parse(spent1);
+                    if (budget != "0") {
+                      double b = double.parse(budget);
+                      percentageSpent = double.parse(spent1) / b;
+                      percentageRemaining = double.parse(rem1) / b * 100;
+                      percentageSpent =
+                          double.parse(percentageSpent.toStringAsFixed(2));
+                      percentageRemaining =
+                          double.parse(percentageRemaining.toStringAsFixed(2));
+                    } else {
+                      percentageSpent = 0.0;
+                      percentageRemaining = 100.0;
+                    }
+                    if (percentageSpent > 1 ||
+                        percentageSpent < 0 ||
+                        percentageRemaining == double.negativeInfinity) {
+                      percentageSpent = 0;
+                      percentageRemaining = 100;
+                    }
+                    return Column(children: [
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Budget"),
+                            Text("R " + budget + "   ")
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Spent"),
+                            Flexible(
+                                child: !editOne
+                                    ? Text('R ' + spent1 + "   ")
+                                    : TextField(
+                                        key: const Key("spent1"),
+                                        textAlign: TextAlign.right,
+                                        controller: spentOneController,
+                                        decoration: const InputDecoration(
+                                          hintText: 'R 0',
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        textInputAction: TextInputAction.done,
+                                        onSubmitted: (value) {
+                                          setState(() {
+                                            if (double.parse(spent1) !=
+                                                double.parse(
+                                                    spentOneController.text)) {
+                                              print("same");
+                                              totSpent -= double.parse(spent1);
+                                              totRem += double.parse(spent1);
+                                              spent1 = spentOneController.text;
+                                              totRem -= double.parse(spent1);
+                                              double left =
+                                                  double.parse(spent1);
 
-                                rem1 = left.toString();
-                                _budget
-                                    .doc(widget.month)
-                                    .collection('Week1')
-                                    .doc('Week1')
-                                    .set({
-                                  'budget': mybudget,
-                                  'amount spent': double.parse(spent1),
-                                  'amount remaining': rem1
-                                });
-                              }
-                              spent1 = spentOneController.text;
+                                              totSpent += double.parse(spent1);
+                                              left = double.parse(mybudget) -
+                                                  double.parse(spent1);
 
-                              editOne = false;
-                            });
-                          },
-                        )),
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Remaining"),
-              Text("R " + rem1 + "   "),
-            ]),
-            IconButton(
-              key: Key('Week1 edit'),
-              alignment: Alignment.bottomRight,
-              //color: Colors.green,
-              //hoverColor: Colors.green,
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                setState(() => {
-                      editOne = true,
-                    });
-              },
-            ),
-            const SizedBox(height: 10),
-            const SizedBox(height: 10),
-            /*Padding(
+                                              rem1 = left.toString();
+                                              _budget
+                                                  .doc(widget.month)
+                                                  .collection('Week1')
+                                                  .doc('Week1')
+                                                  .set({
+                                                'budget': double.parse(budget),
+                                                'amount spent':
+                                                    double.parse(spent1),
+                                                'amount remaining': rem1
+                                              });
+                                              _budget.doc(widget.month).update({
+                                                'total remaining': totRem,
+                                                'total spent': totSpent
+                                              });
+                                            }
+
+                                            editOne = false;
+                                            spent1 = spentOneController.text;
+                                            if (budget != "0") {
+                                              double b = double.parse(budget);
+                                              percentageSpent =
+                                                  double.parse(spent1) / b;
+                                              percentageRemaining =
+                                                  double.parse(rem1) / b * 100;
+                                              percentageSpent = double.parse(
+                                                  percentageSpent
+                                                      .toStringAsFixed(2));
+                                              percentageRemaining =
+                                                  double.parse(
+                                                      percentageRemaining
+                                                          .toStringAsFixed(2));
+                                            } else {
+                                              percentageSpent = 0.0;
+                                              percentageRemaining = 100.0;
+                                            }
+                                            if (percentageSpent > 1 ||
+                                                percentageSpent < 0 ||
+                                                percentageRemaining ==
+                                                    double.negativeInfinity) {
+                                              percentageSpent = 0;
+                                              percentageRemaining = 100;
+                                            }
+                                          });
+                                        },
+                                      ))
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Remaining"),
+                            Text("R " + rem1 + "   "),
+                          ]),
+                      IconButton(
+                        key: Key('Week1 edit'),
+                        alignment: Alignment.bottomRight,
+                        //color: Colors.green,
+                        //hoverColor: Colors.green,
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          setState(() => {
+                                editOne = true,
+                              });
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 80,
+                          animation: true,
+                          lineHeight: 25.0,
+                          animationDuration: 2000,
+                          barRadius: const Radius.circular(16),
+                          percent: percentageSpent,
+                          center: Text(
+                              percentageRemaining.toString() + "% remaining"),
+                          progressColor: percentageRemaining >= 60
+                              ? Color.fromARGB(255, 72, 216, 29)
+                              : percentageRemaining < 60 &&
+                                      percentageRemaining >= 30
+                                  ? Color.fromARGB(255, 248, 141, 10)
+                                  : Color.fromARGB(255, 236, 17, 2),
+                        ),
+                      )
+                    ]);
+                  }),
+
+              /*Padding(
             padding: const EdgeInsets.all(15.0),
             child: percentIndicator(
                 double.parse(spent1), double.parse(rem1), mybudget))*/
-          ])));
+            ])));
+  }
 
-  Widget WeekTwo() => Container(
-      child: Card(
-          elevation: 10,
-          clipBehavior: Clip.antiAlias,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Container(
-              child: Column(children: [
-            Container(
-              child: Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: const Center(
-                  child: Text(
-                    'Week 2',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+  Widget WeekTwo() {
+    return Container(
+        height: 320,
+        child: Card(
+            elevation: 10,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Column(children: [
+              Container(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Center(
+                    child: Text(
+                      'Week 2',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Budget"),
-              Text("R" + mybudget + "   ")
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Spent"),
-              Flexible(
-                  child: !editTwo
-                      ? Text('R' + spent2 + "   ")
-                      : TextField(
-                          key: const Key("spent2"),
-                          textAlign: TextAlign.right,
-                          controller: spentTwoController,
-                          decoration: const InputDecoration(
-                            hintText: 'R 0',
-                          ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: (value) {
-                            setState(() {
-                              if (double.parse(spent2) !=
-                                  double.parse(spentTwoController.text)) {
-                                print("same");
-                                totSpent -= double.parse(spent2);
-                                totRem += double.parse(spent2);
-                                spent2 = spentTwoController.text;
-                                totRem -= double.parse(spent2);
-                                double left = double.parse(spent2);
+              StreamBuilder(
+                  stream:
+                      _budget.doc(widget.month).collection('Week2').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    String budget = "0";
+                    if (streamSnapshot.hasData &&
+                        streamSnapshot.data!.size > 0) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[0];
+                      spent2 = documentSnapshot['amount spent'].toString();
+                      budget = documentSnapshot['budget'].toString();
+                      rem2 = documentSnapshot['amount remaining'].toString();
+                    }
 
-                                totSpent += double.parse(spent2);
-                                left = double.parse(mybudget) -
-                                    double.parse(spent2);
+                    if (budget != "0") {
+                      double b = double.parse(budget);
+                      percentageSpent = double.parse(spent2) / b;
+                      percentageRemaining = double.parse(rem2) / b * 100;
+                      percentageSpent =
+                          double.parse(percentageSpent.toStringAsFixed(2));
+                      percentageRemaining =
+                          double.parse(percentageRemaining.toStringAsFixed(2));
+                    } else {
+                      percentageSpent = 0.0;
+                      percentageRemaining = 100.0;
+                    }
+                    if (percentageSpent > 1 ||
+                        percentageSpent < 0 ||
+                        percentageRemaining == double.negativeInfinity) {
+                      percentageSpent = 0;
+                      percentageRemaining = 100;
+                    }
+                    return Column(children: [
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Budget"),
+                            Text("R " + budget + "   ")
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Spent"),
+                            Flexible(
+                                child: !editTwo
+                                    ? Text('R ' + spent2 + "   ")
+                                    : TextField(
+                                        key: const Key("spent2"),
+                                        textAlign: TextAlign.right,
+                                        controller: spentTwoController,
+                                        decoration: const InputDecoration(
+                                          hintText: 'R 0',
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        textInputAction: TextInputAction.done,
+                                        onSubmitted: (value) {
+                                          setState(() {
+                                            if (double.parse(spent2) !=
+                                                double.parse(
+                                                    spentTwoController.text)) {
+                                              print("same");
+                                              totSpent -= double.parse(spent2);
+                                              totRem += double.parse(spent2);
+                                              spent2 = spentTwoController.text;
+                                              totRem -= double.parse(spent2);
+                                              double left =
+                                                  double.parse(spent2);
 
-                                rem2 = left.toString();
-                                _budget
-                                    .doc(widget.month)
-                                    .collection('Week2')
-                                    .doc('Week2')
-                                    .set({
-                                  'budget': mybudget,
-                                  'amount spent': double.parse(spent2),
-                                  'amount remaining': rem2
-                                });
-                              }
-                              spent2 = spentTwoController.text;
-                              // if (totRem != null) {
-                              //   _budget
-                              //       .doc(widget.month)
-                              //       .update({'total remaining': totRem});
-                              // }
-                              // if (totSpent != null) {
-                              //   _budget
-                              //       .doc(widget.month)
-                              //       .update({'total spent': totSpent});
-                              // }
-                              editTwo = false;
-                            });
-                          },
-                        ))
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Remaining"),
-              Text("R " + rem2 + "   ")
-            ]),
-            IconButton(
-              alignment: Alignment.bottomRight,
-              //color: Colors.green,
-              //hoverColor: Colors.green,
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                setState(() => {
-                      editTwo = true,
-                    });
-              },
-            ),
-            const SizedBox(height: 10),
-          ]))));
+                                              totSpent += double.parse(spent2);
+                                              left = double.parse(budget) -
+                                                  double.parse(spent2);
 
-  Widget WeekThree() => Container(
-      child: Card(
-          elevation: 10,
-          clipBehavior: Clip.antiAlias,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Container(
-              child: Column(children: [
-            Container(
-              child: Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: const Center(
-                  child: Text(
-                    'Week 3',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Budget"),
-              Text("R" + mybudget + "   ")
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Spent"),
-              Flexible(
-                  child: !editThree
-                      ? Text('R' + spent3 + "   ")
-                      : TextField(
-                          key: const Key("spent3"),
-                          textAlign: TextAlign.right,
-                          controller: spentThreeController,
-                          decoration: const InputDecoration(
-                            hintText: 'R 0',
-                          ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: (value) {
-                            setState(() {
-                              if (double.parse(spent3) !=
-                                  double.parse(spentThreeController.text)) {
-                                print("same");
-                                totSpent -= double.parse(spent3);
-                                totRem += double.parse(spent3);
-                                spent3 = spentThreeController.text;
-                                totRem -= double.parse(spent3);
-                                double left = double.parse(spent3);
+                                              rem2 = left.toString();
+                                              _budget
+                                                  .doc(widget.month)
+                                                  .collection('Week2')
+                                                  .doc('Week2')
+                                                  .set({
+                                                'budget': double.parse(budget),
+                                                'amount spent':
+                                                    double.parse(spent2),
+                                                'amount remaining': rem2
+                                              });
+                                              _budget.doc(widget.month).update({
+                                                'total remaining': totRem,
+                                                'total spent': totSpent
+                                              });
+                                            }
 
-                                totSpent += double.parse(spent3);
-                                left = double.parse(mybudget) -
-                                    double.parse(spent3);
-
-                                rem3 = left.toString();
-                                _budget
-                                    .doc(widget.month)
-                                    .collection('Week3')
-                                    .doc('Week3')
-                                    .set({
-                                  'budget': mybudget,
-                                  'amount spent': double.parse(spent3),
-                                  'amount remaining': rem3
-                                });
-                              }
-                              spent3 = spentThreeController.text;
-                              // if (totRem != null) {
-                              //   _budget
-                              //       .doc(widget.month)
-                              //       .update({'total remaining': totRem});
-                              // }
-                              // if (totSpent != null) {
-                              //   _budget
-                              //       .doc(widget.month)
-                              //       .update({'total spent': totSpent});
-                              // }
-                              editThree = false;
-                            });
-                          },
-                        ))
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Remaining"),
-              Text("R " + rem3 + "   ")
-            ]),
-            IconButton(
-              alignment: Alignment.bottomRight,
-              //color: Colors.green,
-              //hoverColor: Colors.green,
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                setState(() => {
-                      editThree = true,
-                    });
-              },
-            ),
-            const SizedBox(height: 10),
-          ]))));
-
-  Widget WeekFour() => Container(
-      child: Card(
-          elevation: 10,
-          clipBehavior: Clip.antiAlias,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Container(
-              child: Column(children: [
-            Container(
-              child: Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: const Center(
-                  child: Text(
-                    'Week 4',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Budget"),
-              Text("R" + mybudget + "   ")
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Spent"),
-              Flexible(
-                  child: !editFour
-                      ? Text('R' + spent4 + "   ")
-                      : TextField(
-                          key: const Key("spent4"),
-                          textAlign: TextAlign.right,
-                          controller: spentFourController,
-                          decoration: const InputDecoration(
-                            hintText: 'R 0',
-                          ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: (value) {
-                            setState(() {
-                              if (double.parse(spent4) !=
-                                  double.parse(spentFourController.text)) {
-                                print("same");
-                                totSpent -= double.parse(spent4);
-                                totRem += double.parse(spent4);
-                                spent4 = spentFourController.text;
-                                totRem -= double.parse(spent4);
-                                double left = double.parse(spent4);
-
-                                totSpent += double.parse(spent4);
-                                left = double.parse(mybudget) -
-                                    double.parse(spent4);
-
-                                rem4 = left.toString();
-                                _budget
-                                    .doc(widget.month)
-                                    .collection('Week4')
-                                    .doc('Week4')
-                                    .set({
-                                  'budget': mybudget,
-                                  'amount spent': double.parse(spent4),
-                                  'amount remaining': rem4
-                                });
-                              }
-                              editFour = false;
-                            });
-                          },
-                        ))
-            ]),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text("   Amount Remaining"),
-              Text(rem4 + "   ")
-            ]),
-            IconButton(
-              alignment: Alignment.bottomRight,
-              //color: Colors.green,
-              //hoverColor: Colors.green,
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                setState(() => {
-                      editFour = true,
-                    });
-              },
-            ),
-            const SizedBox(height: 10),
-          ]))));
-
-  Widget Totals() => Container(
-      child: Card(
-          elevation: 10,
-          clipBehavior: Clip.antiAlias,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Container(
-              key: const Key("totals"),
-              child: Column(children: [
-                Container(
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: const Center(
-                      child: Text(
-                        'Totals',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                                            editTwo = false;
+                                            spent2 = spentTwoController.text;
+                                            if (budget != "0") {
+                                              double b = double.parse(budget);
+                                              percentageSpent =
+                                                  double.parse(spent2) / b;
+                                              percentageRemaining =
+                                                  double.parse(rem2) / b * 100;
+                                              percentageSpent = double.parse(
+                                                  percentageSpent
+                                                      .toStringAsFixed(2));
+                                              percentageRemaining =
+                                                  double.parse(
+                                                      percentageRemaining
+                                                          .toStringAsFixed(2));
+                                            } else {
+                                              percentageSpent = 0.0;
+                                              percentageRemaining = 100.0;
+                                            }
+                                            if (percentageSpent > 1 ||
+                                                percentageSpent < 0 ||
+                                                percentageRemaining ==
+                                                    double.negativeInfinity) {
+                                              percentageSpent = 0;
+                                              percentageRemaining = 100;
+                                            }
+                                          });
+                                        },
+                                      ))
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Remaining"),
+                            Text("R " + rem2 + "   "),
+                          ]),
+                      IconButton(
+                        key: Key('Week2 edit'),
+                        alignment: Alignment.bottomRight,
+                        //color: Colors.green,
+                        //hoverColor: Colors.green,
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          setState(() => {
+                                editTwo = true,
+                              });
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 80,
+                          animation: true,
+                          lineHeight: 25.0,
+                          animationDuration: 2000,
+                          barRadius: const Radius.circular(16),
+                          percent: percentageSpent,
+                          center: Text(
+                              percentageRemaining.toString() + "% remaining"),
+                          progressColor: percentageRemaining >= 60
+                              ? Color.fromARGB(255, 72, 216, 29)
+                              : percentageRemaining < 60 &&
+                                      percentageRemaining >= 30
+                                  ? Color.fromARGB(255, 248, 141, 10)
+                                  : Color.fromARGB(255, 236, 17, 2),
                         ),
-                        textAlign: TextAlign.left,
+                      )
+                    ]);
+                  }),
+
+              /*Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(
+                double.parse(spent1), double.parse(rem1), mybudget))*/
+            ])));
+  }
+
+  Widget WeekThree() {
+    return Container(
+        height: 320,
+        child: Card(
+            elevation: 10,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Column(children: [
+              Container(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Center(
+                    child: Text(
+                      'Week 3',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+              StreamBuilder(
+                  stream:
+                      _budget.doc(widget.month).collection('Week3').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    String budget = "0";
+                    if (streamSnapshot.hasData &&
+                        streamSnapshot.data!.size > 0) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[0];
+                      spent3 = documentSnapshot['amount spent'].toString();
+                      budget = documentSnapshot['budget'].toString();
+                      rem3 = documentSnapshot['amount remaining'].toString();
+                    }
+
+                    if (budget != "0") {
+                      double b = double.parse(budget);
+                      percentageSpent = double.parse(spent3) / b;
+                      percentageRemaining = double.parse(rem3) / b * 100;
+                      percentageSpent =
+                          double.parse(percentageSpent.toStringAsFixed(2));
+                      percentageRemaining =
+                          double.parse(percentageRemaining.toStringAsFixed(2));
+                    } else {
+                      percentageSpent = 0.0;
+                      percentageRemaining = 100.0;
+                    }
+                    if (percentageSpent > 1 ||
+                        percentageSpent < 0 ||
+                        percentageRemaining == double.negativeInfinity) {
+                      percentageSpent = 0;
+                      percentageRemaining = 100;
+                    }
+                    return Column(children: [
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Budget"),
+                            Text("R " + budget + "   ")
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Spent"),
+                            Flexible(
+                                child: !editThree
+                                    ? Text('R ' + spent3 + "   ")
+                                    : TextField(
+                                        key: const Key("spent3"),
+                                        textAlign: TextAlign.right,
+                                        controller: spentThreeController,
+                                        decoration: const InputDecoration(
+                                          hintText: 'R 0',
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        textInputAction: TextInputAction.done,
+                                        onSubmitted: (value) {
+                                          setState(() {
+                                            if (double.parse(spent3) !=
+                                                double.parse(
+                                                    spentThreeController
+                                                        .text)) {
+                                              print("same");
+                                              totSpent -= double.parse(spent3);
+                                              totRem += double.parse(spent3);
+                                              spent3 =
+                                                  spentThreeController.text;
+                                              totRem -= double.parse(spent3);
+                                              double left =
+                                                  double.parse(spent3);
+
+                                              totSpent += double.parse(spent3);
+                                              left = double.parse(budget) -
+                                                  double.parse(spent3);
+
+                                              rem3 = left.toString();
+                                              _budget
+                                                  .doc(widget.month)
+                                                  .collection('Week3')
+                                                  .doc("Week3")
+                                                  .set({
+                                                'budget': double.parse(budget),
+                                                'amount spent':
+                                                    double.parse(spent3),
+                                                'amount remaining': rem3
+                                              });
+                                              _budget.doc(widget.month).update({
+                                                'total remaining': totRem,
+                                                'total spent': totSpent
+                                              });
+                                            }
+
+                                            editThree = false;
+                                            spent3 = spentThreeController.text;
+                                            if (budget != "0") {
+                                              double b = double.parse(budget);
+                                              percentageSpent =
+                                                  double.parse(spent3) / b;
+                                              percentageRemaining =
+                                                  double.parse(rem3) / b * 100;
+                                              percentageSpent = double.parse(
+                                                  percentageSpent
+                                                      .toStringAsFixed(2));
+                                              percentageRemaining =
+                                                  double.parse(
+                                                      percentageRemaining
+                                                          .toStringAsFixed(2));
+                                            } else {
+                                              percentageSpent = 0.0;
+                                              percentageRemaining = 100.0;
+                                            }
+                                            if (percentageSpent > 1 ||
+                                                percentageSpent < 0 ||
+                                                percentageRemaining ==
+                                                    double.negativeInfinity) {
+                                              percentageSpent = 0;
+                                              percentageRemaining = 100;
+                                            }
+                                          });
+                                        },
+                                      ))
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Remaining"),
+                            Text("R " + rem3 + "   "),
+                          ]),
+                      IconButton(
+                        key: Key('Week1 edit'),
+                        alignment: Alignment.bottomRight,
+                        //color: Colors.green,
+                        //hoverColor: Colors.green,
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          setState(() => {
+                                editThree = true,
+                              });
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 80,
+                          animation: true,
+                          lineHeight: 25.0,
+                          animationDuration: 2000,
+                          barRadius: const Radius.circular(16),
+                          percent: percentageSpent,
+                          center: Text(
+                              percentageRemaining.toString() + "% remaining"),
+                          progressColor: percentageRemaining >= 60
+                              ? Color.fromARGB(255, 72, 216, 29)
+                              : percentageRemaining < 60 &&
+                                      percentageRemaining >= 30
+                                  ? Color.fromARGB(255, 248, 141, 10)
+                                  : Color.fromARGB(255, 236, 17, 2),
+                        ),
+                      )
+                    ]);
+                  }),
+
+              /*Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(
+                double.parse(spent1), double.parse(rem1), mybudget))*/
+            ])));
+  }
+
+  Widget WeekFour() {
+    return Container(
+        height: 320,
+        child: Card(
+            elevation: 10,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Column(children: [
+              Container(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Center(
+                    child: Text(
+                      'Week 4',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+              StreamBuilder(
+                  stream:
+                      _budget.doc(widget.month).collection('Week4').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    String budget = "0";
+                    if (streamSnapshot.hasData &&
+                        streamSnapshot.data!.size > 0) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[0];
+                      spent4 = documentSnapshot['amount spent'].toString();
+                      budget = documentSnapshot['budget'].toString();
+                      rem4 = documentSnapshot['amount remaining'].toString();
+                    }
+
+                    if (budget != "0") {
+                      double b = double.parse(budget);
+                      percentageSpent = double.parse(spent4) / b;
+                      percentageRemaining = double.parse(rem4) / b * 100;
+                      percentageSpent =
+                          double.parse(percentageSpent.toStringAsFixed(2));
+                      percentageRemaining =
+                          double.parse(percentageRemaining.toStringAsFixed(2));
+                    } else {
+                      percentageSpent = 0.0;
+                      percentageRemaining = 100.0;
+                    }
+                    if (percentageSpent > 1 ||
+                        percentageSpent < 0 ||
+                        percentageRemaining == double.negativeInfinity) {
+                      percentageSpent = 0;
+                      percentageRemaining = 100;
+                    }
+                    return Column(children: [
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Budget"),
+                            Text("R " + budget + "   ")
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Spent"),
+                            Flexible(
+                                child: !editFour
+                                    ? Text('R ' + spent4 + "   ")
+                                    : TextField(
+                                        key: const Key("spent4"),
+                                        textAlign: TextAlign.right,
+                                        controller: spentFourController,
+                                        decoration: const InputDecoration(
+                                          hintText: 'R 0',
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        textInputAction: TextInputAction.done,
+                                        onSubmitted: (value) {
+                                          setState(() {
+                                            if (double.parse(spent4) !=
+                                                double.parse(
+                                                    spentFourController.text)) {
+                                              print("same");
+                                              totSpent -= double.parse(spent4);
+                                              totRem += double.parse(spent4);
+                                              spent4 = spentFourController.text;
+                                              totRem -= double.parse(spent4);
+                                              double left =
+                                                  double.parse(spent4);
+
+                                              totSpent += double.parse(spent4);
+                                              left = double.parse(budget) -
+                                                  double.parse(spent4);
+
+                                              rem4 = left.toString();
+                                              _budget
+                                                  .doc(widget.month)
+                                                  .collection('Week4')
+                                                  .doc('Week4')
+                                                  .set({
+                                                'budget': double.parse(budget),
+                                                'amount spent':
+                                                    double.parse(spent4),
+                                                'amount remaining': rem4
+                                              });
+                                              _budget.doc(widget.month).update({
+                                                'total remaining': totRem,
+                                                'total spent': totSpent
+                                              });
+                                            }
+
+                                            editFour = false;
+                                            spent4 = spentFourController.text;
+                                            if (budget != "0") {
+                                              double b = double.parse(budget);
+                                              percentageSpent =
+                                                  double.parse(spent4) / b;
+                                              percentageRemaining =
+                                                  double.parse(rem4) / b * 100;
+                                              percentageSpent = double.parse(
+                                                  percentageSpent
+                                                      .toStringAsFixed(2));
+                                              percentageRemaining =
+                                                  double.parse(
+                                                      percentageRemaining
+                                                          .toStringAsFixed(2));
+                                            } else {
+                                              percentageSpent = 0.0;
+                                              percentageRemaining = 100.0;
+                                            }
+                                            if (percentageSpent > 1 ||
+                                                percentageSpent < 0 ||
+                                                percentageRemaining ==
+                                                    double.negativeInfinity) {
+                                              percentageSpent = 0;
+                                              percentageRemaining = 100;
+                                            }
+                                          });
+                                        },
+                                      ))
+                          ]),
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("   Amount Remaining"),
+                            Text("R " + rem4 + "   "),
+                          ]),
+                      IconButton(
+                        key: Key('Week1 edit'),
+                        alignment: Alignment.bottomRight,
+                        //color: Colors.green,
+                        //hoverColor: Colors.green,
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          setState(() => {
+                                editFour = true,
+                              });
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width - 80,
+                          animation: true,
+                          lineHeight: 25.0,
+                          animationDuration: 2000,
+                          barRadius: const Radius.circular(16),
+                          percent: percentageSpent,
+                          center: Text(
+                              percentageRemaining.toString() + "% remaining"),
+                          progressColor: percentageRemaining >= 60
+                              ? Color.fromARGB(255, 72, 216, 29)
+                              : percentageRemaining < 60 &&
+                                      percentageRemaining >= 30
+                                  ? Color.fromARGB(255, 248, 141, 10)
+                                  : Color.fromARGB(255, 236, 17, 2),
+                        ),
+                      )
+                    ]);
+                  }),
+
+              /*Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: percentIndicator(
+                double.parse(spent1), double.parse(rem1), mybudget))*/
+            ])));
+  }
+
+  Widget Totals() {
+    setState(() {
+      totSpent = double.parse(spent1) +
+          double.parse(spent2) +
+          double.parse(spent3) +
+          double.parse(spent4);
+      totRem = totBudget - totSpent;
+    });
+
+    if (totBudget != 0) {
+      percentageSpent = totSpent / totBudget;
+      percentageRemaining = totRem / totBudget * 100;
+      percentageSpent = double.parse(percentageSpent.toStringAsFixed(2));
+      percentageRemaining =
+          double.parse(percentageRemaining.toStringAsFixed(2));
+    } else {
+      percentageSpent = 0.0;
+      percentageRemaining = 100.0;
+    }
+    if (percentageSpent > 1 ||
+        percentageSpent < 0 ||
+        percentageRemaining == double.negativeInfinity) {
+      percentageSpent = 0;
+      percentageRemaining = 100;
+    }
+    return Container(
+        height: 250,
+        child: Card(
+            elevation: 10,
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Container(
+                key: const Key("totals"),
+                child: Column(children: [
+                  Container(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: const Center(
+                        child: Text(
+                          'Totals',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  key: const Key("totSpent"),
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(color: Colors.grey, width: 3),
-                  )),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
+                  const SizedBox(height: 10),
+                  Container(
+                      key: const Key("totSpent"),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        bottom: BorderSide(color: Colors.grey, width: 3),
+                      )),
                       child: Text(
-                          "   Total Amount Spent:  " + totSpent.toString())),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(color: Colors.grey, width: 3),
-                  )),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("   Total Amount Remaining:  " +
-                          totRem.toString() +
-                          "   ")),
-                ),
-                const SizedBox(height: 10),
-              ]))));
+                        "   Total Amount Spent: R " +
+                            totSpent.toString() +
+                            "   ",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
+                        border: Border(
+                      bottom: BorderSide(color: Colors.grey, width: 3),
+                    )),
+                    child: Text(
+                        "   Total Amount Remaining:  R " +
+                            totRem.toString() +
+                            "   ",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                  const SizedBox(height: 30),
+                  Center(
+                    child: LinearPercentIndicator(
+                      width: MediaQuery.of(context).size.width - 80,
+                      animation: true,
+                      lineHeight: 25.0,
+                      animationDuration: 2000,
+                      barRadius: const Radius.circular(16),
+                      percent: percentageSpent,
+                      center:
+                          Text(percentageRemaining.toString() + "% remaining"),
+                      progressColor: percentageRemaining >= 60
+                          ? Color.fromARGB(255, 72, 216, 29)
+                          : percentageRemaining < 60 &&
+                                  percentageRemaining >= 30
+                              ? Color.fromARGB(255, 248, 141, 10)
+                              : Color.fromARGB(255, 236, 17, 2),
+                    ),
+                  )
+                ]))));
+  }
 
   //double update = 0;
   Widget EstTotal() => ElevatedButton(
@@ -1185,7 +1485,8 @@ class MyMonthState extends State<Month> {
           String message = "";
           double comp = 0;
           comp += est;
-          compMessage = " Your estimated total is R " + comp.toString() + ". ";
+          compMessage =
+              " Your estimated total is R " + comp.toStringAsFixed(2) + ". ";
           if (comp < tr) {
             message = "Your Grocery List is within budget. ";
             comp = tr - comp;
@@ -1194,7 +1495,7 @@ class MyMonthState extends State<Month> {
                 " remaining after shopping.";
           } else {
             comp = comp - tr;
-            message = "You are " + comp.toString() + " over budget.";
+            message = "You are " + comp.toStringAsFixed(2) + " over budget.";
           }
           setState(() {
             compMessage += message;

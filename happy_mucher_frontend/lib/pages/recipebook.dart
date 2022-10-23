@@ -36,17 +36,27 @@ class RecipeBookState extends State<RecipeBook> {
   @override
   void initState() {
     // TODO: implement initState
+    //getIDs();
     super.initState();
-    getIDs();
   }
 
   void getIDs() async {
+    // print("GetIds");
     _favourites.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        ids.add(doc["ID"]);
+        if (ids == null) {
+          ids.add(doc["ID"]);
+        }
+        if (ids != null && !ids.contains(doc["ID"])) {
+          ids.add(doc["ID"]);
+        }
+
+        // print(ids);
       });
     });
-    setState(() {});
+    setState(() {
+      ids = ids;
+    });
   }
 
   @override
@@ -113,6 +123,11 @@ class RecipeBookState extends State<RecipeBook> {
                         color: Color.fromARGB(255, 150, 66, 154), width: 3.0),
                   ),
                   onPressed: () {
+                    //ids = [];
+                    setState(() {
+                      //getIDs();
+                      //print(ids);
+                    });
                     Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -31,6 +31,7 @@ class GroceryListPageState extends State<GroceryListPage> {
   final FirebaseFirestore firestore = GetIt.I.get();
   int shoppingPrices = 0;
   int estimatePrices = 0;
+  bool croppeddial = false;
   CollectionReference get _products =>
       firestore.collection('Users').doc(uid).collection('GroceryList');
 
@@ -76,19 +77,19 @@ class GroceryListPageState extends State<GroceryListPage> {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[0];
 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Shopping Total: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
+                        'SHOPPING TOTAL: ${(documentSnapshot['estimated total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 15,
+                          fontSize: 16,
                         ),
                       ),
                       Text(
-                        'Estimated Total: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
+                        'ESTIMATED TOTAL: ${(documentSnapshot['shopping total'] as num).toStringAsFixed(2)}',
                         style: const TextStyle(
-                          fontSize: 15,
+                          fontSize: 16,
                         ),
                       ),
                     ],
@@ -186,8 +187,8 @@ class GroceryListPageState extends State<GroceryListPage> {
                           controlAffinity: ListTileControlAffinity.leading,
                           title: Text(documentSnapshot['name']),
                           value: documentSnapshot['bought'],
-                          subtitle:
-                              Text('R' + documentSnapshot['price'].toString()),
+                          subtitle: Text('R' +
+                              documentSnapshot['price'].toStringAsFixed(2)),
                           onChanged: (checkVal) async {
                             if (checkVal == null) {
                               return;
@@ -264,7 +265,10 @@ class GroceryListPageState extends State<GroceryListPage> {
           SpeedDialChild(
             key: const Key('addToInventoryButtonCamera'),
             onTap: () async {
-              captureImageReceipt(ImageSource.camera);
+              showAlertDialog(context, ImageSource.camera);
+              // if (croppeddial) {
+              //   captureImageReceipt(ImageSource.camera);
+              // }
             },
             child: const Icon(
               Icons.photo_camera,
@@ -276,7 +280,8 @@ class GroceryListPageState extends State<GroceryListPage> {
             key: const Key('addToInventoryButtonGallery'),
             onTap: () async {
               //showAlertDialog(context);
-              captureImageReceipt(ImageSource.gallery);
+              showAlertDialog(context, ImageSource.gallery);
+              //captureImageReceipt(ImageSource.gallery);
             },
             child: const Icon(Icons.collections, color: Colors.white),
             backgroundColor: Color.fromARGB(255, 185, 141, 223),
@@ -297,6 +302,7 @@ class GroceryListPageState extends State<GroceryListPage> {
   }
 
   void captureImageReceipt(ImageSource imageSource) async {
+    croppeddial = false;
     final image = await _picker.pickImage(source: imageSource);
     if (image == null) {
       return;
@@ -341,7 +347,7 @@ class GroceryListPageState extends State<GroceryListPage> {
   }
 
   Future<String?> cropImage(String path) async {
-    showAlertDialog(context);
+    //showAlertDialog(context);
     final cropped =
         await ImageCropper().cropImage(sourcePath: path, uiSettings: [
       AndroidUiSettings(
@@ -451,20 +457,22 @@ class GroceryListPageState extends State<GroceryListPage> {
     return mapOfItems;
   }
 
-  showAlertDialog(BuildContext context) {
+  showAlertDialog(BuildContext context, ImageSource imageSource) {
     // set up the button
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
-        Navigator.of(context, rootNavigator: true).pop('dialog');
+        croppeddial = true;
+        Navigator.of(context, rootNavigator: true).pop();
+        captureImageReceipt(imageSource);
       },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Remember!"),
-      content: Text(
-          "Crop the image to contain only the item names and instructions"),
+      content: const Text(
+          "Crop the image to contain only the item names and their prices"),
       actions: [
         okButton,
       ],

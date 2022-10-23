@@ -127,25 +127,21 @@ class DashboardState extends State<DashboardPage> {
                   ),
                 ))
           ]),
-      body: PageView(
-        children: <Widget>[
-          ListView(children: <Widget>[
-            buildMealPlanner(context),
-            buildInventoryCard(context),
-            buildProgressIndicator(),
-            CarouselSlider(
-                options: CarouselOptions(
-                  aspectRatio: 1.2,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                ),
-                items: <Widget>[
-                  buildPercentagendicator(),
-                  buildBudgetcard(context),
-                ])
-          ]),
-        ],
-      ),
+      body: ListView(children: <Widget>[
+        buildMealPlanner(context),
+        buildInventoryCard(context),
+        buildProgressIndicator(),
+        CarouselSlider(
+            options: CarouselOptions(
+              aspectRatio: 1.2,
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
+            ),
+            items: <Widget>[
+              buildPercentagendicator(),
+              buildBudgetcard(context),
+            ])
+      ]),
     );
   }
 
