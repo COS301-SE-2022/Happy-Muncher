@@ -7,6 +7,8 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 ## Download Link
 [Link](https://drive.google.com/file/d/1cfY_6KxZEpwNsV0Hnm4qIjy4Xzatc-8j/view)
 ## Demo Recordings
+[Overview of our app](https://drive.google.com/file/d/1BL00hEdG-MWqTlmcv-E0QaQOMH6tr-Uv/view?usp=sharing)
+
 [CodeBlooded-Demo4](https://drive.google.com/drive/folders/1hVA0aQhkxGa_LgDsLJV_XIMiNW60nPsf?usp=sharing)
 ## System Requirement Specification
 [SRS Document](https://drive.google.com/file/d/1x20VuukqiVTlYZh_muKeNdFzGmm1nnuH/view?usp=sharing)
@@ -35,8 +37,6 @@ The Happy Muncher App is a useful food budgeting and management app.  It can be 
 
 I’m a third-year computer science student who really enjoys problem solving and finding creative approaches to solve problems. I also consider this to be one of my skills.  I am a perfectionist and I believe this will greatly contribute to providing good quality software.
 
-![github stats](https://github-readme-stats.vercel.app/api?username=juwiCarrim&theme=slateorange)
-
 ---
 
 ### [Kajal Bhoola](https://github.com/Kajal022)
@@ -44,8 +44,6 @@ I’m a third-year computer science student who really enjoys problem solving an
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
 
 >I am a third year computer science student. I enjoy both front-end and back-end development. I am a hard worker who likes taking on challenges and learning new things.
-
-![github stats](https://github-readme-stats.vercel.app/api?username=Kajal022&theme=slateorange)
 
 ---
 
@@ -55,8 +53,6 @@ I’m a third-year computer science student who really enjoys problem solving an
 
 >Currently a 3rd year computer science student at the University of Pretoria. I have been coding since grade 8 and have enjoyed it ever since.I excel at problem solving and I have experience with Java, C++, HTML, CSS, JS, PHP and GraphQL.
 
-![github stats](https://github-readme-stats.vercel.app/api?username=Chen-HuanKu&theme=slateorange)
-
 ---
 
 ### [Mohamed Nizhar Aboobaker](https://github.com/NYZCoder)
@@ -64,8 +60,6 @@ I’m a third-year computer science student who really enjoys problem solving an
 <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a><br/>
 
 >Description.
-
-![github stats](https://github-readme-stats.vercel.app/api?username=NYZCoder&theme=slateorange)
 
 ---
 
@@ -75,4 +69,3 @@ I’m a third-year computer science student who really enjoys problem solving an
 
 A final year computer science student at UP, who was bitten by the code bug a few years ago and became more and more engulfed in the world of problem solving. With special interests in Databases and Cryptography.
 
-![github stats](https://github-readme-stats.vercel.app/api?username=Ponalo-ss&theme=slateorange)
